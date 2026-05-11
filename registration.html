@@ -1,0 +1,1317 @@
+<!--
+  CBE Mark Sheet System
+  Copyright © 2026 Bett Emanuel — https://bett.website
+  All rights reserved. Unauthorized copying, modification or distribution
+  of this software is strictly prohibited.
+  Contact: wa.me/254704518130
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSI+CiAgPCEtLSBCYWNrZ3JvdW5kIHJvdW5kZWQgcmVjdCAtLT4KICA8cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHJ4PSIxNCIgZmlsbD0iIzE1NTNkNCIvPgoKICA8IS0tIE1hcmsgc2hlZXQgbGluZXMgLS0+CiAgPCEtLSBIZWFkZXIgYmFyIC0tPgogIDxyZWN0IHg9IjEwIiB5PSIxMCIgd2lkdGg9IjQ0IiBoZWlnaHQ9IjgiIHJ4PSIyLjUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4yNSkiLz4KCiAgPCEtLSBSb3cgMSAtLT4KICA8cmVjdCB4PSIxMCIgeT0iMjIiIHdpZHRoPSIxOCIgaGVpZ2h0PSI0IiByeD0iMiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjcpIi8+CiAgPHJlY3QgeD0iMzIiIHk9IjIyIiB3aWR0aD0iOCIgaGVpZ2h0PSI0IiByeD0iMiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjkpIi8+CiAgPHJlY3QgeD0iNDQiIHk9IjIyIiB3aWR0aD0iMTAiIGhlaWdodD0iNCIgcng9IjIiIGZpbGw9IiM0YWRlODAiLz4KCiAgPCEtLSBSb3cgMiAtLT4KICA8cmVjdCB4PSIxMCIgeT0iMzAiIHdpZHRoPSIxOCIgaGVpZ2h0PSI0IiByeD0iMiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjcpIi8+CiAgPHJlY3QgeD0iMzIiIHk9IjMwIiB3aWR0aD0iOCIgaGVpZ2h0PSI0IiByeD0iMiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjkpIi8+CiAgPHJlY3QgeD0iNDQiIHk9IjMwIiB3aWR0aD0iMTAiIGhlaWdodD0iNCIgcng9IjIiIGZpbGw9IiNmYWNjMTUiLz4KCiAgPCEtLSBSb3cgMyAtLT4KICA8cmVjdCB4PSIxMCIgeT0iMzgiIHdpZHRoPSIxOCIgaGVpZ2h0PSI0IiByeD0iMiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjcpIi8+CiAgPHJlY3QgeD0iMzIiIHk9IjM4IiB3aWR0aD0iOCIgaGVpZ2h0PSI0IiByeD0iMiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjkpIi8+CiAgPHJlY3QgeD0iNDQiIHk9IjM4IiB3aWR0aD0iMTAiIGhlaWdodD0iNCIgcng9IjIiIGZpbGw9IiM0YWRlODAiLz4KCiAgPCEtLSBDQkMgbGV2ZWwgYmFkZ2UgYm90dG9tIHJpZ2h0IC0tPgogIDxyZWN0IHg9IjEwIiB5PSI0NyIgd2lkdGg9IjQ0IiBoZWlnaHQ9IjciIHJ4PSIyIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTIpIi8+CiAgPHJlY3QgeD0iMTMiIHk9IjQ5IiB3aWR0aD0iMTQiIGhlaWdodD0iMyIgcng9IjEuNSIgZmlsbD0iIzRhZGU4MCIvPgogIDxyZWN0IHg9IjMwIiB5PSI0OSIgd2lkdGg9IjExIiBoZWlnaHQ9IjMiIHJ4PSIxLjUiIGZpbGw9IiNmYWNjMTUiLz4KICA8cmVjdCB4PSI0NCIgeT0iNDkiIHdpZHRoPSI3IiAgaGVpZ2h0PSIzIiByeD0iMS41IiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNCkiLz4KPC9zdmc+Cg==">
+<meta name="theme-color" content="#1553d4">
+<title>Register | CBE Mark Sheet System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Familjen+Grotesk:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#e8ecf4;--surface:#fff;--surf2:#f3f5fa;--border:#dce1ec;
+  --text:#131c2e;--text2:#4f6080;--text3:#9aaabb;
+  --accent:#1a56db;--ah:#1447c0;--alight:#eff4ff;
+  --green:#059669;--green-bg:#d1fae5;--green-tx:#065f46;
+  --amber:#d97706;--amber-bg:#fef3c7;--amber-tx:#92400e;
+  --red:#dc2626;--red-bg:#fee2e2;--red-tx:#991b1b;
+  --sh:0 1px 3px rgba(0,0,0,.06);--sh2:0 8px 28px rgba(0,0,0,.12);
+  --r:10px;--r2:6px;
+}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);font-size:13px;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:32px 32px;opacity:.4;pointer-events:none}
+
+.page{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:28px 20px 60px}
+
+.hd{text-align:center;margin-bottom:24px}
+.hd-logo{width:50px;height:50px;background:var(--accent);border-radius:12px;display:grid;place-items:center;font-size:24px;margin:0 auto 12px;box-shadow:0 4px 14px rgba(26,86,219,.3)}
+.hd-title{font-family:'Familjen Grotesk',sans-serif;font-size:22px;font-weight:800;margin-bottom:4px}
+.hd-sub{font-size:12.5px;color:var(--text2)}
+
+.steps{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:22px}
+.stp{display:flex;align-items:center;gap:6px}
+.stp-num{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:800;transition:all .2s}
+.stp.done .stp-num{background:var(--green);color:#fff}
+.stp.active .stp-num{background:var(--accent);color:#fff;box-shadow:0 0 0 3px var(--alight)}
+.stp.wait .stp-num{background:var(--border);color:var(--text3)}
+.stp-lbl{font-size:11px;font-weight:600;color:var(--text3);white-space:nowrap}
+.stp.active .stp-lbl{color:var(--accent);font-weight:700}
+.stp.done .stp-lbl{color:var(--green-tx)}
+.stp-line{width:32px;height:1.5px;background:var(--border);margin:0 4px;flex-shrink:0;transition:background .3s}
+.done-line{background:var(--green)}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh2);overflow:hidden;animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.card-head{padding:14px 22px;background:var(--surf2);border-bottom:1px solid var(--border)}
+.card-head-title{font-family:'Familjen Grotesk',sans-serif;font-size:14px;font-weight:800;display:flex;align-items:center;gap:7px}
+.card-head-sub{font-size:11.5px;color:var(--text3);margin-top:2px}
+.card-body{padding:22px}
+
+.screen{display:none}.screen.active{display:block}
+
+.pay-confirmed-banner{display:flex;align-items:center;gap:10px;background:var(--green-bg);border:1.5px solid #6ee7b7;border-radius:var(--r2);padding:12px 16px;margin-bottom:20px}
+.pcb-icon{font-size:20px;flex-shrink:0}
+.pcb-body{}
+.pcb-title{font-weight:800;font-size:13px;color:var(--green-tx);margin-bottom:2px}
+.pcb-detail{font-size:11.5px;color:#047857}
+
+.field{margin-bottom:16px}
+.field label{display:block;font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
+.field .hint{font-size:11px;color:var(--text3);margin-top:4px}
+.inp-wrap{position:relative}
+.inp-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;opacity:.45}
+.inp{width:100%;height:40px;padding:0 12px 0 34px;border:1.5px solid var(--border);border-radius:var(--r2);font-family:inherit;font-size:13px;color:var(--text);background:var(--surface);outline:none;transition:border-color .15s}
+.inp:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(26,86,219,.1)}
+.inp::placeholder{color:var(--text3)}
+.inp.no-icon{padding-left:12px}
+.eye-btn{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:14px;color:var(--text3)}
+.inp.has-eye{padding-right:36px}
+.pw-strength{height:3px;border-radius:2px;margin-top:6px;transition:all .3s;background:var(--border)}
+.pw-strength.weak{background:var(--red);width:33%}
+.pw-strength.fair{background:var(--amber);width:66%}
+.pw-strength.strong{background:var(--green);width:100%}
+
+.sec-div{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);padding-bottom:6px;margin:18px 0 14px}
+.sec-div:first-child{margin-top:0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+select.inp{cursor:pointer;padding-left:12px}
+.autosave-bar{display:none;align-items:center;gap:6px;font-size:11.5px;color:var(--green-tx);margin-bottom:16px;background:var(--green-bg);padding:6px 12px;border-radius:5px;border:1px solid #a7f3d0}
+.autosave-bar.show{display:flex}
+.save-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:dotpulse 2s infinite}
+@keyframes dotpulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+.sub-center{text-align:center;padding:20px 10px}
+.sub-icon{font-size:54px;margin-bottom:14px}
+.sub-title{font-family:'Familjen Grotesk',sans-serif;font-size:20px;font-weight:800;margin-bottom:8px}
+.sub-msg{font-size:13px;color:var(--text2);line-height:1.75;margin-bottom:20px}
+.sub-ref{background:var(--surf2);border:1px solid var(--border);border-radius:var(--r2);padding:10px 16px;font-family:monospace;font-size:13px;color:var(--accent);font-weight:700;margin-bottom:6px;word-break:break-all}
+.sub-ref-lbl{font-size:11px;color:var(--text3);margin-bottom:16px}
+
+.owner-banner{display:none;border-radius:var(--r2);padding:12px 16px;margin-bottom:20px;border:1.5px solid}
+.owner-banner.show{display:flex;align-items:flex-start;gap:10px}
+.owner-banner.approved{background:var(--green-bg);border-color:#6ee7b7}
+.owner-banner.pending{background:var(--amber-bg);border-color:#fcd34d}
+.owner-banner.rejected{background:var(--red-bg);border-color:#fca5a5}
+.ob-icon{font-size:18px;flex-shrink:0}
+.ob-body{flex:1}
+.ob-title{font-weight:800;font-size:13px;margin-bottom:3px}
+.ob-msg{font-size:12px;line-height:1.6;color:var(--text2)}
+.ob-wa{display:inline-flex;align-items:center;gap:5px;margin-top:8px;padding:5px 14px;background:#16a34a;color:#fff;border-radius:5px;font-weight:700;font-size:12px;text-decoration:none}
+
+.btn-primary{width:100%;height:44px;background:linear-gradient(135deg,var(--accent),#2563eb);color:#fff;border:none;border-radius:var(--r2);font-family:'Familjen Grotesk',sans-serif;font-size:15px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .15s;box-shadow:0 4px 14px rgba(26,86,219,.3);margin-top:6px}
+.btn-primary:hover:not(:disabled){transform:translateY(-1px)}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.btn-outline{width:100%;height:40px;background:none;border:1.5px solid var(--border);color:var(--text2);border-radius:var(--r2);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all .14s;margin-top:8px;display:flex;align-items:center;justify-content:center}
+.btn-outline:hover{background:var(--bg)}
+.btn-danger-sm{background:none;border:1.5px solid rgba(220,38,38,.35);color:var(--red-tx);border-radius:var(--r2);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;padding:5px 12px;transition:all .14s}
+.btn-danger-sm:hover{background:var(--red-bg);border-color:var(--red)}
+.spin-sm{width:15px;height:15px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:sp .6s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+.alert{display:none;align-items:flex-start;gap:8px;padding:9px 12px;border-radius:var(--r2);font-size:12px;font-weight:500;line-height:1.5;margin-bottom:14px}
+.alert.show{display:flex}
+.alert.err{background:var(--red-bg);border:1px solid #fca5a5;color:var(--red-tx)}
+
+.init-error{display:none;text-align:center;padding:40px 20px}
+.init-error.show{display:block}
+
+.footer{text-align:center;font-size:12px;color:var(--text3);margin-top:18px;line-height:1.8}
+.footer a{color:var(--accent);text-decoration:none;font-weight:600}
+
+/* ── LocalStorage Inspector Panel ── */
+#lsPanel{
+  display:none;background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--r);box-shadow:var(--sh2);padding:16px;margin-top:14px;
+  animation:fadeUp .2s ease;
+}
+#lsPanel.show{display:block}
+#lsPanel .ls-title{font-family:'Familjen Grotesk',sans-serif;font-size:13px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+#lsPanel .ls-item{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);font-size:11.5px}
+#lsPanel .ls-item:last-child{border-bottom:none}
+#lsPanel .ls-key{font-family:monospace;font-weight:700;color:var(--accent);flex-shrink:0;max-width:160px;word-break:break-all}
+#lsPanel .ls-val{color:var(--text2);flex:1;word-break:break-all;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:help}
+#lsPanel .ls-del{background:none;border:none;cursor:pointer;font-size:13px;color:var(--text3);padding:0 4px;flex-shrink:0;line-height:1}
+#lsPanel .ls-del:hover{color:var(--red)}
+#lsPanel .ls-empty{text-align:center;padding:20px;color:var(--text3);font-size:12px}
+.ls-badge{display:inline-block;padding:1px 7px;border-radius:20px;font-size:10px;font-weight:800;margin-left:6px}
+.ls-badge.cbe{background:var(--alight);color:var(--accent)}
+.ls-badge.other{background:var(--surf2);color:var(--text3)}
+
+/* ── Debug log panel ── */
+#debugPanel{position:fixed;bottom:0;left:0;right:0;max-height:220px;overflow-y:auto;background:rgba(10,14,26,.93);color:#a3e635;font-family:monospace;font-size:11px;padding:8px 12px;z-index:9999;border-top:1.5px solid #1e3a1e;display:none}
+#debugPanel.show{display:block}
+#debugPanel .dl{padding:2px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+#debugPanel .dl.warn{color:#fbbf24}
+#debugPanel .dl.error{color:#f87171}
+#debugPanel .dl.info{color:#86efac}
+#debugToggle{position:fixed;bottom:8px;right:10px;z-index:10000;background:#1e293b;color:#64748b;border:1px solid #334155;border-radius:5px;padding:4px 9px;font-size:10px;font-family:monospace;cursor:pointer;opacity:.6}
+#debugToggle:hover{opacity:1}
+
+.get-started-card{background:linear-gradient(135deg,#eff4ff,#e0e7ff);border:2px solid var(--accent);border-radius:var(--r2);padding:20px;text-align:center;margin-bottom:20px}
+.gs-title{font-size:16px;font-weight:800;color:var(--accent);margin-bottom:8px}
+.gs-desc{font-size:13px;color:var(--text2);margin-bottom:16px}
+
+#tc{position:fixed;top:16px;right:16px;z-index:999;display:flex;flex-direction:column;gap:6px}
+.t{display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:var(--r2);font-size:12.5px;font-weight:500;box-shadow:var(--sh2);animation:tin .25s ease;min-width:210px}
+.t.ok{background:#064e3b;color:#ecfdf5;border-left:3px solid #10b981}
+.t.err{background:#7f1d1d;color:#fef2f2;border-left:3px solid #ef4444}
+.t.info{background:#1e3a5f;color:#e0f2fe;border-left:3px solid #38bdf8}
+@keyframes tin{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes tout{to{transform:translateX(110%);opacity:0}}
+</style>
+</head>
+<body>
+<div id="tc"></div>
+<button id="debugToggle" onclick="toggleDebug()">🪲 logs</button>
+<div id="debugPanel"></div>
+
+<div class="page">
+
+  <div class="hd">
+    <div class="hd-logo">🏫</div>
+    <div class="hd-title">CBE Mark Sheet System</div>
+    <div class="hd-sub">Kenya CBC · Primary &amp; Junior School (Grades 1–9)</div>
+  </div>
+
+  <div id="pageInitLoader" style="text-align:center;padding:40px 20px">
+    <div style="width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:sp .6s linear infinite;margin:0 auto 12px"></div>
+    <div style="font-size:12px;color:var(--text3);font-weight:600">Loading…</div>
+  </div>
+
+  <div class="init-error" id="initError">
+    <div style="font-size:36px;margin-bottom:12px">⚠️</div>
+    <div style="font-family:'Familjen Grotesk',sans-serif;font-size:16px;font-weight:800;margin-bottom:8px">Connection Problem</div>
+    <div style="font-size:12.5px;color:var(--text2);line-height:1.7;margin-bottom:18px">Could not connect to the server. Please check your connection and try again.</div>
+    <button class="btn-primary" style="max-width:200px;margin:0 auto" onclick="location.reload()">🔄 Retry</button>
+  </div>
+
+  <div class="steps" id="stepsBar" style="display:none">
+    <div class="stp active" id="stp1"><div class="stp-num">1</div><div class="stp-lbl">Payment</div></div>
+    <div class="stp-line" id="line1"></div>
+    <div class="stp wait" id="stp2"><div class="stp-num">2</div><div class="stp-lbl">Account</div></div>
+    <div class="stp-line" id="line2"></div>
+    <div class="stp wait" id="stp3"><div class="stp-num">3</div><div class="stp-lbl">School Details</div></div>
+  </div>
+
+  <div class="owner-banner" id="ownerBanner">
+    <div class="ob-icon" id="obIcon">📩</div>
+    <div class="ob-body">
+      <div class="ob-title" id="obTitle">Message from Administrator</div>
+      <div class="ob-msg" id="obMsg">—</div>
+      <a class="ob-wa" href="https://wa.me/254704518130" target="_blank">💬 WhatsApp</a>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 0: LOGIN ══ -->
+  <div class="screen" id="screen0">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-head-title">🔑 Welcome Back</div>
+        <div class="card-head-sub">Sign in to your existing school account</div>
+      </div>
+      <div class="card-body">
+        <!-- Login timing info bar -->
+        <div id="loginStatusBar" style="display:none;font-size:11.5px;color:var(--text3);background:var(--surf2);border:1px solid var(--border);border-radius:var(--r2);padding:7px 12px;margin-bottom:12px;font-family:monospace"></div>
+
+        <div class="alert err" id="loginErr"><span>⚠️</span><span id="loginErrMsg"></span></div>
+        <div class="field">
+          <label>Email Address</label>
+          <div class="inp-wrap"><span class="inp-icon">✉️</span><input class="inp" id="liEmail" type="email" placeholder="admin@school.ac.ke" autocomplete="email"></div>
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <div class="inp-wrap">
+            <span class="inp-icon">🔑</span>
+            <input class="inp has-eye" id="liPass" type="password" placeholder="••••••••" autocomplete="current-password">
+            <button class="eye-btn" onclick="toggleEye('liPass',this)" tabindex="-1">👁️</button>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+          <input type="checkbox" id="rememberMe" style="width:15px;height:15px;cursor:pointer;accent-color:var(--accent)">
+          <label for="rememberMe" style="font-size:12.5px;color:var(--text2);cursor:pointer;font-weight:600">Remember me on this device</label>
+        </div>
+        <button class="btn-primary" id="loginBtn" onclick="doLogin()">
+          <span id="loginBtnTxt">Sign In →</span>
+        </button>
+        <button class="btn-outline" onclick="startNewRegistration()">
+          New school? Register here →
+        </button>
+
+        <!-- ── LocalStorage Inspector ── -->
+        <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border)">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+            <div style="font-size:11px;color:var(--text3);font-weight:600">Trouble signing in?</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <button class="btn-danger-sm" onclick="toggleLsPanel()">🗂️ View Saved Data</button>
+              <button class="btn-danger-sm" onclick="clearAllCbeStorage()" style="border-color:rgba(220,38,38,.6)">🗑️ Clear &amp; Retry</button>
+            </div>
+          </div>
+          <div id="lsPanel">
+            <div class="ls-title">
+              <span>💾 Browser Storage <span id="lsBadgeCount" class="ls-badge cbe">0 CBE keys</span></span>
+              <button onclick="renderLsPanel()" style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--text3)">🔄 Refresh</button>
+            </div>
+            <div id="lsItems"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 1: WAITING FOR PAYMENT ══ -->
+  <div class="screen" id="screen1">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-head-title">💳 Complete Payment First</div>
+        <div class="card-head-sub">You need to make a payment before creating your account</div>
+      </div>
+      <div class="card-body">
+        <div class="get-started-card">
+          <div class="gs-title">🏫 New School Registration</div>
+          <div class="gs-desc">Choose your subscription plan and complete M-Pesa payment</div>
+          <button class="btn-primary" onclick="goToRenewalPage()">
+            Choose Plan &amp; Pay →
+          </button>
+        </div>
+
+        <div style="margin-top:10px">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text2)"><span style="color:var(--green);font-size:14px">✅</span>Full system setup for your school</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text2)"><span style="color:var(--green);font-size:14px">✅</span>CBC Mark Sheet — Grades 1 to 9</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text2)"><span style="color:var(--green);font-size:14px">✅</span>Unlimited teachers &amp; streams</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text2)"><span style="color:var(--green);font-size:14px">✅</span>Print-ready branded report cards</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text2)"><span style="color:var(--green);font-size:14px">✅</span>Real-time cloud sync across all devices</div>
+          </div>
+        </div>
+
+        <div style="margin-top:16px;background:var(--alight);border:1px solid #c7d9ff;border-radius:var(--r2);padding:10px 14px;font-size:12px;color:var(--accent);font-weight:600">
+          💡 After successful payment, you'll be redirected back here to create your account.
+        </div>
+
+        <button class="btn-outline" style="margin-top:16px" onclick="goToStep(0)">
+          Already have an account? Sign in →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 2: CREATE ACCOUNT (after payment confirmed) ══ -->
+  <div class="screen" id="screen2">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-head-title">👤 Create Your Admin Account</div>
+        <div class="card-head-sub">These credentials will be used to log in to the system</div>
+      </div>
+      <div class="card-body">
+        <div class="pay-confirmed-banner" id="payConfirmedBanner">
+          <div class="pcb-icon">✅</div>
+          <div class="pcb-body">
+            <div class="pcb-title">Payment Confirmed!</div>
+            <div class="pcb-detail" id="payConfirmedDetail">Your subscription is active. Now create your account to continue.</div>
+          </div>
+        </div>
+
+        <div class="alert err" id="acctErr"><span>⚠️</span><span id="acctErrMsg"></span></div>
+
+        <div class="field">
+          <label>Full Name <span style="color:var(--red)">*</span></label>
+          <div class="inp-wrap"><span class="inp-icon">👤</span><input class="inp" id="aName" placeholder="e.g. Jane Mwangi" autocomplete="name"></div>
+        </div>
+        <div class="field">
+          <label>Email Address <span style="color:var(--red)">*</span></label>
+          <div class="inp-wrap"><span class="inp-icon">✉️</span><input class="inp" id="aEmail" type="email" placeholder="admin@school.ac.ke" autocomplete="email"></div>
+          <div class="hint">This will be your login email — use a school email if possible</div>
+        </div>
+        <div class="field">
+          <label>Password <span style="color:var(--red)">*</span></label>
+          <div class="inp-wrap">
+            <span class="inp-icon">🔑</span>
+            <input class="inp has-eye" id="aPass" type="password" placeholder="Min 8 characters" autocomplete="new-password" oninput="checkPwStrength(this.value)">
+            <button class="eye-btn" onclick="toggleEye('aPass',this)" tabindex="-1">👁️</button>
+          </div>
+          <div class="pw-strength" id="pwStrength"></div>
+          <div class="hint" id="pwHint">Use at least 8 characters with numbers and symbols</div>
+        </div>
+        <div class="field">
+          <label>Confirm Password <span style="color:var(--red)">*</span></label>
+          <div class="inp-wrap"><span class="inp-icon">🔑</span><input class="inp has-eye" id="aPass2" type="password" placeholder="Repeat password" autocomplete="new-password"><button class="eye-btn" onclick="toggleEye('aPass2',this)" tabindex="-1">👁️</button></div>
+        </div>
+
+        <button class="btn-primary" id="acctBtn" onclick="createAccount()">
+          <span id="acctBtnTxt">Create Account →</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 3: SCHOOL DETAILS ══ -->
+  <div class="screen" id="screen3">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-head-title">🏫 School Details</div>
+        <div class="card-head-sub">Progress is auto-saved — you can leave and return</div>
+      </div>
+      <div class="card-body">
+        <div class="autosave-bar" id="savebar"><div class="save-dot"></div>Progress saved — return anytime</div>
+
+        <div class="sec-div">School Identity</div>
+        <div class="field">
+          <label>School Name <span style="color:var(--red)">*</span></label>
+          <input class="inp no-icon" id="sName" placeholder="e.g. Embu Junior School" oninput="autoSave()">
+        </div>
+        <div class="grid2">
+          <div class="field"><label>Short Name</label><input class="inp no-icon" id="sShort" placeholder="e.g. EJS" oninput="autoSave()"></div>
+          <div class="field"><label>Motto</label><input class="inp no-icon" id="sMotto" placeholder="Excellence in Learning" oninput="autoSave()"></div>
+        </div>
+        <div class="grid2">
+          <div class="field">
+            <label>County <span style="color:var(--red)">*</span></label>
+            <select class="inp" id="sCounty" onchange="onCountyChange();autoSave()"><option value="">-- Select County --</option></select>
+          </div>
+          <div class="field">
+            <label>Sub-County</label>
+            <select class="inp" id="sSubCounty" onchange="autoSave()"><option value="">-- Select Sub-County --</option></select>
+          </div>
+        </div>
+
+        <div class="sec-div">Contact</div>
+        <div class="grid2">
+          <div class="field"><label>Principal <span style="color:var(--red)">*</span></label><input class="inp no-icon" id="sPrincipal" placeholder="Mr. James Mwangi" oninput="autoSave()"></div>
+          <div class="field"><label>Phone <span style="color:var(--red)">*</span></label><input class="inp no-icon" id="sPhone" type="tel" placeholder="0712 345 678" oninput="autoSave()"></div>
+        </div>
+
+        <div class="sec-div">School Info</div>
+        <div class="grid2">
+          <div class="field">
+            <label>Streams per grade</label>
+            <select class="inp" id="sStreams" onchange="autoSave()"><option value="1">1 stream</option><option value="2">2 streams</option><option value="3">3 streams</option><option value="4">4+</option></select>
+          </div>
+          <div class="field">
+            <label>Approx. students</label>
+            <select class="inp" id="sStudents" onchange="autoSave()"><option value="<100">Less than 100</option><option value="100-300">100–300</option><option value="300-500">300–500</option><option value="500+">500+</option></select>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="submitBtn" onclick="submitDetails()">
+          <span id="submitTxt">✅ Activate My Account →</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 4: SUBMITTED / DONE ══ -->
+  <div class="screen" id="screen4">
+    <div class="card">
+      <div class="card-body">
+        <div class="sub-center">
+          <div class="sub-icon">🎉</div>
+          <div class="sub-title" id="screen4Title">Registration Complete!</div>
+          <div class="sub-msg" id="screen4Msg">
+            Your school has been registered and your account is now <strong>active</strong>.<br><br>
+            You can now sign in to your dashboard and start setting up your CBC Mark Sheet system.
+          </div>
+          <div class="sub-ref" id="subRef">—</div>
+          <div class="sub-ref-lbl">Your reference number</div>
+
+          <div id="screen4SchoolCta" style="display:none;margin:20px 0">
+            <div style="background:var(--alight);border:1.5px solid #c7d9ff;border-radius:var(--r2);padding:14px 16px;margin-bottom:16px;text-align:left">
+              <div style="font-weight:700;font-size:13px;color:var(--accent);margin-bottom:4px">🏫 One more step!</div>
+              <div style="font-size:12.5px;color:var(--text2);line-height:1.6">Your account is ready. Now add your school details so we can set up your mark sheets.</div>
+            </div>
+            <button class="btn-primary" onclick="goToStep(3);restoreSchoolDetails()">
+              Continue — Add School Details →
+            </button>
+          </div>
+
+          <div id="screen4DashCta" style="margin:20px 0">
+            <a href="/admin" style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:linear-gradient(135deg,var(--accent),#2563eb);color:#fff;border-radius:var(--r2);text-decoration:none;font-size:14px;font-weight:800;box-shadow:0 4px 14px rgba(26,86,219,.3)">
+              Go to Dashboard →
+            </a>
+          </div>
+
+          <div style="font-size:12px;color:var(--text3);margin-top:4px">
+            Need help? <a href="https://wa.me/254704518130" target="_blank" style="color:var(--accent);font-weight:600">Chat on WhatsApp →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Already registered? <a href="#" onclick="goToStep(0);return false">Sign in here →</a>
+    &nbsp;·&nbsp; New school? <a href="#" onclick="startNewRegistration();return false">Register →</a><br>
+    CBE Mark Sheet System · Kenya CBC Junior School
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script>
+firebase.initializeApp({
+  apiKey:"AIzaSyBdabXqlBQ-6yVNJKdu8Zhb9Cm_-59_u24",
+  authDomain:"bett-294a2.firebaseapp.com",
+  projectId:"bett-294a2",
+  storageBucket:"bett-294a2.appspot.com",
+  messagingSenderId:"1055511650032",
+  appId:"1:1055511650032:web:7e0f9c28e58515f549ac35"
+});
+const db = firebase.firestore(), auth = firebase.auth();
+const el = id => document.getElementById(id);
+
+// ══ DEBUG LOGGER ══════════════════════════════════════════════════════════════
+const _debugLogs = [];
+function log(level, msg, data){
+  const ts = new Date().toLocaleTimeString('en-KE',{hour12:false,hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const dataStr = data ? (typeof data === 'object' ? JSON.stringify(data) : String(data)) : '';
+  const line = `[${ts}] [${level.toUpperCase()}] ${msg}${dataStr?' — '+dataStr:''}`;
+  _debugLogs.push({level, line});
+  const fn = level==='error'?console.error:level==='warn'?console.warn:console.log;
+  fn('[CBE Register]', msg, data||'');
+  const panel = el('debugPanel');
+  if(panel){
+    const d = document.createElement('div');
+    d.className = `dl ${level}`;
+    d.textContent = line;
+    panel.appendChild(d);
+    panel.scrollTop = panel.scrollHeight;
+  }
+}
+function toggleDebug(){
+  el('debugPanel').classList.toggle('show');
+}
+window._cbeLog = ()=> _debugLogs.forEach(l=>console.log(l.line));
+
+// ══ LOCALSTORAGE INSPECTOR + CLEANER ══════════════════════════════════════════
+// All CBE keys that might block login or cause stale session issues
+const CBE_LS_KEYS = [
+  'cbe_reg_uid','cbe_reg_email','cbe_pay_confirmed','cbe_pay_txRef',
+  'cbe_pay_phone','cbe_pay_date','cbe_pay_plan','cbe_reg_details',
+  'cbe_school_id','cbe_user_role','cbe_streams','cbe_streams_ts',
+  'cbe_theme','cbe_school_setup_done','cbe_pending_uid','cbe_pending_email'
+];
+
+function getAllLsEntries(){
+  const cbe = [], other = [];
+  for(let i = 0; i < localStorage.length; i++){
+    const k = localStorage.key(i);
+    const v = localStorage.getItem(k);
+    if(CBE_LS_KEYS.includes(k) || k.startsWith('cbe_')){
+      cbe.push({k, v});
+    } else {
+      other.push({k, v});
+    }
+  }
+  return {cbe, other};
+}
+
+function toggleLsPanel(){
+  const panel = el('lsPanel');
+  panel.classList.toggle('show');
+  if(panel.classList.contains('show')) renderLsPanel();
+}
+
+function renderLsPanel(){
+  const {cbe, other} = getAllLsEntries();
+  const badge = el('lsBadgeCount');
+  if(badge) badge.textContent = cbe.length + ' CBE ' + (cbe.length === 1 ? 'key' : 'keys');
+
+  const container = el('lsItems');
+  if(!container) return;
+
+  if(!cbe.length && !other.length){
+    container.innerHTML = '<div class="ls-empty">✅ No stored data found — storage is clean</div>';
+    return;
+  }
+
+  let html = '';
+
+  if(cbe.length){
+    html += `<div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--accent);padding:4px 0 6px;margin-bottom:2px">CBE System Keys</div>`;
+    cbe.forEach(({k, v}) => {
+      const display = v && v.length > 60 ? v.slice(0,60) + '…' : (v || '(empty)');
+      const isSensitive = k.includes('uid') || k.includes('email') || k.includes('confirmed') || k.includes('school_id');
+      html += `<div class="ls-item">
+        <span class="ls-key">${k}</span>
+        <span class="ls-val ${isSensitive ? 'style="color:var(--amber-tx)"' : ''}" title="${v || ''}">${display}</span>
+        <button class="ls-del" onclick="deleteLsKey('${k}')" title="Delete this key">🗑️</button>
+      </div>`;
+    });
+  }
+
+  if(other.length){
+    html += `<div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);padding:8px 0 6px;margin-top:4px">Other Browser Data</div>`;
+    other.forEach(({k, v}) => {
+      const display = v && v.length > 50 ? v.slice(0,50) + '…' : (v || '(empty)');
+      html += `<div class="ls-item">
+        <span class="ls-key" style="color:var(--text3)">${k}</span>
+        <span class="ls-val" title="${v || ''}">${display}</span>
+        <button class="ls-del" onclick="deleteLsKey('${k}')" title="Delete this key">🗑️</button>
+      </div>`;
+    });
+  }
+
+  container.innerHTML = html;
+}
+
+function deleteLsKey(key){
+  localStorage.removeItem(key);
+  log('info', 'Manually deleted localStorage key', key);
+  toast(`Cleared: ${key}`, 'info');
+  renderLsPanel();
+}
+
+/**
+ * clearAllCbeStorage()
+ * Clears ONLY the CBE session/auth keys that are known to block login.
+ * Preserves unrelated browser data. Signs out Firebase auth too.
+ * Shows a toast and reloads after 1.5s.
+ */
+async function clearAllCbeStorage(){
+  const authKeys = [
+    'cbe_reg_uid','cbe_reg_email','cbe_pay_confirmed','cbe_pay_txRef',
+    'cbe_pay_phone','cbe_pay_date','cbe_pay_plan',
+    'cbe_school_id','cbe_user_role','cbe_pending_uid','cbe_pending_email',
+    'cbe_school_setup_done'
+  ];
+  // Also clear sessionStorage equivalents
+  authKeys.forEach(k => {
+    localStorage.removeItem(k);
+    try { sessionStorage.removeItem(k); } catch(_){}
+  });
+
+  log('info', 'All CBE auth keys cleared from localStorage + sessionStorage');
+
+  try {
+    await auth.signOut();
+    log('info', 'Firebase auth signed out');
+  } catch(e) {
+    log('warn', 'signOut error (may already be signed out)', e.message);
+  }
+
+  toast('✅ Storage cleared — reloading…', 'ok');
+  setTimeout(() => location.reload(), 1500);
+}
+
+// ══ INIT TIMEOUT ══════════════════════════════════════════════════════════════
+const initTimeout = setTimeout(()=>{
+  const loader = el('pageInitLoader');
+  if(loader && loader.style.display !== 'none'){
+    log('error','Init timeout — Firebase did not respond in 8s');
+    loader.style.display = 'none';
+    el('initError').classList.add('show');
+  }
+}, 8000);
+
+const NOTIFY_URL = 'https://instasend-backend.onrender.com/api/notify';
+const NOTIFY_KEY = 'bett254';
+function sendTelegramAlert(text){
+  fetch(NOTIFY_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({text,apiKey:NOTIFY_KEY})}).catch(()=>{});
+}
+
+// ══ PLANS ════════════════════════════════════════════════════════════════════
+const PLANS = {
+  monthly:  { label:'Monthly',  duration:'1 Month',   months:1,  amount:1,     display:'Ksh 1,499' },
+  termly:   { label:'Termly',   duration:'3 Months',  months:3,  amount:3999,  display:'Ksh 3,999' },
+  annual:   { label:'Annual',   duration:'12 Months', months:12, amount:14388, display:'Ksh 14,388' },
+};
+
+const SAVE_KEY      = 'cbe_reg_details';
+const PAY_CONFIRMED = 'cbe_pay_confirmed';
+const PAY_TXREF     = 'cbe_pay_txRef';
+const PAY_PHONE     = 'cbe_pay_phone';
+const PAY_DATE      = 'cbe_pay_date';
+const PAY_PLAN      = 'cbe_pay_plan';
+
+let currentStep = 1, _createdUid = null, _regUnsub = null;
+
+// ── Reset login button helper — called on ANY auth resolution ──
+function _resetLoginBtn(){
+  const btn = el('loginBtn'), txt = el('loginBtnTxt');
+  if(btn) btn.disabled = false;
+  if(txt) txt.textContent = 'Sign In →';
+}
+
+function startNewRegistration(){
+  log('info','User clicked "New school — register"');
+  clearPaymentSession();
+  localStorage.removeItem('cbe_reg_uid');
+  localStorage.removeItem('cbe_reg_email');
+  goToStep(1);
+}
+
+function clearPaymentSession(){
+  [PAY_CONFIRMED, PAY_TXREF, PAY_PHONE, PAY_DATE, PAY_PLAN].forEach(k=>localStorage.removeItem(k));
+}
+
+function goToRenewalPage(){
+  log('info','Redirecting to /renew?from=register');
+  window.location.href = '/renew?from=register';
+}
+
+function toast(msg, type='ok'){
+  const t = document.createElement('div'); t.className = `t ${type}`;
+  t.innerHTML = `<span>${type==='ok'?'✅':type==='info'?'ℹ️':'❌'}</span>${msg}`;
+  el('tc').appendChild(t);
+  setTimeout(()=>{ t.style.animation='tout .25s ease forwards'; setTimeout(()=>t.remove(),280); }, 3200);
+}
+
+function goToStep(n){
+  clearTimeout(initTimeout);
+  el('pageInitLoader').style.display = 'none';
+  el('initError').classList.remove('show');
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  el('screen'+n).classList.add('active');
+  currentStep = n;
+  const stepsBar = el('stepsBar');
+  stepsBar.style.display = (n>=1 && n<=3) ? 'flex' : 'none';
+  updateStepBar(n);
+  window.scrollTo({top:0,behavior:'smooth'});
+  log('info',`Navigated to screen ${n}`);
+  // Always reset login button when navigating away from auth flow
+  _resetLoginBtn();
+}
+
+function updateStepBar(n){
+  const order = [1, 2, 3];
+  const pos = order.indexOf(n);
+  order.forEach((step, i)=>{
+    const stp = el('stp'+step);
+    if(!stp) return;
+    stp.className = 'stp ' + (i < pos ? 'done' : i === pos ? 'active' : 'wait');
+  });
+  ['line1','line2'].forEach((lineId, i)=>{
+    const line = el(lineId);
+    if(line) line.className = 'stp-line' + (i < pos ? ' done-line' : '');
+  });
+}
+
+function toggleEye(id, btn){
+  const inp = el(id);
+  inp.type = inp.type==='password' ? 'text' : 'password';
+  btn.textContent = inp.type==='password' ? '👁️' : '🙈';
+}
+
+function checkPwStrength(val){
+  const bar=el('pwStrength'), hint=el('pwHint');
+  if(!val){ bar.className='pw-strength'; return; }
+  const strong=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(val);
+  const fair=/^(?=.*[a-zA-Z])(?=.*\d).{8,}$/.test(val);
+  if(strong){bar.className='pw-strength strong';hint.textContent='Strong password ✅';}
+  else if(fair){bar.className='pw-strength fair';hint.textContent='Fair — add symbols for stronger';}
+  else{bar.className='pw-strength weak';hint.textContent='Weak — add numbers and symbols';}
+}
+
+// ══ LOGIN — with timing logs + 15s timeout ════════════════════════════════════
+async function doLogin(){
+  el('loginErr').classList.remove('show');
+  el('loginStatusBar').style.display = 'none';
+
+  const email = el('liEmail').value.trim();
+  const pass  = el('liPass').value;
+  const remember = el('rememberMe').checked;
+
+  if(!email||!pass){
+    el('loginErrMsg').textContent='Email and password are required.';
+    el('loginErr').classList.add('show');
+    return;
+  }
+
+  const btn=el('loginBtn'), txt=el('loginBtnTxt');
+  btn.disabled=true;
+  txt.innerHTML='<div class="spin-sm"></div> Signing in…';
+
+  const loginStart = Date.now();
+  log('info','Login started',{email, remember});
+  showLoginStatus('⏳ Connecting to Firebase…');
+
+  // ── Safety timeout: if Firebase hangs for 15s, unblock the button ──
+  const loginTimeout = setTimeout(()=>{
+    log('error','Login timed out after 15s — Firebase may be unreachable');
+    _resetLoginBtn();
+    el('loginErrMsg').textContent='Sign-in timed out. Check your internet connection and try again.';
+    el('loginErr').classList.add('show');
+    showLoginStatus('❌ Timed out after 15s');
+  }, 15000);
+
+  try{
+    const t0 = Date.now();
+    showLoginStatus('⏳ Setting auth persistence…');
+    const persistence = remember
+      ? firebase.auth.Auth.Persistence.LOCAL
+      : firebase.auth.Auth.Persistence.SESSION;
+    await auth.setPersistence(persistence);
+    log('info','setPersistence done',{ms: Date.now()-t0, type: remember?'LOCAL':'SESSION'});
+
+    showLoginStatus('⏳ Authenticating with Firebase…');
+    const t1 = Date.now();
+    await auth.signInWithEmailAndPassword(email, pass);
+    const loginMs = Date.now() - loginStart;
+    log('info','signInWithEmailAndPassword succeeded',{totalMs: loginMs});
+    showLoginStatus(`✅ Authenticated in ${loginMs}ms — loading profile…`);
+
+    clearTimeout(loginTimeout);
+    localStorage.setItem('cbe_reg_email', email);
+    // onAuthStateChanged will handle redirect — button stays disabled until redirect
+
+  }catch(e){
+    clearTimeout(loginTimeout);
+    const loginMs = Date.now() - loginStart;
+    log('warn','Login failed',{code: e.code, ms: loginMs});
+    showLoginStatus(`❌ Failed after ${loginMs}ms — ${e.code}`);
+    _resetLoginBtn();
+    const msg = e.code==='auth/user-not-found'||e.code==='auth/wrong-password'||e.code==='auth/invalid-credential'
+      ? 'Incorrect email or password.'
+      : e.code==='auth/too-many-requests' ? 'Too many attempts. Try again later.'
+      : e.code==='auth/network-request-failed' ? 'Network error — check your connection.'
+      : e.message;
+    el('loginErrMsg').textContent=msg;
+    el('loginErr').classList.add('show');
+  }
+}
+
+function showLoginStatus(msg){
+  const bar = el('loginStatusBar');
+  if(!bar) return;
+  bar.style.display = 'block';
+  bar.textContent = msg;
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const lp = el('liPass');
+  if(lp) lp.addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
+});
+
+// ══ CREATE ACCOUNT ════════════════════════════════════════════════════════════
+async function createAccount(){
+  el('acctErr').classList.remove('show');
+  const name  = el('aName').value.trim();
+  const email = el('aEmail').value.trim();
+  const pass  = el('aPass').value;
+  const pass2 = el('aPass2').value;
+
+  if(!name||!email||!pass){ el('acctErrMsg').textContent='All fields are required.'; el('acctErr').classList.add('show'); return; }
+  if(pass.length<8){ el('acctErrMsg').textContent='Password must be at least 8 characters.'; el('acctErr').classList.add('show'); return; }
+  if(pass!==pass2){ el('acctErrMsg').textContent='Passwords do not match.'; el('acctErr').classList.add('show'); return; }
+
+  const btn=el('acctBtn'), txt=el('acctBtnTxt');
+  btn.disabled=true; txt.innerHTML='<div class="spin-sm"></div> Creating account…';
+  log('info','Creating account',email);
+
+  const txRef    = localStorage.getItem(PAY_TXREF) || null;
+  const payPhone = localStorage.getItem(PAY_PHONE) || null;
+  const payDate  = localStorage.getItem(PAY_DATE)  || null;
+  const plan     = localStorage.getItem(PAY_PLAN)  || 'monthly';
+
+  try{
+    const cred = await auth.createUserWithEmailAndPassword(email, pass);
+    _createdUid = cred.user.uid;
+
+    localStorage.setItem('cbe_reg_uid',   cred.user.uid);
+    localStorage.setItem('cbe_reg_email', email);
+
+    await db.collection('users').doc(_createdUid).set({
+      fullName:  name,
+      email,
+      role:      'admin',
+      status:    'pending',
+      paid:      true,
+      txRef,
+      payPhone,
+      payDate,
+      plan,
+      schoolId:  _createdUid,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    db.collection('ownerLog').add({
+      type: 'account_created',
+      message: 'New admin account created — awaiting school details',
+      color: 'blue',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).catch(()=>{});
+
+    log('info','Account created successfully',_createdUid);
+    toast('Account created! Now fill in your school details.');
+    goToStep(3);
+    restoreSchoolDetails();
+
+  }catch(e){
+    log('error','Account creation failed',e.message);
+    btn.disabled=false; txt.textContent='Create Account →';
+    const msg = e.code==='auth/email-already-in-use'
+      ? 'This email is already registered. <a href="/admin" style="color:var(--red-tx);font-weight:700">Sign in instead →</a>'
+      : e.code==='auth/invalid-email' ? 'Invalid email address.' : e.message;
+    el('acctErrMsg').innerHTML=msg;
+    el('acctErr').classList.add('show');
+  }
+}
+
+// ══ AUTO-SAVE ═════════════════════════════════════════════════════════════════
+function autoSave(){
+  try{
+    localStorage.setItem(SAVE_KEY, JSON.stringify(readDetails()));
+    el('savebar').classList.add('show');
+  }catch(_){}
+}
+
+function readDetails(){
+  return {
+    name:      el('sName').value.trim(),
+    shortName: el('sShort').value.trim(),
+    motto:     el('sMotto').value.trim(),
+    county:    el('sCounty').value,
+    subCounty: el('sSubCounty').value,
+    principal: el('sPrincipal').value.trim(),
+    phone:     el('sPhone').value.trim(),
+    streams:   el('sStreams').value,
+    students:  el('sStudents').value,
+  };
+}
+
+function restoreSchoolDetails(){
+  try{
+    const raw = localStorage.getItem(SAVE_KEY);
+    if(!raw) return;
+    const d = JSON.parse(raw);
+    if(d.name)      el('sName').value=d.name;
+    if(d.shortName) el('sShort').value=d.shortName;
+    if(d.motto)     el('sMotto').value=d.motto;
+    if(d.principal) el('sPrincipal').value=d.principal;
+    if(d.phone)     el('sPhone').value=d.phone;
+    if(d.streams)   el('sStreams').value=d.streams;
+    if(d.students)  el('sStudents').value=d.students;
+    if(d.county){
+      el('sCounty').value=d.county;
+      onCountyChange();
+      setTimeout(()=>{ if(d.subCounty) el('sSubCounty').value=d.subCounty; }, 60);
+    }
+    if(Object.values(d).some(v=>v)) el('savebar').classList.add('show');
+    log('info','School details restored from localStorage');
+  }catch(_){}
+}
+
+// ══ SUBMIT DETAILS ════════════════════════════════════════════════════════════
+async function submitDetails(){
+  const d = readDetails();
+  if(!d.name){ toast('School name is required','err'); el('sName').focus(); return; }
+  if(!d.county){ toast('Please select your county','err'); return; }
+  if(!d.principal){ toast('Principal name is required','err'); el('sPrincipal').focus(); return; }
+  if(!d.phone){ toast('Phone number is required','err'); el('sPhone').focus(); return; }
+
+  const uid = _createdUid || auth.currentUser?.uid;
+  if(!uid){ toast('Session expired — please create account again','err'); goToStep(2); return; }
+  if(!auth.currentUser){ toast('Not authenticated — please create your account first','err'); goToStep(2); return; }
+
+  const btn=el('submitBtn'), txt=el('submitTxt');
+  btn.disabled=true; txt.innerHTML='<div class="spin-sm"></div> Submitting…';
+  log('info','Submitting school details',d.name);
+
+  const txRef    = localStorage.getItem(PAY_TXREF)  || null;
+  const payPhone = localStorage.getItem(PAY_PHONE)  || null;
+  const payDate  = localStorage.getItem(PAY_DATE)   || null;
+  const plan     = localStorage.getItem(PAY_PLAN)   || 'monthly';
+  const planCfg  = PLANS[plan] || PLANS.monthly;
+
+  const paidAt = payDate ? new Date(payDate) : new Date();
+  const expiry = new Date(paidAt);
+  expiry.setMonth(expiry.getMonth() + planCfg.months);
+
+  sendTelegramAlert(
+    `🖱️ <b>ACTIVATE BUTTON CLICKED</b>\n\n` +
+    `🏫 School: <b>${d.name}</b>\n` +
+    `📍 County: ${d.county||'—'}${d.subCounty?' ('+d.subCounty+')':''}\n` +
+    `👤 Principal: ${d.principal||'—'}\n` +
+    `📞 Phone: ${d.phone||'—'}\n` +
+    `✉️ Email: ${auth.currentUser?.email||'—'}\n` +
+    `📋 Plan: ${planCfg.label} — ${planCfg.display}\n` +
+    `🔖 TxRef: <code>${txRef||'?'}</code>\n` +
+    `🆔 UID: <code>${uid.slice(0,12).toUpperCase()}</code>\n` +
+    `⏰ ${new Date().toLocaleString('en-KE')}`
+  );
+
+  try{
+    await db.collection('settings').doc(uid).set({
+      ...d, schoolId: uid,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    },{ merge:true });
+
+    await db.collection('users').doc(uid).set({
+      subscription: {
+        plan,
+        status:    'active',
+        paidAt:    firebase.firestore.Timestamp.fromDate(paidAt),
+        expiresAt: firebase.firestore.Timestamp.fromDate(expiry),
+        lastTxRef: txRef
+      },
+      status:    'active',
+      approved:  true,
+      suspended: false,
+      approvedAt: firebase.firestore.FieldValue.serverTimestamp()
+    },{ merge:true });
+
+    await db.collection('payments').add({
+      userId:    uid,
+      phone:     payPhone,
+      type:      'registration',
+      plan,
+      amount:    planCfg.amount,
+      txRef,
+      status:    'confirmed',
+      paidAt:    firebase.firestore.Timestamp.fromDate(paidAt),
+      expiresAt: firebase.firestore.Timestamp.fromDate(expiry),
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    await db.collection('approvedSchools').doc(uid).set({
+      uid, schoolName: d.name,
+      county: d.county, subCounty: d.subCounty||'',
+      principal: d.principal, phone: d.phone,
+      status: 'approved',
+      subscription: plan,
+      subscriptionExpiry: firebase.firestore.Timestamp.fromDate(expiry),
+      approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      autoApproved: true
+    },{ merge:true });
+
+    await db.collection('ownerLog').add({
+      type: 'new_registration',
+      message: `New school activated (${planCfg.label}): ${d.name} (${d.county})`,
+      school: d.name, county: d.county||'',
+      principal: d.principal||'', phone: d.phone||'',
+      plan, amount: planCfg.amount, txRef,
+      color: 'green',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    sendTelegramAlert(
+      `✅ <b>SCHOOL SETUP COMPLETE</b>\n\n` +
+      `🏫 School: <b>${d.name}</b>\n` +
+      `📍 County: ${d.county||'—'}${d.subCounty?' ('+d.subCounty+')':''}\n` +
+      `👤 Principal: ${d.principal||'—'}\n` +
+      `📞 Phone: ${d.phone||'—'}\n` +
+      `✉️ Email: ${auth.currentUser?.email||'—'}\n` +
+      `📋 Plan: ${planCfg.label} — ${planCfg.display}\n` +
+      `📅 Expires: ${expiry.toLocaleDateString('en-KE')}\n` +
+      `🔖 TxRef: <code>${txRef||'?'}</code>\n` +
+      `🆔 Ref: <code>${uid.slice(0,12).toUpperCase()}</code>\n` +
+      `⏰ ${new Date().toLocaleString('en-KE')}`
+    );
+
+    clearPaymentSession();
+    localStorage.removeItem(SAVE_KEY);
+    log('info','Registration complete — redirecting to /admin');
+    toast('🎉 Your school is now active! Redirecting…');
+    setTimeout(()=>{ window.location.href = '/admin'; }, 1500);
+
+  }catch(e){
+    log('error','submitDetails failed',e.message);
+    toast('Submit failed: '+e.message,'err');
+    btn.disabled=false; txt.textContent='✅ Activate My Account →';
+  }
+}
+
+// ══ APPROVAL LISTENER ════════════════════════════════════════════════════════
+function listenForOwnerResponse(uid){
+  if(_regUnsub) _regUnsub();
+  _regUnsub = db.collection('approvedSchools').doc(uid).onSnapshot(snap=>{
+    if(!snap.exists) return;
+    const d = snap.data();
+    if(d.status==='approved'){
+      log('info','Owner approved — redirecting to /admin');
+      setTimeout(()=>{ window.location.href = '/admin'; }, 1500);
+      return;
+    }
+    if(d.status==='suspended'){
+      showOwnerBanner('rejected','🚫 Registration Not Approved', d.message||'Your registration was not approved. Contact us on WhatsApp.','https://wa.me/254704518130');
+      return;
+    }
+    if(d.message && d.message.trim()){
+      showOwnerBanner('pending','📩 Message from Administrator',d.message,d.contact||'https://wa.me/254704518130');
+    }
+  }, e=>log('error','Approval listener error',e.message));
+}
+
+function showOwnerBanner(type, title, msg, contact){
+  el('obIcon').textContent = type==='approved'?'✅':'📩';
+  el('obTitle').textContent = title;
+  el('obMsg').textContent = msg;
+  const banner = el('ownerBanner');
+  banner.className = `owner-banner show ${type}`;
+  if(contact){ const wa=banner.querySelector('.ob-wa'); if(wa) wa.href=contact; }
+}
+
+// ══ ROUTING ═══════════════════════════════════════════════════════════════════
+async function checkPaymentAndRoute(){
+  const payOk      = localStorage.getItem(PAY_CONFIRMED) === 'true';
+  const savedEmail = localStorage.getItem('cbe_reg_email');
+  const savedUid   = localStorage.getItem('cbe_reg_uid');
+
+  log('info','checkPaymentAndRoute', {payOk, hasSavedEmail:!!savedEmail, hasSavedUid:!!savedUid});
+
+  if(payOk){
+    log('info','→ Payment confirmed — showing account creation (step 2)');
+    showPayConfirmedBanner();
+    goToStep(2);
+    return;
+  }
+
+  if(savedEmail || savedUid){
+    log('info','→ Returning user detected — showing login (step 0)');
+    goToStep(0);
+    const emailEl = el('liEmail');
+    if(emailEl && savedEmail) emailEl.value = savedEmail;
+    return;
+  }
+
+  log('info','→ New visitor — showing payment screen (step 1)');
+  goToStep(1);
+}
+
+function showPayConfirmedBanner(){
+  const plan    = localStorage.getItem(PAY_PLAN) || 'monthly';
+  const planCfg = PLANS[plan] || PLANS.monthly;
+  const payDate = localStorage.getItem(PAY_DATE);
+  const paidAt  = payDate ? new Date(payDate) : new Date();
+  const expiry  = new Date(paidAt);
+  expiry.setMonth(expiry.getMonth() + planCfg.months);
+  el('payConfirmedDetail').textContent =
+    `${planCfg.label} plan paid — expires ${expiry.toLocaleDateString('en-KE',{day:'numeric',month:'long',year:'numeric'})}. Now create your account.`;
+}
+
+function checkUrlForPayment(){
+  const urlParams = new URLSearchParams(window.location.search);
+  const paymentSuccess = urlParams.get('payment') === 'success';
+  const txRef = urlParams.get('txRef');
+
+  if(paymentSuccess && txRef && !localStorage.getItem(PAY_CONFIRMED)){
+    log('info','Payment success params detected in URL',{txRef});
+    localStorage.setItem(PAY_CONFIRMED, 'true');
+    if(txRef) localStorage.setItem(PAY_TXREF, txRef);
+    const plan = urlParams.get('plan');
+    if(plan) localStorage.setItem(PAY_PLAN, plan);
+    const phone = urlParams.get('phone');
+    if(phone) localStorage.setItem(PAY_PHONE, phone);
+    localStorage.setItem(PAY_DATE, new Date().toISOString());
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+}
+
+// ══ AUTH STATE ════════════════════════════════════════════════════════════════
+checkUrlForPayment();
+
+let _authSettled = false;
+
+const _routeTimer = setTimeout(()=>{
+  if(!_authSettled){
+    log('warn','Firebase auth took >3s — routing without auth result');
+    _authSettled = true;
+    checkPaymentAndRoute();
+  }
+}, 3000);
+
+auth.onAuthStateChanged(async u=>{
+  clearTimeout(initTimeout);
+  clearTimeout(_routeTimer);
+
+  log('info','onAuthStateChanged fired', u ? {uid:u.uid, email:u.email} : 'no user');
+
+  const payOk = localStorage.getItem(PAY_CONFIRMED) === 'true';
+  if(payOk){
+    if(!_authSettled){
+      _authSettled = true;
+      log('info','Payment session active — routing to step 2 regardless of auth');
+      showPayConfirmedBanner();
+      goToStep(2);
+    }
+    return;
+  }
+
+  if(!_authSettled){
+    _authSettled = true;
+    checkPaymentAndRoute();
+  }
+
+  // ── No signed-in user ──
+  if(!u){
+    log('info','No authenticated user');
+    // IMPORTANT: always reset login button if no user is found
+    _resetLoginBtn();
+    if(currentStep===0) return;
+    if(currentStep>=2 && currentStep<=4){
+      log('warn','User logged out during registration flow — returning to login');
+      goToStep(0);
+    }
+    return;
+  }
+
+  // ── Signed-in user — check their profile ──
+  log('info','Authenticated user found — checking Firestore profile', u.uid);
+  _createdUid = u.uid;
+
+  const t0 = Date.now();
+  try{
+    const userSnap = await db.collection('users').doc(u.uid).get();
+    log('info','users doc fetched',{ms:Date.now()-t0, exists:userSnap.exists});
+
+    if(userSnap.exists){
+      const userProfile = userSnap.data();
+      log('info','User profile',{role:userProfile.role, status:userProfile.status, approved:userProfile.approved});
+
+      if(userProfile.role==='admin' && userProfile.status==='active' && userProfile.approved){
+        log('info','Active admin → redirecting to /admin');
+        window.location.href = '/admin'; return;
+      }
+
+      if(userProfile.role==='teacher'){
+        if(userProfile.status==='active'){ window.location.href='/marksheet'; return; }
+        const msg = userProfile.status==='pending'
+          ? '⏳ Your teacher account is pending approval.'
+          : '🚫 Your account has been suspended.';
+        log('warn','Teacher account not active',userProfile.status);
+        toast(msg,'err');
+        await auth.signOut();
+        _resetLoginBtn();
+        goToStep(0);
+        return;
+      }
+
+      const t1 = Date.now();
+      const snap = await db.collection('approvedSchools').doc(u.uid).get();
+      log('info','approvedSchools doc fetched',{ms:Date.now()-t1, exists:snap.exists});
+
+      if(snap.exists){
+        const d = snap.data();
+        log('info','approvedSchools status',d.status);
+        if(d.status==='approved'){ window.location.href='/admin'; return; }
+        if(d.status==='suspended'){
+          el('subRef').textContent = u.uid.slice(0,16).toUpperCase();
+          goToStep(4); el('stepsBar').style.display='none';
+          listenForOwnerResponse(u.uid);
+          showOwnerBanner('rejected','🚫 Registration Not Approved', d.message||'Contact us on WhatsApp.','https://wa.me/254704518130');
+          return;
+        }
+        el('subRef').textContent = u.uid.slice(0,16).toUpperCase();
+        goToStep(4); el('stepsBar').style.display='none';
+        listenForOwnerResponse(u.uid);
+        if(d.message && d.message.trim()) showOwnerBanner('pending','📩 Message from Administrator',d.message,d.contact||'https://wa.me/254704518130');
+        return;
+      }
+
+      const t2 = Date.now();
+      const settSnap = await db.collection('settings').doc(u.uid).get();
+      log('info','settings doc fetched',{ms:Date.now()-t2, exists:settSnap.exists, hasName:!!settSnap.data()?.name});
+
+      if(!settSnap.exists || !settSnap.data().name){
+        log('info','No school details yet — prompting user to complete setup');
+        el('subRef').textContent = u.uid.slice(0,16).toUpperCase();
+        el('screen4Title').textContent = 'Account Ready!';
+        el('screen4Msg').innerHTML = 'Your account is active. Complete your school details to finish setup.';
+        el('screen4SchoolCta').style.display = 'block';
+        el('screen4DashCta').style.display = 'none';
+        goToStep(4);
+        el('stepsBar').style.display = 'none';
+        restoreSchoolDetails();
+      } else {
+        log('info','Settings exist — redirecting to /admin');
+        window.location.href='/admin';
+      }
+    } else {
+      // Authenticated but no Firestore profile — orphaned account
+      log('warn','Authenticated but no Firestore profile — signing out and clearing stale storage',u.uid);
+      await auth.signOut();
+      // Clear ALL stale CBE keys so user doesn't get stuck
+      ['cbe_reg_uid','cbe_reg_email','cbe_school_id','cbe_user_role',
+       'cbe_pending_uid','cbe_pending_email','cbe_school_setup_done'].forEach(k=>{
+        localStorage.removeItem(k);
+        try { sessionStorage.removeItem(k); } catch(_){}
+      });
+      _resetLoginBtn();
+      goToStep(0);
+    }
+  }catch(e){
+    log('error','Auth state profile check failed',e.message);
+    // On any Firestore error, unblock the login button so user can retry
+    _resetLoginBtn();
+    goToStep(0);
+  }
+});
+
+// ══ COUNTIES ═════════════════════════════════════════════════════════════════
+const COUNTIES={
+  "Baringo":["Baringo Central","Baringo North","Baringo South","Eldama Ravine","Mogotio","Tiaty"],
+  "Bomet":["Bomet Central","Bomet East","Chepalungu","Konoin","Sotik"],
+  "Bungoma":["Bumula","Kabuchai","Kanduyi","Kimilili","Mt. Elgon","Sirisia","Tongaren","Webuye East","Webuye West"],
+  "Busia":["Budalangi","Butula","Funyula","Nambale","Teso North","Teso South"],
+  "Elgeyo-Marakwet":["Keiyo North","Keiyo South","Marakwet East","Marakwet West"],
+  "Embu":["Manyatta","Mbeere North","Mbeere South","Runyenjes"],
+  "Garissa":["Dadaab","Fafi","Garissa Township","Hulugho","Ijara","Lagdera"],
+  "Homa Bay":["Kabondo Kasipul","Karachuonyo","Kasipul","Mbita","Ndhiwa","Rangwe","Suba North","Suba South"],
+  "Isiolo":["Garbatulla","Isiolo","Merti"],
+  "Kajiado":["Isinya","Kajiado Central","Kajiado East","Kajiado North","Loitokitok","Mashuuru"],
+  "Kakamega":["Butere","Ikolomani","Khwisero","Likuyani","Lugari","Lurambi","Malava","Matungu","Mumias East","Mumias West","Navakholo","Shinyalu"],
+  "Kericho":["Ainamoi","Belgut","Bureti","Kipkelion East","Kipkelion West","Soin Sigowet"],
+  "Kiambu":["Gatundu North","Gatundu South","Githunguri","Juja","Kabete","Kiambaa","Kiambu","Kikuyu","Limuru","Ruiru","Thika Town","Lari"],
+  "Kilifi":["Ganze","Kaloleni","Kilifi North","Kilifi South","Magarini","Malindi","Rabai"],
+  "Kirinyaga":["Gichugu","Kirinyaga Central","Mwea","Ndia"],
+  "Kisii":["Bobasi","Bomachoge Borabu","Bomachoge Chache","Bonchari","Kitutu Chache North","Kitutu Chache South","Nyaribari Chache","Nyaribari Masaba","South Mugirango"],
+  "Kisumu":["Kisumu Central","Kisumu East","Kisumu West","Muhoroni","Nyakach","Nyando","Seme"],
+  "Kitui":["Kitui Central","Kitui East","Kitui Rural","Kitui South","Kitui West","Mwingi Central","Mwingi North","Mwingi West"],
+  "Kwale":["Kinango","Lunga Lunga","Msambweni","Matuga"],
+  "Laikipia":["Laikipia East","Laikipia North","Laikipia West","Nyahururu","Ol Jorok","Ol Kalou"],
+  "Lamu":["Lamu East","Lamu West"],
+  "Machakos":["Kathiani","Machakos Town","Masinga","Matungulu","Mavoko","Mwala","Yatta"],
+  "Makueni":["Kaiti","Kibwezi East","Kibwezi West","Kilome","Makueni","Mbooni"],
+  "Mandera":["Banissa","Lafey","Mandera East","Mandera North","Mandera South","Mandera West"],
+  "Marsabit":["Laisamis","Moyale","North Horr","Saku"],
+  "Meru":["Buuri","Igembe Central","Igembe North","Igembe South","Imenti North","Imenti South","Tigania East","Tigania West"],
+  "Migori":["Awendo","Kuria East","Kuria West","Mabera","Ntimaru","Nyatike","Rongo","Suna East","Suna West","Uriri"],
+  "Mombasa":["Changamwe","Jomvu","Kisauni","Likoni","Mvita","Nyali"],
+  "Murang'a":["Gatanga","Kahuro","Kandara","Kangema","Kigumo","Kiharu","Mathioya","Murang'a South"],
+  "Nairobi":["Dagoretti North","Dagoretti South","Embakasi Central","Embakasi East","Embakasi North","Embakasi South","Embakasi West","Githurai","Kamukunji","Kasarani","Kibra","Lang'ata","Makadara","Mathare","Roysambu","Ruaraka","Starehe","Westlands"],
+  "Nakuru":["Bahati","Gilgil","Kuresoi North","Kuresoi South","Molo","Nakuru Town East","Nakuru Town West","Naivasha","Njoro","Rongai","Subukia"],
+  "Nandi":["Aldai","Chesumei","Emgwen","Mosop","Nandi Hills","Tindiret"],
+  "Narok":["Kilgoris","Narok East","Narok North","Narok South","Narok West","Transmara East","Transmara West"],
+  "Nyamira":["Borabu","Manga","Masaba North","Nyamira North","Nyamira South"],
+  "Nyandarua":["Kinangop","Kipipiri","Ndaragwa","Ol Kalou","Ol Joro Orok"],
+  "Nyeri":["Kieni","Mathira","Mukurweini","Nyeri Town","Othaya","Tetu"],
+  "Samburu":["Samburu East","Samburu North","Samburu West"],
+  "Siaya":["Alego Usonga","Bondo","Gem","Rarieda","Ugenya","Ugunja"],
+  "Taita-Taveta":["Mwatate","Taveta","Voi","Wundanyi"],
+  "Tana River":["Bura","Galole","Garsen"],
+  "Tharaka-Nithi":["Chuka","Igambang'ombe","Maara","Tharaka North","Tharaka South"],
+  "Trans Nzoia":["Cherangany","Endebess","Kiminini","Kwanza","Saboti"],
+  "Turkana":["Kibish","Loima","Turkana Central","Turkana East","Turkana North","Turkana South","Turkana West"],
+  "Uasin Gishu":["Ainabkoi","Kapseret","Kesses","Moiben","Soy","Turbo"],
+  "Vihiga":["Emuhaya","Hamisi","Luanda","Sabatia","Vihiga"],
+  "Wajir":["Eldas","Tarbaj","Wajir East","Wajir North","Wajir South","Wajir West"],
+  "West Pokot":["Central Pokot","North Pokot","Pokot South","West Pokot"]
+};
+
+(function buildCounties(){
+  const sel = el('sCounty');
+  Object.keys(COUNTIES).sort().forEach(c=>{
+    const o = document.createElement('option'); o.value=c; o.textContent=c; sel.appendChild(o);
+  });
+})();
+
+function onCountyChange(){
+  const subs = COUNTIES[el('sCounty').value] || [];
+  const sel = el('sSubCounty');
+  sel.innerHTML = '<option value="">-- Select Sub-County --</option>';
+  subs.forEach(s=>{ const o=document.createElement('option'); o.value=s; o.textContent=s; sel.appendChild(o); });
+}
+</script>
+</body>
+</html>
