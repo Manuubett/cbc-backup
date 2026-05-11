@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CBE Admin | Teacher Management</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Familjen+Grotesk:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#e8ecf4;--surface:#fff;--surf2:#f3f5fa;--border:#dce1ec;
+  --text:#131c2e;--text2:#4f6080;--text3:#9aaabb;
+  --accent:#1a56db;--ah:#1447c0;--alight:#eff4ff;
+  --green:#059669;--green-bg:#d1fae5;--green-tx:#065f46;
+  --amber:#d97706;--amber-bg:#fef3c7;--amber-tx:#92400e;
+  --red:#dc2626;--red-bg:#fee2e2;--red-tx:#991b1b;
+  --sh:0 1px 3px rgba(0,0,0,.06);--sh2:0 8px 28px rgba(0,0,0,.12);
+  --r:10px;--r2:6px;
+}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);font-size:13px;min-height:100vh}
+
+/* LOADING */
+#screenLoad{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;z-index:900}
+#screenLoad .spin{width:26px;height:26px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:sp .65s linear infinite}
+#screenLoad p{font-size:12px;color:var(--text3);font-weight:600;letter-spacing:.3px}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* DASHBOARD */
+#screenDash{display:none}
+#screenDash.show{display:block}
+
+/* header */
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:var(--sh)}
+.logo{display:flex;align-items:center;gap:9px}
+.lm{width:30px;height:30px;background:var(--accent);border-radius:7px;display:grid;place-items:center;color:#fff;font-size:15px}
+.lt{font-family:'Familjen Grotesk',sans-serif;font-size:14px;font-weight:800;letter-spacing:-.3px}
+.ls{font-size:10px;color:var(--text3)}
+.hdr-r{display:flex;align-items:center;gap:8px}
+.admin-badge{background:var(--alight);color:var(--accent);border:1px solid #c7d9ff;font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;letter-spacing:.3px}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:5px 13px;border-radius:var(--r2);font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;border:none;transition:all .14s;white-space:nowrap;height:32px}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--ah)}
+.btn-outline{background:none;border:1.5px solid var(--border);color:var(--text2)}
+.btn-outline:hover{background:var(--bg);color:var(--text)}
+.btn-sm{padding:3px 9px;font-size:11.5px;height:26px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* outer */
+.outer{padding:20px 24px;max-width:1200px;margin:0 auto}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin-bottom:22px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;box-shadow:var(--sh);display:flex;flex-direction:column;gap:4px;animation:fadeUp .3s ease both}
+.stat-card:nth-child(2){animation-delay:.05s}
+.stat-card:nth-child(3){animation-delay:.1s}
+.stat-card:nth-child(4){animation-delay:.15s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.stat-icon{font-size:20px;margin-bottom:2px}
+.stat-val{font-family:'Familjen Grotesk',sans-serif;font-size:28px;font-weight:800;line-height:1}
+.stat-lbl{font-size:10.5px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+.s-active .stat-val{color:var(--green)}
+.s-pending .stat-val{color:var(--amber)}
+.s-suspended .stat-val,.s-suspended .stat-val{color:var(--red)}
+.s-results .stat-val{color:var(--accent)}
+
+/* sec head */
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:10px}
+.sec-title{font-family:'Familjen Grotesk',sans-serif;font-size:16px;font-weight:800}
+.sec-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.search-wrap{position:relative}
+.search-wrap input{height:32px;padding:0 10px 0 30px;border:1.5px solid var(--border);border-radius:var(--r2);font-family:inherit;font-size:12.5px;color:var(--text);background:var(--surface);outline:none;width:200px;transition:border-color .14s}
+.search-wrap input:focus{border-color:var(--accent)}
+.search-wrap::before{content:'🔍';position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:12px;pointer-events:none;opacity:.5}
+.fsel{height:32px;padding:0 9px;border:1.5px solid var(--border);border-radius:var(--r2);font-family:inherit;font-size:12.5px;color:var(--text);background:var(--surface);cursor:pointer;outline:none}
+.fsel:focus{border-color:var(--accent)}
+
+/* table */
+.table-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:fadeUp .35s .1s ease both}
+.tbl-scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:700px}
+thead th{background:#1e2d4d;color:#c8d8f8;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:0 14px;text-align:left;height:34px;white-space:nowrap;border-bottom:1px solid #2d3e61}
+thead th.tc{text-align:center}
+tbody td{padding:0 14px;height:46px;border-bottom:1px solid var(--border);font-size:12.5px;vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--surf2)}
+tbody td.tc{text-align:center}
+.t-name{font-weight:700}
+.t-email{font-size:11.5px;color:var(--text3)}
+.t-meta{font-size:11.5px;color:var(--text2)}
+
+/* status badge */
+.sbadge{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:20px;font-size:10.5px;font-weight:700}
+.sbadge::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.sbadge.active{background:var(--green-bg);color:var(--green-tx)}.sbadge.active::before{background:var(--green)}
+.sbadge.pending{background:var(--amber-bg);color:var(--amber-tx)}.sbadge.pending::before{background:var(--amber)}
+.sbadge.suspended{background:var(--red-bg);color:var(--red-tx)}.sbadge.suspended::before{background:var(--red)}
+
+/* action buttons */
+.act-wrap{display:flex;align-items:center;gap:5px;justify-content:flex-end}
+.act-btn{padding:3px 10px;border-radius:5px;font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;border:none;transition:all .12s;white-space:nowrap}
+.act-approve{background:var(--green-bg);color:var(--green-tx)}.act-approve:hover{background:#a7f3d0}
+.act-suspend{background:var(--red-bg);color:var(--red-tx)}.act-suspend:hover{background:#fecaca}
+.act-activate{background:var(--alight);color:var(--accent)}.act-activate:hover{background:#c7d9ff}
+.act-edit{background:var(--surf2);color:var(--text2);border:1px solid var(--border)}.act-edit:hover{background:var(--bg)}
+.act-delete{background:none;color:var(--text3);border:none;font-size:14px;padding:3px 6px;line-height:1}.act-delete:hover{color:var(--red)}
+
+/* empty row */
+.empty-row td{text-align:center;padding:44px;color:var(--text3)}
+.empty-icon{font-size:30px;margin-bottom:8px}
+
+/* MODALS */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);backdrop-filter:blur(4px);z-index:500;align-items:center;justify-content:center;padding:20px}
+.overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh2);width:100%;max-width:440px;animation:modalIn .22s cubic-bezier(.22,1,.36,1) both}
+@keyframes modalIn{from{opacity:0;transform:scale(.95) translateY(10px)}to{opacity:1;transform:none}}
+.modal-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-family:'Familjen Grotesk',sans-serif;font-size:15px;font-weight:800}
+.modal-close{background:none;border:none;cursor:pointer;font-size:18px;color:var(--text3);line-height:1;padding:2px}.modal-close:hover{color:var(--text)}
+.modal-body{padding:20px}
+.modal-foot{padding:12px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px}
+.minp{width:100%;height:36px;padding:0 10px;border:1.5px solid var(--border);border-radius:var(--r2);font-family:inherit;font-size:13px;color:var(--text);background:var(--surface);outline:none;transition:border-color .14s}
+.minp:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(26,86,219,.1)}
+select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%239aaabb'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+.mfield{margin-bottom:14px}
+.mfield label{display:block;font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
+.confirm-icon{font-size:36px;text-align:center;margin-bottom:10px}
+.confirm-msg{font-size:13px;color:var(--text2);text-align:center;line-height:1.7}
+
+/* alert (used in add teacher modal) */
+.alert{display:none;align-items:flex-start;gap:8px;padding:9px 12px;border-radius:var(--r2);font-size:12px;font-weight:500;line-height:1.5;margin-bottom:14px}
+.alert.show{display:flex}
+.alert.err{background:var(--red-bg);border:1px solid #fca5a5;color:var(--red-tx)}
+
+/* PENDING TEACHERS BANNER */
+.pending-banner{background:var(--surface);border:1.5px solid #fcd34d;border-left:4px solid var(--amber);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:20px;overflow:hidden;animation:fadeUp .3s ease}
+.pb-head{padding:11px 18px;background:var(--amber-bg);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pb-title{font-family:'Familjen Grotesk',sans-serif;font-size:13.5px;font-weight:800;color:var(--amber-tx);display:flex;align-items:center;gap:7px}
+.pb-count{background:var(--amber);color:#fff;font-size:11px;font-weight:800;padding:1px 8px;border-radius:20px}
+.pb-body{padding:12px 16px;display:flex;flex-direction:column;gap:8px}
+.pb-card{background:var(--surf2);border:1px solid var(--border);border-radius:var(--r2);padding:11px 14px;display:flex;align-items:center;gap:12px;transition:border-color .14s}
+.pb-card:hover{border-color:var(--accent)}
+.pb-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--alight),#c7d9ff);display:grid;place-items:center;font-size:17px;flex-shrink:0;border:1px solid #c7d9ff}
+.pb-info{flex:1;min-width:0}
+.pb-name{font-weight:700;font-size:13px;color:var(--text);margin-bottom:2px}
+.pb-meta{font-size:11.5px;color:var(--text2)}
+.pb-time{font-size:11px;color:var(--text3);white-space:nowrap}
+.pb-actions{display:flex;gap:6px;flex-shrink:0}
+.pb-approve{padding:5px 13px;border-radius:5px;font-family:inherit;font-size:11.5px;font-weight:700;cursor:pointer;border:none;background:var(--green-bg);color:var(--green-tx);transition:all .12s}
+.pb-approve:hover{background:#a7f3d0}
+.pb-reject{padding:5px 10px;border-radius:5px;font-family:inherit;font-size:11.5px;font-weight:700;cursor:pointer;background:var(--red-bg);color:var(--red-tx);border:none;transition:all .12s}
+.pb-reject:hover{background:#fecaca}
+
+/* REASSIGN CLASS MODAL */
+.reassign-field{margin-bottom:12px}
+.reassign-field label{display:block;font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+
+/* ══ PAYMENT GATE OVERLAY ══ */
+#paymentOverlay{
+  display:none;position:fixed;inset:0;z-index:800;
+  background:rgba(6,12,28,.78);
+  backdrop-filter:blur(20px) saturate(.35);
+  -webkit-backdrop-filter:blur(20px) saturate(.35);
+  align-items:center;justify-content:center;padding:20px;
+}
+#paymentOverlay.show{display:flex}
+.pov-card{background:#fff;border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.5);width:100%;max-width:400px;overflow:hidden;animation:povIn .35s cubic-bezier(.22,1,.36,1) both}
+@keyframes povIn{from{opacity:0;transform:scale(.94) translateY(20px)}to{opacity:1;transform:none}}
+.pov-top{background:linear-gradient(135deg,#0f172a,#1e3a8a 70%,#1a56db);padding:20px 22px 16px;text-align:center;color:#fff;position:relative;overflow:hidden}
+.pov-top::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 75% 10%,rgba(99,179,237,.15) 0%,transparent 60%)}
+.pov-lock-ring{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 10px;box-shadow:0 0 0 6px rgba(255,255,255,.05);position:relative;z-index:1}
+.pov-title{font-family:'Familjen Grotesk',sans-serif;font-size:17px;font-weight:800;margin-bottom:4px;position:relative;z-index:1;letter-spacing:-.2px}
+.pov-school-tag{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);padding:2px 12px;border-radius:20px;font-size:11px;color:rgba(255,255,255,.8);position:relative;z-index:1;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pov-body{padding:16px 20px 0}
+.pov-exp-msg{font-size:13px;color:#4a5578;line-height:1.75;margin-bottom:18px;text-align:center}
+.pov-renew-btn{width:100%;height:44px;background:linear-gradient(135deg,#1a56db,#1447c0);color:#fff;border:none;border-radius:8px;font-family:'Familjen Grotesk',sans-serif;font-size:15px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;box-shadow:0 4px 14px rgba(26,86,219,.35);text-decoration:none;margin-bottom:10px}
+.pov-renew-btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(26,86,219,.45)}
+.pov-actions{padding:0 20px 18px;display:flex;gap:8px}
+.pov-wa-btn{flex:1;padding:9px;border-radius:8px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;border:none;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;transition:all .14s}
+.pov-wa-btn:hover{background:#15803d}
+.pov-logout-btn{padding:9px 14px;border-radius:8px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;background:none;border:1.5px solid #e2e8f0;color:#94a3b8;transition:all .14s}
+.pov-logout-btn:hover{border-color:#cbd5e1;color:#64748b}
+
+/* ── Expiry countdown bar (shows inside payment overlay) ── */
+#expiryCountdown{
+  display:none;background:#0f172a;border-top:1px solid rgba(255,255,255,.08);
+  padding:10px 20px;text-align:center;font-size:12px;color:rgba(255,255,255,.6);
+}
+#expiryCountdown.show{display:block}
+#expiryCountdown strong{color:#f59e0b;font-weight:700}
+
+/* ── Live subscription status bar (shows when active, near expiry) ── */
+#subStatusBar{
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;
+  background:#7c2d12;border-top:2px solid #f97316;
+  padding:8px 20px;font-size:12px;color:#fed7aa;font-weight:600;
+  align-items:center;justify-content:space-between;gap:12px;
+}
+#subStatusBar.show{display:flex}
+#subStatusBar .sub-timer{color:#fbbf24;font-family:'Familjen Grotesk',sans-serif;font-size:14px;font-weight:800}
+#subStatusBar .sub-renew{padding:4px 14px;background:#f97316;color:#fff;border:none;border-radius:5px;cursor:pointer;font-family:inherit;font-size:11.5px;font-weight:700}
+#subStatusBar .sub-renew:hover{background:#ea580c}
+
+/* ── Renewal detected banner ── */
+#renewalDetectedBanner{
+  display:none;position:fixed;top:20px;left:50%;transform:translateX(-50%);
+  background:#064e3b;color:#ecfdf5;border:1.5px solid #10b981;
+  border-radius:10px;padding:12px 24px;font-size:13px;font-weight:700;
+  z-index:900;box-shadow:0 8px 24px rgba(0,0,0,.3);
+  animation:slideDown .3s ease;
+}
+@keyframes slideDown{from{opacity:0;transform:translateX(-50%) translateY(-12px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+/* toast */
+#tc{position:fixed;top:62px;right:16px;z-index:999;display:flex;flex-direction:column;gap:6px}
+.t{display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:var(--r2);font-size:12.5px;font-weight:500;box-shadow:var(--sh2);animation:tin .25s ease;min-width:210px}
+.t.ok{background:#064e3b;color:#ecfdf5;border-left:3px solid #10b981}
+.t.err{background:#7f1d1d;color:#fef2f2;border-left:3px solid #ef4444}
+.t.info{background:#1e3a5f;color:#dbeafe;border-left:3px solid var(--accent)}
+@keyframes tin{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes tout{to{transform:translateX(110%);opacity:0}}
+.spin-sm{width:13px;height:13px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:sp .6s linear infinite}
+</style>
+</head>
+<body>
+
+<div id="tc"></div>
+<div id="renewalDetectedBanner">🎉 Renewal detected — restoring access…</div>
+
+<!-- Live subscription warning bar (shown when expiry < 7 days away) -->
+<div id="subStatusBar">
+  <span>⚠️ Your subscription expires in <span class="sub-timer" id="subTimerText">—</span> — renew now to avoid disruption.</span>
+  <a class="sub-renew" href="/renew?from=statusbar">🔄 Renew Now</a>
+</div>
+
+<!-- LOADING -->
+<div id="screenLoad">
+  <div class="spin"></div>
+  <p>VERIFYING ACCESS…</p>
+</div>
+
+<!-- DASHBOARD -->
+<div id="screenDash">
+
+  <!-- PAYMENT GATE OVERLAY -->
+  <div id="paymentOverlay">
+    <div class="pov-card">
+      <div class="pov-top">
+        <div class="pov-lock-ring">🔒</div>
+        <div class="pov-title">Subscription Required</div>
+        <div class="pov-school-tag" id="povSchoolName">Your School</div>
+      </div>
+      <div class="pov-body" style="padding:20px 20px 4px">
+        <p class="pov-exp-msg" id="povMsgText">Your subscription has expired. Renew now to continue using the system — your data is safe.</p>
+        <a class="pov-renew-btn" id="povRenewBtn" href="/renew?from=guard">🔄 Renew Subscription Now →</a>
+        <div style="text-align:center;margin-bottom:16px">
+          <a href="https://wa.me/254704518130?text=Hello%2C%20I%20need%20help%20renewing%20my%20CBE%20Mark%20Sheet%20subscription."
+             target="_blank" class="pov-wa-btn" style="display:inline-flex;width:auto;padding:8px 20px;font-size:12px">
+            💬 Need help? WhatsApp us
+          </a>
+        </div>
+      </div>
+      <!-- Expiry countdown shown inside gate when subscription is expired -->
+      <div id="expiryCountdown"></div>
+      <div class="pov-actions" style="padding-top:0">
+        <button class="pov-logout-btn" style="width:100%;text-align:center" onclick="doLogout()">← Sign out</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT MODAL -->
+  <div class="overlay" id="editOverlay">
+    <div class="modal">
+      <div class="modal-head">
+        <div class="modal-title">✏️ Edit Teacher</div>
+        <button class="modal-close" onclick="closeEdit()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="mfield"><label>First Name</label><input class="minp" type="text" id="eFirst"></div>
+          <div class="mfield"><label>Last Name</label><input class="minp" type="text" id="eLast"></div>
+        </div>
+        <div class="mfield"><label>TSC Number</label><input class="minp" type="text" id="eTSC" placeholder="Optional"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="mfield">
+            <label>Grade</label>
+            <select class="minp" id="eGrade" onchange="onEditGradeChange()">
+              <option value="">-- Grade --</option>
+              <option>Grade 1</option><option>Grade 2</option><option>Grade 3</option>
+              <option>Grade 4</option><option>Grade 5</option><option>Grade 6</option>
+              <option>Grade 7</option><option>Grade 8</option><option>Grade 9</option>
+            </select>
+          </div>
+          <div class="mfield">
+            <label>Stream <span style="font-size:10px;color:var(--text3);font-weight:400">(optional)</span></label>
+            <select class="minp" id="eStream"><option value="">-- No Stream --</option></select>
+            <span id="eStreamHint" style="font-size:10.5px;color:var(--text3);margin-top:3px;display:block"></span>
+          </div>
+        </div>
+        <div class="mfield">
+          <label>Status</label>
+          <select class="minp" id="eStatus">
+            <option value="active">Active</option>
+            <option value="pending">Pending</option>
+            <option value="suspended">Suspended</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-outline" onclick="closeEdit()">Cancel</button>
+        <button class="btn btn-primary" id="editSaveBtn" onclick="saveEdit()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DELETE CONFIRM MODAL -->
+  <div class="overlay" id="delOverlay">
+    <div class="modal" style="max-width:360px">
+      <div class="modal-head">
+        <div class="modal-title">🗑️ Delete Teacher</div>
+        <button class="modal-close" onclick="closeDel()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="confirm-icon">⚠️</div>
+        <div class="confirm-msg">
+          Remove <strong id="delName"></strong> from the system?<br><br>
+          <span style="font-size:11.5px;color:var(--text3)">This deletes their Firestore profile. To fully remove their login, delete them from Firebase Console → Authentication.</span>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-outline" onclick="closeDel()">Cancel</button>
+        <button class="btn" style="background:var(--red);color:#fff" id="delConfirmBtn" onclick="confirmDelete()">Delete Profile</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <div class="lm">⚙️</div>
+      <div><div class="lt">CBE Admin</div><div class="ls">Teacher Management · Junior School</div></div>
+    </div>
+    <div class="hdr-r">
+      <span class="admin-badge">ADMIN</span>
+      <span id="adminName" style="font-size:11.5px;color:var(--text2);font-weight:600"></span>
+      <a class='btn btn-outline btn-sm' href='/settings'>⚙️ Settings</a>
+      <a href="admission" class="btn btn-outline btn-sm">🎓 Admission</a>
+      <a href="marksheet" class="btn btn-outline btn-sm">📊 Mark Sheet</a>
+      <a href="analysis" class="btn btn-outline btn-sm">📈 Analysis</a>
+      <button class="btn btn-outline btn-sm" style="color:#ef4444;border-color:rgba(239,68,68,.3)" onclick="doLogout()">🚪 Sign Out</button>
+    </div>
+  </header>
+
+  <!-- PENDING TEACHER APPROVALS BANNER -->
+  <div class="pending-banner" id="pendingBanner" style="display:none">
+    <div class="pb-head">
+      <div class="pb-title">🔔 Pending Teacher Approvals <span class="pb-count" id="pendingCount">0</span></div>
+      <span style="font-size:11.5px;color:var(--amber-tx);font-weight:600">Review and approve before teachers can login</span>
+    </div>
+    <div class="pb-body" id="pendingCards"></div>
+  </div>
+
+  <!-- REASSIGN CLASS MODAL -->
+  <div class="overlay" id="reassignOverlay">
+    <div class="modal" style="max-width:420px">
+      <div class="modal-head">
+        <div class="modal-title">🏫 Change Class Assignment</div>
+        <button class="modal-close" onclick="closeReassign()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="background:var(--surf2);border:1px solid var(--border);border-radius:var(--r2);padding:10px 14px;margin-bottom:14px">
+          <div style="font-size:11px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.4px">Teacher</div>
+          <div style="font-weight:800;font-size:14px;color:var(--text);margin-top:2px" id="reassignTeacherName">—</div>
+          <div style="font-size:12px;color:var(--text2)" id="reassignCurrentClass">—</div>
+        </div>
+        <div class="reassign-field">
+          <label>New Grade</label>
+          <select class="minp" id="reassignGrade" onchange="onReassignGradeChange()">
+            <option value="">-- Select Grade --</option>
+            <option>Grade 1</option><option>Grade 2</option><option>Grade 3</option>
+            <option>Grade 4</option><option>Grade 5</option><option>Grade 6</option>
+            <option>Grade 7</option><option>Grade 8</option><option>Grade 9</option>
+          </select>
+        </div>
+        <div class="reassign-field">
+          <label>New Stream <span style="font-size:10px;color:var(--text3);font-weight:400">(optional)</span></label>
+          <select class="minp" id="reassignStream"><option value="">-- No Stream --</option></select>
+          <div style="font-size:11px;color:var(--text3);margin-top:3px" id="reassignStreamHint"></div>
+        </div>
+        <div class="reassign-field">
+          <label>Status</label>
+          <select class="minp" id="reassignStatus">
+            <option value="active">Active — can login</option>
+            <option value="pending">Pending — awaiting approval</option>
+            <option value="suspended">Suspended — blocked</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-outline" onclick="closeReassign()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveReassign()">💾 Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- OUTER CONTENT -->
+  <div class="outer">
+
+    <!-- STATS -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-val" id="statTotal">—</div>
+        <div class="stat-lbl">Total Teachers</div>
+      </div>
+      <div class="stat-card s-active">
+        <div class="stat-icon">✅</div>
+        <div class="stat-val" id="statActive">—</div>
+        <div class="stat-lbl">Active</div>
+      </div>
+      <div class="stat-card s-pending">
+        <div class="stat-icon">⏳</div>
+        <div class="stat-val" id="statPending">—</div>
+        <div class="stat-lbl">Pending Approval</div>
+      </div>
+      <div class="stat-card s-suspended">
+        <div class="stat-icon">🚫</div>
+        <div class="stat-val" id="statSuspended">—</div>
+        <div class="stat-lbl">Suspended</div>
+      </div>
+      <div class="stat-card s-results">
+        <div class="stat-icon">📈</div>
+        <div class="stat-val" id="statResults">—</div>
+        <div class="stat-lbl">Results Saved</div>
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="sec-head">
+      <div class="sec-title">Teachers</div>
+      <div class="sec-tools">
+        <div class="search-wrap">
+          <input type="text" id="searchInp" placeholder="Search name, email, class…" oninput="renderTable()">
+        </div>
+        <select class="fsel" id="filterStatus" onchange="renderTable()">
+          <option value="">All Status</option>
+          <option value="active">Active</option>
+          <option value="pending">Pending</option>
+          <option value="suspended">Suspended</option>
+        </select>
+        <select class="fsel" id="filterGrade" onchange="renderTable()">
+          <option value="">All Grades</option>
+          <option>Grade 1</option><option>Grade 2</option><option>Grade 3</option>
+          <option>Grade 4</option><option>Grade 5</option><option>Grade 6</option>
+          <option>Grade 7</option><option>Grade 8</option><option>Grade 9</option>
+        </select>
+        <button class="btn btn-outline btn-sm" onclick="loadTeachers()">🔄 Refresh</button>
+        <button class="btn btn-outline btn-sm" onclick="copyRegLink()" title="Copy self-registration link for teachers">🔗 Reg Link</button>
+        <button class="btn btn-primary btn-sm" onclick="openAddTeacher()">➕ Add Teacher</button>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <div class="tbl-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Teacher</th>
+              <th>TSC No.</th>
+              <th>Class</th>
+              <th class="tc">Status</th>
+              <th>Registered</th>
+              <th class="tc">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="teacherTbody">
+            <tr class="empty-row"><td colspan="7"><div class="empty-icon">⏳</div><div>Loading…</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /outer -->
+
+  <!-- ADD TEACHER MODAL -->
+  <div class="overlay" id="addTeacherOverlay">
+    <div class="modal" style="max-width:460px">
+      <div class="modal-head">
+        <div class="modal-title">➕ Add Teacher</div>
+        <button class="modal-close" onclick="closeAddTeacher()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="alert err" id="addTeacherErr"><span>⚠️</span><span id="addTeacherErrMsg"></span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="mfield"><label>First Name *</label><input class="minp" id="atFirst" placeholder="Mary"></div>
+          <div class="mfield"><label>Last Name *</label><input class="minp" id="atLast" placeholder="Wanjiku"></div>
+        </div>
+        <div class="mfield"><label>Email Address *</label><input class="minp" type="email" id="atEmail" placeholder="teacher@school.ac.ke"></div>
+        <div class="mfield"><label>TSC Number</label><input class="minp" id="atTSC" placeholder="Optional"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="mfield">
+            <label>Grade *</label>
+            <select class="minp" id="atGrade" onchange="onAddTeacherGradeChange()">
+              <option value="">-- Grade --</option>
+              <option>Grade 1</option><option>Grade 2</option><option>Grade 3</option>
+              <option>Grade 4</option><option>Grade 5</option><option>Grade 6</option>
+              <option>Grade 7</option><option>Grade 8</option><option>Grade 9</option>
+            </select>
+          </div>
+          <div class="mfield">
+            <label>Stream <span style="font-size:10px;color:var(--text3);font-weight:400">(optional)</span></label>
+            <select class="minp" id="atStream"><option value="">-- Select Grade --</option></select>
+          </div>
+        </div>
+        <div class="mfield">
+          <label>Temporary Password *</label>
+          <div style="position:relative">
+            <input class="minp" id="atPass" type="text" value="Teacher@2026" style="padding-right:90px">
+            <button onclick="generatePassword()" style="position:absolute;right:6px;top:50%;transform:translateY(-50%);padding:3px 8px;border-radius:4px;font-size:11px;cursor:pointer;background:var(--surf2);border:1px solid var(--border);color:var(--text2)">🔄 Generate</button>
+          </div>
+          <div style="font-size:11px;color:var(--text3);margin-top:3px">Teacher uses this to sign in. Share it with them securely.</div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-outline" onclick="closeAddTeacher()">Cancel</button>
+        <button class="btn btn-primary" id="addTeacherBtn" onclick="saveAddTeacher()">➕ Add Teacher</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REG LINK MODAL -->
+  <div class="overlay" id="regLinkOverlay">
+    <div class="modal" style="max-width:460px">
+      <div class="modal-head">
+        <div class="modal-title">🔗 Teacher Registration Link</div>
+        <button class="modal-close" onclick="el('regLinkOverlay').classList.remove('open')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.6">
+          Share this link with teachers. They open it, fill their details and submit — the school is identified automatically.
+        </div>
+        <div class="mfield">
+          <label>Base URL of your site</label>
+          <input class="minp" id="regBaseUrl" placeholder="e.g. https://yoursite.com/" oninput="updateRegLink()">
+          <div style="font-size:11px;color:var(--text3);margin-top:3px">The folder/domain where login.html is hosted. Edit if the auto-detected URL is wrong.</div>
+        </div>
+        <div class="mfield">
+          <label>Full Registration Link</label>
+          <input type="text" id="regLinkText" readonly onclick="this.select()"
+            style="width:100%;background:var(--surf2);border:1.5px solid var(--border);border-radius:var(--r2);padding:10px 14px;font-family:monospace;font-size:12px;color:var(--accent);word-break:break-all;cursor:text;outline:none" value="—">
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-primary" style="flex:1" onclick="doCopyLink()">📋 Copy Link</button>
+          <button class="btn btn-outline" style="flex:1" onclick="doShareWhatsApp()">💬 WhatsApp</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /screenDash -->
+
+<!-- FORCE SETUP OVERLAY -->
+<div class="overlay" id="setupOverlay" style="z-index:1000;background:rgba(6,12,28,.92);backdrop-filter:blur(16px)">
+  <div class="modal" style="max-width:460px;overflow:hidden;border:none;border-radius:16px;box-shadow:0 32px 80px rgba(0,0,0,.6)">
+    <div style="background:linear-gradient(135deg,#0f172a,#1e3a8a 60%,#1a56db);padding:28px 24px 22px;text-align:center;position:relative;overflow:hidden">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 70% 10%,rgba(99,179,237,.15),transparent 60%)"></div>
+      <div style="width:56px;height:56px;background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.22);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 12px;position:relative;z-index:1;box-shadow:0 0 0 8px rgba(255,255,255,.05)">🏫</div>
+      <div style="font-family:'Familjen Grotesk',sans-serif;font-size:20px;font-weight:800;color:#fff;margin-bottom:6px;position:relative;z-index:1">Welcome to CBE Mark Sheet</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.7);position:relative;z-index:1;line-height:1.5">Before you begin, set up your school details.<br>This only takes a minute.</div>
+    </div>
+    <div class="modal-body" style="padding:22px 24px">
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+        <div style="display:flex;align-items:center;gap:12px;background:var(--surf2);border:1px solid var(--border);border-radius:var(--r2);padding:10px 14px">
+          <div style="width:28px;height:28px;background:var(--alight);border-radius:50%;display:grid;place-items:center;font-size:14px;flex-shrink:0">1️⃣</div>
+          <div><div style="font-weight:700;font-size:12.5px">Set your school name &amp; details</div><div style="font-size:11px;color:var(--text3);margin-top:1px">Name, motto, county, logo</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;background:var(--surf2);border:1px solid var(--border);border-radius:var(--r2);padding:10px 14px">
+          <div style="width:28px;height:28px;background:var(--alight);border-radius:50%;display:grid;place-items:center;font-size:14px;flex-shrink:0">2️⃣</div>
+          <div><div style="font-weight:700;font-size:12.5px">Configure stream settings</div><div style="font-size:11px;color:var(--text3);margin-top:1px">Enable or disable class streams</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;background:var(--surf2);border:1px solid var(--border);border-radius:var(--r2);padding:10px 14px">
+          <div style="width:28px;height:28px;background:var(--alight);border-radius:50%;display:grid;place-items:center;font-size:14px;flex-shrink:0">3️⃣</div>
+          <div><div style="font-weight:700;font-size:12.5px">Then admit students &amp; add teachers</div><div style="font-size:11px;color:var(--text3);margin-top:1px">You'll be redirected back here after setup</div></div>
+        </div>
+      </div>
+      <div style="background:#fef3c7;border:1px solid #fcd34d;border-left:3px solid #f59e0b;border-radius:var(--r2);padding:10px 14px;margin-bottom:18px;font-size:12px;color:#92400e;line-height:1.6">
+        ⚠️ <strong>Setup is required</strong> — you cannot admit students or use the system until your school details are saved.
+      </div>
+      <a class='btn btn-primary' href='/settings' style='width:100%;justify-content:center;height:40px;font-size:13.5px;font-family:\'Familjen Grotesk\',sans-serif;font-weight:800;border-radius:8px'>⚙️ Go to School Settings →</a>
+      <div style="text-align:center;margin-top:12px">
+        <button onclick="doLogout()" style="background:none;border:none;font-size:11.5px;color:var(--text3);cursor:pointer;font-family:inherit">← Sign out and try a different account</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script> 
+  
+<script>
+if(!firebase.apps.length){
+  firebase.initializeApp({
+    apiKey:"AIzaSyBdabXqlBQ-6yVNJKdu8Zhb9Cm_-59_u24",
+    authDomain:"bett-294a2.firebaseapp.com",
+    projectId:"bett-294a2",
+    storageBucket:"bett-294a2.appspot.com",
+    messagingSenderId:"1055511650032",
+    appId:"1:1055511650032:web:7e0f9c28e58515f549ac35"
+  });
+}
+const db   = firebase.firestore();
+const auth = firebase.auth();
+
+let allTeachers=[], editingUid=null, deletingUid=null;
+const el = id => document.getElementById(id);
+
+// ── Logger ──
+const _logs=[];
+function log(level,msg,data){
+  const entry={level,msg,data:data||null,ts:new Date().toISOString()};
+  _logs.unshift(entry); if(_logs.length>100) _logs.pop();
+  const fn=level==='error'?console.error:level==='warn'?console.warn:console.log;
+  fn('[CBE Admin]',msg,data||'');
+}
+window._getLogs=()=>_logs.map(l=>`[${l.ts}] ${l.level.toUpperCase()}: ${l.msg}${l.data?' | '+JSON.stringify(l.data):''}`).join('\n');
+
+// ── In-memory state ──
+let _schoolId=null, _schoolName='', _ownerMsgUnsub=null, _sessionId=null;
+let _redirecting=false;
+
+// ══════════════════════════════════════════════════════════════════
+// SUBSCRIPTION STATE  — single source of truth
+// ══════════════════════════════════════════════════════════════════
+let _lastKnownExpiry   = null;   // last expiry Date we saw from Firestore
+let _renewalShown      = false;  // guard: don't flash the renewal banner twice
+let _expiryCheckTimer  = null;   // one-shot setTimeout: fires exactly at expiry
+let _expiryPollTimer   = null;   // setInterval: 30-second renewal poll while expired
+let _liveCountdownTimer= null;   // setInterval: ticks the live countdown every second
+const WARN_DAYS = 7;
+
+// ── SCREEN SWITCHER ──
+function show(screen){
+  ['screenLoad','screenDash'].forEach(s=>{
+    const node=el(s); if(!node) return;
+    node.style.display='none'; node.classList.remove('show');
+  });
+  if(screen==='Login'){
+    if(_redirecting) return;
+    _redirecting=true;
+    window.location.href='registration.html';
+    return;
+  }
+  const target=el('screen'+screen);
+  if(!target) return;
+  if(screen==='Load') target.style.display='flex';
+  else{ target.style.display='block'; target.classList.add('show'); }
+}
+
+// ── TOAST ──
+function toast(msg,type='ok'){
+  const t=document.createElement('div');
+  t.className=`t ${type}`;
+  t.innerHTML=`<span>${type==='ok'?'✅':type==='err'?'❌':'ℹ️'}</span>${msg}`;
+  el('tc').appendChild(t);
+  setTimeout(()=>{t.style.animation='tout .25s ease forwards';setTimeout(()=>t.remove(),280);},2800);
+}
+
+// ── AUTH STATE ──
+auth.onAuthStateChanged(async u=>{
+  if(_redirecting) return;
+  if(!u){ log('info','No user — redirecting'); show('Login'); return; }
+  log('info','User authenticated',u.email);
+  try{
+    const snap=await db.collection('users').doc(u.uid).get();
+    if(!snap.exists){ log('warn','No profile',u.uid); show('Login'); return; }
+    const profile=snap.data();
+    if(profile.role==='teacher'){
+      log('warn','Teacher attempted admin access',u.email);
+      await auth.signOut(); show('login'); return;
+    }
+    _schoolId=u.uid;
+    window._schoolId=u.uid;
+    sessionStorage.setItem('cbe_school_id',u.uid);
+    localStorage.setItem('cbe_user_role','admin');
+    el('adminName').textContent='👤 '+(profile.fullName||profile.email||'');
+    show('Dash');
+    checkSchoolSetup();
+    loadTeachers();
+    loadResultsCount();
+    applySchoolSettings(db).catch(()=>{});
+    _patchTeachersSchoolId(_schoolId).catch(()=>{});
+    // ── Start the real-time payment gate ──
+    _listenPayment(_schoolId);
+    _trackSession(u,profile).catch(()=>{});
+    log('info','Dashboard loaded',{uid:u.uid,role:profile.role});
+  }catch(e){
+    log('error','Auth error',e.message);
+    show('Load');
+    toast('Connection error. Please refresh the page.','err');
+  }
+});
+
+// ── LOGOUT ──
+async function doLogout(){
+  if(_ownerMsgUnsub){ _ownerMsgUnsub(); _ownerMsgUnsub=null; }
+  _clearAllSubTimers();
+  _lastKnownExpiry=null;
+  _renewalShown=false;
+  _hideSubStatusBar();
+  await _endSession().catch(()=>{});
+  _schoolId=null; window._schoolId=null;
+  localStorage.removeItem('cbe_user_role');
+  localStorage.removeItem('cbe_pending_uid');
+  localStorage.removeItem('cbe_pending_email');
+  sessionStorage.removeItem('cbe_school_id');
+  _redirecting=false;
+  await auth.signOut();
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  PAYMENT GATE  — mirrors analysis.html logic exactly
+// ══════════════════════════════════════════════════════════════════
+
+/**
+ * _listenPayment(schoolId)
+ *
+ * Real-time Firestore listener on approvedSchools/{schoolId}.
+ * Decision order (do NOT reorder):
+ *   1. No doc → show gate ("not configured")
+ *   2. status === 'suspended' → show gate (always wins)
+ *   3. No expiry + message → show gate (legacy manual block) + renewal poll
+ *   4. No expiry, no message, not suspended → allow freely
+ *   5. Expiry in future, moved forward → renewal detected → hide gate
+ *   6. Expiry in future (first valid load) → hide gate, start countdown
+ *   7. Expiry in past → show gate + expired countdown + renewal poll
+ *   On Firestore error → show gate (never silently allow on failure)
+ */
+function _listenPayment(schoolId){
+  if(_ownerMsgUnsub){ _ownerMsgUnsub(); _ownerMsgUnsub=null; }
+  _clearAllSubTimers();
+  log('info','Payment gate listener started',schoolId);
+
+  _ownerMsgUnsub = db.collection('approvedSchools').doc(schoolId)
+    .onSnapshot(snap=>{
+
+      // Step 1: No doc = no subscription record = block immediately
+      if(!snap.exists){
+        _clearAllSubTimers();
+        _stopLiveCountdown();
+        _hideSubStatusBar();
+        _showPaymentGate(
+          {schoolName: window.schoolSettings?.name || _schoolName},
+          'Access not configured for this school. Please contact the administrator.'
+        );
+        _startRenewalPoll(schoolId);
+        return;
+      }
+
+      const d   = snap.data();
+      const now = new Date();
+      const newExpiry = d.subscriptionExpiry?.toDate?.() || null;
+
+      // Step 2: Suspended — always wins regardless of expiry or message
+      if(d.status === 'suspended'){
+        _clearAllSubTimers();
+        _stopLiveCountdown();
+        _hideSubStatusBar();
+        _showPaymentGate(d, 'Your account has been suspended. Please contact the administrator to reactivate.');
+        _startRenewalPoll(schoolId);
+        return;
+      }
+
+      // Step 3: No expiry + message = legacy manual block
+      if(!newExpiry && d.message && d.message.trim()){
+        _clearAllSubTimers();
+        _stopLiveCountdown();
+        _hideSubStatusBar();
+        _showPaymentGate(d, d.message);
+        _startRenewalPoll(schoolId);
+        return;
+      }
+
+      // Step 4: No expiry, no message, not suspended = allow
+      if(!newExpiry){
+        _hidePayment();
+        return;
+      }
+
+      // Step 5: Expiry in future AND moved forward = renewal detected
+      if(newExpiry > now){
+        if(_lastKnownExpiry && newExpiry > _lastKnownExpiry){
+          log('info','Renewal detected via snapshot',newExpiry.toISOString());
+          _clearAllSubTimers();
+          _lastKnownExpiry = newExpiry;
+          _showRenewalBanner();
+          _hidePayment();
+          _startLiveCountdown(newExpiry);
+          _scheduleExpiryCheck(schoolId, newExpiry);
+          return;
+        }
+        // Step 6: First valid load
+        _lastKnownExpiry = newExpiry;
+        _hidePayment();
+        _startLiveCountdown(newExpiry);
+        _scheduleExpiryCheck(schoolId, newExpiry);
+        return;
+      }
+
+      // Step 7: Expired
+      if(newExpiry <= now){
+        _clearAllSubTimers();
+        _stopLiveCountdown();
+        _hideSubStatusBar();
+        const msg = (d.message && d.message.trim())
+          ? d.message
+          : 'Your subscription has expired. Please renew to continue using the system.';
+        _showPaymentGate(d, msg);
+        _startExpiredCountdown(newExpiry);
+        _startRenewalPoll(schoolId);
+        return;
+      }
+
+    }, e=>{
+      // On error: show gate — never silently allow free access on failure
+      log('warn','Payment gate listener error',e.message);
+      _clearAllSubTimers();
+      _stopLiveCountdown();
+      _hideSubStatusBar();
+      _showPaymentGate(
+        {schoolName: window.schoolSettings?.name || _schoolName},
+        'Unable to verify subscription. Please check your connection and refresh.'
+      );
+    });
+}
+
+// ── Show / hide the gate overlay ────────────────────────────────────────────
+function _showPaymentGate(d, message){
+  const nameEl = el('povSchoolName');
+  if(nameEl) nameEl.textContent = d.schoolName || window.schoolSettings?.name || _schoolName || '—';
+  const msgEl = el('povMsgText');
+  if(msgEl && message) msgEl.textContent = message;
+  const ov = el('paymentOverlay');
+  if(ov && !ov.classList.contains('show')){
+    ov.classList.add('show');
+    log('info','Payment gate shown');
+  }
+}
+
+function _hidePayment(){
+  const ov = el('paymentOverlay');
+  if(ov && ov.classList.contains('show')){
+    ov.classList.remove('show');
+    log('info','Payment gate hidden — access restored');
+    toast('✅ Access restored — subscription active');
+  }
+  const cd = el('expiryCountdown');
+  if(cd){ cd.classList.remove('show'); cd.textContent=''; }
+  _clearAllSubTimers();
+}
+
+// ── Clear ALL subscription-related timers ────────────────────────────────────
+function _clearAllSubTimers(){
+  if(_expiryCheckTimer){ clearTimeout(_expiryCheckTimer); _expiryCheckTimer=null; }
+  if(_expiryPollTimer){ clearInterval(_expiryPollTimer); _expiryPollTimer=null; }
+  if(_liveCountdownTimer){ clearInterval(_liveCountdownTimer); _liveCountdownTimer=null; }
+}
+
+// ── Expiry check timer — fires exactly when subscription expires ─────────────
+function _scheduleExpiryCheck(schoolId, expiresAt){
+  if(_expiryCheckTimer){ clearTimeout(_expiryCheckTimer); _expiryCheckTimer=null; }
+  const msUntil = expiresAt - new Date();
+  if(msUntil <= 0) return;
+  log('info',`Subscription expires in ${Math.round(msUntil/1000)}s — expiry check scheduled`);
+  _expiryCheckTimer = setTimeout(()=>{
+    log('info','Expiry timer fired — re-reading subscription');
+    db.collection('approvedSchools').doc(schoolId).get()
+      .then(snap=>{
+        if(!snap.exists){
+          _stopLiveCountdown();
+          _hideSubStatusBar();
+          _showPaymentGate(
+            {schoolName: window.schoolSettings?.name || _schoolName},
+            'Access not configured for this school. Please contact the administrator.'
+          );
+          _startRenewalPoll(schoolId);
+          return;
+        }
+        const d   = snap.data();
+        const exp = d.subscriptionExpiry?.toDate?.();
+        if(!exp || exp <= new Date()){
+          const msg = (d.message && d.message.trim())
+            ? d.message
+            : 'Your subscription has expired. Please renew to continue using the system.';
+          _stopLiveCountdown();
+          _hideSubStatusBar();
+          _showPaymentGate(d, msg);
+          if(exp) _startExpiredCountdown(exp);
+          _startRenewalPoll(schoolId);
+        }
+      }).catch(()=>{});
+  }, msUntil + 500);
+}
+
+// ── Renewal poll — reads Firestore every 30s while expired ──────────────────
+function _startRenewalPoll(schoolId){
+  if(_expiryPollTimer) return;
+  log('info','Renewal poll started (30s interval)');
+  _expiryPollTimer = setInterval(async ()=>{
+    try{
+      const snap = await db.collection('approvedSchools').doc(schoolId).get();
+      if(!snap.exists) return;
+      const d         = snap.data();
+      const newExpiry = d.subscriptionExpiry?.toDate?.();
+      // Only restore if expiry is future AND not suspended
+      if(newExpiry && newExpiry > new Date() && d.status !== 'suspended'){
+        log('info','Renewal detected via poll');
+        _clearAllSubTimers();
+        _lastKnownExpiry = newExpiry;
+        _renewalShown    = false;
+        _showRenewalBanner();
+        _hidePayment();
+        _startLiveCountdown(newExpiry);
+        _scheduleExpiryCheck(schoolId, newExpiry);
+      }
+    }catch(_){}
+  }, 30_000);
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  LIVE COUNTDOWN SYSTEM
+// ══════════════════════════════════════════════════════════════════
+function _startLiveCountdown(expiresAt){
+  _stopLiveCountdown();
+  log('info','Live countdown started',expiresAt?.toISOString());
+
+  function tick(){
+    const now    = new Date();
+    const msLeft = expiresAt - now;
+
+    if(msLeft <= 0){
+      log('info','Live countdown reached zero — triggering expiry');
+      _stopLiveCountdown();
+      _hideSubStatusBar();
+      if(_schoolId){
+        db.collection('approvedSchools').doc(_schoolId).get()
+          .then(snap=>{
+            if(!snap.exists){
+              _showPaymentGate(
+                {schoolName: window.schoolSettings?.name || _schoolName},
+                'Access not configured for this school. Please contact the administrator.'
+              );
+              _startRenewalPoll(_schoolId);
+              return;
+            }
+            const d   = snap.data();
+            const exp = d.subscriptionExpiry?.toDate?.();
+            if(!exp || exp <= new Date()){
+              const msg = (d.message && d.message.trim())
+                ? d.message
+                : 'Your subscription has expired. Please renew to continue using the system.';
+              _showPaymentGate(d, msg);
+              _startExpiredCountdown(exp || expiresAt);
+              _startRenewalPoll(_schoolId);
+            }
+          }).catch(()=>{});
+      }
+      return;
+    }
+
+    const daysLeft  = msLeft / 86400000;
+    const hoursLeft = msLeft / 3600000;
+
+    if(daysLeft > WARN_DAYS){ _hideSubStatusBar(); return; }
+
+    let timerStr;
+    if(hoursLeft < 24){
+      const h = Math.floor(msLeft/3600000);
+      const m = Math.floor((msLeft%3600000)/60000);
+      const s = Math.floor((msLeft%60000)/1000);
+      timerStr = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    } else {
+      const d = Math.floor(daysLeft);
+      const h = Math.floor((msLeft % 86400000) / 3600000);
+      timerStr = `${d}d ${h}h`;
+    }
+    _showSubStatusBar(timerStr, hoursLeft < 24);
+  }
+
+  tick();
+  _liveCountdownTimer = setInterval(tick, 1000);
+}
+
+function _stopLiveCountdown(){
+  if(_liveCountdownTimer){ clearInterval(_liveCountdownTimer); _liveCountdownTimer=null; }
+}
+
+function _showSubStatusBar(timerStr, isUrgent){
+  const bar = el('subStatusBar');
+  if(!bar) return;
+  const timerEl = el('subTimerText');
+  if(timerEl) timerEl.textContent = timerStr;
+  if(isUrgent){
+    bar.style.background='#7f1d1d'; bar.style.borderTopColor='#ef4444';
+    bar.style.color='#fef2f2';
+    bar.querySelector('.sub-timer').style.color='#fca5a5';
+  } else {
+    bar.style.background='#7c2d12'; bar.style.borderTopColor='#f97316';
+    bar.style.color='#fed7aa';
+    bar.querySelector('.sub-timer').style.color='#fbbf24';
+  }
+  bar.classList.add('show');
+}
+
+function _hideSubStatusBar(){
+  const bar = el('subStatusBar');
+  if(bar) bar.classList.remove('show');
+}
+
+function _startExpiredCountdown(expiredAt){
+  const cd = el('expiryCountdown');
+  if(!cd) return;
+  function renderExpired(){
+    const msAgo = new Date() - expiredAt;
+    if(msAgo < 0){ cd.classList.remove('show'); return; }
+    const days  = Math.floor(msAgo / 86400000);
+    const hours = Math.floor((msAgo % 86400000) / 3600000);
+    const mins  = Math.floor((msAgo % 3600000) / 60000);
+    let agoStr;
+    if(days > 0)       agoStr = `${days} day${days>1?'s':''} ${hours}h ago`;
+    else if(hours > 0) agoStr = `${hours}h ${mins}m ago`;
+    else               agoStr = `${mins} minute${mins!==1?'s':''} ago`;
+    cd.innerHTML = `Subscription expired <strong>${agoStr}</strong>`;
+    cd.classList.add('show');
+  }
+  renderExpired();
+  setInterval(renderExpired, 60_000);
+}
+
+// ── Renewal detected banner ──────────────────────────────────────────────────
+function _showRenewalBanner(){
+  if(_renewalShown) return;
+  _renewalShown = true;
+  const b = el('renewalDetectedBanner');
+  if(!b) return;
+  b.style.display='block'; b.style.opacity='1'; b.style.transition='';
+  setTimeout(()=>{ b.style.opacity='0'; b.style.transition='opacity .6s'; },3000);
+  setTimeout(()=>{
+    b.style.display='none'; b.style.opacity=''; b.style.transition='';
+    _renewalShown=false;
+  },3700);
+}
+
+// ══ SCHOOL SETUP GATE ══════════════════════════════════════════════
+async function checkSchoolSetup(){
+  try{
+    const settingsDoc=await db.collection('settings').doc(_schoolId).get();
+    const isSetup=settingsDoc.exists&&settingsDoc.data()?.name?.trim();
+    if(!isSetup){ _showSetupGate(); }
+    else{
+      localStorage.setItem('cbe_school_setup_done','true');
+      db.collection('users').doc(_schoolId).update({schoolSetupDone:true}).catch(()=>{});
+    }
+  }catch(e){
+    log('warn','checkSchoolSetup error',e.message);
+    if(!localStorage.getItem('cbe_school_setup_done')) _showSetupGate();
+  }
+}
+function _showSetupGate(){
+  const ov=el('setupOverlay');
+  if(ov){
+    ov.classList.add('open');
+    ov.addEventListener('click',e=>e.stopPropagation(),true);
+  }
+  document.addEventListener('keydown',function blockEsc(e){ if(e.key==='Escape') e.stopImmediatePropagation(); },true);
+  log('info','Setup gate shown');
+}
+
+// ══ IDLE SESSION TIMEOUT ══════════════════════════════════════════
+const SESSION_TIMEOUT_MS=30*60*1000;
+const SESSION_WARNING_MS=2*60*1000;
+let _idleTimer=null,_warnTimer=null,_warnEl=null;
+
+function clearSessionCache(){
+  ['cbe_streams','cbe_streams_ts'].forEach(k=>localStorage.removeItem(k));
+}
+function createWarnBanner(){
+  if(document.getElementById('_sessionWarn')) return;
+  const d=document.createElement('div');
+  d.id='_sessionWarn';
+  d.style.cssText='display:none;position:fixed;top:0;left:0;right:0;z-index:9999;background:#7f1d1d;color:#fef2f2;font-family:inherit;padding:10px 20px;font-size:13px;font-weight:600;align-items:center;justify-content:space-between;gap:12px;border-bottom:2px solid #ef4444;';
+  d.innerHTML=`<span>⚠️ Your session will expire in <span id="_sessionCountdown">2:00</span> due to inactivity.</span><div style="display:flex;gap:8px"><button onclick="_keepAlive()" style="padding:4px 12px;background:#059669;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:700;font-size:12px">Stay Logged In</button><button onclick="doLogout()" style="padding:4px 12px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:4px;cursor:pointer;font-size:12px">Sign Out Now</button></div>`;
+  document.body.prepend(d);
+  _warnEl=d;
+}
+function _resetIdleTimer(){
+  clearTimeout(_idleTimer); clearTimeout(_warnTimer);
+  if(_warnEl) _warnEl.style.display='none';
+  _warnTimer=setTimeout(()=>{
+    createWarnBanner();
+    _warnEl.style.display='flex';
+    let secs=SESSION_WARNING_MS/1000;
+    const tick=setInterval(()=>{
+      secs--;
+      const e=document.getElementById('_sessionCountdown');
+      if(e) e.textContent=Math.floor(secs/60)+':'+(secs%60).toString().padStart(2,'0');
+      if(secs<=0) clearInterval(tick);
+    },1000);
+  }, SESSION_TIMEOUT_MS-SESSION_WARNING_MS);
+  _idleTimer=setTimeout(()=>doLogout(),SESSION_TIMEOUT_MS);
+}
+window._keepAlive=function(){ _resetIdleTimer(); };
+['mousemove','keydown','click','touchstart','scroll'].forEach(evt=>{
+  document.addEventListener(evt,_resetIdleTimer,{passive:true});
+});
+_resetIdleTimer();
+
+// ══ RESULTS COUNT ══════════════════════════════════════════════════
+async function loadResultsCount(){
+  try{
+    const snap=await db.collection('results').where('schoolId','==',_schoolId).get();
+    el('statResults').textContent=snap.size;
+  }catch(e){ el('statResults').textContent='?'; }
+}
+
+// ══ ANALYSIS SHORTCUT ══════════════════════════════════════════════
+function openAnalysisFor(grade,stream){
+  const term=new Date().getMonth()<4?'Term 1':new Date().getMonth()<8?'Term 2':'Term 3';
+  const year=new Date().getFullYear();
+  const params=new URLSearchParams({grade,stream,term,year});
+  window.open(`analysis?${params}`,'_blank');
+}
+
+// ══ PENDING BANNER ═════════════════════════════════════════════════
+function renderPendingBanner(){
+  const pending=allTeachers.filter(t=>t.status==='pending');
+  const banner=el('pendingBanner');
+  if(!banner) return;
+  if(!pending.length){ banner.style.display='none'; return; }
+  el('pendingCount').textContent=pending.length;
+  banner.style.display='block';
+  el('pendingCards').innerHTML=pending.map(t=>{
+    const when=t.createdAt?.toDate
+      ?t.createdAt.toDate().toLocaleString('en-KE',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}):'—';
+    return `<div class="pb-card">
+      <div class="pb-avatar">👤</div>
+      <div class="pb-info">
+        <div class="pb-name">${t.fullName||'—'}</div>
+        <div class="pb-meta">${t.email||''}${t.phone?` · 📞 ${t.phone}`:''}${t.tscNumber?` · TSC: ${t.tscNumber}`:''}
+        ${t.grade&&t.stream?` · <strong>${t.grade} ${t.stream}</strong>`:' · <span style="color:var(--amber-tx);font-size:11px">awaiting class assignment</span>'}</div>
+      </div>
+      <div class="pb-time">${when}</div>
+      <div class="pb-actions">
+        <button class="pb-approve" onclick="quickApprove('${t.uid}')">✅ Approve</button>
+        <button class="pb-reject" onclick="quickReject('${t.uid}')">✗ Reject</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function quickApprove(uid){
+  const t=allTeachers.find(x=>x.uid===uid);
+  if(!t){ toast('Teacher not found','err'); return; }
+  if(!_schoolId){ toast('Not authenticated — please refresh','err'); return; }
+  if(t.schoolId&&t.schoolId!==_schoolId){ toast('⚠️ This teacher belongs to a different school','err'); return; }
+  const btn=event?.target;
+  if(btn){ btn.disabled=true; btn.textContent='Approving…'; }
+  try{
+    const schoolName=_schoolName||window.schoolSettings?.name||'';
+    await db.collection('users').doc(uid).update({status:'active',schoolId:_schoolId,schoolName,approvedAt:firebase.firestore.FieldValue.serverTimestamp()});
+    db.collection('teacherRequests').doc(uid).update({status:'approved',approvedAt:firebase.firestore.FieldValue.serverTimestamp()}).catch(()=>{});
+    t.status='active'; t.schoolId=_schoolId;
+    updateStats(); renderTable(); renderPendingBanner();
+    toast(`✅ ${t.fullName} approved`);
+  }catch(e){
+    toast(`Failed: ${e.message}`,'err');
+    if(btn){ btn.disabled=false; btn.textContent='✅ Approve'; }
+  }
+}
+
+async function quickReject(uid){
+  const t=allTeachers.find(x=>x.uid===uid); if(!t) return;
+  if(!confirm('Reject and suspend '+t.fullName+'?')) return;
+  try{
+    await db.collection('users').doc(uid).update({status:'suspended'});
+    t.status='suspended';
+    updateStats(); renderTable(); renderPendingBanner();
+    toast(`${t.fullName} rejected`,'info');
+  }catch(e){ toast('Failed: '+e.message,'err'); }
+}
+
+// ══ REASSIGN CLASS MODAL ═══════════════════════════════════════════
+let _reassignUid=null;
+function openReassign(uid){
+  const t=allTeachers.find(x=>x.uid===uid); if(!t) return;
+  _reassignUid=uid;
+  el('reassignTeacherName').textContent=t.fullName||t.email||'—';
+  el('reassignCurrentClass').textContent='Currently: '+(t.grade&&t.stream?t.grade+' '+t.stream:'No class assigned');
+  el('reassignGrade').value=t.grade||'';
+  el('reassignStatus').value=t.status||'active';
+  el('reassignStream').innerHTML='<option value="">-- Select Grade first --</option>';
+  if(t.grade){ el('reassignGrade').dispatchEvent(new Event('change')); setTimeout(()=>{ el('reassignStream').value=t.stream||''; },200); }
+  el('reassignOverlay').classList.add('open');
+}
+function closeReassign(){ el('reassignOverlay').classList.remove('open'); _reassignUid=null; }
+async function onReassignGradeChange(){
+  const grade=el('reassignGrade').value,ss=el('reassignStream'),hint=el('reassignStreamHint');
+  ss.innerHTML='<option value="">Loading…</option>';
+  if(!grade){ ss.innerHTML='<option value="">-- No Stream --</option>'; hint.textContent=''; return; }
+  try{
+    const snap=await db.collection('students').where('grade','==',grade).where('schoolId','==',_schoolId).get();
+    const set=new Set(); snap.forEach(d=>{ const s=d.data(); if(s.stream?.trim()) set.add(s.stream.trim()); });
+    const streams=[...set].sort();
+    if(!streams.length){ ss.innerHTML='<option value="">-- No Stream --</option>'; hint.textContent='No streams found.'; hint.style.color='var(--text3)'; }
+    else{ ss.innerHTML='<option value="">-- No Stream --</option>'+streams.map(s=>`<option value="${s}">${s}</option>`).join(''); hint.textContent=streams.length+' stream'+(streams.length>1?'s':'')+' available'; hint.style.color='var(--green)'; }
+  }catch(e){ ss.innerHTML='<option value="">Error loading</option>'; }
+}
+async function saveReassign(){
+  if(!_reassignUid) return;
+  const grade=el('reassignGrade').value,stream=el('reassignStream').value,status=el('reassignStatus').value;
+  const t=allTeachers.find(x=>x.uid===_reassignUid); if(!t) return;
+  const btn=el('reassignOverlay').querySelector('.btn-primary');
+  btn.disabled=true; btn.textContent='Saving…';
+  try{
+    const upd={status};
+    if(grade){ upd.grade=grade; if(stream) upd.stream=stream; else upd.stream=null; }
+    else{ upd.grade=null; upd.stream=null; }
+    await db.collection('users').doc(_reassignUid).update(upd);
+    Object.assign(t,upd);
+    updateStats(); renderTable(); renderPendingBanner();
+    closeReassign();
+    const statusMsg=status==='active'?'activated ✅':status==='suspended'?'suspended 🚫':'set to pending';
+    toast(`${t.fullName} — ${grade?grade+' '+stream:'no class'} · ${statusMsg}`);
+  }catch(e){ toast('Save failed: '+e.message,'err'); }
+  btn.disabled=false; btn.textContent='💾 Save Changes';
+}
+
+// ══ PATCH TEACHERS MISSING schoolId ═══════════════════════════════
+async function _patchTeachersSchoolId(schoolId){
+  if(!schoolId) return;
+  try{
+    const reqSnap=await db.collection('teacherRequests').where('schoolId','==',schoolId).get();
+    if(reqSnap.empty) return;
+    const batch=db.batch(); let count=0;
+    for(const req of reqSnap.docs){
+      const uid=req.id, userRef=db.collection('users').doc(uid);
+      try{
+        const userSnap=await userRef.get();
+        if(userSnap.exists){
+          const d=userSnap.data();
+          if(!d.schoolId||d.schoolId!==schoolId){ batch.update(userRef,{schoolId,updatedAt:firebase.firestore.FieldValue.serverTimestamp()}); count++; }
+        }
+      }catch(_){}
+    }
+    if(count>0){
+      await batch.commit();
+      log('info',`Patched ${count} teacher(s) schoolId`);
+      toast(`✅ Fixed ${count} teacher request(s)`,'info');
+      if(_teachersUnsub){ _teachersUnsub(); _teachersUnsub=null; }
+      loadTeachers();
+    }
+  }catch(e){ log('warn','Patch teachers failed',e.message); }
+}
+
+// ══ LOAD TEACHERS ══════════════════════════════════════════════════
+let _teachersUnsub=null;
+function _onTeachersSnap(snap){
+  allTeachers=[];
+  snap.forEach(d=>{ const data=d.data(); if(data.role==='teacher'||!data.role) allTeachers.push({uid:d.id,...data}); });
+  allTeachers.sort((a,b)=>(b.createdAt?.toMillis?.()??0)-(a.createdAt?.toMillis?.()??0));
+  log('info','Teachers loaded',allTeachers.length);
+  updateStats(); renderTable();
+  const pending=allTeachers.filter(t=>t.status==='pending').length;
+  document.title=pending>0?`(${pending}) Admin — CBE`:'Admin — CBE Mark Sheet';
+}
+function loadTeachers(){
+  if(!_schoolId){ log('warn','loadTeachers: no schoolId'); return; }
+  if(_teachersUnsub){ _teachersUnsub(); _teachersUnsub=null; }
+  el('teacherTbody').innerHTML=`<tr class="empty-row"><td colspan="7"><div class="empty-icon">⏳</div><div>Loading teachers…</div></td></tr>`;
+  _teachersUnsub=db.collection('users').where('schoolId','==',_schoolId)
+    .onSnapshot(_onTeachersSnap, e=>{
+      log('error','Teachers listener error',e.code,e.message);
+      el('teacherTbody').innerHTML=`<tr class="empty-row"><td colspan="7"><div class="empty-icon">❌</div><div>${e.code==='permission-denied'?'Permission denied — check Firestore rules':e.message}</div></td></tr>`;
+    });
+}
+
+// ══ STATS ══════════════════════════════════════════════════════════
+function updateStats(){
+  el('statTotal').textContent=allTeachers.length;
+  el('statActive').textContent=allTeachers.filter(t=>t.status==='active').length;
+  el('statPending').textContent=allTeachers.filter(t=>t.status==='pending').length;
+  el('statSuspended').textContent=allTeachers.filter(t=>t.status==='suspended').length;
+  renderPendingBanner();
+}
+
+// ══ RENDER TABLE ═══════════════════════════════════════════════════
+function renderTable(){
+  const q=el('searchInp').value.trim().toLowerCase();
+  const fs=el('filterStatus').value, fg=el('filterGrade').value;
+  const list=allTeachers.filter(t=>{
+    const mq=!q||[t.fullName,t.email,t.grade,t.stream,t.tscNumber].some(v=>(v||'').toLowerCase().includes(q));
+    return mq&&(!fs||t.status===fs)&&(!fg||t.grade===fg);
+  });
+  if(!list.length){
+    el('teacherTbody').innerHTML=`<tr class="empty-row"><td colspan="7"><div class="empty-icon">👤</div><div>No teachers found</div></td></tr>`;
+    return;
+  }
+  el('teacherTbody').innerHTML=list.map((t,i)=>{
+    const date=t.createdAt?.toDate?t.createdAt.toDate().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'}):'—';
+    const sc=t.status||'pending', sl=sc.charAt(0).toUpperCase()+sc.slice(1);
+    let actions='';
+    if(sc==='pending'){
+      actions+=`<button class="act-btn act-approve" onclick="setStatus('${t.uid}','active')">✅ Approve</button>`;
+      actions+=`<button class="act-btn act-suspend" onclick="setStatus('${t.uid}','suspended')">🚫 Reject</button>`;
+    }else if(sc==='active'){
+      actions+=`<button class="act-btn act-suspend" onclick="setStatus('${t.uid}','suspended')">🚫 Suspend</button>`;
+    }else{
+      actions+=`<button class="act-btn act-activate" onclick="setStatus('${t.uid}','active')">✅ Reinstate</button>`;
+    }
+    actions+=`<button class="act-btn act-edit" onclick="openEdit('${t.uid}')">✏️ Edit</button>`;
+    actions+=`<button class="act-btn" style="background:var(--alight);color:var(--accent)" onclick="openReassign('${t.uid}')">🔄 Class</button>`;
+    if(t.grade&&t.stream) actions+=`<button class="act-btn" style="background:var(--alight);color:var(--accent)" onclick="openAnalysisFor('${t.grade}','${t.stream}')">📈</button>`;
+    actions+=`<button class="act-btn act-delete" onclick="openDel('${t.uid}')" title="Delete">🗑️</button>`;
+    return `<tr>
+      <td style="color:var(--text3);font-size:11px;font-weight:700">${i+1}</td>
+      <td><div class="t-name">${t.fullName||'—'}</div><div class="t-email">${t.email||''}</div></td>
+      <td class="t-meta">${t.tscNumber||'—'}</td>
+      <td class="t-meta"><strong>${t.grade||'—'}</strong> · ${t.stream||'—'}</td>
+      <td class="tc"><span class="sbadge ${sc}">${sl}</span></td>
+      <td class="t-meta">${date}</td>
+      <td><div class="act-wrap">${actions}</div></td>
+    </tr>`;
+  }).join('');
+}
+
+// ══ SET STATUS ═════════════════════════════════════════════════════
+async function setStatus(uid,newStatus){
+  const t=allTeachers.find(x=>x.uid===uid); if(!t) return;
+  if(!_schoolId){ toast('Not authenticated — please refresh','err'); return; }
+  try{
+    const upd={status:newStatus};
+    if(newStatus==='active') upd.schoolId=_schoolId;
+    await db.collection('users').doc(uid).update(upd);
+    t.status=newStatus;
+    if(newStatus==='active') t.schoolId=_schoolId;
+    updateStats(); renderTable(); renderPendingBanner();
+    const labels={active:'activated ✅',suspended:'suspended 🚫',pending:'set to pending'};
+    toast(`${t.fullName} ${labels[newStatus]||newStatus}`);
+  }catch(e){ toast(`Update failed: ${e.message}`,'err'); }
+}
+
+// ══ EDIT MODAL ═════════════════════════════════════════════════════
+async function openEdit(uid){
+  const t=allTeachers.find(x=>x.uid===uid); if(!t) return;
+  editingUid=uid;
+  el('eFirst').value=t.firstName||'';
+  el('eLast').value=t.lastName||'';
+  el('eTSC').value=t.tscNumber||'';
+  el('eGrade').value=t.grade||'';
+  el('eStatus').value=t.status||'pending';
+  el('editOverlay').classList.add('open');
+  await onEditGradeChange(t.stream||'');
+}
+async function onEditGradeChange(preselect=''){
+  const grade=el('eGrade').value,ss=el('eStream'),hint=el('eStreamHint');
+  ss.innerHTML='<option value="">Loading…</option>';
+  if(!grade){ ss.innerHTML='<option value="">-- Select Grade first --</option>'; if(hint) hint.textContent=''; return; }
+  let streams=[];
+  try{
+    const raw=localStorage.getItem('cbe_streams');
+    if(raw){ const map=JSON.parse(raw); if(map[grade]?.length) streams=map[grade]; }
+  }catch(_){}
+  try{
+    if(_schoolId){
+      const snap=await db.collection('students').where('grade','==',grade).where('schoolId','==',_schoolId).get();
+      const set=new Set(streams);
+      snap.forEach(d=>{ const s=d.data(); if(s.stream?.trim()) set.add(s.stream.trim()); });
+      streams=[...set].sort();
+      try{
+        const raw=localStorage.getItem('cbe_streams');
+        const map=raw?JSON.parse(raw):{};
+        map[grade]=streams;
+        localStorage.setItem('cbe_streams',JSON.stringify(map));
+        localStorage.setItem('cbe_streams_ts',Date.now().toString());
+      }catch(_){}
+    }
+  }catch(_){}
+  if(!streams.length){
+    ss.innerHTML='<option value="">-- No Stream --</option>';
+    if(hint){ hint.textContent='No streams found for this grade.'; hint.style.color='var(--text3)'; }
+  }else{
+    ss.innerHTML='<option value="">-- No Stream --</option>'+streams.map(s=>`<option value="${s}"${s===preselect?' selected':''}>${s}</option>`).join('');
+    if(hint){ hint.textContent=`${streams.length} stream${streams.length>1?'s':''} available`; hint.style.color='var(--green)'; }
+    if(preselect&&!streams.includes(preselect)){
+      ss.innerHTML='<option value="">-- No Stream --</option><option value="'+preselect+'">'+preselect+' (current)</option>'+streams.map(s=>`<option value="${s}">${s}</option>`).join('');
+    }
+  }
+}
+function closeEdit(){ el('editOverlay').classList.remove('open'); editingUid=null; }
+async function saveEdit(){
+  if(!editingUid) return;
+  const first=el('eFirst').value.trim(),last=el('eLast').value.trim();
+  const grade=el('eGrade').value,stream=el('eStream').value;
+  const status=el('eStatus').value,tsc=el('eTSC').value.trim();
+  if(!first||!last){ toast('Name required','err'); return; }
+  if(!grade){ toast('Grade is required','err'); return; }
+  const btn=el('editSaveBtn'); btn.disabled=true; btn.textContent='Saving…';
+  try{
+    const upd={firstName:first,lastName:last,fullName:`${first} ${last}`,grade,stream,status,tscNumber:tsc||null};
+    await db.collection('users').doc(editingUid).update(upd);
+    Object.assign(allTeachers.find(x=>x.uid===editingUid),upd);
+    updateStats(); renderTable(); closeEdit();
+    toast(`${first} ${last} updated`);
+  }catch(e){ toast('Save failed: '+e.message,'err'); }
+  btn.disabled=false; btn.textContent='Save Changes';
+}
+
+// ══ DELETE MODAL ═══════════════════════════════════════════════════
+function openDel(uid){
+  const t=allTeachers.find(x=>x.uid===uid); if(!t) return;
+  deletingUid=uid;
+  el('delName').textContent=t.fullName||t.email||uid;
+  el('delOverlay').classList.add('open');
+}
+function closeDel(){ el('delOverlay').classList.remove('open'); deletingUid=null; }
+async function confirmDelete(){
+  if(!deletingUid) return;
+  const btn=el('delConfirmBtn'); btn.disabled=true; btn.textContent='Deleting…';
+  try{
+    await db.collection('users').doc(deletingUid).delete();
+    allTeachers=allTeachers.filter(x=>x.uid!==deletingUid);
+    updateStats(); renderTable(); closeDel();
+    toast('Teacher profile deleted');
+  }catch(e){ toast('Delete failed: '+e.message,'err'); }
+  btn.disabled=false; btn.textContent='Delete Profile';
+}
+
+// ══ MODAL CLOSE ON BACKDROP / ESC ══════════════════════════════════
+el('editOverlay').addEventListener('click',e=>{ if(e.target===el('editOverlay')) closeEdit(); });
+el('delOverlay').addEventListener('click',e=>{ if(e.target===el('delOverlay')) closeDel(); });
+el('reassignOverlay').addEventListener('click',e=>{ if(e.target===el('reassignOverlay')) closeReassign(); });
+el('addTeacherOverlay').addEventListener('click',e=>{ if(e.target===el('addTeacherOverlay')) closeAddTeacher(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeEdit(); closeDel(); closeReassign(); closeAddTeacher(); } });
+
+// ══ ADD TEACHER ════════════════════════════════════════════════════
+function openAddTeacher(){
+  el('addTeacherErr').classList.remove('show');
+  ['atFirst','atLast','atEmail','atTSC'].forEach(id=>el(id).value='');
+  el('atGrade').value=''; el('atStream').innerHTML='<option value="">-- Select Grade --</option>';
+  el('atPass').value='Teacher@2026';
+  el('addTeacherOverlay').classList.add('open');
+}
+function closeAddTeacher(){ el('addTeacherOverlay').classList.remove('open'); }
+async function onAddTeacherGradeChange(){
+  const grade=el('atGrade').value,ss=el('atStream');
+  ss.innerHTML='<option value="">Loading…</option>';
+  if(!grade){ ss.innerHTML='<option value="">-- Select Grade --</option>'; return; }
+  try{
+    const snap=await db.collection('students').where('grade','==',grade).where('schoolId','==',_schoolId).get();
+    const set=new Set(); snap.forEach(d=>{ const s=d.data(); if(s.stream?.trim()) set.add(s.stream.trim()); });
+    const streams=[...set].sort();
+    ss.innerHTML='<option value="">-- No Stream --</option>'+streams.map(s=>`<option>${s}</option>`).join('');
+  }catch(_){ ss.innerHTML='<option value="">-- No Stream --</option>'; }
+}
+function generatePassword(){
+  const chars='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789@#';
+  let p=''; for(let i=0;i<10;i++) p+=chars[Math.floor(Math.random()*chars.length)];
+  el('atPass').value=p;
+}
+async function saveAddTeacher(){
+  const first=el('atFirst').value.trim(),last=el('atLast').value.trim();
+  const email=el('atEmail').value.trim(),tsc=el('atTSC').value.trim();
+  const grade=el('atGrade').value,stream=el('atStream').value;
+  const pass=el('atPass').value.trim();
+  el('addTeacherErr').classList.remove('show');
+  if(!first||!last){ el('addTeacherErrMsg').textContent='First and last name required.'; el('addTeacherErr').classList.add('show'); return; }
+  if(!email){ el('addTeacherErrMsg').textContent='Email required.'; el('addTeacherErr').classList.add('show'); return; }
+  if(!grade){ el('addTeacherErrMsg').textContent='Grade is required.'; el('addTeacherErr').classList.add('show'); return; }
+  if(!pass||pass.length<6){ el('addTeacherErrMsg').textContent='Password must be at least 6 characters.'; el('addTeacherErr').classList.add('show'); return; }
+  const btn=el('addTeacherBtn'); btn.disabled=true; btn.textContent='Creating…';
+  try{
+    const apiKey='AIzaSyBdabXqlBQ-6yVNJKdu8Zhb9Cm_-59_u24';
+    const res=await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`,{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email,password:pass,returnSecureToken:true})
+    });
+    const data=await res.json();
+    if(data.error){
+      el('addTeacherErrMsg').textContent=data.error.message==='EMAIL_EXISTS'?'This email is already registered.':data.error.message;
+      el('addTeacherErr').classList.add('show');
+      btn.disabled=false; btn.textContent='➕ Add Teacher'; return;
+    }
+    const uid=data.localId;
+    await db.collection('users').doc(uid).set({
+      firstName:first,lastName:last,fullName:`${first} ${last}`,
+      email,tscNumber:tsc||null,grade,stream,
+      role:'teacher',status:'active',schoolId:_schoolId,
+      schoolName:_schoolName||window.schoolSettings?.name||'',
+      addedByAdmin:true,
+      createdAt:firebase.firestore.FieldValue.serverTimestamp()
+    });
+    log('info','Teacher added manually',{name:`${first} ${last}`,email,grade,stream});
+    toast(`✅ ${first} ${last} added — ${grade} ${stream} · Share password: ${pass}`);
+    closeAddTeacher();
+  }catch(e){
+    log('error','Add teacher failed',e.message);
+    el('addTeacherErrMsg').textContent=e.message;
+    el('addTeacherErr').classList.add('show');
+  }
+  btn.disabled=false; btn.textContent='➕ Add Teacher';
+}
+
+// ══ REGISTRATION LINK ══════════════════════════════════════════════
+function copyRegLink(){
+  if(!_schoolId){ toast('Not logged in','err'); return; }
+  const href=window.location.href.split('?')[0].split('#')[0];
+  const base=href.substring(0,href.lastIndexOf('/')+1);
+  el('regBaseUrl').value=base;
+  updateRegLink();
+  el('regLinkOverlay').classList.add('open');
+}
+function updateRegLink(){
+  let base=el('regBaseUrl').value.trim();
+  if(!base) return;
+  if(!base.endsWith('/')) base+='/';
+  el('regLinkText').value=base+'login?sid='+_schoolId;
+}
+function doCopyLink(){
+  const link=el('regLinkText').value;
+  navigator.clipboard.writeText(link)
+    .then(()=>toast('✅ Link copied to clipboard'))
+    .catch(()=>{ el('regLinkText').select?.(); document.execCommand('copy'); toast('✅ Copied'); });
+}
+function doShareWhatsApp(){
+  const link=el('regLinkText').value;
+  const msg=encodeURIComponent(`Hello! Please use this link to register as a teacher on our CBE Mark Sheet System:\n\n${link}\n\nFill in your details and submit. I will approve your account.`);
+  window.open(`https://wa.me/?text=${msg}`,'_blank');
+}
+
+// ══ SESSION TRACKING ═══════════════════════════════════════════════
+async function _trackSession(user,profile){
+  let ip='—';
+  try{ const ctrl=new AbortController(); setTimeout(()=>ctrl.abort(),3000); const r=await fetch('https://api.ipify.org?format=json',{signal:ctrl.signal}); ip=(await r.json()).ip||'—'; }catch(_){}
+  const ua=navigator.userAgent;
+  function gd(u){return /iPhone/.test(u)?'iPhone':/iPad/.test(u)?'iPad':/Android/.test(u)?'Android':/Chrome/.test(u)?'Chrome':/Firefox/.test(u)?'Firefox':'Desktop';}
+  function go(u){return /Windows/.test(u)?'Windows':/Mac/.test(u)?'macOS':/Linux/.test(u)?'Linux':/Android/.test(u)?'Android':'Unknown';}
+  const ref=await db.collection('adminSessions').add({
+    schoolId:user.uid,adminId:user.uid,
+    adminName:profile.fullName||profile.email||'',
+    adminEmail:user.email||'',schoolName:window.schoolSettings?.name||'',
+    role:profile.role||'admin',ip,device:gd(ua),os:go(ua),
+    active:true,forcedLogout:false,
+    loginAt:firebase.firestore.FieldValue.serverTimestamp()
+  });
+  _sessionId=ref.id;
+  db.collection('users').doc(user.uid).update({lastLogin:firebase.firestore.FieldValue.serverTimestamp()}).catch(()=>{});
+  window.addEventListener('beforeunload',_endSession);
+  _listenSessionControl();
+}
+function _listenSessionControl(){
+  if(!_sessionId) return;
+  db.collection('adminSessions').doc(_sessionId).onSnapshot(doc=>{
+    if(!doc.exists) return;
+    const d=doc.data();
+    if(d&&d.forcedLogout){ toast('⚠️ Session ended — another login detected','err'); setTimeout(()=>doLogout(),2000); }
+  });
+}
+async function _endSession(){
+  if(!_sessionId) return;
+  await db.collection('adminSessions').doc(_sessionId).update({active:false,logoutAt:firebase.firestore.FieldValue.serverTimestamp()}).catch(()=>{});
+  _sessionId=null;
+}
+</script>
+<script src="school-settings.js"></script>
+<script src="subscription-guard.js?v=2"></script> 
+  
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"9a6fdd38ee454483a9aa3baf59e5691f","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
