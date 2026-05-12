@@ -1,0 +1,779 @@
+<!--
+  CBE Mark Sheet System
+  Copyright © 2026 Bett KE Tech Ltd — https://bett.website
+  All rights reserved. Unauthorized copying, modification or distribution
+  of this software is strictly prohibited.
+  Contact: wa.me/254704518130
+-->
+<!DOCTYPE html>
+<html lang="en-KE">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="msvalidate.01" content="53F9D4CBAF293FA83D71044AB6B7898F">
+<title>CBE Mark Sheet — Kenya CBC Digital School Management System</title>
+<meta name="description" content="The fastest way to manage CBC mark sheets for Kenya Primary &amp; Junior Schools (Grades 1–9). Automatic EE, ME, AE, BE level calculation, class analysis, branded report cards and real-time cloud sync.">
+<meta name="keywords" content="CBC mark sheet, Kenya CBC, junior school marks, CBC grading, EE ME AE BE, Grade 1 2 3 4 5 6 7 8 9, CBC report card, Kenya school management, competency based curriculum, digital mark sheet">
+<meta name="author" content="CBE Mark Sheet System">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://bett.website/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bett.website/">
+<meta property="og:title" content="CBE Mark Sheet — Kenya CBC Digital School Management">
+<meta property="og:description" content="Digital CBC mark sheets with automatic level calculation (EE–BE), class analysis, branded report cards and real-time sync. Built for Kenya Primary &amp; Junior Schools, Grades 1–9.">
+<meta property="og:image" content="https://bett.website/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="CBE Mark Sheet System">
+<meta property="og:locale" content="en_KE">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://bett.website/">
+<meta name="twitter:title" content="CBE Mark Sheet — Kenya CBC Digital School Management">
+<meta name="twitter:description" content="Digital CBC mark sheets with automatic level calculation, class analysis and branded report cards for Kenya Junior Schools.">
+<meta name="twitter:image" content="https://bett.website/og-image.png">
+<meta name="geo.region" content="KE">
+<meta name="geo.country" content="Kenya">
+<meta name="ICBM" content="-1.286389, 36.817223">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#0b1427">
+<meta name="msapplication-TileColor" content="#1553d4">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"CBE Mark Sheet System","applicationCategory":"EducationApplication","operatingSystem":"Web Browser","url":"https://bett.website/","description":"Digital CBC mark sheet management system for Kenya Primary and Junior Schools.","offers":{"@type":"Offer","price":"1499","priceCurrency":"KES"},"audience":{"@type":"EducationalAudience","educationalRole":"teacher administrator"},"educationalLevel":"Primary and Junior Secondary School","countryOfOrigin":"KE","inLanguage":"en-KE"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://www.google.com/recaptcha/enterprise.js?render=6Ldd1q4sAAAAADga6Ediw118NWAhCHZSl-pmL2Pc"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0b1427;--ink2:#2d3e56;--ink3:#5e758f;
+  --page:#f8f9fc;--card:#fff;--card2:#f1f4f9;
+  --sky:#1553d4;--sky2:#0f40b0;--sky-soft:#e8eeff;--sky-glow:rgba(21,83,212,.18);
+  --gold:#c47f0a;--gold-bg:#fefce8;--gold-bd:#fde68a;--gold-light:#f59e0b;
+  --green:#047857;--green-bg:#ecfdf5;--green-bd:#a7f3d0;--green-glow:#10b981;
+  --red:#b91c1c;--red-bg:#fef2f2;--red-bd:#fecaca;
+  --amber:#d97706;
+  --border:#e2e8f2;--border2:#cdd5e2;
+  --sh:0 1px 3px rgba(10,20,50,.06),0 4px 16px rgba(10,20,50,.06);
+  --sh2:0 4px 24px rgba(10,20,50,.1),0 20px 60px rgba(10,20,50,.1);
+  --sh3:0 0 0 1.5px var(--sky),0 8px 32px var(--sky-glow);
+  --r:14px;--r2:8px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--page);color:var(--ink);font-size:15px;line-height:1.65;overflow-x:hidden}
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:500;
+  background:rgba(248,249,252,.94);
+  backdrop-filter:blur(20px) saturate(1.3);
+  -webkit-backdrop-filter:blur(20px) saturate(1.3);
+  border-bottom:1px solid var(--border);
+  padding:0 36px;height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:box-shadow .25s;
+}
+nav.scrolled{box-shadow:0 4px 28px rgba(10,20,50,.08)}
+.nav-brand{display:flex;align-items:center;gap:11px;text-decoration:none;flex-shrink:0}
+.nav-icon{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--sky),var(--sky2));display:grid;place-items:center;font-size:17px;flex-shrink:0;box-shadow:0 2px 10px rgba(21,83,212,.28)}
+.nav-name{font-size:14.5px;font-weight:800;color:var(--ink);letter-spacing:-.3px;line-height:1.2}
+.nav-tagline{font-size:10px;color:var(--ink3);font-weight:500;letter-spacing:.2px}
+.nav-center{display:flex;align-items:center;gap:2px}
+.nav-link{font-size:13px;font-weight:500;color:var(--ink2);text-decoration:none;padding:6px 12px;border-radius:var(--r2);transition:all .15s}
+.nav-link:hover{background:var(--card2);color:var(--ink)}
+.nav-link.demo{color:var(--green);font-weight:700;background:var(--green-bg);padding:6px 14px;border-radius:20px;border:1px solid var(--green-bd)}
+.nav-link.demo:hover{background:rgba(16,185,129,.15)}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-btn{font-size:13px;font-weight:700;padding:8px 20px;border-radius:var(--r2);background:linear-gradient(135deg,var(--sky),var(--sky2));color:#fff;text-decoration:none;transition:all .15s;box-shadow:0 2px 10px rgba(21,83,212,.25);white-space:nowrap}
+.nav-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(21,83,212,.35)}
+
+/* ── NAV DROPDOWN ── */
+.nav-dropdown{position:relative}
+.nav-dropdown-toggle{font-size:13px;font-weight:500;color:var(--ink2);text-decoration:none;padding:6px 12px;border-radius:var(--r2);transition:background .14s;cursor:pointer;display:flex;align-items:center;gap:5px;background:none;border:none;font-family:'Outfit',sans-serif;white-space:nowrap}
+.nav-dropdown-toggle:hover{background:var(--card2)}
+.nav-dropdown-toggle svg{width:10px;height:10px;transition:transform .2s;opacity:.6}
+.nav-dropdown.open .nav-dropdown-toggle svg{transform:rotate(180deg)}
+.nav-dropdown-menu{position:absolute;top:calc(100%+8px);left:0;min-width:200px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh2);padding:6px;opacity:0;pointer-events:none;transform:translateY(-6px);transition:opacity .18s,transform .18s;z-index:600}
+.nav-dropdown.open .nav-dropdown-menu{opacity:1;pointer-events:all;transform:none}
+.nav-dropdown-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--r2);text-decoration:none;color:var(--ink2);font-size:13px;font-weight:500;transition:background .12s}
+.nav-dropdown-item:hover{background:var(--card2);color:var(--ink)}
+.nav-dropdown-item-ico{font-size:14px;width:20px;text-align:center;flex-shrink:0;opacity:.75}
+.nav-dropdown-sep{height:1px;background:var(--border);margin:4px 0}
+
+/* ── BELL ── */
+.notif-bell-btn{position:relative;width:36px;height:36px;border-radius:var(--r2);border:1.5px solid var(--border2);background:var(--card);cursor:pointer;display:grid;place-items:center;font-size:16px;transition:all .14s;flex-shrink:0}
+.notif-bell-btn:hover{border-color:var(--sky);background:var(--sky-soft)}
+.notif-badge{position:absolute;top:-6px;right:-6px;min-width:17px;height:17px;border-radius:10px;background:#ef4444;color:#fff;font-size:10px;font-weight:800;display:none;align-items:center;justify-content:center;padding:0 4px;border:2px solid var(--page);line-height:1}
+.notif-badge.show{display:flex}
+
+/* ── MOBILE ── */
+.nav-menu-btn{display:none;width:36px;height:36px;border-radius:var(--r2);border:1.5px solid var(--border2);background:var(--card);cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:4px;flex-shrink:0}
+.nav-menu-btn span{display:block;width:16px;height:2px;background:var(--ink2);border-radius:2px;transition:all .2s}
+.mobile-nav{display:none;position:fixed;top:60px;left:0;right:0;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--sh2);z-index:490;padding:12px 16px 16px;flex-direction:column;gap:4px;max-height:calc(100vh - 60px);overflow-y:auto}
+.mobile-nav.open{display:flex}
+.mobile-nav-link{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--r2);text-decoration:none;color:var(--ink2);font-size:14px;font-weight:500;transition:background .12s}
+.mobile-nav-link:hover{background:var(--card2)}
+.mobile-nav-link-ico{font-size:15px;width:22px;text-align:center}
+.mobile-nav-sep{height:1px;background:var(--border);margin:6px 0}
+.mobile-nav-btn{display:flex;align-items:center;justify-content:center;padding:12px;border-radius:var(--r2);background:linear-gradient(135deg,var(--sky),var(--sky2));color:#fff;font-size:14px;font-weight:700;text-decoration:none;margin-top:4px;box-shadow:0 2px 10px rgba(21,83,212,.25)}
+
+/* ── ANNOUNCEMENT BANNERS ── */
+#ann-banner-zone{display:flex;flex-direction:column;gap:0}
+.ann-banner{display:flex;align-items:flex-start;gap:14px;padding:11px 36px;font-size:14px;border-bottom:1px solid rgba(0,0,0,.06);position:relative;animation:annSlide .3s ease}
+@keyframes annSlide{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.ann-banner.info   {background:#e8eeff;border-left:4px solid #1553d4}
+.ann-banner.warning{background:#fefce8;border-left:4px solid #b45309}
+.ann-banner.success{background:#ecfdf5;border-left:4px solid #047857}
+.ann-banner.alert  {background:#fef2f2;border-left:4px solid #b91c1c}
+.ann-banner-ico{font-size:15px;flex-shrink:0;margin-top:2px}
+.ann-banner-body{flex:1}
+.ann-banner-title{font-weight:700;color:#0b1427;line-height:1.3}
+.ann-banner-msg{font-size:13px;color:#2d3e56;margin-top:2px;line-height:1.5}
+.ann-banner-link{display:inline-block;margin-top:4px;font-size:13px;font-weight:700;text-decoration:underline;cursor:pointer}
+.ann-banner.info .ann-banner-link{color:#1553d4}
+.ann-banner.warning .ann-banner-link{color:#b45309}
+.ann-banner.success .ann-banner-link{color:#047857}
+.ann-banner.alert .ann-banner-link{color:#b91c1c}
+.ann-banner-close{margin-left:auto;font-size:18px;color:#5e758f;cursor:pointer;padding:0 4px;background:none;border:none;font-family:inherit;line-height:1;flex-shrink:0;align-self:flex-start;transition:color .14s}
+.ann-banner-close:hover{color:#0b1427}
+
+/* ── POPUP ── */
+#ann-popup-zone{position:fixed;inset:0;z-index:9000;background:rgba(10,15,30,.5);display:none;align-items:center;justify-content:center;padding:20px;animation:annFade .25s ease}
+@keyframes annFade{from{opacity:0}to{opacity:1}}
+#ann-popup-zone.open{display:flex}
+.ann-popup-box{background:#fff;border-radius:14px;padding:30px;max-width:420px;width:100%;box-shadow:0 20px 64px rgba(10,20,50,.28);animation:annPop .28s ease}
+@keyframes annPop{from{transform:scale(.93);opacity:0}to{transform:none;opacity:1}}
+.ann-popup-badge{display:inline-block;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:3px 10px;border-radius:20px;margin-bottom:12px}
+.ann-popup-badge.info{background:#e8eeff;color:#1553d4}
+.ann-popup-badge.warning{background:#fefce8;color:#b45309}
+.ann-popup-badge.success{background:#ecfdf5;color:#047857}
+.ann-popup-badge.alert{background:#fef2f2;color:#b91c1c}
+.ann-popup-title{font-size:21px;font-weight:800;color:#0b1427;margin-bottom:10px;letter-spacing:-.3px;line-height:1.2}
+.ann-popup-msg{font-size:14px;color:#2d3e56;line-height:1.65;margin-bottom:20px}
+.ann-popup-actions{display:flex;gap:10px;align-items:center}
+.ann-popup-link-btn{padding:9px 22px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;border:none;font-family:'Outfit',sans-serif;text-decoration:none;display:inline-block}
+.ann-popup-link-btn.info{background:#1553d4;color:#fff}
+.ann-popup-link-btn.warning{background:#b45309;color:#fff}
+.ann-popup-link-btn.success{background:#047857;color:#fff}
+.ann-popup-link-btn.alert{background:#b91c1c;color:#fff}
+.ann-popup-dismiss{padding:9px 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:1.5px solid var(--border2);background:transparent;color:var(--ink2);font-family:'Outfit',sans-serif}
+.ann-popup-dismiss:hover{background:var(--card2)}
+
+/* ── TOAST ── */
+#ann-toast-zone{position:fixed;bottom:24px;left:24px;z-index:9100;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.ann-toast{background:#0b1427;color:#fff;border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:10px;max-width:340px;pointer-events:all;box-shadow:0 4px 24px rgba(10,20,50,.25);animation:annToastIn .3s ease;transition:opacity .3s,transform .3s}
+@keyframes annToastIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}
+.ann-toast.hiding{opacity:0;transform:translateX(-20px)}
+.ann-toast-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ann-toast-dot.info{background:#60a5fa}.ann-toast-dot.warning{background:#fbbf24}.ann-toast-dot.success{background:#34d399}.ann-toast-dot.alert{background:#f87171}
+.ann-toast-text{font-size:13px;font-weight:600;flex:1;line-height:1.35}
+.ann-toast-link{font-size:12px;color:#93c5fd;text-decoration:underline;white-space:nowrap;cursor:pointer}
+.ann-toast-close{font-size:15px;cursor:pointer;margin-left:4px;background:none;border:none;color:rgba(255,255,255,.4);line-height:1;padding:0}
+.ann-toast-close:hover{color:#fff}
+
+/* ── NOTIFICATION DRAWER ── */
+.notif-overlay{position:fixed;inset:0;z-index:8000;background:rgba(10,15,30,.3);opacity:0;pointer-events:none;transition:opacity .2s}
+.notif-overlay.open{opacity:1;pointer-events:all}
+.notif-drawer{position:fixed;top:0;right:0;height:100%;width:360px;max-width:95vw;background:var(--card);border-left:1px solid var(--border);z-index:8001;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s cubic-bezier(.4,0,.2,1);box-shadow:-4px 0 32px rgba(10,20,50,.1)}
+.notif-drawer.open{transform:none}
+.notif-drawer-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.notif-drawer-title{font-size:15px;font-weight:800;color:var(--ink)}
+.notif-drawer-actions{display:flex;align-items:center;gap:8px}
+.notif-mark-all{font-size:12px;font-weight:600;color:var(--sky);cursor:pointer;background:none;border:none;font-family:'Outfit',sans-serif;padding:4px 8px;border-radius:5px;transition:background .14s}
+.notif-mark-all:hover{background:var(--sky-soft)}
+.notif-close-btn{width:28px;height:28px;border-radius:6px;border:1px solid var(--border2);background:none;cursor:pointer;font-size:16px;color:var(--ink3);display:grid;place-items:center;transition:all .14s}
+.notif-close-btn:hover{background:var(--card2);color:var(--ink)}
+.notif-drawer-body{flex:1;overflow-y:auto;padding:8px 0}
+.notif-empty{text-align:center;padding:48px 20px;color:var(--ink3);font-size:14px}
+.notif-empty-ico{font-size:32px;display:block;margin-bottom:12px}
+.notif-item{display:flex;gap:12px;padding:14px 20px;cursor:pointer;transition:background .12s;border-bottom:1px solid var(--border);position:relative}
+.notif-item:last-child{border-bottom:none}
+.notif-item:hover{background:var(--card2)}
+.notif-item.unread{background:#fafbff}
+.notif-item.unread::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:0 2px 2px 0}
+.notif-item.unread.info::before{background:var(--sky)}
+.notif-item.unread.warning::before{background:var(--amber)}
+.notif-item.unread.success::before{background:var(--green)}
+.notif-item.unread.alert::before{background:var(--red)}
+.notif-item-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.notif-item-dot.info{background:var(--sky)}.notif-item-dot.warning{background:var(--amber)}.notif-item-dot.success{background:var(--green)}.notif-item-dot.alert{background:var(--red)}.notif-item-dot.read{background:var(--border2)}
+.notif-item-body{flex:1;min-width:0}
+.notif-item-title{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:3px;line-height:1.3}
+.notif-item.read .notif-item-title{font-weight:500;color:var(--ink2)}
+.notif-item-msg{font-size:12.5px;color:var(--ink3);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.notif-item-footer{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+.notif-item-time{font-size:11px;color:var(--ink3)}
+.notif-item-link{font-size:12px;font-weight:700;color:var(--sky);text-decoration:none}
+.notif-item-link:hover{text-decoration:underline}
+.notif-item-dismiss{font-size:11px;color:var(--ink3);background:none;border:none;cursor:pointer;padding:2px 6px;border-radius:4px;font-family:'Outfit',sans-serif;transition:all .12s}
+.notif-item-dismiss:hover{background:var(--red-bg);color:var(--red)}
+.notif-drawer-foot{padding:12px 20px;border-top:1px solid var(--border);flex-shrink:0;text-align:center}
+.notif-foot-note{font-size:11.5px;color:var(--ink3)}
+
+/* ── HERO ── */
+.hero-wrap{
+  background:linear-gradient(180deg,#0b1427 0%,#0e1d3a 100%);
+  position:relative;overflow:hidden;
+}
+.hero-wrap::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% -5%,rgba(21,83,212,.3) 0%,transparent 60%),
+    radial-gradient(ellipse 45% 40% at 5% 85%,rgba(4,120,87,.14) 0%,transparent 55%),
+    radial-gradient(ellipse 40% 40% at 95% 75%,rgba(196,127,10,.11) 0%,transparent 55%);
+  pointer-events:none;
+}
+.hero-wrap::after{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:52px 52px;
+  mask-image:radial-gradient(ellipse 90% 80% at 50% 50%,black 20%,transparent 75%);
+  pointer-events:none;
+}
+.hero{max-width:720px;margin:0 auto;padding:84px 32px 72px;text-align:center;position:relative;z-index:1}
+.hero-tag{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.65);font-size:12px;font-weight:600;padding:5px 15px;border-radius:20px;margin-bottom:28px;letter-spacing:.3px}
+.hero-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--green-glow);box-shadow:0 0 8px var(--green-glow);flex-shrink:0}
+h1{font-size:clamp(36px,5.5vw,58px);font-weight:800;line-height:1.07;letter-spacing:-.8px;color:#fff;margin-bottom:22px;animation:fadeUp .55s .1s both}
+h1 i{font-family:'Libre Baskerville',serif;font-style:italic;font-weight:400;color:#fbbf24}
+.hero-sub{font-size:17px;color:rgba(255,255,255,.5);line-height:1.75;max-width:520px;margin:0 auto 40px;font-weight:400;animation:fadeUp .55s .18s both}
+.hero-actions{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:56px;animation:fadeUp .55s .26s both}
+.btn-primary{display:inline-flex;align-items:center;gap:7px;padding:13px 28px;border-radius:var(--r2);background:linear-gradient(135deg,var(--sky),var(--sky2));color:#fff;font-size:14.5px;font-weight:700;text-decoration:none;transition:all .15s;box-shadow:0 4px 20px rgba(21,83,212,.35)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(21,83,212,.45)}
+.btn-outline{display:inline-flex;align-items:center;gap:7px;padding:13px 24px;border-radius:var(--r2);background:rgba(255,255,255,.07);color:rgba(255,255,255,.75);font-size:14.5px;font-weight:600;text-decoration:none;border:1.5px solid rgba(255,255,255,.18);transition:all .15s}
+.btn-outline:hover{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.32)}
+.btn-demo{display:inline-flex;align-items:center;gap:7px;padding:13px 24px;border-radius:var(--r2);background:rgba(16,185,129,.12);color:#34d399;font-size:14.5px;font-weight:700;text-decoration:none;border:1.5px solid rgba(16,185,129,.3);transition:all .15s}
+.btn-demo:hover{background:rgba(16,185,129,.2);border-color:rgba(16,185,129,.5)}
+
+/* ── STAT BAR ── */
+.stats-strip{display:inline-flex;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);overflow:hidden;animation:fadeUp .55s .34s both}
+.stat{padding:18px 30px;text-align:center;position:relative}
+.stat:not(:last-child)::after{content:'';position:absolute;right:0;top:20%;height:60%;width:1px;background:rgba(255,255,255,.1)}
+.stat-val{font-size:23px;font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1;margin-bottom:4px}
+.stat-lbl{font-size:10.5px;color:rgba(255,255,255,.4);font-weight:500;letter-spacing:.4px;text-transform:uppercase}
+
+/* ── MOCK BROWSER ── */
+.dash-wrap{max-width:860px;margin:0 auto;padding:0 32px;position:relative;z-index:1;transform:translateY(56px)}
+.dash-frame{background:var(--card);border:1px solid var(--border);border-radius:var(--r);box-shadow:0 -4px 40px rgba(0,0,0,.24),0 40px 80px rgba(10,20,50,.18);overflow:hidden;animation:fadeUp .65s .42s both}
+.dash-topbar{background:#1a2540;padding:10px 16px;display:flex;align-items:center;gap:7px}
+.dash-dot{width:9px;height:9px;border-radius:50%}
+.dash-dot.r{background:#ef4444}.dash-dot.y{background:#f59e0b}.dash-dot.g{background:#22c55e}
+.dash-url{margin-left:10px;flex:1;background:rgba(255,255,255,.07);border-radius:4px;padding:3px 10px;font-size:10px;color:rgba(255,255,255,.3);font-family:monospace}
+.dash-body{padding:20px;background:#f8f9fc}
+.mock-header{display:flex;align-items:center;justify-content:space-between;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.mock-school{font-size:12.5px;font-weight:700;color:var(--ink)}
+.mock-class{font-size:11px;color:var(--ink3);margin-top:1px}
+.mock-badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)}
+.mock-table-wrap{overflow-x:auto;margin-bottom:14px}
+.mock-table{width:100%;border-collapse:collapse;font-size:11px}
+.mock-table th{background:#1a2540;color:rgba(255,255,255,.6);padding:6px 8px;text-align:center;font-weight:600;font-size:9.5px;letter-spacing:.3px;text-transform:uppercase;white-space:nowrap}
+.mock-table th:first-child{text-align:left;padding-left:10px}
+.mock-table td{padding:7px 8px;text-align:center;border-bottom:1px solid var(--border);color:var(--ink2)}
+.mock-table td:first-child{text-align:left;font-weight:600;color:var(--ink);padding-left:10px}
+.mock-table tr:last-child td{border-bottom:none}
+.mk-inp{display:inline-block;width:34px;height:22px;border-radius:4px;border:1.5px solid var(--border2);font-size:11px;font-weight:700;color:var(--ink);text-align:center;line-height:22px;background:#fff}
+.mk-inp.f{border-color:var(--sky);background:#eff4ff;color:var(--sky)}
+.mk-lv{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:800}
+.mk-lv.ee{background:#d1fae5;color:#065f46}.mk-lv.me{background:#fef3c7;color:#92400e}.mk-lv.ae{background:#ffedd5;color:#9a3412}
+.mock-saved{font-size:10px;color:var(--green);font-weight:700}
+.mock-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mock-kpi{background:#fff;border:1px solid var(--border);border-radius:8px;padding:10px 12px}
+.mock-kpi-val{font-size:18px;font-weight:800;color:var(--ink);line-height:1;margin-bottom:3px}
+.mock-kpi-lbl{font-size:9.5px;color:var(--ink3);font-weight:500;text-transform:uppercase;letter-spacing:.3px}
+
+/* ── SECTION DIVIDER ── */
+.sdiv{max-width:700px;margin:0 auto;padding:0 32px 52px;display:flex;align-items:center;gap:16px}
+.sdiv-line{flex:1;height:1px;background:var(--border)}
+.sdiv-lbl{font-size:11px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.8px;white-space:nowrap}
+
+/* ── HOW IT WORKS ── */
+.how-section{max-width:700px;margin:0 auto;padding:0 32px 72px}
+.sec-eyebrow{font-size:11px;font-weight:700;color:var(--sky);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.sec-heading{font-size:clamp(24px,3.5vw,34px);font-weight:800;color:var(--ink);letter-spacing:-.4px;margin-bottom:10px;line-height:1.18}
+.sec-sub{font-size:15px;color:var(--ink3);line-height:1.7;margin-bottom:40px}
+.steps{display:flex;flex-direction:column}
+.step{display:flex;align-items:flex-start;gap:22px;padding:26px 0;border-bottom:1px solid var(--border)}
+.step:first-child{padding-top:0}.step:last-child{border-bottom:none;padding-bottom:0}
+.step-num{width:38px;height:38px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--sky),var(--sky2));color:#fff;display:grid;place-items:center;font-size:15px;font-weight:800;margin-top:2px;box-shadow:0 2px 10px rgba(21,83,212,.25)}
+.step-title{font-size:15.5px;font-weight:700;color:var(--ink);margin-bottom:5px;letter-spacing:-.2px}
+.step-desc{font-size:14px;color:var(--ink3);line-height:1.65}
+.step-tag{display:inline-block;margin-top:9px;font-size:11px;font-weight:600;padding:3px 11px;border-radius:20px;background:var(--sky-soft);color:var(--sky)}
+
+/* ── FEATURES ── */
+.feat-section{background:var(--ink);padding:80px 32px}
+.feat-inner{max-width:940px;margin:0 auto}
+.feat-section .sec-eyebrow{color:rgba(255,255,255,.35)}
+.feat-section .sec-heading{color:#fff}
+.feat-section .sec-sub{color:rgba(255,255,255,.4);margin-bottom:40px}
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07);border-radius:var(--r);overflow:hidden}
+.feat-card{padding:30px 26px;background:var(--ink);transition:background .18s;position:relative;overflow:hidden}
+.feat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--sky),rgba(21,83,212,0));opacity:0;transition:opacity .2s}
+.feat-card:hover{background:#111c30}
+.feat-card:hover::after{opacity:1}
+.feat-ico{font-size:22px;margin-bottom:14px;display:block}
+.feat-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.2px}
+.feat-body{font-size:13.5px;color:rgba(255,255,255,.45);line-height:1.65}
+.feat-tag{display:inline-block;margin-top:14px;font-size:10.5px;font-weight:600;padding:2px 10px;border-radius:20px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.1)}
+
+/* ── CTA ── */
+.cta-section{max-width:720px;margin:0 auto;padding:80px 32px;text-align:center}
+.cta-tag{display:inline-flex;align-items:center;gap:7px;background:var(--gold-bg);border:1px solid var(--gold-bd);color:var(--gold);font-size:12px;font-weight:600;padding:4px 14px;border-radius:20px;margin-bottom:24px}
+.cta-heading{font-size:clamp(26px,4vw,40px);font-weight:800;color:var(--ink);letter-spacing:-.5px;margin-bottom:12px;line-height:1.12}
+.cta-heading i{font-family:'Libre Baskerville',serif;font-style:italic;font-weight:400;color:var(--sky)}
+.cta-sub{font-size:15px;color:var(--ink3);margin-bottom:40px;line-height:1.7;max-width:480px;margin-left:auto;margin-right:auto}
+.role-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px}
+.role-card{background:var(--card);border:1.5px solid var(--border2);border-radius:var(--r);padding:28px 24px;text-align:left;text-decoration:none;transition:all .18s;display:block;position:relative;overflow:hidden}
+.role-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2.5px;background:linear-gradient(90deg,var(--sky),var(--sky2));transform:scaleX(0);transition:transform .22s;transform-origin:left}
+.role-card:hover{border-color:var(--sky);box-shadow:var(--sh3);transform:translateY(-3px)}
+.role-card:hover::before{transform:scaleX(1)}
+.role-card.teacher::before{background:linear-gradient(90deg,var(--green),var(--green-glow))}
+.role-card.teacher:hover{border-color:var(--green);box-shadow:0 0 0 1.5px var(--green),0 8px 32px rgba(4,120,87,.15)}
+.rc-icon{font-size:26px;margin-bottom:16px}
+.rc-title{font-size:15.5px;font-weight:800;color:var(--ink);margin-bottom:7px;letter-spacing:-.2px}
+.rc-desc{font-size:13px;color:var(--ink3);line-height:1.6;margin-bottom:18px}
+.rc-arrow{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--sky)}
+.role-card.teacher .rc-arrow{color:var(--green)}
+.cta-note{font-size:13.5px;color:var(--ink3)}
+.cta-note a{color:var(--sky);font-weight:600;text-decoration:none}
+.cta-note a:hover{text-decoration:underline}
+
+/* ── DEMO BAND ── */
+.demo-band{background:#0d1117;padding:72px 24px;text-align:center;position:relative;overflow:hidden}
+.demo-band::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 70% at 50% 50%,rgba(21,83,212,.12) 0%,transparent 65%);pointer-events:none}
+.demo-band-inner{max-width:640px;margin:0 auto;position:relative;z-index:1}
+.demo-band-eyebrow{font-size:11px;font-weight:700;color:rgba(255,255,255,.28);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:16px}
+.demo-band-h{font-family:'Libre Baskerville',serif;font-size:clamp(25px,4vw,38px);font-weight:700;color:#fff;line-height:1.18;margin-bottom:14px}
+.demo-band-h i{font-style:italic;color:#fbbf24}
+.demo-band-p{font-size:15px;color:rgba(255,255,255,.42);line-height:1.75;margin-bottom:32px;max-width:440px;margin-left:auto;margin-right:auto}
+.demo-pills{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:32px}
+.demo-pill{padding:5px 14px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(255,255,255,.55)}
+.demo-btns{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.demo-btn-main{display:inline-flex;align-items:center;gap:8px;padding:13px 30px;border-radius:var(--r2);background:#10b981;color:#fff;font-size:15px;font-weight:800;text-decoration:none;box-shadow:0 4px 18px rgba(16,185,129,.35);transition:all .16s}
+.demo-btn-main:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(16,185,129,.45)}
+.demo-btn-reg{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;border-radius:var(--r2);border:1.5px solid rgba(255,255,255,.2);color:rgba(255,255,255,.72);font-size:14px;font-weight:700;text-decoration:none;transition:all .15s}
+.demo-btn-reg:hover{border-color:rgba(255,255,255,.36);background:rgba(255,255,255,.07)}
+.demo-note{font-size:12px;color:rgba(255,255,255,.24)}
+.demo-note a{color:#fbbf24;font-weight:700;text-decoration:none}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);color:rgba(255,255,255,.5);padding:52px 36px 30px}
+.foot-inner{max-width:1000px;margin:0 auto}
+.foot-top{display:grid;grid-template-columns:1.7fr 1fr 1fr 1fr;gap:40px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,.07)}
+.foot-logo-row{display:flex;align-items:center;gap:11px;margin-bottom:13px}
+.foot-logo{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--sky),var(--sky2));display:grid;place-items:center;font-size:16px;flex-shrink:0;box-shadow:0 2px 8px rgba(21,83,212,.3)}
+.foot-name{font-size:14px;font-weight:800;color:#fff;line-height:1.2}
+.foot-tagline{font-size:10px;color:rgba(255,255,255,.3);font-weight:500}
+.foot-about{font-size:13px;color:rgba(255,255,255,.38);line-height:1.7;margin-bottom:20px}
+.foot-contacts{display:flex;flex-direction:column;gap:8px}
+.foot-contact-item{display:flex;align-items:center;gap:8px;font-size:12.5px;color:rgba(255,255,255,.42);text-decoration:none;transition:color .14s}
+.foot-contact-item:hover{color:rgba(255,255,255,.85)}
+.foot-contact-item span{font-size:14px;width:18px;text-align:center}
+.foot-col-title{font-size:10.5px;font-weight:700;color:rgba(255,255,255,.22);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+.foot-col-links{display:flex;flex-direction:column;gap:9px}
+.foot-col-link{font-size:13px;color:rgba(255,255,255,.42);text-decoration:none;transition:color .14s;display:flex;align-items:center;gap:8px}
+.foot-col-link:hover{color:rgba(255,255,255,.9)}
+.foot-col-link-ico{font-size:12px;opacity:.55;flex-shrink:0}
+.foot-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-top:22px}
+.foot-copy{font-size:12px;color:rgba(255,255,255,.22)}
+.foot-copy a{color:rgba(255,255,255,.38);text-decoration:none;transition:color .14s}
+.foot-copy a:hover{color:rgba(255,255,255,.75)}
+.foot-bottom-links{display:flex;align-items:center;gap:4px}
+.foot-bottom-link{font-size:12px;color:rgba(255,255,255,.28);text-decoration:none;padding:4px 8px;border-radius:4px;transition:all .14s}
+.foot-bottom-link:hover{color:rgba(255,255,255,.75);background:rgba(255,255,255,.06)}
+.foot-bottom-sep{color:rgba(255,255,255,.12);font-size:11px}
+
+/* ── WA FAB ── */
+.wa-fab{position:fixed;bottom:24px;right:24px;z-index:300;width:52px;height:52px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;font-size:22px;text-decoration:none;box-shadow:0 4px 18px rgba(37,211,102,.45);transition:all .16s}
+.wa-fab:hover{transform:scale(1.1);box-shadow:0 8px 28px rgba(37,211,102,.55)}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.hero-tag{animation:fadeUp .5s .05s both}
+.hero-sub{animation:fadeUp .5s .15s both}
+.hero-actions{animation:fadeUp .5s .22s both}
+.stats-strip{animation:fadeUp .5s .3s both}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .foot-top{grid-template-columns:1fr 1fr;gap:28px}
+  .foot-brand-col{grid-column:1/-1}
+}
+@media(max-width:640px){
+  nav{padding:0 20px}
+  .nav-center,.nav-dropdown{display:none}
+  .nav-menu-btn{display:flex}
+  .hero,.how-section,.cta-section{padding-left:20px;padding-right:20px}
+  .dash-wrap{padding:0 16px}
+  .role-cards{grid-template-columns:1fr}
+  .stat{padding:13px 18px}.stat-val{font-size:18px}
+  footer{padding:40px 20px 24px}
+  .foot-top{grid-template-columns:1fr 1fr;gap:24px}
+  .foot-brand-col{grid-column:1/-1}
+  .foot-bottom{flex-direction:column;align-items:flex-start;gap:8px}
+  .sdiv{padding-left:20px;padding-right:20px}
+  .feat-section{padding:56px 20px}
+  .ann-banner{padding:10px 20px}
+}
+@media(max-width:420px){.foot-top{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav id="mainNav">
+  <a class="nav-brand" href="/">
+    <div class="nav-icon">📊</div>
+    <div>
+      <div class="nav-name">CBE Mark Sheet</div>
+      <div class="nav-tagline">Kenya CBC · Grades 1–9</div>
+    </div>
+  </a>
+
+  <div class="nav-center">
+    <a class="nav-link" href="#how">How it works</a>
+    <a class="nav-link demo" href="/demo">▶ Try Demo</a>
+    <a class="nav-link" href="#features">Features</a>
+    <div class="nav-dropdown" id="moreDropdown">
+      <button class="nav-dropdown-toggle" onclick="toggleDropdown('moreDropdown')">
+        More
+        <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="nav-dropdown-menu">
+        <a class="nav-dropdown-item" href="/about"><span class="nav-dropdown-item-ico">🏫</span>About Us</a>
+        <a class="nav-dropdown-item" href="/contact"><span class="nav-dropdown-item-ico">💬</span>Contact</a>
+        <div class="nav-dropdown-sep"></div>
+        <a class="nav-dropdown-item" href="/terms"><span class="nav-dropdown-item-ico">📄</span>Terms of Service</a>
+        <a class="nav-dropdown-item" href="/terms#privacy"><span class="nav-dropdown-item-ico">🔒</span>Privacy Policy</a>
+        <a class="nav-dropdown-item" href="/terms#cookies"><span class="nav-dropdown-item-ico">🍪</span>Cookie Policy</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-right">
+    <button class="notif-bell-btn" id="notifBellBtn" onclick="toggleNotifDrawer()" title="Notifications" aria-label="Open notifications">
+      🔔<span class="notif-badge" id="notifBadge">0</span>
+    </button>
+    <a class="nav-btn" href="/registration">Get Started</a>
+    <button class="nav-menu-btn" id="mobileMenuBtn" onclick="toggleMobileMenu()" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ══ MOBILE NAV ══ -->
+<div class="mobile-nav" id="mobileNav">
+  <a class="mobile-nav-link" href="#how"><span class="mobile-nav-link-ico">ℹ️</span>How it works</a>
+  <a class="mobile-nav-link" href="#features"><span class="mobile-nav-link-ico">⚡</span>Features</a>
+  <a class="mobile-nav-link" href="/demo"><span class="mobile-nav-link-ico">▶</span>Try Demo</a>
+  <div class="mobile-nav-sep"></div>
+  <a class="mobile-nav-link" href="/about"><span class="mobile-nav-link-ico">🏫</span>About Us</a>
+  <a class="mobile-nav-link" href="/contact"><span class="mobile-nav-link-ico">💬</span>Contact</a>
+  <a class="mobile-nav-link" href="/terms"><span class="mobile-nav-link-ico">📄</span>Terms &amp; Privacy</a>
+  <div class="mobile-nav-sep"></div>
+  <a class="mobile-nav-link" href="/login"><span class="mobile-nav-link-ico">🔑</span>Teacher Sign In</a>
+  <a class="mobile-nav-btn" href="/registration">Register Your School →</a>
+</div>
+
+<!-- ══ BANNERS ══ -->
+<div id="ann-banner-zone"></div>
+
+<!-- ══ HERO ══ -->
+<div class="hero-wrap">
+  <div class="hero">
+    <div class="hero-tag"><div class="hero-tag-dot"></div>Built for Kenya CBC · Grades 1–9</div>
+    <h1>Mark sheets that<br>work the <i>smart way</i></h1>
+    <p class="hero-sub">Digital CBC mark entry, automatic level calculation, class analysis and print-ready reports — for every teacher and admin in your school.</p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="/registration">Register Your School →</a>
+      <a class="btn-outline" href="/login">Teacher Sign In</a>
+      <a class="btn-demo" href="/demo">▶ Try Live Demo</a>
+    </div>
+    <div class="stats-strip">
+      <div class="stat"><div class="stat-val">9</div><div class="stat-lbl">CBC Grades</div></div>
+      <div class="stat"><div class="stat-val">EE–BE</div><div class="stat-lbl">Auto Levels</div></div>
+      <div class="stat"><div class="stat-val">&lt;1s</div><div class="stat-lbl">Report Time</div></div>
+      <div class="stat"><div class="stat-val">100%</div><div class="stat-lbl">Cloud-Based</div></div>
+    </div>
+  </div>
+  <!-- DASHBOARD MOCK inside hero wrap so it overlaps correctly -->
+  <div class="dash-wrap">
+    <div class="dash-frame">
+      <div class="dash-topbar">
+        <div class="dash-dot r"></div><div class="dash-dot y"></div><div class="dash-dot g"></div>
+        <div class="dash-url">bett.website · Grade 8 North · Term 2 2026</div>
+      </div>
+      <div class="dash-body">
+        <div class="mock-header">
+          <div><div class="mock-school">Embu Primary &amp; Junior School</div><div class="mock-class">Grade 8 · North Stream · Term 2, 2026</div></div>
+          <span class="mock-badge">✅ 4 Saved</span>
+        </div>
+        <div class="mock-table-wrap">
+          <table class="mock-table">
+            <thead><tr><th>#&nbsp; Student</th><th>English</th><th>Kiswahili</th><th>Maths</th><th>Science</th><th>Avg %</th><th>Level</th><th>Save</th></tr></thead>
+            <tbody>
+              <tr><td>1&nbsp; Amina Wanjiku</td><td><span class="mk-inp">78</span></td><td><span class="mk-inp">82</span></td><td><span class="mk-inp">91</span></td><td><span class="mk-inp">85</span></td><td><strong>84.0</strong></td><td><span class="mk-lv ee">EE2</span></td><td><span class="mock-saved">✓</span></td></tr>
+              <tr><td>2&nbsp; Brian Otieno</td><td><span class="mk-inp">65</span></td><td><span class="mk-inp">70</span></td><td><span class="mk-inp">58</span></td><td><span class="mk-inp">72</span></td><td><strong>66.3</strong></td><td><span class="mk-lv me">ME1</span></td><td><span class="mock-saved">✓</span></td></tr>
+              <tr><td>3&nbsp; Cynthia Muthoni</td><td><span class="mk-inp f">74</span></td><td><span class="mk-inp" style="color:#ccc">—</span></td><td><span class="mk-inp" style="color:#ccc">—</span></td><td><span class="mk-inp" style="color:#ccc">—</span></td><td style="color:#9aaabb">—</td><td style="color:#9aaabb">—</td><td><button style="background:var(--sky);color:#fff;border:none;border-radius:4px;padding:3px 9px;font-size:10px;font-weight:700;cursor:pointer">Save</button></td></tr>
+              <tr><td>4&nbsp; Daniel Kamau</td><td><span class="mk-inp">88</span></td><td><span class="mk-inp">79</span></td><td><span class="mk-inp">95</span></td><td><span class="mk-inp">90</span></td><td><strong>88.0</strong></td><td><span class="mk-lv ee">EE2</span></td><td><span class="mock-saved">✓</span></td></tr>
+              <tr><td>5&nbsp; Eva Cherono</td><td><span class="mk-inp">48</span></td><td><span class="mk-inp">52</span></td><td><span class="mk-inp">44</span></td><td><span class="mk-inp">50</span></td><td><strong>48.5</strong></td><td><span class="mk-lv ae">AE1</span></td><td><span class="mock-saved">✓</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="mock-kpis">
+          <div class="mock-kpi"><div class="mock-kpi-val">5</div><div class="mock-kpi-lbl">Students</div></div>
+          <div class="mock-kpi"><div class="mock-kpi-val">71.7</div><div class="mock-kpi-lbl">Class Avg %</div></div>
+          <div class="mock-kpi"><div class="mock-kpi-val" style="color:var(--green)">2 EE</div><div class="mock-kpi-lbl">Exceeding</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SPACER for mock overlap -->
+<div style="height:56px;background:var(--page)"></div>
+
+<div class="sdiv"><div class="sdiv-line"></div><div class="sdiv-lbl">How it works</div><div class="sdiv-line"></div></div>
+
+<!-- ══ HOW IT WORKS ══ -->
+<div class="how-section" id="how">
+  <div class="sec-eyebrow">Simple by design</div>
+  <div class="sec-heading">Up and running in minutes</div>
+  <p class="sec-sub">No training needed. No Excel formulas. No printing headaches. Just your school's data, always organised and one click from a beautiful report.</p>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div><div class="step-title">Register your school</div><div class="step-desc">The school admin creates an account, sets up the school name, county, principal details and uploads the school logo. Takes under 2 minutes. Pay with M-Pesa — no bank account required.</div><span class="step-tag">Admin · One-time setup</span></div></div>
+    <div class="step"><div class="step-num">2</div><div><div class="step-title">Add students and teachers</div><div class="step-desc">Admit students into grades and streams. Add teachers manually or share a registration link — each teacher is linked to their class automatically and requires admin approval before going live.</div><span class="step-tag">Admin · Per term</span></div></div>
+    <div class="step"><div class="step-num">3</div><div><div class="step-title">Teachers enter marks from any device</div><div class="step-desc">Teachers open the mark sheet on phone or computer, type scores and CBC levels calculate instantly — EE1 through BE2, fully automatic. Autosave protects every entry even when the connection drops mid-session.</div><span class="step-tag">Teachers · Every term</span></div></div>
+    <div class="step"><div class="step-num">4</div><div><div class="step-title">Print branded reports instantly</div><div class="step-desc">Admin opens Analysis, selects any class and prints individual student reports or a full class ranking — all carrying the school logo, name and motto automatically. No extra setup per term.</div><span class="step-tag">Admin · End of term</span></div></div>
+  </div>
+</div>
+
+<!-- ══ FEATURES ══ -->
+<div class="feat-section" id="features">
+  <div class="feat-inner">
+    <div class="sec-eyebrow">What you get</div>
+    <div class="sec-heading" style="color:#fff">Everything your school needs</div>
+    <p class="sec-sub">A complete CBC management platform — from student admission to end-of-term reports, all in one place.</p>
+    <div class="feat-grid">
+      <div class="feat-card"><span class="feat-ico">⚡</span><div class="feat-title">Instant CBC Level Calculation</div><div class="feat-body">Type a mark and EE, ME, AE, BE levels appear automatically. No formulas. No errors. The full 8-tier CBC grading scale is built in for all grades 1–9.</div><span class="feat-tag">Live calculation</span></div>
+      <div class="feat-card"><span class="feat-ico">🖨️</span><div class="feat-title">Branded Print Reports</div><div class="feat-body">School name, logo and motto appear on every report card and mark sheet. Set once in Settings — applied everywhere, every term, automatically.</div><span class="feat-tag">Auto branding</span></div>
+      <div class="feat-card"><span class="feat-ico">📈</span><div class="feat-title">Class Analysis Dashboard</div><div class="feat-body">Subject averages, level distribution charts, top performers and student rankings — generated instantly from saved marks. No extra work required.</div><span class="feat-tag">One-click analysis</span></div>
+      <div class="feat-card"><span class="feat-ico">☁️</span><div class="feat-title">Real-Time Cloud Sync</div><div class="feat-body">Marks saved by a teacher are immediately visible to the admin. No USB drives, no email files, no version conflicts between devices anywhere.</div><span class="feat-tag">Firebase powered</span></div>
+      <div class="feat-card"><span class="feat-ico">🔐</span><div class="feat-title">Role-Based Access</div><div class="feat-body">Teachers see only their class. Admins see everything. No teacher can access another class's data. Approval required before any account goes live.</div><span class="feat-tag">Secure by design</span></div>
+      <div class="feat-card"><span class="feat-ico">📱</span><div class="feat-title">Works on Any Device</div><div class="feat-body">Optimised for phones, tablets and laptops. Number pad keyboard on mobile. Autosave keeps data safe even when connection drops mid-entry.</div><span class="feat-tag">Mobile-first</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CTA ══ -->
+<div class="cta-section" id="register">
+  <div class="cta-tag">⭐ Get started today</div>
+  <div class="cta-heading">Ready to run your school<br><i>the smarter way?</i></div>
+  <p class="cta-sub">Create your account in under two minutes. Pay with M-Pesa. No credit card or bank account needed. Full access from day one.</p>
+  <div class="role-cards">
+    <a class="role-card admin" href="/registration">
+      <div class="rc-icon">⚙️</div><div class="rc-title">School Admin</div>
+      <div class="rc-desc">Register your school, manage teachers and students, view all results and generate reports across all grades and classes.</div>
+      <span class="rc-arrow">Register as Admin →</span>
+    </a>
+    <a class="role-card teacher" href="/login">
+      <div class="rc-icon">📊</div><div class="rc-title">Teacher</div>
+      <div class="rc-desc">To register, ask your school administrator for the registration link. Already registered? Sign in directly to your mark sheet.</div>
+      <span class="rc-arrow">Teacher Sign In →</span>
+    </a>
+  </div>
+  <div class="cta-note">Already have an account? <a href="/login">Sign in here →</a></div>
+</div>
+
+<!-- ══ DEMO BAND ══ -->
+<div class="demo-band">
+  <div class="demo-band-inner">
+    <div class="demo-band-eyebrow">No account · No setup · No login required</div>
+    <div class="demo-band-h">See it work before<br>you <i>register</i></div>
+    <p class="demo-band-p">Choose a grade (1–9) and stream, edit marks and watch CBC levels auto-calculate. Print a real report. All with demo data — no account needed.</p>
+    <div class="demo-pills">
+      <span class="demo-pill">✏️ Edit marks live</span>
+      <span class="demo-pill">📊 Choose grade &amp; stream</span>
+      <span class="demo-pill">📈 Auto class analysis</span>
+      <span class="demo-pill">🖨️ Print CBC report</span>
+    </div>
+    <div class="demo-btns">
+      <a class="demo-btn-main" href="/demo">▶ Launch Demo</a>
+      <a class="demo-btn-reg" href="/registration">Register School →</a>
+    </div>
+    <div class="demo-note">💡 To use with your real school data — <a href="/registration">register your school here</a></div>
+  </div>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="foot-inner">
+    <div class="foot-top">
+      <div class="foot-brand-col">
+        <div class="foot-logo-row">
+          <div class="foot-logo">📊</div>
+          <div><div class="foot-name">CBE Mark Sheet System</div><div class="foot-tagline">Kenya CBC · Grades 1–9</div></div>
+        </div>
+        <p class="foot-about">Digital CBC mark sheet management for Kenya Primary &amp; Junior Schools. Built for teachers — fast, offline-ready and 100% cloud-synced.</p>
+        <div class="foot-contacts">
+          <a class="foot-contact-item" href="https://wa.me/254704518130" target="_blank" rel="noopener"><span>💬</span>+254 704 518 130 (WhatsApp)</a>
+          <a class="foot-contact-item" href="mailto:support@bett.website"><span>✉️</span>support@bett.website</a>
+          <a class="foot-contact-item" href="https://bett.website" target="_blank" rel="noopener"><span>🌐</span>bett.website</a>
+        </div>
+      </div>
+      <div>
+        <div class="foot-col-title">Product</div>
+        <div class="foot-col-links">
+          <a class="foot-col-link" href="/registration"><span class="foot-col-link-ico">⚙️</span>Register School</a>
+          <a class="foot-col-link" href="/login"><span class="foot-col-link-ico">🔑</span>Teacher Login</a>
+          <a class="foot-col-link" href="/admin"><span class="foot-col-link-ico">🛡️</span>Admin Panel</a>
+          <a class="foot-col-link" href="/demo"><span class="foot-col-link-ico">▶</span>Try Demo</a>
+          <a class="foot-col-link" href="#features"><span class="foot-col-link-ico">⚡</span>Features</a>
+          <a class="foot-col-link" href="#how"><span class="foot-col-link-ico">ℹ️</span>How it Works</a>
+        </div>
+      </div>
+      <div>
+        <div class="foot-col-title">Company</div>
+        <div class="foot-col-links">
+          <a class="foot-col-link" href="/about"><span class="foot-col-link-ico">🏫</span>About Us</a>
+          <a class="foot-col-link" href="/contact"><span class="foot-col-link-ico">💬</span>Contact Us</a>
+          <a class="foot-col-link" href="https://wa.me/254704518130?text=Hello%2C+I+am+interested+in+CBE+Mark+Sheet+System." target="_blank" rel="noopener"><span class="foot-col-link-ico">📞</span>WhatsApp Support</a>
+        </div>
+      </div>
+      <div>
+        <div class="foot-col-title">Legal</div>
+        <div class="foot-col-links">
+          <a class="foot-col-link" href="/terms"><span class="foot-col-link-ico">📄</span>Terms of Service</a>
+          <a class="foot-col-link" href="/terms#privacy"><span class="foot-col-link-ico">🔒</span>Privacy Policy</a>
+          <a class="foot-col-link" href="/terms#cookies"><span class="foot-col-link-ico">🍪</span>Cookie Policy</a>
+          <a class="foot-col-link" href="/terms#tc-refund"><span class="foot-col-link-ico">💳</span>Refund Policy</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div class="foot-copy">© 2026 <a href="https://bett.website" target="_blank" rel="noopener">Bett KE Tech Ltd</a> · CBE Mark Sheet System · All rights reserved.</div>
+      <div class="foot-bottom-links">
+        <a class="foot-bottom-link" href="/terms">Terms</a>
+        <span class="foot-bottom-sep">·</span>
+        <a class="foot-bottom-link" href="/terms#privacy">Privacy</a>
+        <span class="foot-bottom-sep">·</span>
+        <a class="foot-bottom-link" href="/contact">Contact</a>
+        <span class="foot-bottom-sep">·</span>
+        <a class="foot-bottom-link" href="/about">About</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══ WA FAB ══ -->
+<a class="wa-fab" href="https://wa.me/254704518130?text=Hello%2C+I+am+interested+in+CBE+Mark+Sheet+System+for+my+school." target="_blank" rel="noopener" title="Chat on WhatsApp">💬</a>
+
+<!-- ══ POPUP + TOAST + DRAWER ══ -->
+<div id="ann-popup-zone"><div class="ann-popup-box" id="ann-popup-box"></div></div>
+<div id="ann-toast-zone"></div>
+<div class="notif-overlay" id="notifOverlay" onclick="closeNotifDrawer()"></div>
+<div class="notif-drawer" id="notifDrawer">
+  <div class="notif-drawer-head">
+    <span class="notif-drawer-title">🔔 Notifications</span>
+    <div class="notif-drawer-actions">
+      <button class="notif-mark-all" onclick="markAllRead()">Mark all read</button>
+      <button class="notif-close-btn" onclick="closeNotifDrawer()">✕</button>
+    </div>
+  </div>
+  <div class="notif-drawer-body" id="notifDrawerBody">
+    <div class="notif-empty"><span class="notif-empty-ico">🔔</span>No notifications yet</div>
+  </div>
+  <div class="notif-drawer-foot"><span class="notif-foot-note">Notifications are stored on this device</span></div>
+</div>
+
+<!-- ══ FIREBASE ══ -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig={apiKey:"AIzaSyBDbpJNfAdmkZ-fAfGsiUYY0OWPWJ_e_IM",authDomain:"manuu-27475.firebaseapp.com",projectId:"manuu-27475",storageBucket:"manuu-27475.firebasestorage.app",messagingSenderId:"443796877180",appId:"1:443796877180:web:b89c9aae6fb106e0047ef9",measurementId:"G-E7G5H7FTSB"};
+if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
+
+// ── Nav scroll shadow ──
+window.addEventListener('scroll',()=>document.getElementById('mainNav').classList.toggle('scrolled',window.scrollY>20),{passive:true});
+
+// ── Dropdown ──
+function toggleDropdown(id){document.getElementById(id).classList.toggle('open');}
+document.addEventListener('click',function(e){document.querySelectorAll('.nav-dropdown.open').forEach(d=>{if(!d.contains(e.target))d.classList.remove('open');});});
+
+// ── Mobile menu ──
+function toggleMobileMenu(){document.getElementById('mobileNav').classList.toggle('open');}
+document.addEventListener('click',function(e){const btn=document.getElementById('mobileMenuBtn');const nav=document.getElementById('mobileNav');if(nav&&btn&&!nav.contains(e.target)&&!btn.contains(e.target))nav.classList.remove('open');});
+
+// ── Scroll reveal ──
+const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';io.unobserve(e.target);}});},{threshold:0.08});
+document.querySelectorAll('.step,.feat-card,.role-card').forEach((el,i)=>{el.style.cssText+='opacity:0;transform:translateY(12px);transition:opacity .45s '+(i%3*80)+'ms ease,transform .45s '+(i%3*80)+'ms ease';io.observe(el);});
+
+// ── reCAPTCHA ──
+function onClick(e){e.preventDefault();grecaptcha.enterprise.ready(async()=>{await grecaptcha.enterprise.execute('6Ldd1q4sAAAAADga6Ediw118NWAhCHZSl-pmL2Pc',{action:'LOGIN'});});}
+
+// ── Announcements + Notifications ──
+(function(){
+  const COLL='announcements',DISMISSED_KEY='cbe_ann_dismissed',POPUP_KEY='cbe_ann_popup_shown',READ_KEY='cbe_notif_read';
+  const ICONS={info:'ℹ️',warning:'⚠️',success:'✅',alert:'🚨'};
+  function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function timeAgo(date){if(!date)return'';const diff=Math.floor((Date.now()-date.getTime())/1000);if(diff<60)return'Just now';if(diff<3600)return Math.floor(diff/60)+'m ago';if(diff<86400)return Math.floor(diff/3600)+'h ago';return date.toLocaleDateString('en-KE',{day:'2-digit',month:'short'});}
+  function loadAnnouncements(){
+    if(typeof firebase==='undefined'||!firebase.apps.length)return;
+    const db=firebase.firestore();
+    const dismissed=JSON.parse(localStorage.getItem(DISMISSED_KEY)||'[]');
+    const shownPopup=JSON.parse(sessionStorage.getItem(POPUP_KEY)||'[]');
+    const readIds=JSON.parse(localStorage.getItem(READ_KEY)||'[]');
+    const now=new Date();
+    db.collection(COLL).where('active','==',true).orderBy('createdAt','desc').get()
+      .then(snap=>{
+        const docs=snap.docs.filter(doc=>{const d=doc.data();if(d.target&&d.target!=='all')return false;if(d.expiresAt&&d.expiresAt.toDate()<now)return false;return true;});
+        const banners=docs.filter(d=>d.data().type==='banner'&&!dismissed.includes(d.id));
+        const popups=docs.filter(d=>d.data().type==='popup'&&!shownPopup.includes(d.id));
+        const toasts=docs.filter(d=>d.data().type==='toast');
+        const notifs=docs.filter(d=>d.data().type==='notification');
+        renderBanners(banners,dismissed);
+        if(popups.length)renderPopup(popups[0],shownPopup);
+        renderToasts(toasts);
+        renderNotifications(notifs,readIds);
+      }).catch(e=>console.warn('CBE Announcements:',e));
+  }
+  function renderBanners(docs,dismissed){
+    const zone=document.getElementById('ann-banner-zone');if(!zone)return;zone.innerHTML='';
+    docs.forEach(doc=>{const d=doc.data();const el=document.createElement('div');el.className='ann-banner '+(d.style||'info');
+      el.innerHTML=`<span class="ann-banner-ico">${ICONS[d.style]||'ℹ️'}</span><div class="ann-banner-body"><div class="ann-banner-title">${esc(d.title)}</div>${d.message?`<div class="ann-banner-msg">${esc(d.message)}</div>`:''} ${d.link?`<a class="ann-banner-link" href="${esc(d.link)}" target="_blank" rel="noopener">${esc(d.linkText||'Read more →')}</a>`:''}</div><button class="ann-banner-close" aria-label="Dismiss">✕</button>`;
+      el.querySelector('.ann-banner-close').addEventListener('click',()=>{el.style.cssText+='transition:opacity .25s,max-height .3s,padding .3s;opacity:0;max-height:'+el.offsetHeight+'px';setTimeout(()=>{el.style.maxHeight='0';el.style.overflow='hidden';el.style.padding='0';},50);setTimeout(()=>el.remove(),360);const list=JSON.parse(localStorage.getItem(DISMISSED_KEY)||'[]');list.push(doc.id);localStorage.setItem(DISMISSED_KEY,JSON.stringify(list));});
+      zone.appendChild(el);});
+  }
+  function renderPopup(doc,shownList){
+    const zone=document.getElementById('ann-popup-zone');const box=document.getElementById('ann-popup-box');if(!zone||!box)return;
+    const d=doc.data();box.innerHTML=`<div class="ann-popup-badge ${d.style||'info'}">${(d.style||'INFO').toUpperCase()}</div><div class="ann-popup-title">${esc(d.title)}</div>${d.message?`<div class="ann-popup-msg">${esc(d.message)}</div>`:''}<div class="ann-popup-actions">${d.link?`<a class="ann-popup-link-btn ${d.style||'info'}" href="${esc(d.link)}" target="_blank" rel="noopener">${esc(d.linkText||'Read more →')}</a>`:''}<button class="ann-popup-dismiss">Dismiss</button></div>`;
+    zone.classList.add('open');
+    function dismiss(){zone.style.opacity='0';zone.style.transition='opacity .2s';setTimeout(()=>{zone.classList.remove('open');zone.style.opacity='';zone.style.transition='';},200);sessionStorage.setItem(POPUP_KEY,JSON.stringify([...shownList,doc.id]));}
+    box.querySelector('.ann-popup-dismiss').addEventListener('click',dismiss);zone.addEventListener('click',e=>{if(e.target===zone)dismiss();});document.addEventListener('keydown',e=>{if(e.key==='Escape')dismiss();},{once:true});
+  }
+  function renderToasts(docs){
+    const zone=document.getElementById('ann-toast-zone');if(!zone)return;
+    docs.forEach((doc,idx)=>{setTimeout(()=>{const d=doc.data();const el=document.createElement('div');el.className='ann-toast';el.innerHTML=`<span class="ann-toast-dot ${d.style||'info'}"></span><span class="ann-toast-text">${esc(d.title)}</span>${d.link?`<a class="ann-toast-link" href="${esc(d.link)}" target="_blank" rel="noopener">${esc(d.linkText||'Read more')}</a>`:''}<button class="ann-toast-close" aria-label="Close">✕</button>`;zone.appendChild(el);const timer=setTimeout(()=>removeToast(el),7000);el.querySelector('.ann-toast-close').addEventListener('click',()=>{clearTimeout(timer);removeToast(el);});},idx*600);});
+  }
+  function removeToast(el){el.classList.add('hiding');setTimeout(()=>el.remove(),320);}
+  let _notifDocs=[];
+  function renderNotifications(docs,readIds){
+    _notifDocs=docs;const body=document.getElementById('notifDrawerBody');const badge=document.getElementById('notifBadge');if(!body||!badge)return;
+    const unreadCount=docs.filter(d=>!readIds.includes(d.id)).length;badge.textContent=unreadCount>9?'9+':unreadCount;badge.classList.toggle('show',unreadCount>0);
+    if(!docs.length){body.innerHTML='<div class="notif-empty"><span class="notif-empty-ico">🔔</span>No notifications yet</div>';return;}
+    body.innerHTML=docs.map(doc=>{const d=doc.data();const isRead=readIds.includes(doc.id);const created=d.createdAt?timeAgo(d.createdAt.toDate()):'';return`<div class="notif-item ${isRead?'read':'unread'} ${d.style||'info'}" id="ni-${doc.id}"><div class="notif-item-dot ${isRead?'read':(d.style||'info')}"></div><div class="notif-item-body"><div class="notif-item-title">${esc(d.title)}</div><div class="notif-item-msg">${esc(d.message||'')}</div><div class="notif-item-footer"><span class="notif-item-time">${created}</span><div style="display:flex;align-items:center;gap:8px">${d.link?`<a class="notif-item-link" href="${esc(d.link)}" target="_blank" rel="noopener" onclick="markRead('${doc.id}')">${esc(d.linkText||'View →')}</a>`:''}<button class="notif-item-dismiss" onclick="dismissNotif('${doc.id}')" title="Remove">✕</button></div></div></div></div>`;}).join('');
+    docs.forEach(doc=>{const el=document.getElementById('ni-'+doc.id);if(el)el.addEventListener('click',e=>{if(!e.target.closest('button')&&!e.target.closest('a'))markRead(doc.id);});});
+  }
+  window.markRead=function(id){const readIds=JSON.parse(localStorage.getItem(READ_KEY)||'[]');if(!readIds.includes(id)){readIds.push(id);localStorage.setItem(READ_KEY,JSON.stringify(readIds));}const el=document.getElementById('ni-'+id);if(el){el.classList.remove('unread');el.classList.add('read');el.querySelector('.notif-item-dot').className='notif-item-dot read';}const badge=document.getElementById('notifBadge');const unread=document.querySelectorAll('.notif-item.unread').length;badge.textContent=unread>9?'9+':unread;badge.classList.toggle('show',unread>0);};
+  window.markAllRead=function(){const readIds=JSON.parse(localStorage.getItem(READ_KEY)||'[]');_notifDocs.forEach(doc=>{if(!readIds.includes(doc.id))readIds.push(doc.id);});localStorage.setItem(READ_KEY,JSON.stringify(readIds));document.querySelectorAll('.notif-item').forEach(el=>{el.classList.remove('unread');el.classList.add('read');const dot=el.querySelector('.notif-item-dot');if(dot)dot.className='notif-item-dot read';});document.getElementById('notifBadge').classList.remove('show');};
+  window.dismissNotif=function(id){const dismissed=JSON.parse(localStorage.getItem(DISMISSED_KEY)||'[]');if(!dismissed.includes(id)){dismissed.push(id);localStorage.setItem(DISMISSED_KEY,JSON.stringify(dismissed));}const el=document.getElementById('ni-'+id);if(el){el.style.cssText+='transition:opacity .2s;opacity:0';setTimeout(()=>el.remove(),220);}markRead(id);};
+  window.toggleNotifDrawer=function(){const drawer=document.getElementById('notifDrawer');const overlay=document.getElementById('notifOverlay');const isOpen=drawer.classList.contains('open');drawer.classList.toggle('open',!isOpen);overlay.classList.toggle('open',!isOpen);};
+  window.closeNotifDrawer=function(){document.getElementById('notifDrawer').classList.remove('open');document.getElementById('notifOverlay').classList.remove('open');};
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeNotifDrawer();});
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',loadAnnouncements);}else{loadAnnouncements();}
+})();
+</script>
+</body>
+</script>
+</body>
+</html>
