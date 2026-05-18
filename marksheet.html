@@ -10,7 +10,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Favicon -->
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -34,110 +33,59 @@
   --r:10px;--r2:6px;
 }
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);font-size:13px;min-height:100vh}
-
-/* ── HEADER ── */
-header{
-  background:var(--surface);border-bottom:1px solid var(--border);
-  padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;
-  position:sticky;top:0;z-index:200;box-shadow:var(--sh)
-}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:var(--sh)}
 .logo{display:flex;align-items:center;gap:9px}
 .lm{width:30px;height:30px;background:var(--accent);border-radius:7px;display:grid;place-items:center;color:#fff;font-size:15px}
 .lt{font-family:'Familjen Grotesk',sans-serif;font-size:14px;font-weight:800;letter-spacing:-.3px}
 .ls{font-size:10px;color:var(--text3)}
 .hdr-r{display:flex;align-items:center;gap:7px}
-
-/* ── TOOLBAR ── */
-.toolbar{
-  background:var(--surface);border-bottom:1px solid var(--border);
-  padding:8px 20px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
-  position:sticky;top:52px;z-index:190;box-shadow:var(--sh)
-}
-.fsel{
-  padding:5px 9px;border:1.5px solid var(--border);border-radius:var(--r2);
-  font-family:inherit;font-size:12.5px;color:var(--text);background:var(--surface);
-  cursor:pointer;outline:none;height:32px
-}
+.toolbar{background:var(--surface);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:52px;z-index:190;box-shadow:var(--sh)}
+.fsel{padding:5px 9px;border:1.5px solid var(--border);border-radius:var(--r2);font-family:inherit;font-size:12.5px;color:var(--text);background:var(--surface);cursor:pointer;outline:none;height:32px}
 .fsel:focus{border-color:var(--accent)}
-.btn{
-  display:inline-flex;align-items:center;gap:5px;padding:5px 13px;
-  border-radius:var(--r2);font-family:inherit;font-size:12.5px;font-weight:600;
-  cursor:pointer;border:none;transition:all .14s;white-space:nowrap;height:32px
-}
-.btn-primary{background:var(--accent);color:#fff}
-.btn-primary:hover{background:var(--ah)}
-.btn-success{background:#059669;color:#fff}
-.btn-success:hover{background:#047857}
-.btn-outline{background:none;border:1.5px solid var(--border);color:var(--text2)}
-.btn-outline:hover{background:var(--bg);color:var(--text)}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:5px 13px;border-radius:var(--r2);font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;border:none;transition:all .14s;white-space:nowrap;height:32px}
+.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:var(--ah)}
+.btn-success{background:#059669;color:#fff}.btn-success:hover{background:#047857}
+.btn-outline{background:none;border:1.5px solid var(--border);color:var(--text2)}.btn-outline:hover{background:var(--bg);color:var(--text)}
 .btn-sm{padding:3px 9px;font-size:11.5px;height:26px}
 .sep{width:1px;height:20px;background:var(--border)}
 .tb-lbl{font-size:11px;color:var(--text3);font-weight:600}
 
-/* ── LEGEND ── */
-.legend{
-  padding:5px 20px;background:var(--surf2);border-bottom:1px solid var(--border);
-  display:flex;gap:5px;align-items:center;flex-wrap:wrap;font-size:10.5px
-}
+/* ── CAT TABS (mirrors analysis.html) ── */
+.cat-tab{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;border:1.5px solid var(--border);background:var(--surface);color:var(--text2);transition:all .14s}
+.cat-tab.active-1{background:#eff6ff;border-color:#93c5fd;color:#1d4ed8}
+.cat-tab.active-2{background:#f0fdf4;border-color:#86efac;color:#166534}
+.cat-tab.active-3{background:#fdf4ff;border-color:#d8b4fe;color:#7e22ce}
+.cat-tab:hover:not([class*="active"]){background:var(--bg)}
+.cat-tabs-wrap{display:flex;gap:4px;align-items:center}
+
+.legend{padding:5px 20px;background:var(--surf2);border-bottom:1px solid var(--border);display:flex;gap:5px;align-items:center;flex-wrap:wrap;font-size:10.5px}
 .legend strong{color:var(--text2);font-weight:700;margin-right:3px}
 .lbadge{padding:1px 6px;border-radius:5px;font-size:10px;font-weight:700}
-.ee1{background:var(--ee1-bg);color:var(--ee1-tx)}
-.ee2{background:var(--ee2-bg);color:var(--ee2-tx)}
-.me1{background:var(--me1-bg);color:var(--me1-tx)}
-.me2{background:var(--me2-bg);color:var(--me2-tx)}
-.ae1{background:var(--ae1-bg);color:var(--ae1-tx)}
-.ae2{background:var(--ae2-bg);color:var(--ae2-tx)}
-.be1{background:var(--be1-bg);color:var(--be1-tx)}
-.be2{background:var(--be2-bg);color:var(--be2-tx)}
+.ee1{background:var(--ee1-bg);color:var(--ee1-tx)}.ee2{background:var(--ee2-bg);color:var(--ee2-tx)}
+.me1{background:var(--me1-bg);color:var(--me1-tx)}.me2{background:var(--me2-bg);color:var(--me2-tx)}
+.ae1{background:var(--ae1-bg);color:var(--ae1-tx)}.ae2{background:var(--ae2-bg);color:var(--ae2-tx)}
+.be1{background:var(--be1-bg);color:var(--be1-tx)}.be2{background:var(--be2-bg);color:var(--be2-tx)}
 
-/* ── OUTER ── */
 .outer{padding:14px 20px}
 .info-strip{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px}
 .sheet-title{font-family:'Familjen Grotesk',sans-serif;font-size:16px;font-weight:800}
 .pills{display:flex;gap:6px;flex-wrap:wrap}
 .pill{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:4px}
 .pill .pv{color:var(--text);font-weight:700}
-
-/* ── SHEET ── */
 .sheet-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
-.tbl-scroll{overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 210px)}
-
-/* ── TABLE ── */
+.tbl-scroll{overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 220px)}
 table{border-collapse:collapse;width:max-content;min-width:100%}
 thead th,tbody td,tfoot td{border:1px solid var(--border)}
-
-/* sticky header rows */
-thead th{
-  background:#1e2d4d;color:#c8d8f8;
-  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;
-  padding:0 5px;white-space:nowrap;text-align:center;
-  position:sticky;top:0;z-index:10;border-color:#2d3e61;height:30px
-}
+thead th{background:#1e2d4d;color:#c8d8f8;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:0 5px;white-space:nowrap;text-align:center;position:sticky;top:0;z-index:10;border-color:#2d3e61;height:30px}
 thead tr:nth-child(2) th{background:#243360;font-size:9.5px;height:24px}
-
-/* OUT-OF row (thead row 3) */
-thead tr.out-of-row th{
-  background:#0f1e38;height:28px;padding:0;
-  position:sticky;top:54px;z-index:9
-}
-.oof{
-  width:100%;height:27px;border:none;outline:none;
-  text-align:center;font-family:'Plus Jakarta Sans',sans-serif;
-  font-size:11px;font-weight:700;color:#fbbf24;
-  background:transparent;cursor:cell;padding:0
-}
+thead tr.out-of-row th{background:#0f1e38;height:28px;padding:0;position:sticky;top:54px;z-index:9}
+.oof{width:100%;height:27px;border:none;outline:none;text-align:center;font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:700;color:#fbbf24;background:transparent;cursor:cell;padding:0}
 .oof:focus{background:#1a2e50 !important;outline:2px solid #fbbf24;outline-offset:-2px;position:relative;z-index:2}
 .oof-label{font-size:9px;color:#6080b0;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
-
-/* frozen left cols */
 thead th.cn {position:sticky;left:0;z-index:15;background:#111827;width:34px;min-width:34px}
 thead th.cna{position:sticky;left:34px;z-index:15;background:#111827;min-width:155px}
 thead th.cad{position:sticky;left:189px;z-index:15;background:#111827;min-width:80px}
-thead tr.out-of-row th.cn,
-thead tr.out-of-row th.cna,
-thead tr.out-of-row th.cad{z-index:16}
-
-/* body rows */
+thead tr.out-of-row th.cn,thead tr.out-of-row th.cna,thead tr.out-of-row th.cad{z-index:16}
 tbody td{padding:0;text-align:center;vertical-align:middle;font-size:12.5px;height:32px}
 tbody td.tl{text-align:left;padding:0 7px}
 tbody td.cn,tbody td.cna,tbody td.cad{position:sticky;z-index:5;background:var(--surf2)}
@@ -145,30 +93,17 @@ tbody td.cn {left:0;width:34px}
 tbody td.cna{left:34px}
 tbody td.cad{left:189px}
 tbody tr:nth-child(even) td{background:#fafbff}
-tbody tr:nth-child(even) td.cn,
-tbody tr:nth-child(even) td.cna,
-tbody tr:nth-child(even) td.cad{background:#f0f3fa !important}
+tbody tr:nth-child(even) td.cn,tbody tr:nth-child(even) td.cna,tbody tr:nth-child(even) td.cad{background:#f0f3fa !important}
 tbody tr:hover td{background:#e8f0ff !important}
 tbody tr.saved td{background:#f0fdf6 !important}
-tbody tr.saved td.cn,
-tbody tr.saved td.cna,
-tbody tr.saved td.cad{background:#dcfce8 !important}
-
-.no-c {font-size:10.5px;color:var(--text3);font-weight:700}
+tbody tr.saved td.cn,tbody tr.saved td.cna,tbody tr.saved td.cad{background:#dcfce8 !important}
+.no-c{font-size:10.5px;color:var(--text3);font-weight:700}
 .sname{font-weight:600;font-size:12.5px;white-space:nowrap}
-
-/* subject group header colours */
-.g-eng {background:#1d3461 !important}
-.g-kis {background:#1d4461 !important}
-.g-math{background:#1a3d3d !important}
-.g-sci {background:#1d3d1d !important}
-.g-soc {background:#3d1d1d !important}
-.g-re  {background:#3d1d3d !important}
-.g-arts{background:#3d2e1d !important}
-.g-pret{background:#1d2e3d !important}
-.g-agri{background:#1d3d2e !important}
-.g-ovr {background:#0d1525 !important}
-
+.g-eng {background:#1d3461 !important}.g-kis {background:#1d4461 !important}
+.g-math{background:#1a3d3d !important}.g-sci {background:#1d3d1d !important}
+.g-soc {background:#3d1d1d !important}.g-re  {background:#3d1d3d !important}
+.g-arts{background:#3d2e1d !important}.g-pret{background:#1d2e3d !important}
+.g-agri{background:#1d3d2e !important}.g-ovr {background:#0d1525 !important}
 thead tr:nth-child(2) .s-eng {background:#22437a !important}
 thead tr:nth-child(2) .s-kis {background:#225a7a !important}
 thead tr:nth-child(2) .s-math{background:#1f4a4a !important}
@@ -179,37 +114,16 @@ thead tr:nth-child(2) .s-arts{background:#4a3a1f !important}
 thead tr:nth-child(2) .s-pret{background:#1f3a4a !important}
 thead tr:nth-child(2) .s-agri{background:#1f4a3a !important}
 thead tr:nth-child(2) .s-ovr {background:#111a2e !important}
-
-/* score input */
-.si{
-  width:100%;height:31px;border:none;outline:none;
-  text-align:center;font-family:'Plus Jakarta Sans',sans-serif;
-  font-size:13px;font-weight:700;color:var(--text);
-  background:transparent;cursor:cell;padding:0
-}
-.si:focus{
-  background:#fff9c4 !important;
-  outline:2px solid var(--accent);outline-offset:-2px;
-  position:relative;z-index:2
-}
-
-/* total cell */
+.si{width:100%;height:31px;border:none;outline:none;text-align:center;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;color:var(--text);background:transparent;cursor:cell;padding:0}
+.si:focus{background:#fff9c4 !important;outline:2px solid var(--accent);outline-offset:-2px;position:relative;z-index:2}
 .tot-c{font-weight:800;font-size:12px;color:var(--accent);background:#f0f5ff}
-
-/* % cell (small, muted) */
 .pct-c{font-size:10.5px;color:var(--text3);background:#fafbff}
-
-/* overall cols */
 .avg-c{font-family:'Familjen Grotesk',sans-serif;font-size:15px;font-weight:800}
 .lbg{display:inline-block;padding:2px 7px;border-radius:5px;font-size:10.5px;font-weight:800;white-space:nowrap}
 .pts-c{font-weight:800;font-size:13px}
-
-/* save */
 .sv-btn{padding:3px 9px;border-radius:4px;font-size:10.5px;font-weight:700;cursor:pointer;border:none;background:#059669;color:#fff;transition:all .12s}
 .sv-btn:hover{background:#047857}
 .sv-done{font-size:11px;font-weight:700;color:#059669}
-
-/* class avg row (tfoot) */
 tfoot td{background:#1e2d4d !important;color:#93c5fd;font-weight:700;font-size:11px;height:28px;text-align:center;border-color:#2d3e61;padding:0 4px}
 tfoot td.lbl{color:#c8d8f8;font-size:10.5px;font-weight:800;text-align:left;padding:0 8px}
 tfoot td.ov-c{color:#34d399 !important;font-family:'Familjen Grotesk',sans-serif;font-size:14px;font-weight:800}
@@ -217,27 +131,18 @@ tfoot td.cn,tfoot td.cna,tfoot td.cad{position:sticky;z-index:5;background:#1e2d
 tfoot td.cn {left:0}
 tfoot td.cna{left:34px}
 tfoot td.cad{left:189px}
-
-/* EMPTY / LOADING */
 .empty-msg{text-align:center;padding:60px 20px;color:var(--text3)}
 .empty-msg .ei{font-size:36px;margin-bottom:10px}
 .spin{width:17px;height:17px;border:2.5px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:sp .65s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
-
-/* TOAST */
 #tc{position:fixed;top:62px;right:16px;z-index:999;display:flex;flex-direction:column;gap:6px}
 .t{display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:var(--r2);font-size:12.5px;font-weight:500;box-shadow:var(--sh2);animation:tin .25s ease;min-width:210px}
-.t.ok {background:#064e3b;color:#ecfdf5;border-left:3px solid #10b981}
+.t.ok{background:#064e3b;color:#ecfdf5;border-left:3px solid #10b981}
 .t.err{background:#7f1d1d;color:#fef2f2;border-left:3px solid #ef4444}
 .t.info{background:#1e3a5f;color:#dbeafe;border-left:3px solid var(--accent)}
-@keyframes tin {from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes tin{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
 @keyframes tout{to{transform:translateX(110%);opacity:0}}
-
-/* DARK */
-body.dark{
-  --bg:#0c0f18;--surface:#141924;--surf2:#1a2030;
-  --border:#252d42;--text:#e0e8f8;--text2:#7a90b8;--text3:#3d4f72;--alight:#172050
-}
+body.dark{--bg:#0c0f18;--surface:#141924;--surf2:#1a2030;--border:#252d42;--text:#e0e8f8;--text2:#7a90b8;--text3:#3d4f72;--alight:#172050}
 body.dark thead th{background:#0e1829;border-color:#1a2640;color:#7090c0}
 body.dark thead tr:nth-child(2) th{background:#111f38}
 body.dark thead tr.out-of-row th{background:#080f1e}
@@ -247,72 +152,27 @@ body.dark tbody tr:hover td{background:#1a2848 !important}
 body.dark .si:focus{background:#2a2000 !important}
 body.dark .tot-c{background:#1a2848}
 body.dark .pct-c{background:#161d2e}
-
-@media print{
-  header,.toolbar,.legend,#tc{display:none}
-  #printHeader{display:block !important}
-  .outer{padding:0}
-  .tbl-scroll{max-height:none;overflow:visible}
-  .sheet-card{box-shadow:none;border:none}
-}
-/* ── NETWORK STATUS BAR ── */
-#netBar{
-  display:none;position:fixed;bottom:0;left:0;right:0;z-index:998;
-  padding:8px 16px;font-size:12.5px;font-weight:700;text-align:center;
-  transition:all .3s;
-}
+#netBar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:998;padding:8px 16px;font-size:12.5px;font-weight:700;text-align:center;transition:all .3s}
 #netBar.offline{display:block;background:#7f1d1d;color:#fef2f2}
 #netBar.saving{display:block;background:#1e3a5f;color:#dbeafe}
-#netBar.saved {display:block;background:#064e3b;color:#ecfdf5}
-
-/* ── AUTOSAVE INDICATOR ── */
-.as-dot{
-  width:7px;height:7px;border-radius:50%;display:inline-block;
-  margin-right:5px;vertical-align:middle;
-}
-.as-dot.idle   {background:#9aaabb}
-.as-dot.saving {background:#f59e0b;animation:asp .8s infinite}
-.as-dot.saved  {background:#10b981}
-.as-dot.err    {background:#ef4444}
-@keyframes asp{0%,100%{opacity:1}50%{opacity:.3}}
-
-/* ── SCORE VALIDATION ── */
-.si.over-limit{
-  background:#fef2f2 !important;
-  outline:2px solid #ef4444 !important;
-  color:#dc2626 !important;
-}
+#netBar.saved{display:block;background:#064e3b;color:#ecfdf5}
+.si.over-limit{background:#fef2f2 !important;outline:2px solid #ef4444 !important;color:#dc2626 !important}
 body.dark .si.over-limit{background:#450a0a !important}
-
-/* ── DRAFT BADGE ── */
-#draftBadge{
-  display:none;background:#fef3c7;border:1px solid #fcd34d;
-  color:#92400e;font-size:11px;font-weight:700;
-  padding:3px 10px;border-radius:20px;cursor:pointer;
-}
-
 @media(max-width:768px){
-  .outer{padding:8px 8px}
-  .toolbar{padding:6px 10px;gap:6px}
-  /* Bigger touch targets on mobile */
-  .si{
-    height:38px !important;font-size:15px !important;
-    min-width:44px;
-  }
+  .outer{padding:8px 8px}.toolbar{padding:6px 10px;gap:6px}
+  .si{height:38px !important;font-size:15px !important;min-width:44px}
   .oof{height:34px !important;font-size:13px !important}
   .sv-btn{padding:6px 12px !important;font-size:12px !important;min-height:34px}
-  /* Compact sticky cols on small screens */
-  .tbl-scroll{max-height:calc(100vh - 140px)}
-  /* Larger save zone */
+  .tbl-scroll{max-height:calc(100vh - 160px)}
   #netBar{padding:10px 16px;font-size:13px}
 }
+@media print{header,.toolbar,.legend,#tc{display:none}.outer{padding:0}.tbl-scroll{max-height:none;overflow:visible}.sheet-card{box-shadow:none;border:none}}
 </style>
 </head>
 <body>
 <div id="tc"></div>
 <div id="netBar"></div>
 
-<!-- HEADER -->
 <header>
   <div class="logo">
     <div class="lm" id="hdrLogo">📊</div>
@@ -327,16 +187,21 @@ body.dark .si.over-limit{background:#450a0a !important}
       <span id="hdrUserClass" style="font-size:10.5px;background:var(--alight);color:var(--accent);border:1px solid #c7d9ff;padding:2px 8px;border-radius:20px;font-weight:700"></span>
     </div>
     <button class="btn btn-outline btn-sm" id="themeBtn">🌙</button>
+    <a href="analysis" class="btn btn-outline btn-sm">📈 Analysis</a>
     <button class="btn btn-outline btn-sm" onclick="doLogout()" style="color:#f87171;border-color:rgba(248,113,113,.3)">🚪 Sign Out</button>
   </div>
 </header>
 
-<!-- TOOLBAR — admin mode (shown by default, hidden for teachers) -->
+<!-- ── ADMIN TOOLBAR ── -->
 <div class="toolbar" id="toolbarAdmin">
   <span class="tb-lbl">Grade</span>
   <select class="fsel" id="selGrade" onchange="onGradeChange()">
     <option value="">-- Grade --</option>
-    <option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option><option>Grade 9</option>
+    <option>Grade 1</option><option>Grade 2</option><option>Grade 3</option>
+    <option>Grade 4</option><option>Grade 5</option><option>Grade 6</option>
+    <option>Grade 7</option><option>Grade 8</option><option>Grade 9</option>
+    <option>Grade 10</option><option>Grade 11</option><option>Grade 12</option>
+    <option>Grade 13</option><option>Grade 14</option>
   </select>
 
   <span class="tb-lbl" id="streamLabel">Stream</span>
@@ -345,43 +210,59 @@ body.dark .si.over-limit{background:#450a0a !important}
   </select>
 
   <span class="tb-lbl">Term</span>
-  <select class="fsel" id="selTerm" onchange="loadStudents()">
+  <select class="fsel" id="selTerm" onchange="onTermChange()">
     <option>Term 1</option><option>Term 2</option><option>Term 3</option>
   </select>
 
+  <!-- CAT tabs — shown for grades 7-14 only -->
+  <span class="tb-lbl" id="catSelectorLabel" style="display:none">Exam</span>
+  <div class="cat-tabs-wrap" id="catTabsWrap" style="display:none">
+    <button class="cat-tab" id="catBtn_CAT 1" onclick="selectCat('CAT 1')">CAT 1</button>
+    <button class="cat-tab" id="catBtn_CAT 2" onclick="selectCat('CAT 2')">CAT 2</button>
+    <button class="cat-tab" id="catBtn_CAT 3" onclick="selectCat('CAT 3')">CAT 3</button>
+  </div>
+
   <span class="tb-lbl">Year</span>
-  <input type="number" class="fsel" id="selYear" value="2026" min="2020" max="2040" style="width:68px;" onchange="loadStudents()">
+  <input type="number" class="fsel" id="selYear" value="2026" min="2020" max="2040" style="width:68px" onchange="loadStudents()">
 
   <div class="sep"></div>
   <button class="btn btn-success" onclick="saveAll()">💾 Save All</button>
-  <span style="margin-left:auto;font-size:10.5px;color:var(--text3);">
-    ✏️ Edit <span style="color:#fbbf24;font-weight:700;">Out Of</span> row to set max marks &nbsp;|&nbsp; ⌨️ Tab · Enter · Arrows
+  <span style="margin-left:auto;font-size:10.5px;color:var(--text3)">
+    ✏️ Edit <span style="color:#fbbf24;font-weight:700">Out Of</span> row to set max marks &nbsp;|&nbsp; ⌨️ Tab · Enter · Arrows
   </span>
 </div>
 
-<!-- TOOLBAR — teacher mode (auto-detected, no manual selection allowed) -->
+<!-- ── TEACHER TOOLBAR ── -->
 <div class="toolbar" id="toolbarTeacher" style="display:none">
-  <div style="display:flex;align-items:center;gap:8px;background:var(--alight);border:1px solid #c7d9ff;border-radius:var(--r2);padding:5px 12px;">
+  <div style="display:flex;align-items:center;gap:8px;background:var(--alight);border:1px solid #c7d9ff;border-radius:var(--r2);padding:5px 12px">
     <span style="font-size:13px">🔒</span>
     <span style="font-size:12px;font-weight:700;color:var(--accent)" id="teacherClassBadge">—</span>
   </div>
-  <!-- Hidden inputs for teacher — values set programmatically from profile, never editable -->
   <input type="hidden" id="selGrade" value="">
   <input type="hidden" id="selStream" value="">
+
   <span class="tb-lbl">Term</span>
-  <select class="fsel" id="selTerm" onchange="loadStudents()">
+  <select class="fsel" id="selTerm" onchange="onTermChange()">
     <option>Term 1</option><option>Term 2</option><option>Term 3</option>
   </select>
+
+  <!-- CAT tabs for teachers (grades 7-14) -->
+  <span class="tb-lbl" id="catSelectorLabelT" style="display:none">Exam</span>
+  <div class="cat-tabs-wrap" id="catTabsWrapT" style="display:none">
+    <button class="cat-tab" id="catBtnT_CAT 1" onclick="selectCat('CAT 1')">CAT 1</button>
+    <button class="cat-tab" id="catBtnT_CAT 2" onclick="selectCat('CAT 2')">CAT 2</button>
+    <button class="cat-tab" id="catBtnT_CAT 3" onclick="selectCat('CAT 3')">CAT 3</button>
+  </div>
+
   <span class="tb-lbl">Year</span>
-  <input type="number" class="fsel" id="selYear" value="2026" min="2020" max="2040" style="width:68px;" onchange="loadStudents()">
+  <input type="number" class="fsel" id="selYear" value="2026" min="2020" max="2040" style="width:68px" onchange="loadStudents()">
   <div class="sep"></div>
   <button class="btn btn-success" onclick="saveAll()">💾 Save All</button>
-  <span style="margin-left:auto;font-size:10.5px;color:var(--text3);">
-    ✏️ Edit <span style="color:#fbbf24;font-weight:700;">Out Of</span> row to set max marks &nbsp;|&nbsp; ⌨️ Tab · Enter · Arrows
+  <span style="margin-left:auto;font-size:10.5px;color:var(--text3)">
+    ✏️ Edit <span style="color:#fbbf24;font-weight:700">Out Of</span> row to set max marks &nbsp;|&nbsp; ⌨️ Tab · Enter · Arrows
   </span>
 </div>
 
-<!-- LEGEND -->
 <div class="legend">
   <strong>CBC Scale (% normalised):</strong>
   <span class="lbadge ee1">EE1(8) 90-100%</span>
@@ -394,22 +275,24 @@ body.dark .si.over-limit{background:#450a0a !important}
   <span class="lbadge be2">BE2(1) 0-10%</span>
 </div>
 
-<!-- CONTENT -->
 <div class="outer">
   <div class="info-strip">
     <div class="sheet-title" id="sheetTitle">Select Grade to begin</div>
     <div class="pills">
       <div class="pill">👥 <span class="pv" id="pilS">0</span> students</div>
       <div class="pill">✅ <span class="pv" id="pilSv">0</span> saved</div>
+      <div class="pill" id="catPill" style="display:none">📝 <span class="pv" id="catPillTxt">CAT 1</span></div>
     </div>
   </div>
   <div class="sheet-card">
     <div class="tbl-scroll" id="tblWrap">
-      <div class="empty-msg"><div class="ei">📋</div><p id="sheetHint">Select <strong>Grade</strong> to begin</p></div>
+      <div class="empty-msg"><div class="ei">📋</div><p>Select <strong>Grade</strong> to begin</p></div>
     </div>
   </div>
 </div>
 
+<!-- subjects.js MUST load before marksheet logic -->
+<script src="subjects.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
@@ -426,706 +309,348 @@ firebase.initializeApp({
 
 const db   = firebase.firestore();
 const auth = firebase.auth();
-// SESSION persistence — auth clears when browser/tab is closed
 auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).catch(()=>{});
 
+// ── NOTE: getSubs / gradeUsesCats / getLevel / getSubjectScore / getSubjectOof
+//    are all provided by subjects.js loaded above ──
+
+const DEFAULT_OOF = 100;
 let students=[], savedMap={}, savedCount=0, allInputs=[], loadLock=false;
+let currentUser=null, streamsEnabled=true, gradeHasStreams=false;
+let _settingsReady=false, _settingsResolve=null;
+const _settingsPromise=new Promise(res=>{_settingsResolve=res;});
 
-// ── Teacher profile: {role, grade, stream} loaded from Firestore 'users' collection ──
-let currentUser = null;
+// ══════════════════════════════════════════════
+// CAT MODE
+// ══════════════════════════════════════════════
+let currentCat='CAT 1'; // active CAT: 'CAT 1' | 'CAT 2' | 'CAT 3'
 
-// ── Streams enabled flag (read from Firestore settings) ──
-let streamsEnabled = true;
-let gradeHasStreams = false; // tracks whether the currently selected grade actually has streams
-let _settingsReady = false;
-let _settingsResolve = null;
-const _settingsPromise = new Promise(res => { _settingsResolve = res; });
+function applyCatUI(gradeStr){
+  const usesCats=gradeUsesCats(gradeStr);
+  // Admin toolbar
+  const lbl=el('catSelectorLabel'),wrap=el('catTabsWrap');
+  if(lbl) lbl.style.display=usesCats?'':'none';
+  if(wrap) wrap.style.display=usesCats?'flex':'none';
+  // Teacher toolbar
+  const lblT=el('catSelectorLabelT'),wrapT=el('catTabsWrapT');
+  if(lblT) lblT.style.display=usesCats?'':'none';
+  if(wrapT) wrapT.style.display=usesCats?'flex':'none';
+  // Pill
+  const pill=el('catPill');
+  if(pill) pill.style.display=usesCats?'flex':'none';
+  if(usesCats) updateCatTabUI();
+}
 
+function updateCatTabUI(){
+  ['CAT 1','CAT 2','CAT 3'].forEach((c,i)=>{
+    const cls=['active-1','active-2','active-3'][i];
+    [el(`catBtn_${c}`),el(`catBtnT_${c}`)].forEach(btn=>{
+      if(!btn) return;
+      btn.className='cat-tab';
+      if(currentCat===c) btn.classList.add(cls);
+    });
+  });
+  const txt=el('catPillTxt'); if(txt) txt.textContent=currentCat;
+}
+
+window.selectCat=function(cat){
+  currentCat=cat;
+  updateCatTabUI();
+  loadStudents();
+};
+
+window.onTermChange=function(){ loadStudents(); };
+
+// Auto-select correct CAT based on current month
+function autoSelectCat(){
+  const month=new Date().getMonth()+1;
+  const mInTerm=month<=4?month:month<=8?month-4:month-8;
+  currentCat=mInTerm<=1?'CAT 1':mInTerm<=2?'CAT 2':'CAT 3';
+  updateCatTabUI();
+}
+
+// ══════════════════════════════════════════════
+// SETTINGS
+// ══════════════════════════════════════════════
 async function loadStreamsEnabledSetting(schoolId){
   try{
-    const cached = localStorage.getItem('cbe_streams_enabled');
-    if(cached !== null){ streamsEnabled = cached === 'true'; applyStreamMode(); }
-    const snap = await db.collection('settings').doc(schoolId).get();
-    if(snap.exists && snap.data().streamsEnabled !== undefined){
-      streamsEnabled = snap.data().streamsEnabled;
-      localStorage.setItem('cbe_streams_enabled', streamsEnabled ? 'true' : 'false');
+    const cached=localStorage.getItem('cbe_streams_enabled');
+    if(cached!==null){streamsEnabled=cached==='true';applyStreamMode();}
+    const snap=await db.collection('settings').doc(schoolId).get();
+    if(snap.exists&&snap.data().streamsEnabled!==undefined){
+      streamsEnabled=snap.data().streamsEnabled;
+      localStorage.setItem('cbe_streams_enabled',streamsEnabled?'true':'false');
       applyStreamMode();
     }
-  }catch(e){ console.warn('[Marksheet] streams setting error:', e.message); }
-  finally{ if(!_settingsReady){ _settingsReady=true; _settingsResolve(); } }
+  }catch(e){console.warn('[Marksheet] streams setting error:',e.message);}
+  finally{if(!_settingsReady){_settingsReady=true;_settingsResolve();}}
 }
 
 function applyStreamMode(){
-  const streamLabel = document.getElementById('streamLabel');
-  const streamSel   = document.getElementById('selStream');
+  const streamLabel=document.getElementById('streamLabel'),ss=document.getElementById('selStream');
   if(!streamsEnabled){
-    // Hide stream label and selector for no-stream schools
-    if(streamLabel) streamLabel.style.display = 'none';
-    if(streamSel){
-      streamSel.style.display = 'none';
-      streamSel.value         = '';
-      streamSel.disabled      = true;
-    }
-  } else {
-    if(streamLabel) streamLabel.style.display = '';
-    if(streamSel){
-      streamSel.style.display = '';
-      streamSel.disabled      = false;
-    }
+    if(streamLabel)streamLabel.style.display='none';
+    if(ss){ss.style.display='none';ss.value='';ss.disabled=true;}
+  }else{
+    if(streamLabel)streamLabel.style.display='';
+    if(ss){ss.style.display='';ss.disabled=false;}
   }
 }
 
-// Called once auth resolves
+// ══════════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════════
 async function initUser(fbUser){
-  if(!fbUser){
-    // Not signed in — redirect to login page
-    window.location.href = 'login';
-    return;
-  }
+  if(!fbUser){window.location.href='login';return;}
   try{
-    const snap = await db.collection('users').doc(fbUser.uid).get();
-    if(!snap.exists){
-      // Profile not saved yet or deleted — sign out and go back to login
-      await auth.signOut();
-      window.location.href = 'login';
-      return;
-    }
-    currentUser = snap.data();
-    currentUser.uid = fbUser.uid;
-
-    // ── Status gate — block suspended or pending accounts ──
-    if(currentUser.status === 'suspended'){
-      await auth.signOut();
-      window.location.href = 'login?reason=suspended';
-      return;
-    }
-    if(currentUser.status === 'pending'){
-      await auth.signOut();
-      window.location.href = 'login?reason=pending';
-      return;
-    }
-
-    // Store schoolId first
+    const snap=await db.collection('users').doc(fbUser.uid).get();
+    if(!snap.exists){await auth.signOut();window.location.href='login';return;}
+    currentUser=snap.data(); currentUser.uid=fbUser.uid;
+    if(currentUser.status==='suspended'){await auth.signOut();window.location.href='login?reason=suspended';return;}
+    if(currentUser.status==='pending'){await auth.signOut();window.location.href='login?reason=pending';return;}
+    if(currentUser.schoolId){sessionStorage.setItem('cbe_school_id',currentUser.schoolId);window._schoolId=currentUser.schoolId;}
+    if(currentUser.schoolId){loadSchoolBranding(currentUser.schoolId).catch(()=>{});}
     if(currentUser.schoolId){
-      sessionStorage.setItem('cbe_school_id', currentUser.schoolId);
-      window._schoolId = currentUser.schoolId;
-    }
-
-    // Load branding (non-blocking)
-    if(currentUser.schoolId){
-      loadSchoolBranding(currentUser.schoolId).catch(()=>{});
-    }
-
-    // CRITICAL: await streams setting BEFORE locking selectors or loading students
-    // Without this await, streamsEnabled is still true when lockTeacherSelectors runs,
-    // causing no-stream schools to wait for a stream that will never come.
-    if(currentUser.schoolId){
-      try{
-        await loadStreamsEnabledSetting(currentUser.schoolId);
-      }catch(_){
-        // If settings fail, default to no-streams-required to avoid blank screen
-        _settingsReady = true; _settingsResolve();
-      }
-    } else {
-      _settingsReady = true; _settingsResolve();
-    }
-
-    // Show name + class in header
-    const infoEl = el('hdrUserInfo');
-    if(infoEl) infoEl.style.display = 'flex';
-    const nameEl = el('hdrUserName');
-    if(nameEl) nameEl.textContent = '👤 ' + (currentUser.fullName || 'Teacher');
-    const classEl = el('hdrUserClass');
-    if(currentUser.role === 'teacher'){
-      if(classEl) classEl.textContent = (currentUser.grade||'No grade') + (currentUser.stream?' · '+currentUser.stream:'');
-      lockTeacherSelectors(); // switches to teacher toolbar, sets hidden inputs
-      // Always call loadStudents — grade/stream come from profile via _getClassSelectors
+      try{await loadStreamsEnabledSetting(currentUser.schoolId);}
+      catch(_){_settingsReady=true;_settingsResolve();}
+    }else{_settingsReady=true;_settingsResolve();}
+    const infoEl=el('hdrUserInfo'); if(infoEl)infoEl.style.display='flex';
+    const nameEl=el('hdrUserName'); if(nameEl)nameEl.textContent='👤 '+(currentUser.fullName||'Teacher');
+    const classEl=el('hdrUserClass');
+    if(currentUser.role==='teacher'){
+      if(classEl)classEl.textContent=(currentUser.grade||'No grade')+(currentUser.stream?' · '+currentUser.stream:'');
+      lockTeacherSelectors();
       loadStudents();
-    } else {
-      if(classEl) classEl.textContent = (currentUser.role||'admin').toUpperCase();
-      // Admin: apply stream mode to show/hide stream selector correctly
+    }else{
+      if(classEl)classEl.textContent=(currentUser.role||'admin').toUpperCase();
       applyStreamMode();
     }
-  }catch(e){
-    toast(`Auth error: ${e.message}`,'err');
-  }
+  }catch(e){toast(`Auth error: ${e.message}`,'err');}
 }
 
-// ── Load school name, logo and motto from Firestore settings ──
 async function loadSchoolBranding(schoolId){
   try{
-    const snap = await db.collection('settings').doc(schoolId).get();
-    if(!snap.exists) return;
-    const s = snap.data();
-
-    // Page title
-    if(s.name) document.title = s.name + ' | CBC Mark Sheet';
-
-    // Header school name
-    const nameEl = el('hdrSchoolName');
-    if(nameEl && s.name) nameEl.textContent = s.name;
-
-    // Header subtitle — motto · county · Kenya CBC
-    const subEl = el('hdrSchoolSub');
-    if(subEl){
-      const parts = [s.motto, s.county, 'Kenya CBC'].filter(Boolean);
-      subEl.textContent = parts.join(' · ');
-    }
-
-    // Logo
-    if(s.logoUrl){
-      const lm = el('hdrLogo');
-      if(lm) lm.innerHTML = `<img src="${s.logoUrl}"
-        style="width:100%;height:100%;object-fit:contain;border-radius:inherit"
-        onerror="this.parentElement.textContent='📊'">`;
-    }
-
-    // Brand colour
-    if(s.primaryColor){
-      document.documentElement.style.setProperty('--accent', s.primaryColor);
-      document.documentElement.style.setProperty('--ah',     s.primaryColor);
-    }
-
-    // Store globally for print headers
-    window.schoolSettings = s;
-
-    console.log('[Marksheet] School branding loaded:', s.name);
-  }catch(e){
-    console.warn('[Marksheet] School branding failed:', e.message);
-  }
+    const snap=await db.collection('settings').doc(schoolId).get();
+    if(!snap.exists)return;
+    const s=snap.data();
+    if(s.name)document.title=s.name+' | CBC Mark Sheet';
+    const nameEl=el('hdrSchoolName'); if(nameEl&&s.name)nameEl.textContent=s.name;
+    const subEl=el('hdrSchoolSub'); if(subEl){const parts=[s.motto,s.county,'Kenya CBC'].filter(Boolean);subEl.textContent=parts.join(' · ');}
+    if(s.logoUrl){const lm=el('hdrLogo');if(lm)lm.innerHTML=`<img src="${s.logoUrl}" style="width:100%;height:100%;object-fit:contain;border-radius:inherit" onerror="this.parentElement.textContent='📊'">`;}
+    if(s.primaryColor){document.documentElement.style.setProperty('--accent',s.primaryColor);document.documentElement.style.setProperty('--ah',s.primaryColor);}
+    window.schoolSettings=s;
+  }catch(e){console.warn('[Marksheet] School branding failed:',e.message);}
 }
 
 function lockTeacherSelectors(){
-  const grade  = currentUser.grade  || '';
-  const stream = currentUser.stream || '';
-
-  // ── Switch to teacher toolbar — completely hide admin toolbar ──
-  const adminBar   = el('toolbarAdmin');
-  const teacherBar = el('toolbarTeacher');
-  if(adminBar)   adminBar.style.display   = 'none';
-  if(teacherBar) teacherBar.style.display = '';
-
-  // ── Set locked hidden inputs — these are the ONLY values loadStudents() will use ──
-  const hGrade  = el('selGrade');
-  const hStream = el('selStream');
-  if(hGrade)  hGrade.value  = grade;
-  if(hStream) hStream.value = stream;
-
-  // Set gradeHasStreams based on teacher's profile
-  gradeHasStreams = Boolean(stream);
-
-  // ── Update the class badge in teacher toolbar ──
-  const badge = el('teacherClassBadge');
-  if(badge){
-    badge.textContent = grade
-      ? (stream ? `${grade} · ${stream}` : grade)
-      : 'No class assigned';
-  }
-
-  // ── Auto-set current term and year (detect from current date) ──
-  const now   = new Date();
-  const month = now.getMonth() + 1; // 1-12
-  const autoTerm = month <= 4 ? 'Term 1' : month <= 8 ? 'Term 2' : 'Term 3';
-  const autoYear  = now.getFullYear();
-  const termSel  = el('selTerm');
-  const yearInp  = el('selYear');
-  if(termSel) termSel.value = autoTerm;
-  if(yearInp) yearInp.value = autoYear;
-
-  // Block any attempt to call onGradeChange from teacher context
-  // (loadStudents is called by initUser after this returns)
+  const grade=currentUser.grade||'',stream=currentUser.stream||'';
+  const adminBar=el('toolbarAdmin'),teacherBar=el('toolbarTeacher');
+  if(adminBar)adminBar.style.display='none';
+  if(teacherBar)teacherBar.style.display='';
+  const hGrade=el('selGrade'),hStream=el('selStream');
+  if(hGrade)hGrade.value=grade;
+  if(hStream)hStream.value=stream;
+  gradeHasStreams=Boolean(stream);
+  const badge=el('teacherClassBadge');
+  if(badge)badge.textContent=grade?(stream?`${grade} · ${stream}`:grade):'No class assigned';
+  const now=new Date(),month=now.getMonth()+1;
+  const autoTerm=month<=4?'Term 1':month<=8?'Term 2':'Term 3';
+  const termSel=el('selTerm'),yearInp=el('selYear');
+  if(termSel)termSel.value=autoTerm;
+  if(yearInp)yearInp.value=now.getFullYear();
+  // Apply CAT UI for teacher's grade
+  applyCatUI(grade);
+  if(gradeUsesCats(grade))autoSelectCat();
 }
 
-// ── Enforce teacher class on every loadStudents call ──
-// Returns {grade, stream} always sourced from profile for teachers, from DOM for admins
 function _getClassSelectors(){
-  if(currentUser?.role === 'teacher'){
-    return {
-      grade:  currentUser.grade  || '',
-      stream: currentUser.stream || ''
-    };
-  }
-  return {
-    grade:  el('selGrade')?.value  || '',
-    stream: el('selStream')?.value || ''
-  };
+  if(currentUser?.role==='teacher')return{grade:currentUser.grade||'',stream:currentUser.stream||''};
+  return{grade:el('selGrade')?.value||'',stream:el('selStream')?.value||''};
 }
 
 auth.onAuthStateChanged(initUser);
 
 // ══════════════════════════════════════════════
-// CROSS-PAGE COMMUNICATION
-// Listens for student changes written by the Admission page via localStorage.
-// When a relevant change is detected (same grade/stream as currently loaded),
-// a non-intrusive banner appears offering to reload the student list.
+// GRADE CHANGE
 // ══════════════════════════════════════════════
-(function(){
-  // Create the refresh banner element once
-  function ensureRefreshBanner(){
-    if(document.getElementById('_admissionUpdateBar')) return;
-    const bar = document.createElement('div');
-    bar.id = '_admissionUpdateBar';
-    bar.style.cssText = `
-      display:none;position:fixed;bottom:44px;left:50%;transform:translateX(-50%);z-index:997;
-      background:#1e3a5f;color:#dbeafe;border:1px solid var(--accent);
-      padding:9px 18px;border-radius:8px;font-size:12.5px;font-weight:600;
-      box-shadow:0 4px 20px rgba(0,0,0,.25);cursor:pointer;
-      display:none;align-items:center;gap:10px;white-space:nowrap;
-    `;
-    bar.innerHTML = `
-      <span>🔄</span>
-      <span id="_admUpdateMsg">Students updated in Admission — reload?</span>
-      <button id="_admUpdateBtn" onclick="_reloadFromAdmission()"
-        style="background:var(--accent);color:#fff;border:none;border-radius:4px;
-               padding:4px 12px;cursor:pointer;font-weight:700;font-size:12px;">
-        Reload
-      </button>
-      <button onclick="_dismissAdmUpdate()"
-        style="background:rgba(255,255,255,.1);color:#dbeafe;border:none;border-radius:4px;
-               padding:4px 8px;cursor:pointer;font-size:12px;">
-        ✕
-      </button>`;
-    document.body.appendChild(bar);
-  }
-
-  window._reloadFromAdmission = function(){
-    _dismissAdmUpdate();
-    loadStudents();
-    // Also refresh streams dropdown for admins
-    if(currentUser?.role !== 'teacher'){
-      onGradeChange();
-    }
-    toast('Student list refreshed from Admission','info');
-  };
-
-  window._dismissAdmUpdate = function(){
-    const bar = document.getElementById('_admissionUpdateBar');
-    if(bar) bar.style.display = 'none';
-  };
-
-  function showAdmissionUpdateBanner(msg){
-    ensureRefreshBanner();
-    const bar = document.getElementById('_admissionUpdateBar');
-    const msgEl = document.getElementById('_admUpdateMsg');
-    if(msgEl) msgEl.textContent = msg || 'Students updated — reload list?';
-    if(bar) bar.style.display = 'flex';
-  }
-
-  // Listen for localStorage writes from the admission page
-  window.addEventListener('storage', function(e){
-    if(e.key !== 'cbe_students_updated') return;
-    if(!e.newValue) return;
-    try{
-      const signal = JSON.parse(e.newValue);
-      // Only react if we share the same schoolId
-      const mySchoolId = currentUser?.schoolId || sessionStorage.getItem('cbe_school_id');
-      if(signal.schoolId && mySchoolId && signal.schoolId !== mySchoolId) return;
-
-      const curGrade  = el('selGrade')?.value  || '';
-      const curStream = el('selStream')?.value || '';
-
-      // If the affected grade/stream matches what's currently on screen, prompt reload
-      if(!curGrade || !students.length){
-        // Nothing loaded yet — just refresh the streams dropdown silently
-        if(curGrade && currentUser?.role !== 'teacher') onGradeChange();
-        return;
-      }
-
-      const affectsCurrentView =
-        !signal.grade  ||  signal.grade  === curGrade  &&
-        (!signal.stream || signal.stream === curStream);
-
-      if(affectsCurrentView){
-        const who = signal.grade ? `${signal.grade}${signal.stream?' '+signal.stream:''}` : 'a class';
-        showAdmissionUpdateBanner(`Admission updated ${who} — reload list?`);
-      } else if(!signal.grade){
-        showAdmissionUpdateBanner('Student roster changed in Admission — reload list?');
-      }
-    }catch(_){}
-  });
-})();
-
-// ── Subject config — grade-based ──
-// Grade 1-3: Lower Primary (activity-based, simpler subjects)
-// Grade 4-6: Upper Primary (subject-based with sub-scores)
-// Grade 7-9: Junior Secondary (full subject set)
-
-const SUBS_LOWER = [ // Grade 1–3
-  {id:'math', label:'Mathematical Activities', icon:'🔢', gc:'g-math', sc:'s-math'},
-  {id:'eng',  label:'English',                 icon:'📖', gc:'g-eng',  sc:'s-eng' },
-  {id:'kis',  label:'Kiswahili',               icon:'🗣️', gc:'g-kis',  sc:'s-kis' },
- {id:'int',  label:'Integrated Activities',   icon:'🌈', gc:'g-sci',  sc:'s-sci' },
-  {id:'crt',  label:'Creative Activities',     icon:'🎨', gc:'g-arts', sc:'s-arts'},
-];
-
-const SUBS_UPPER = [ // Grade 4–6
-  {id:'math', label:'Mathematics',              icon:'🔢', gc:'g-math', sc:'s-math'},
-  {id:'eng',  label:'English',                  icon:'📖', gc:'g-eng',  sc:'s-eng',  parts:[{id:'lang',label:'Language'},{id:'comp',label:'Composition'}]},
-  {id:'kis',  label:'Kiswahili',                icon:'🗣️', gc:'g-kis',  sc:'s-kis',  parts:[{id:'lugha',label:'Lugha'},{id:'insha',label:'Insha'}]},
-  {id:'sci',  label:'Science and Technology',   icon:'🔬', gc:'g-sci',  sc:'s-sci' },
-  {id:'re',   label:'CRE',                      icon:'✝️', gc:'g-re',   sc:'s-re'  },
-  {id:'soc',  label:'Social Studies',           icon:'🌍', gc:'g-soc',  sc:'s-soc' },
-  {id:'arts', label:'Creative Art and Sport',   icon:'🎨', gc:'g-arts', sc:'s-arts'},
-  {id:'agri', label:'Agriculture and Nutrition',icon:'🌱', gc:'g-agri', sc:'s-agri'},
-];
-
-const SUBS_JUNIOR = [ // Grade 7–9
-  {id:'eng',  label:'English',                  icon:'📖', gc:'g-eng',  sc:'s-eng',  parts:[{id:'lang',label:'Language'},{id:'comp',label:'Composition'}]},
-  {id:'kis',  label:'Kiswahili/KSL',            icon:'🗣️', gc:'g-kis',  sc:'s-kis',  parts:[{id:'lugha',label:'Lugha'},{id:'insha',label:'Insha'}]},
-  {id:'math', label:'Mathematics',              icon:'🔢', gc:'g-math', sc:'s-math'},
-  {id:'sci',  label:'Integrated Science',       icon:'🔬', gc:'g-sci',  sc:'s-sci' },
-  {id:'soc',  label:'Social Studies',           icon:'🌍', gc:'g-soc',  sc:'s-soc' },
-  {id:'re',   label:'Religious Ed.',            icon:'✝️', gc:'g-re',   sc:'s-re'  },
-  {id:'arts', label:'Creative Arts & Sports',   icon:'🎨', gc:'g-arts', sc:'s-arts'},
-  {id:'pret', label:'Pre-Technical',            icon:'🔧', gc:'g-pret', sc:'s-pret'},
-  {id:'agri', label:'Agriculture & Nutrition',  icon:'🌱', gc:'g-agri', sc:'s-agri'},
-];
-
-// Returns the correct subject array for a given grade string e.g. "Grade 4"
-function getSubs(gradeStr){
-  const n = parseInt((gradeStr||'').replace(/\D/g,''))||0;
-  if(n >= 1 && n <= 3) return SUBS_LOWER;
-  if(n >= 4 && n <= 6) return SUBS_UPPER;
-  return SUBS_JUNIOR; // 7-9
-}
-
-// SUBS is always the current grade's subjects (set when table renders)
-let SUBS = SUBS_JUNIOR;
-
-// Default "out of" values — teacher can edit in table
-const DEFAULT_OOF = 100;
-
-// ── CBC Level (takes a percentage 0-100) ──
-function getLevel(pct){
-  if(pct>=90)return{l:'EE1',p:8,c:'ee1'};
-  if(pct>=75)return{l:'EE2',p:7,c:'ee2'};
-  if(pct>=58)return{l:'ME1',p:6,c:'me1'};
-  if(pct>=41)return{l:'ME2',p:5,c:'me2'};
-  if(pct>=31)return{l:'AE1',p:4,c:'ae1'};
-  if(pct>=21)return{l:'AE2',p:3,c:'ae2'};
-  if(pct>=11)return{l:'BE1',p:2,c:'be1'};
-  return           {l:'BE2',p:1,c:'be2'};
-}
-
-const el  = id=>document.getElementById(id);
-const num = id=>Number(el(id)?.value)||0;
-// Get "out of" for a column key — reads the oof input in thead
-function oof(colKey){ return Number(el(`oof_${colKey}`)?.value)||DEFAULT_OOF; }
-
-function toast(msg,type='ok'){
-  const t=document.createElement('div');
-  t.className=`t ${type}`;
-  t.innerHTML=`<span>${type==='ok'?'✅':type==='err'?'❌':'ℹ️'}</span>${msg}`;
-  el('tc').appendChild(t);
-  setTimeout(()=>{t.style.animation='tout .25s ease forwards';setTimeout(()=>t.remove(),280);},2600);
-}
-
-// ── Grade → load streams, then auto-load ──
-window.onGradeChange = async function(){
-  // Teachers NEVER manually change grade — hard block
-  if(currentUser?.role === 'teacher'){
-    console.warn('[Security] Teacher attempted onGradeChange — blocked');
-    return;
-  }
+window.onGradeChange=async function(){
+  if(currentUser?.role==='teacher'){return;}
   const grade=el('selGrade').value;
+  // Apply CAT UI when grade changes
+  applyCatUI(grade);
+  if(gradeUsesCats(grade))autoSelectCat();
 
-  // ── No-stream school: skip stream picker, load directly by grade ──
   if(!streamsEnabled){
-    gradeHasStreams = false;
-    if(!grade){
-      el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">📋</div><p>Select a <strong>Grade</strong> to load students</p></div>`;
-      return;
-    }
-    loadStudents();  // loads by grade only — no stream needed
-    return;
+    gradeHasStreams=false;
+    if(!grade){el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">📋</div><p>Select a <strong>Grade</strong></p></div>`;return;}
+    loadStudents(); return;
   }
-
   const ss=el('selStream');
   ss.disabled=true; ss.innerHTML='<option value="">Loading…</option>';
   el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">📋</div><p>Loading streams…</p></div>`;
   if(!grade){ss.innerHTML='<option value="">-- Stream --</option>';ss.disabled=false;return;}
-
   let arr=[];
-
-  // ── 1. Try shared localStorage written by admission page (instant) ──
+  try{const raw=localStorage.getItem('cbe_streams'),ts=localStorage.getItem('cbe_streams_ts');if(raw&&ts&&(Date.now()-parseInt(ts))<86400000){const map=JSON.parse(raw);if(map[grade]?.length)arr=map[grade];}}catch(_){}
   try{
-    const raw=localStorage.getItem('cbe_streams');
-    const ts =localStorage.getItem('cbe_streams_ts');
-    if(raw && ts && (Date.now()-parseInt(ts)) < 24*60*60*1000){ // valid for 24h
-      const map=JSON.parse(raw);
-      if(map[grade]&&map[grade].length) arr=map[grade];
-    }
-  }catch(_){}
-
-  // ── 2. Always also fetch live from Firestore to catch new streams ──
-  try{
-    const _sid = currentUser?.schoolId || sessionStorage.getItem('cbe_school_id');
-    if(!_sid){ ss.innerHTML='<option value="">Not authenticated</option>'; return; }
+    const _sid=currentUser?.schoolId||sessionStorage.getItem('cbe_school_id');
+    if(!_sid){ss.innerHTML='<option value="">Not authenticated</option>';return;}
     const snap=await db.collection('students').where('grade','==',grade).where('schoolId','==',_sid).get();
-    const set=new Set(arr); // seed with cached
-    snap.forEach(d=>{const s=d.data();if(s.stream?.trim())set.add(s.stream.trim());});
+    const set=new Set(arr); snap.forEach(d=>{const s=d.data();if(s.stream?.trim())set.add(s.stream.trim());});
     arr=[...set].sort();
-
-    // Update shared cache with fresh data
-    const raw=localStorage.getItem('cbe_streams');
-    const map=raw?JSON.parse(raw):{};
-    map[grade]=arr;
-    localStorage.setItem('cbe_streams',JSON.stringify(map));
-    localStorage.setItem('cbe_streams_ts',Date.now().toString());
-  }catch(e){
-    if(!arr.length){ ss.innerHTML='<option value="">-- Error --</option>';ss.disabled=false;return; }
-  }
-
-  if(!arr.length){
-    // No streams found — treat this grade as stream-free
-    gradeHasStreams = false;
-    ss.style.display = 'none';
-    ss.value = '';
-    ss.disabled = true;
-    const lbl = document.getElementById('streamLabel');
-    if(lbl) lbl.style.display = 'none';
-    loadStudents();
-    return;
-  }
-  gradeHasStreams = true;
-  ss.style.display = '';
-  const lbl2 = document.getElementById('streamLabel');
-  if(lbl2) lbl2.style.display = '';
-  ss.innerHTML='<option value="">-- Stream --</option>'+arr.map(s=>`<option>${s}</option>`).join('');
-  ss.disabled=false;
+    const raw=localStorage.getItem('cbe_streams'),map=raw?JSON.parse(raw):{};map[grade]=arr;localStorage.setItem('cbe_streams',JSON.stringify(map));localStorage.setItem('cbe_streams_ts',Date.now().toString());
+  }catch(e){if(!arr.length){ss.innerHTML='<option value="">-- Error --</option>';ss.disabled=false;return;}}
+  if(!arr.length){gradeHasStreams=false;ss.style.display='none';ss.value='';ss.disabled=true;const lbl=el('streamLabel');if(lbl)lbl.style.display='none';loadStudents();return;}
+  gradeHasStreams=true;ss.style.display='';const lbl2=el('streamLabel');if(lbl2)lbl2.style.display='';
+  ss.innerHTML='<option value="">-- Stream --</option>'+arr.map(s=>`<option>${s}</option>`).join('');ss.disabled=false;
   if(arr.length===1){ss.value=arr[0];loadStudents();}
-  else{ el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">📋</div><p>Select a <strong>Stream</strong> to load students</p></div>`; }
+  else{el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">📋</div><p>Select a <strong>Stream</strong></p></div>`;}
 };
 
-// ── Auto-load when stream changes ──
-// (onchange="loadStudents()" is already on the select)
+// ══════════════════════════════════════════════
+// CACHE
+// ══════════════════════════════════════════════
+const _cache={};
+const _CACHE_TTL=5*60*1000;
+function _cacheKey(grade,stream,term,year,cat,sid){return`${sid}|${grade}|${stream}|${term}|${year}|${cat}`;}
+function _cacheGet(key){const c=_cache[key];if(!c)return null;if(Date.now()-c.ts>_CACHE_TTL){delete _cache[key];return null;}return c;}
+function _cacheSet(key,students,savedMap,savedCount){_cache[key]={ts:Date.now(),students,savedMap:{...savedMap},savedCount};}
+function _cacheUpdateSave(cacheKey,studentId,record){const c=_cache[cacheKey];if(!c)return;c.savedMap[studentId]={...(c.savedMap[studentId]||{}),...record};c.ts=Date.now();}
+function _cacheInvalidate(){Object.keys(_cache).forEach(k=>delete _cache[k]);}
 
 // ══════════════════════════════════════════════
-// IN-MEMORY CACHE — avoids redundant Firebase reads
-// Cache is keyed by grade+stream+term+year+schoolId
-// Cache expires after 5 minutes or is invalidated on save
+// LOAD STUDENTS
 // ══════════════════════════════════════════════
-const _cache = {};
-const _CACHE_TTL = 5 * 60 * 1000; // 5 minutes
-
-function _cacheKey(grade, stream, term, year, sid){
-  return `${sid}|${grade}|${stream}|${term}|${year}`;
-}
-function _cacheGet(key){
-  const c = _cache[key];
-  if(!c) return null;
-  if(Date.now() - c.ts > _CACHE_TTL){ delete _cache[key]; return null; }
-  return c;
-}
-function _cacheSet(key, students, savedMap, savedCount){
-  _cache[key] = { ts: Date.now(), students, savedMap: {...savedMap}, savedCount };
-}
-// Call after a successful save to update the cache in place (no re-fetch needed)
-function _cacheUpdateSave(sid, studentId, record){
-  Object.values(_cache).forEach(c=>{
-    if(c.savedMap[studentId]){
-      c.savedMap[studentId] = {...c.savedMap[studentId], ...record};
-    } else {
-      c.savedMap[studentId] = record;
-      c.savedCount = (c.savedCount||0) + 1;
-    }
-    c.ts = Date.now(); // refresh TTL
-  });
-}
-function _cacheInvalidate(){
-  Object.keys(_cache).forEach(k=>delete _cache[k]);
-}
-
-// ── Load students ──
-window.loadStudents = async function(){
-  const {grade, stream: classStream} = _getClassSelectors();
-  const term=el('selTerm').value, year=el('selYear').value;
-
-  // Wait for stream settings to resolve before reading streamsEnabled
-  if(!_settingsReady) await _settingsPromise;
-
-  // For teachers: always use their profile grade/stream, never DOM
-  // For admins: stream is optional (schools without streams have value='')
-  const stream = currentUser?.role === 'teacher'
-    ? (currentUser.stream || '')
-    : classStream;
-
-  // Grade always required
-  if(!grade) return;
-  // Only require a stream selection if this grade actually has streams
-  if(currentUser?.role !== 'teacher' && gradeHasStreams && !stream) return;
-  if(loadLock) return;
+window.loadStudents=async function(){
+  const{grade,stream:classStream}=_getClassSelectors();
+  const term=el('selTerm').value,year=el('selYear').value;
+  if(!_settingsReady)await _settingsPromise;
+  const stream=currentUser?.role==='teacher'?(currentUser.stream||''):classStream;
+  if(!grade)return;
+  if(currentUser?.role!=='teacher'&&gradeHasStreams&&!stream)return;
+  if(loadLock)return;
   loadLock=true;
+  const _sid=currentUser?.schoolId||sessionStorage.getItem('cbe_school_id');
+  if(!_sid){el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">🔒</div><p>Not authenticated</p></div>`;loadLock=false;return;}
 
-  const _sid = currentUser?.schoolId || sessionStorage.getItem('cbe_school_id');
-  if(!_sid){
-    el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">🔒</div><p>Not authenticated</p></div>`;
-    loadLock=false; return;
-  }
-
-  const ck = _cacheKey(grade, stream, term, year, _sid);
-  const cached = _cacheGet(ck);
-
+  // Include CAT in cache key for grades 7-14
+  const catKey=gradeUsesCats(grade)?currentCat:'';
+  const ck=_cacheKey(grade,stream,term,year,catKey,_sid);
+  const cached=_cacheGet(ck);
   if(cached){
-    // ── Serve from cache — no Firebase round-trip ──
-    students   = cached.students;
-    savedMap   = {...cached.savedMap};
-    savedCount = cached.savedCount;
-    el('pilS').textContent  = students.length;
-    el('pilSv').textContent = savedCount;
-    el('sheetTitle').textContent = stream ? `${grade} ${stream} — ${term} ${year}` : `${grade} — ${term} ${year}`;
-    if(!students.length){
-      const loc=stream?`${grade} ${stream}`:grade;
-      el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">👥</div><p>No students in <strong>${loc}</strong>. Admit them first via the Admission page.</p></div>`;
-      loadLock=false; return;
-    }
-    renderTable();
-    loadLock=false;
-    toast('Loaded from cache','info');
-    return;
+    students=cached.students;savedMap={...cached.savedMap};savedCount=cached.savedCount;
+    el('pilS').textContent=students.length;el('pilSv').textContent=savedCount;
+    _setSheetTitle(grade,stream,term,year);
+    if(!students.length){el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">👥</div><p>No students in <strong>${stream?grade+' '+stream:grade}</strong>.</p></div>`;loadLock=false;return;}
+    renderTable();loadLock=false;toast('Loaded from cache','info');return;
   }
 
-  el('tblWrap').innerHTML=`<div class="empty-msg"><div style="display:inline-flex;align-items:center;gap:9px;color:var(--text3)"><div class="spin"></div>Loading ${grade}${stream?' '+stream:''}…</div></div>`;
-
+  el('tblWrap').innerHTML=`<div class="empty-msg"><div style="display:inline-flex;align-items:center;gap:9px;color:var(--text3)"><div class="spin"></div>Loading ${grade}${stream?' '+stream:''}${gradeUsesCats(grade)?' · '+currentCat:''}…</div></div>`;
   try{
-    let studQuery = db.collection('students').where('grade','==',grade).where('schoolId','==',_sid);
-    if(stream) studQuery = studQuery.where('stream','==',stream);
-    const snap = await studQuery.get();
-    students=[];
-    snap.forEach(d=>students.push({id:d.id,...d.data()}));
+    let studQuery=db.collection('students').where('grade','==',grade).where('schoolId','==',_sid);
+    if(stream)studQuery=studQuery.where('stream','==',stream);
+    const snap=await studQuery.get();
+    students=[];snap.forEach(d=>students.push({id:d.id,...d.data()}));
     students.sort((a,b)=>(a.name||'').localeCompare(b.name||''));
-
-    savedMap={}; savedCount=0;
-    // When streams are disabled, results are stored with stream='' 
-    let rsQuery = db.collection('results')
-      .where('grade','==',grade)
-      .where('term','==',term).where('year','==',year)
-      .where('schoolId','==',_sid);
-    if(stream) rsQuery = rsQuery.where('stream','==',stream);
-    const rs = await rsQuery.get();
+    savedMap={};savedCount=0;
+    let rsQuery=db.collection('results').where('grade','==',grade).where('term','==',term).where('year','==',year).where('schoolId','==',_sid);
+    if(stream)rsQuery=rsQuery.where('stream','==',stream);
+    // For CAT grades: filter by exam field
+    if(gradeUsesCats(grade))rsQuery=rsQuery.where('exam','==',currentCat);
+    const rs=await rsQuery.get();
     rs.forEach(d=>{savedMap[d.data().studentId]={id:d.id,...d.data()};savedCount++;});
-
-    // ── Store in cache ──
-    _cacheSet(ck, students, savedMap, savedCount);
-
-    el('pilS').textContent=students.length;
-    el('pilSv').textContent=savedCount;
-    el('sheetTitle').textContent=stream ? `${grade} ${stream} — ${term} ${year}` : `${grade} — ${term} ${year}`;
-
-    if(!students.length){
-      const loc=stream?`${grade} ${stream}`:grade;
-      el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">👥</div><p>No students in <strong>${loc}</strong>. Admit them first via the Admission page.</p></div>`;
-      loadLock=false; return;
-    }
+    _cacheSet(ck,students,savedMap,savedCount);
+    el('pilS').textContent=students.length;el('pilSv').textContent=savedCount;
+    _setSheetTitle(grade,stream,term,year);
+    if(!students.length){const loc=stream?`${grade} ${stream}`:grade;el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">👥</div><p>No students in <strong>${loc}</strong>. Admit them first.</p></div>`;loadLock=false;return;}
     renderTable();
-  }catch(e){
-    el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">❌</div><p>${e.message}</p></div>`;
-  }
+  }catch(e){el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">❌</div><p>${e.message}</p></div>`;}
   loadLock=false;
 };
 
-// ── Render table ──
+function _setSheetTitle(grade,stream,term,year){
+  const examLabel=gradeUsesCats(grade)?` · ${currentCat}`:'';
+  el('sheetTitle').textContent=stream?`${grade} ${stream} — ${term}${examLabel} ${year}`:`${grade} — ${term}${examLabel} ${year}`;
+}
+
+// ══════════════════════════════════════════════
+// RENDER TABLE
+// ══════════════════════════════════════════════
 function renderTable(){
-  // Update SUBS for the currently selected/assigned grade
-  const {grade: currentGrade} = _getClassSelectors();
-  SUBS = getSubs(currentGrade);
-  // Collect saved oof values if any (from previously saved record)
-  const anyRec = Object.values(savedMap)[0];
+  const{grade:currentGrade}=_getClassSelectors();
+  const SUBS=getSubs(currentGrade);
+  window._currentSubs=SUBS; // used by calcRow and collectRow
+  const anyRec=Object.values(savedMap)[0];
 
-  let h=`<table id="mkT">`;
-
-  // colgroup
-  h+=`<colgroup><col style="width:34px"><col style="width:155px"><col style="width:80px">`;
+  let h=`<table id="mkT"><colgroup>
+    <col style="width:34px"><col style="width:155px"><col style="width:80px">`;
   SUBS.forEach(s=>{
-    if(s.parts) h+=s.parts.map(()=>`<col style="width:52px">`).join('')+`<col style="width:56px">`;
-    else        h+=`<col style="width:56px">`;
+    if(s.parts)h+=s.parts.map(()=>`<col style="width:52px">`).join('')+`<col style="width:56px">`;
+    else h+=`<col style="width:56px">`;
   });
   h+=`<col style="width:60px"><col style="width:82px"><col style="width:36px"><col style="width:58px"></colgroup>`;
 
-  // ── Header row 1: subject groups ──
+  // Header row 1
   h+=`<thead><tr>
     <th class="cn" rowspan="3">#</th>
-    <th class="cna" rowspan="3" style="text-align:left;padding:0 8px;">Student</th>
-    <th class="cad" rowspan="3" style="text-align:left;padding:0 6px;">Adm No.</th>`;
+    <th class="cna" rowspan="3" style="text-align:left;padding:0 8px">Student</th>
+    <th class="cad" rowspan="3" style="text-align:left;padding:0 6px">Adm No.</th>`;
   SUBS.forEach(s=>{
     const span=s.parts?s.parts.length+1:1;
     h+=`<th colspan="${span}" class="${s.gc}">${s.icon} ${s.label}</th>`;
   });
   h+=`<th colspan="3" class="g-ovr">Overall</th>
-      <th class="g-ovr" rowspan="3" style="font-size:9px;">Save</th>
-    </tr>`;
+      <th class="g-ovr" rowspan="3" style="font-size:9px">Save</th></tr>`;
 
-  // ── Header row 2: sub-column labels ──
+  // Header row 2
   h+=`<tr>`;
   SUBS.forEach(s=>{
-    if(s.parts){
-      s.parts.forEach(p=>h+=`<th class="${s.sc}">${p.label}</th>`);
-      h+=`<th class="${s.sc}">Total</th>`;
-    } else {
-      h+=`<th class="${s.sc}">Score</th>`;
-    }
+    if(s.parts){s.parts.forEach(p=>h+=`<th class="${s.sc}">${p.label}</th>`);h+=`<th class="${s.sc}">Total</th>`;}
+    else h+=`<th class="${s.sc}">Score</th>`;
   });
-  h+=`<th class="s-ovr">Avg%</th><th class="s-ovr">Level</th><th class="s-ovr">Pts</th>`;
-  h+=`</tr>`;
+  h+=`<th class="s-ovr">Avg%</th><th class="s-ovr">Level</th><th class="s-ovr">Pts</th></tr>`;
 
-  // ── Header row 3: OUT-OF inputs (amber, editable) ──
+  // Header row 3: Out Of
   h+=`<tr class="out-of-row">`;
-  // span 3 for frozen cols already set by rowspan=3 above — skip
   SUBS.forEach(s=>{
     if(s.parts){
       s.parts.forEach(p=>{
-        const key=`${s.id}_${p.id}`;
-        const saved_oof = anyRec?.[`oof_${key}`] || DEFAULT_OOF;
-        h+=`<th><input class="oof" type="number" min="1" inputmode="numeric" id="oof_${key}" value="${saved_oof}" placeholder="100"
-          title="Out of — ${s.label} ${p.label}"
-          oninput="recalcAll()" onkeydown="navOof(event,this)"></th>`;
+        const key=`${s.id}_${p.id}`,saved_oof=anyRec?.[`oof_${key}`]||DEFAULT_OOF;
+        h+=`<th><input class="oof" type="number" min="1" inputmode="numeric" id="oof_${key}" value="${saved_oof}" title="Out of — ${s.label} ${p.label}" oninput="recalcAll()" onkeydown="navOof(event,this)"></th>`;
       });
-      // total out-of = sum of parts oof (auto, read-only display)
-      h+=`<th id="oof_${s.id}_tot_cell" style="font-size:10px;color:#fbbf24;font-weight:800;text-align:center;">—</th>`;
-    } else {
-      const saved_oof = anyRec?.[`oof_${s.id}`] || DEFAULT_OOF;
-      h+=`<th><input class="oof" type="number" min="1" inputmode="numeric" id="oof_${s.id}" value="${saved_oof}" placeholder="100"
-        title="Out of — ${s.label}"
-        oninput="recalcAll()" onkeydown="navOof(event,this)"></th>`;
+      h+=`<th id="oof_${s.id}_tot_cell" style="font-size:10px;color:#fbbf24;font-weight:800;text-align:center">—</th>`;
+    }else{
+      const saved_oof=anyRec?.[`oof_${s.id}`]||DEFAULT_OOF;
+      h+=`<th><input class="oof" type="number" min="1" inputmode="numeric" id="oof_${s.id}" value="${saved_oof}" title="Out of — ${s.label}" oninput="recalcAll()" onkeydown="navOof(event,this)"></th>`;
     }
   });
-  // overall out-of header label
-  h+=`<th colspan="3" class="oof-label">Out Of ↑</th>`;
-  h+=`</tr></thead>`;
+  h+=`<th colspan="3" class="oof-label">Out Of ↑</th></tr></thead>`;
 
-  // ── Body ──
+  // Body
   h+=`<tbody>`;
   students.forEach((s,i)=>{
-    const rec=savedMap[s.id], yes=!!rec;
+    const rec=savedMap[s.id],yes=!!rec;
     h+=`<tr id="tr-${s.id}"${yes?' class="saved"':''}>`;
     h+=`<td class="cn no-c">${i+1}</td>`;
     h+=`<td class="cna tl"><span class="sname">${s.name}</span></td>`;
-    h+=`<td class="cad tl"><code style="font-size:10px;color:var(--text2);">${s.admissionNumber||''}</code></td>`;
-
+    h+=`<td class="cad tl"><code style="font-size:10px;color:var(--text2)">${s.admissionNumber||''}</code></td>`;
     SUBS.forEach(sub=>{
       if(sub.parts){
         sub.parts.forEach(p=>{
-          const fid=`${sub.id}_${p.id}_${s.id}`;
-          const val=rec?(rec[`${sub.id}_${p.id}`]??''):'';
-          h+=`<td><input class="si" type="number" min="0" inputmode="numeric" pattern="[0-9]*" id="${fid}" value="${val}" placeholder="–"
+          const fid=`${sub.id}_${p.id}_${s.id}`,val=rec?(rec[`${sub.id}_${p.id}`]??''):'';
+          h+=`<td><input class="si" type="number" min="0" inputmode="numeric" id="${fid}" value="${val}" placeholder="–"
             oninput="validateScore(this,'${sub.id}_${p.id}',true);calcRow('${s.id}');draftSave('${s.id}')"
-            onblur="autoSaveRow('${s.id}')"
-            onkeydown="nav(event,this)"></td>`;
+            onblur="autoSaveRow('${s.id}')" onkeydown="nav(event,this)"></td>`;
         });
-        // SUM total
         const totVal=rec?(rec[`${sub.id}_tot`]??''):'';
         h+=`<td class="tot-c" id="${sub.id}_tot_${s.id}">${totVal}</td>`;
-      } else {
-        const fid=`${sub.id}_s_${s.id}`;
-        const val=rec?(rec[`${sub.id}_score`]??''):'';
-        h+=`<td><input class="si" type="number" min="0" inputmode="numeric" pattern="[0-9]*" id="${fid}" value="${val}" placeholder="–"
+      }else{
+        const fid=`${sub.id}_s_${s.id}`,val=rec?(rec[`${sub.id}_score`]??''):'';
+        h+=`<td><input class="si" type="number" min="0" inputmode="numeric" id="${fid}" value="${val}" placeholder="–"
           oninput="validateScore(this,'${sub.id}',false);calcRow('${s.id}');draftSave('${s.id}')"
-          onblur="autoSaveRow('${s.id}')"
-          onkeydown="nav(event,this)"></td>`;
+          onblur="autoSaveRow('${s.id}')" onkeydown="nav(event,this)"></td>`;
       }
     });
-
-    const oa=rec?.overallAvg??'', ol=oa!==''?getLevel(Number(oa)):null;
+    const oa=rec?.overallAvg??'',ol=oa!==''?getLevel(Number(oa)):null;
     h+=`<td class="avg-c" id="oa_${s.id}">${oa!==''?Number(oa).toFixed(1):''}</td>`;
     h+=`<td id="ol_${s.id}">${ol?`<span class="lbg ${ol.c}">${ol.l}</span>`:''}</td>`;
     h+=`<td class="pts-c" id="op_${s.id}">${ol?ol.p:''}</td>`;
@@ -1134,656 +659,320 @@ function renderTable(){
   });
   h+=`</tbody>`;
 
-  // ── Footer: class averages ──
-  h+=`<tfoot><tr>
-    <td colspan="3" class="lbl cn cna" style="left:0;min-width:269px;">CLASS AVG</td>`;
+  // Footer
+  h+=`<tfoot><tr><td colspan="3" class="lbl cn cna" style="left:0;min-width:269px">CLASS AVG</td>`;
   SUBS.forEach(sub=>{
-    if(sub.parts){
-      sub.parts.forEach(p=>h+=`<td id="ca_${sub.id}_${p.id}"></td>`);
-      h+=`<td id="ca_${sub.id}_tot"></td>`;
-    } else {
-      h+=`<td id="ca_${sub.id}"></td>`;
-    }
+    if(sub.parts){sub.parts.forEach(p=>h+=`<td id="ca_${sub.id}_${p.id}"></td>`);h+=`<td id="ca_${sub.id}_tot"></td>`;}
+    else h+=`<td id="ca_${sub.id}"></td>`;
   });
-  h+=`<td class="ov-c" id="ca_ovr"></td><td></td><td></td><td></td>`;
-  h+=`</tr></tfoot></table>`;
+  h+=`<td class="ov-c" id="ca_ovr"></td><td></td><td></td><td></td></tr></tfoot></table>`;
 
   el('tblWrap').innerHTML=h;
   allInputs=Array.from(document.querySelectorAll('#mkT tbody input.si'));
   updateOofTotals();
   updateClassAvg();
-  _draftKey = null; // reset key so it's recalculated with current selectors
-  setTimeout(loadDraft, 50); // restore any offline drafts
+  _draftKey=null;
+  setTimeout(loadDraft,50);
 }
 
-// ── Update the auto-computed "Total out of" cells for compound subjects ──
+// ══════════════════════════════════════════════
+// CALCULATIONS
+// ══════════════════════════════════════════════
 function updateOofTotals(){
+  const SUBS=window._currentSubs||[];
   SUBS.forEach(sub=>{
     if(sub.parts){
       const tot=sub.parts.reduce((a,p)=>a+(Number(el(`oof_${sub.id}_${p.id}`)?.value)||DEFAULT_OOF),0);
-      const c=el(`oof_${sub.id}_tot_cell`);
-      if(c) c.textContent=tot;
+      const c=el(`oof_${sub.id}_tot_cell`);if(c)c.textContent=tot;
     }
   });
 }
 
-// ── Recalculate all rows (called when oof changes) ──
-window.recalcAll=function(){
-  updateOofTotals();
-  students.forEach(s=>calcRow(s.id));
-};
+window.recalcAll=function(){updateOofTotals();students.forEach(s=>calcRow(s.id));};
 
-// ── Recalculate one student row ──
 window.calcRow=function(sid){
-  let pcts=[]; // collect per-subject percentages for overall avg
-
+  const SUBS=window._currentSubs||[];
+  let pcts=[];
   SUBS.forEach(sub=>{
     if(sub.parts){
-      // SUM the raw part scores — cap each at its oof
       const rawScores=sub.parts.map(p=>{
-        const inp = el(`${sub.id}_${p.id}_${sid}`);
-        const oofV = Number(el(`oof_${sub.id}_${p.id}`)?.value)||DEFAULT_OOF;
-        const raw  = Number(inp?.value)||0;
-        // Visual flag if over limit
-        if(inp){ inp.classList.toggle('over-limit', raw > oofV && raw > 0); }
-        return Math.min(raw, oofV); // cap at oof for calculation
+        const inp=el(`${sub.id}_${p.id}_${sid}`),oofV=Number(el(`oof_${sub.id}_${p.id}`)?.value)||DEFAULT_OOF,raw=Number(inp?.value)||0;
+        if(inp)inp.classList.toggle('over-limit',raw>oofV&&raw>0);
+        return Math.min(raw,oofV);
       });
       const rawTotal=rawScores.reduce((a,b)=>a+b,0);
       const oofTotal=sub.parts.reduce((a,p)=>a+(Number(el(`oof_${sub.id}_${p.id}`)?.value)||DEFAULT_OOF),0);
-      const anyFilled=rawScores.some(v=>v>0);
-
-      if(anyFilled){
-        el(`${sub.id}_tot_${sid}`).textContent=rawTotal;
-        const pct=(rawTotal/oofTotal)*100;
-        pcts.push(pct);
-      } else {
-        el(`${sub.id}_tot_${sid}`).textContent='';
-      }
-    } else {
-      const inp    = el(`${sub.id}_s_${sid}`);
-      const raw    = Number(inp?.value)||0;
-      const oofVal = Number(el(`oof_${sub.id}`)?.value)||DEFAULT_OOF;
-      // Visual flag if over limit
-      if(inp){ inp.classList.toggle('over-limit', raw > oofVal && raw > 0); }
-      if(raw>0){
-        const capped = Math.min(raw, oofVal);
-        const pct=(capped/oofVal)*100;
-        pcts.push(pct);
-      }
+      if(rawScores.some(v=>v>0)){el(`${sub.id}_tot_${sid}`).textContent=rawTotal;pcts.push((rawTotal/oofTotal)*100);}
+      else el(`${sub.id}_tot_${sid}`).textContent='';
+    }else{
+      const inp=el(`${sub.id}_s_${sid}`),raw=Number(inp?.value)||0,oofVal=Number(el(`oof_${sub.id}`)?.value)||DEFAULT_OOF;
+      if(inp)inp.classList.toggle('over-limit',raw>oofVal&&raw>0);
+      if(raw>0)pcts.push((Math.min(raw,oofVal)/oofVal)*100);
     }
   });
-
   if(pcts.length){
-    const avgPct=pcts.reduce((a,b)=>a+b,0)/pcts.length;
-    const lv=getLevel(avgPct);
+    const avgPct=pcts.reduce((a,b)=>a+b,0)/pcts.length,lv=getLevel(avgPct);
     el(`oa_${sid}`).textContent=avgPct.toFixed(1);
     el(`ol_${sid}`).innerHTML=`<span class="lbg ${lv.c}">${lv.l}</span>`;
     el(`op_${sid}`).textContent=lv.p;
-  } else {
-    el(`oa_${sid}`).textContent='';
-    el(`ol_${sid}`).innerHTML='';
-    el(`op_${sid}`).textContent='';
-  }
+  }else{el(`oa_${sid}`).textContent='';el(`ol_${sid}`).innerHTML='';el(`op_${sid}`).textContent='';}
   updateClassAvg();
 };
 
-// ── Class averages ──
 function updateClassAvg(){
+  const SUBS=window._currentSubs||[];
   SUBS.forEach(sub=>{
     if(sub.parts){
-      sub.parts.forEach(p=>{
-        const vals=students.map(s=>Number(el(`${sub.id}_${p.id}_${s.id}`)?.value)||0).filter(v=>v>0);
-        const c=el(`ca_${sub.id}_${p.id}`);
-        if(c) c.textContent=vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1):'';
-      });
+      sub.parts.forEach(p=>{const vals=students.map(s=>Number(el(`${sub.id}_${p.id}_${s.id}`)?.value)||0).filter(v=>v>0);const c=el(`ca_${sub.id}_${p.id}`);if(c)c.textContent=vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1):'';});
       const tots=students.map(s=>{const t=el(`${sub.id}_tot_${s.id}`);return t?Number(t.textContent)||0:0;}).filter(v=>v>0);
-      const ct=el(`ca_${sub.id}_tot`);
-      if(ct) ct.textContent=tots.length?(tots.reduce((a,b)=>a+b,0)/tots.length).toFixed(1):'';
-    } else {
+      const ct=el(`ca_${sub.id}_tot`);if(ct)ct.textContent=tots.length?(tots.reduce((a,b)=>a+b,0)/tots.length).toFixed(1):'';
+    }else{
       const vals=students.map(s=>Number(el(`${sub.id}_s_${s.id}`)?.value)||0).filter(v=>v>0);
-      const c=el(`ca_${sub.id}`);
-      if(c) c.textContent=vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1):'';
+      const c=el(`ca_${sub.id}`);if(c)c.textContent=vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1):'';
     }
   });
   const oavgs=students.map(s=>{const t=el(`oa_${s.id}`);return t?Number(t.textContent)||0:0;}).filter(v=>v>0);
-  const co=el('ca_ovr');
-  if(co) co.textContent=oavgs.length?(oavgs.reduce((a,b)=>a+b,0)/oavgs.length).toFixed(1):'';
+  const co=el('ca_ovr');if(co)co.textContent=oavgs.length?(oavgs.reduce((a,b)=>a+b,0)/oavgs.length).toFixed(1):'';
 }
 
-// ── Keyboard nav (score inputs) ──
+// ══════════════════════════════════════════════
+// KEYBOARD NAV
+// ══════════════════════════════════════════════
 window.nav=function(e,inp){
-  const idx=allInputs.indexOf(inp);
-  const firstTr=allInputs[0]?.closest('tr');
-  const perRow=firstTr?allInputs.filter(x=>x.closest('tr')===firstTr).length:1;
+  const idx=allInputs.indexOf(inp),firstTr=allInputs[0]?.closest('tr'),perRow=firstTr?allInputs.filter(x=>x.closest('tr')===firstTr).length:1;
   const map={Tab:1,Enter:1,ArrowRight:1,ArrowLeft:-1,ArrowDown:perRow,ArrowUp:-perRow};
   const d=e.shiftKey&&e.key==='Tab'?-1:map[e.key];
   if(d!==undefined){const nx=allInputs[idx+d];if(nx){e.preventDefault();nx.focus();nx.select();}}
 };
-
-// ── Keyboard nav (oof inputs) ──
 window.navOof=function(e,inp){
   if(e.key==='Enter'||e.key==='Tab'){
     e.preventDefault();
-    const oofs=Array.from(document.querySelectorAll('#mkT .oof'));
-    const i=oofs.indexOf(inp);
-    const nx=oofs[e.shiftKey?i-1:i+1];
-    if(nx){nx.focus();nx.select();}
-    else if(allInputs[0]){allInputs[0].focus();allInputs[0].select();}
+    const oofs=Array.from(document.querySelectorAll('#mkT .oof')),i=oofs.indexOf(inp),nx=oofs[e.shiftKey?i-1:i+1];
+    if(nx){nx.focus();nx.select();}else if(allInputs[0]){allInputs[0].focus();allInputs[0].select();}
   }
 };
 
-// ── Collect row data for saving ──
+// ══════════════════════════════════════════════
+// COLLECT ROW DATA
+// ══════════════════════════════════════════════
 function collectRow(sid){
+  const SUBS=window._currentSubs||[];
   const d={};
-  // save oof values alongside scores so they're restored on reload
   SUBS.forEach(sub=>{
     if(sub.parts){
-      sub.parts.forEach(p=>{
-        d[`${sub.id}_${p.id}`]=Number(el(`${sub.id}_${p.id}_${sid}`)?.value)||0;
-        d[`oof_${sub.id}_${p.id}`]=Number(el(`oof_${sub.id}_${p.id}`)?.value)||DEFAULT_OOF;
-      });
+      sub.parts.forEach(p=>{d[`${sub.id}_${p.id}`]=Number(el(`${sub.id}_${p.id}_${sid}`)?.value)||0;d[`oof_${sub.id}_${p.id}`]=Number(el(`oof_${sub.id}_${p.id}`)?.value)||DEFAULT_OOF;});
       d[`${sub.id}_tot`]=Number(el(`${sub.id}_tot_${sid}`)?.textContent)||0;
-    } else {
+    }else{
       d[`${sub.id}_score`]=Number(el(`${sub.id}_s_${sid}`)?.value)||0;
       d[`oof_${sub.id}`]=Number(el(`oof_${sub.id}`)?.value)||DEFAULT_OOF;
     }
   });
-  d.overallAvg  =Number(el(`oa_${sid}`)?.textContent)||0;
+  d.overallAvg=Number(el(`oa_${sid}`)?.textContent)||0;
   d.overallLevel=el(`ol_${sid}`)?.querySelector('.lbg')?.textContent||'';
-  d.overallPts  =Number(el(`op_${sid}`)?.textContent)||0;
+  d.overallPts=Number(el(`op_${sid}`)?.textContent)||0;
   return d;
 }
 
 // ══════════════════════════════════════════════
-// SCORE VALIDATION — cap at oof value
+// VALIDATION
 // ══════════════════════════════════════════════
-window.validateScore = function(inp, subKey, isPart){
-  const val = Number(inp.value);
-  if(isNaN(val) || inp.value === '') return;
-
-  // Get the oof for this input
-  const oofId = isPart ? `oof_${subKey}` : `oof_${subKey}`;
-  const oofVal = Number(el(oofId)?.value) || DEFAULT_OOF;
-
-  if(val > oofVal){
-    inp.classList.add('over-limit');
-    inp.title = `⚠ Score ${val} exceeds maximum ${oofVal}`;
-    showNetBar(`⚠ Score ${val} exceeds max ${oofVal} — please correct`, 'offline');
-  } else {
-    inp.classList.remove('over-limit');
-    inp.title = '';
-    if(document.getElementById('netBar').classList.contains('offline') &&
-       document.getElementById('netBar').textContent.includes('exceeds')){
-      hideNetBar();
-    }
-  }
+window.validateScore=function(inp,subKey,isPart){
+  const val=Number(inp.value);if(isNaN(val)||inp.value==='')return;
+  const oofVal=Number(el(isPart?`oof_${subKey}`:`oof_${subKey}`)?.value)||DEFAULT_OOF;
+  if(val>oofVal){inp.classList.add('over-limit');inp.title=`⚠ Score ${val} exceeds maximum ${oofVal}`;showNetBar(`⚠ Score ${val} exceeds max ${oofVal} — please correct`,'offline');}
+  else{inp.classList.remove('over-limit');inp.title='';}
 };
-
-// Check all inputs — returns true if any are over limit
-function hasValidationErrors(){
-  return document.querySelectorAll('.si.over-limit').length > 0;
-}
+function hasValidationErrors(){return document.querySelectorAll('.si.over-limit').length>0;}
 
 // ══════════════════════════════════════════════
-// NETWORK STATUS BAR
+// NETWORK BAR
 // ══════════════════════════════════════════════
-let _netBarTimer = null;
-function showNetBar(msg, type='saving'){
-  const bar = el('netBar');
-  bar.className = type;
-  bar.textContent = msg;
-  clearTimeout(_netBarTimer);
-  if(type === 'saved'){
-    _netBarTimer = setTimeout(hideNetBar, 2500);
-  }
-}
-function hideNetBar(){
-  const bar = el('netBar');
-  bar.className = '';
-  setTimeout(()=>{ bar.style.display='none'; bar.className=''; },300);
-}
-
-// Online/offline detection
-window.addEventListener('offline', ()=>{
-  showNetBar('📡 No internet — marks are saved locally and will sync when back online', 'offline');
-  setDot('err');
-});
-window.addEventListener('online', ()=>{
-  showNetBar('✅ Back online — syncing unsaved marks…', 'saving');
-  setDot('saving');
-  setTimeout(()=>{ syncPendingRows(); }, 1000);
-});
-
-function setDot(state){
-  const dot = el('autoSaveDot');
-  if(dot){ dot.className = 'as-dot ' + state; }
-}
+let _netBarTimer=null;
+function showNetBar(msg,type='saving'){const bar=el('netBar');bar.className=type;bar.textContent=msg;clearTimeout(_netBarTimer);if(type==='saved')_netBarTimer=setTimeout(hideNetBar,2500);}
+function hideNetBar(){const bar=el('netBar');bar.className='';setTimeout(()=>{bar.style.display='none';bar.className='';},300);}
+window.addEventListener('offline',()=>{showNetBar('📡 No internet — marks saved locally','offline');});
+window.addEventListener('online',()=>{showNetBar('✅ Back online — syncing…','saving');setTimeout(syncPendingRows,1000);});
 
 // ══════════════════════════════════════════════
-// DRAFT — localStorage backup on every keystroke
-// Key: cbe_draft_{schoolId}_{grade}_{stream}_{term}_{year}
+// DRAFT (localStorage)
 // ══════════════════════════════════════════════
-let _draftKey = null;
-
+let _draftKey=null;
 function getDraftKey(){
-  if(_draftKey) return _draftKey;
-  const sid    = currentUser?.schoolId || sessionStorage.getItem('cbe_school_id') || 'x';
-  // For teachers, grade/stream come from their profile, not DOM hidden inputs
-  const grade  = currentUser?.role === 'teacher'
-    ? (currentUser.grade  || el('selGrade')?.value  || '')
-    : (el('selGrade')?.value  || '');
-  const stream = currentUser?.role === 'teacher'
-    ? (currentUser.stream || el('selStream')?.value || '')
-    : (el('selStream')?.value || '');
-  const term   = el('selTerm')?.value   || '';
-  const year   = el('selYear')?.value   || '';
-  _draftKey = `cbe_draft_${sid}_${grade}_${stream}_${term}_${year}`.replace(/\s/g,'_');
+  if(_draftKey)return _draftKey;
+  const sid=currentUser?.schoolId||sessionStorage.getItem('cbe_school_id')||'x';
+  const grade=currentUser?.role==='teacher'?(currentUser.grade||el('selGrade')?.value||''):(el('selGrade')?.value||'');
+  const stream=currentUser?.role==='teacher'?(currentUser.stream||el('selStream')?.value||''):(el('selStream')?.value||'');
+  const term=el('selTerm')?.value||'',year=el('selYear')?.value||'';
+  const cat=gradeUsesCats(grade)?currentCat:'';
+  _draftKey=`cbe_draft_${sid}_${grade}_${stream}_${term}_${year}_${cat}`.replace(/\s/g,'_');
   return _draftKey;
 }
-
 function draftSave(sid){
-  // Collect current inputs for this student and save to localStorage
-  try{
-    const key = getDraftKey();
-    let draft = {};
-    try{ draft = JSON.parse(localStorage.getItem(key)||'{}'); }catch(_){}
-    // Save all inputs for this student
-    const d = collectRow(sid);
-    d._savedAt = Date.now();
-    draft[sid] = d;
-    localStorage.setItem(key, JSON.stringify(draft));
-    // Show draft badge if we have unsaved drafts
-    const draftsUnsaved = Object.keys(draft).filter(id=>!savedMap[id]?.updatedAt);
-    const badge = el('draftBadge');
-    if(badge && draftsUnsaved.length > 0){
-      badge.style.display = 'inline-block';
-      badge.textContent   = `📋 Draft (${draftsUnsaved.length})`;
-    }
-  }catch(_){}
+  try{const key=getDraftKey();let draft={};try{draft=JSON.parse(localStorage.getItem(key)||'{}');}catch(_){}const d=collectRow(sid);d._savedAt=Date.now();draft[sid]=d;localStorage.setItem(key,JSON.stringify(draft));}catch(_){}
 }
-
 function loadDraft(){
-  // Called after renderTable — restore any draft values not yet saved to Firestore
+  const SUBS=window._currentSubs||[];
   try{
-    _draftKey = null; // reset so getDraftKey re-reads current selectors
-    const key  = getDraftKey();
-    const raw  = localStorage.getItem(key);
-    if(!raw) return;
-    const draft = JSON.parse(raw);
-    let restored = 0;
+    _draftKey=null;const key=getDraftKey(),raw=localStorage.getItem(key);if(!raw)return;
+    const draft=JSON.parse(raw);let restored=0;
     students.forEach(s=>{
-      // Restore draft only for students NOT yet saved to Firestore
-      // (saved students get their data from Firestore via savedMap in renderTable)
-      if(draft[s.id] && !savedMap[s.id]){
-        const d = draft[s.id];
-        // Restore oof values first (they affect calculations)
+      if(draft[s.id]&&!savedMap[s.id]){
+        const d=draft[s.id];
         SUBS.forEach(sub=>{
-          if(sub.parts){
-            sub.parts.forEach(p=>{
-              const oofInp = el(`oof_${sub.id}_${p.id}`);
-              if(oofInp && d[`oof_${sub.id}_${p.id}`]) oofInp.value = d[`oof_${sub.id}_${p.id}`];
-            });
-          } else {
-            const oofInp = el(`oof_${sub.id}`);
-            if(oofInp && d[`oof_${sub.id}`]) oofInp.value = d[`oof_${sub.id}`];
-          }
+          if(sub.parts){sub.parts.forEach(p=>{const o=el(`oof_${sub.id}_${p.id}`);if(o&&d[`oof_${sub.id}_${p.id}`])o.value=d[`oof_${sub.id}_${p.id}`];});}
+          else{const o=el(`oof_${sub.id}`);if(o&&d[`oof_${sub.id}`])o.value=d[`oof_${sub.id}`];}
         });
-        // Restore score values
         SUBS.forEach(sub=>{
-          if(sub.parts){
-            sub.parts.forEach(p=>{
-              const inp = el(`${sub.id}_${p.id}_${s.id}`);
-              if(inp && d[`${sub.id}_${p.id}`] !== undefined && d[`${sub.id}_${p.id}`] !== 0)
-                inp.value = d[`${sub.id}_${p.id}`];
-            });
-          } else {
-            const inp = el(`${sub.id}_s_${s.id}`);
-            if(inp && d[`${sub.id}_score`] !== undefined && d[`${sub.id}_score`] !== 0)
-              inp.value = d[`${sub.id}_score`];
-          }
+          if(sub.parts){sub.parts.forEach(p=>{const inp=el(`${sub.id}_${p.id}_${s.id}`);if(inp&&d[`${sub.id}_${p.id}`]!==undefined&&d[`${sub.id}_${p.id}`]!==0)inp.value=d[`${sub.id}_${p.id}`];});}
+          else{const inp=el(`${sub.id}_s_${s.id}`);if(inp&&d[`${sub.id}_score`]!==undefined&&d[`${sub.id}_score`]!==0)inp.value=d[`${sub.id}_score`];}
         });
-        calcRow(s.id);
-        restored++;
+        calcRow(s.id);restored++;
       }
     });
     updateOofTotals();
-    if(restored > 0){
-      const badge = el('draftBadge');
-      if(badge){
-        badge.style.display = 'inline-block';
-        badge.textContent   = `📋 Draft (${restored})`;
-      }
-      toast(`📋 ${restored} unsaved draft${restored>1?'s':''} restored`, 'info');
-    }
-  }catch(e){ console.warn('Draft restore failed:', e.message); }
+    if(restored>0)toast(`📋 ${restored} unsaved draft${restored>1?'s':''} restored`,'info');
+  }catch(e){console.warn('Draft restore failed:',e.message);}
 }
-
-function restoreDraft(){
-  // Manual trigger from badge — same as loadDraft but with confirmation
-  toast('Drafts already restored — save to Firestore using Save All', 'info');
-}
-
-function clearDraft(sid){
-  // Called after successful save — remove from draft
-  try{
-    const key = getDraftKey();
-    const raw = localStorage.getItem(key);
-    if(!raw) return;
-    const draft = JSON.parse(raw);
-    delete draft[sid];
-    if(Object.keys(draft).length === 0){
-      localStorage.removeItem(key);
-      const badge = el('draftBadge');
-      if(badge) badge.style.display = 'none';
-    } else {
-      localStorage.setItem(key, JSON.stringify(draft));
-      const badge = el('draftBadge');
-      if(badge) badge.textContent = `📋 Draft (${Object.keys(draft).length})`;
-    }
-  }catch(_){}
-}
+function clearDraft(sid){try{const key=getDraftKey(),raw=localStorage.getItem(key);if(!raw)return;const draft=JSON.parse(raw);delete draft[sid];if(Object.keys(draft).length===0)localStorage.removeItem(key);else localStorage.setItem(key,JSON.stringify(draft));}catch(_){}}
 
 // ══════════════════════════════════════════════
-// AUTOSAVE — triggered on blur (leaving a cell)
-// Debounced per student: waits 800ms after last blur
+// AUTOSAVE
 // ══════════════════════════════════════════════
-const _autoSaveTimers = {};
-
-window.autoSaveRow = function(sid){
-  // Don't autosave if over limit
-  if(hasValidationErrors()) return;
+const _autoSaveTimers={};
+window.autoSaveRow=function(sid){
+  if(hasValidationErrors())return;
   clearTimeout(_autoSaveTimers[sid]);
-  _autoSaveTimers[sid] = setTimeout(()=>{
-    const d = collectRow(sid);
-    if(!d.overallAvg) return; // nothing entered yet
-    _doAutoSave(sid);
-  }, 800);
+  _autoSaveTimers[sid]=setTimeout(()=>{const d=collectRow(sid);if(!d.overallAvg)return;_doAutoSave(sid);},800);
 };
-
 async function _doAutoSave(sid){
-  setDot('saving');
-  showNetBar('💾 Autosaving…', 'saving');
-  try{
-    await _saveRowSilent(sid);
-    setDot('saved');
-    showNetBar('✅ Autosaved', 'saved');
-  }catch(e){
-    setDot('err');
-    showNetBar('📡 Offline — draft saved locally', 'offline');
-    console.warn('Autosave failed:', e.message);
-  }
+  showNetBar('💾 Autosaving…','saving');
+  try{await _saveRowSilent(sid);showNetBar('✅ Autosaved','saved');}
+  catch(e){showNetBar('📡 Offline — draft saved locally','offline');console.warn('Autosave failed:',e.message);}
 }
+const _pendingSync=new Set();
 
-// Pending rows for sync when back online
-const _pendingSync = new Set();
+// ── Build save payload (shared by saveRow + _saveRowSilent) ──
+function _buildPayload(sid,d){
+  const s=students.find(x=>x.id===sid);
+  const{grade:saveGrade}=_getClassSelectors();
+  const saveStream=currentUser?.role==='teacher'?(currentUser.stream||''):(streamsEnabled&&gradeHasStreams?(el('selStream')?.value||''):'');
+  const usesCats=gradeUsesCats(saveGrade);
+  return{
+    studentId:sid,studentName:s.name,admissionNumber:s.admissionNumber||'',
+    grade:saveGrade,stream:saveStream,
+    term:el('selTerm').value,year:el('selYear').value,
+    // Store exam field for CAT grades — crucial for filtering
+    ...(usesCats?{exam:currentCat}:{}),
+    schoolId:currentUser?.schoolId||sessionStorage.getItem('cbe_school_id')||'',
+    teacherId:currentUser?.uid||'',teacherName:currentUser?.fullName||'',
+    ...d,updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+  };
+}
 
 async function _saveRowSilent(sid){
-  const s = students.find(x=>x.id===sid);
-  if(!s) return;
-  const d = collectRow(sid);
-  if(!d.overallAvg) return;
-
-  // Check network
-  if(!navigator.onLine){
-    _pendingSync.add(sid);
-    draftSave(sid);
-    throw new Error('offline');
-  }
-
-  const payload = {
-    studentId:sid, studentName:s.name, admissionNumber:s.admissionNumber||'',
-    grade:el('selGrade').value, stream:streamsEnabled?el('selStream').value:'',
-    term:el('selTerm').value,   year:el('selYear').value,
-    schoolId:    currentUser?.schoolId   || sessionStorage.getItem('cbe_school_id') || '',
-    teacherId:   currentUser?.uid        || '',
-    teacherName: currentUser?.fullName   || '',
-    ...d, updatedAt:firebase.firestore.FieldValue.serverTimestamp()
-  };
-
-  const ex = savedMap[sid];
-  if(ex){
-    await db.collection('results').doc(ex.id).update(payload);
-    savedMap[sid] = {...ex, ...payload};
-  } else {
-    payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-    const ref = await db.collection('results').add(payload);
-    savedMap[sid] = {id:ref.id, ...payload};
-    el('pilSv').textContent = ++savedCount;
-  }
-
-  // ── Keep cache coherent — update in place instead of invalidating ──
-  _cacheUpdateSave(sid, sid, savedMap[sid]);
-
-  // Mark row as saved
+  const d=collectRow(sid); if(!d.overallAvg)return;
+  if(!navigator.onLine){_pendingSync.add(sid);draftSave(sid);throw new Error('offline');}
+  const payload=_buildPayload(sid,d);
+  const{grade:saveGrade}=_getClassSelectors();
+  const catKey=gradeUsesCats(saveGrade)?currentCat:'';
+  const ck=_cacheKey(saveGrade,payload.stream,payload.term,payload.year,catKey,payload.schoolId);
+  const ex=savedMap[sid];
+  if(ex){await db.collection('results').doc(ex.id).update(payload);savedMap[sid]={...ex,...payload};}
+  else{payload.createdAt=firebase.firestore.FieldValue.serverTimestamp();const ref=await db.collection('results').add(payload);savedMap[sid]={id:ref.id,...payload};el('pilSv').textContent=++savedCount;}
+  _cacheUpdateSave(ck,sid,savedMap[sid]);
   el(`tr-${sid}`)?.classList.add('saved');
-  const actEl = el(`act_${sid}`);
-  if(actEl) actEl.innerHTML = `<span class="sv-done">✓</span>`;
-
-  // Clear draft for this student
-  clearDraft(sid);
-  _pendingSync.delete(sid);
+  const actEl=el(`act_${sid}`);if(actEl)actEl.innerHTML=`<span class="sv-done">✓</span>`;
+  clearDraft(sid);_pendingSync.delete(sid);
 }
 
 async function syncPendingRows(){
-  if(!_pendingSync.size) return;
-  const ids = [..._pendingSync];
-  toast(`Syncing ${ids.length} pending rows…`, 'info');
-  setDot('saving');
-  let done = 0;
-  for(const sid of ids){
-    try{ await _saveRowSilent(sid); done++; }catch(_){}
-  }
-  if(done > 0){
-    setDot('saved');
-    showNetBar(`✅ Synced ${done} row${done>1?'s':''}`, 'saved');
-    toast(`✅ Synced ${done} rows`, 'ok');
-  }
+  if(!_pendingSync.size)return;
+  const ids=[..._pendingSync];toast(`Syncing ${ids.length} pending rows…`,'info');
+  let done=0;for(const sid of ids){try{await _saveRowSilent(sid);done++;}catch(_){}}
+  if(done>0){showNetBar(`✅ Synced ${done} row${done>1?'s':''}`, 'saved');toast(`✅ Synced ${done} rows`);}
 }
 
 // ══════════════════════════════════════════════
-
-// ── Save one row ──
+// SAVE ROW (manual)
+// ══════════════════════════════════════════════
 window.saveRow=async function(sid){
-  const s=students.find(x=>x.id===sid);
-  if(!s) return;
+  const s=students.find(x=>x.id===sid); if(!s)return;
   if(hasValidationErrors()){toast('Fix scores exceeding maximum before saving','err');return;}
-  const d=collectRow(sid);
-  if(!d.overallAvg){toast('Enter at least one score','err');return;}
+  const d=collectRow(sid); if(!d.overallAvg){toast('Enter at least one score','err');return;}
   const btn=el(`act_${sid}`)?.querySelector('.sv-btn');
   if(btn){btn.disabled=true;btn.textContent='…';}
-  const {grade: saveGrade, stream: saveStream} = _getClassSelectors();
-  const payload={
-    studentId:sid, studentName:s.name, admissionNumber:s.admissionNumber||'',
-    grade: saveGrade,
-    stream: currentUser?.role === 'teacher' ? (currentUser.stream || '') : (streamsEnabled ? el('selStream').value : ''),
-    term:el('selTerm').value,   year:el('selYear').value,
-    schoolId:    currentUser?.schoolId   || sessionStorage.getItem('cbe_school_id') || '',
-    teacherId:   currentUser?.uid        || '',
-    teacherName: currentUser?.fullName   || '',
-    ...d, updatedAt:firebase.firestore.FieldValue.serverTimestamp()
-  };
+  const payload=_buildPayload(sid,d);
+  const{grade:saveGrade}=_getClassSelectors();
+  const catKey=gradeUsesCats(saveGrade)?currentCat:'';
+  const ck=_cacheKey(saveGrade,payload.stream,payload.term,payload.year,catKey,payload.schoolId);
   try{
     const ex=savedMap[sid];
-    if(ex){
-      await db.collection('results').doc(ex.id).update(payload);
-      savedMap[sid]={...ex,...payload};
-    } else {
-      payload.createdAt=firebase.firestore.FieldValue.serverTimestamp();
-      const ref=await db.collection('results').add(payload);
-      savedMap[sid]={id:ref.id,...payload};
-      el('pilSv').textContent=++savedCount;
-    }
-    // ── Keep cache coherent ──
-    _cacheUpdateSave(sid, sid, savedMap[sid]);
+    if(ex){await db.collection('results').doc(ex.id).update(payload);savedMap[sid]={...ex,...payload};}
+    else{payload.createdAt=firebase.firestore.FieldValue.serverTimestamp();const ref=await db.collection('results').add(payload);savedMap[sid]={id:ref.id,...payload};el('pilSv').textContent=++savedCount;}
+    _cacheUpdateSave(ck,sid,savedMap[sid]);
     el(`tr-${sid}`)?.classList.add('saved');
     el(`act_${sid}`).innerHTML=`<span class="sv-done">✓</span>`;
-    clearDraft(sid);
-    _pendingSync.delete(sid);
+    clearDraft(sid);_pendingSync.delete(sid);
     toast(`Saved: ${s.name}`);
-  }catch(e){
-    toast(`Error: ${e.message}`,'err');
-    if(btn){btn.disabled=false;btn.textContent='Save';}
-  }
+  }catch(e){toast(`Error: ${e.message}`,'err');if(btn){btn.disabled=false;btn.textContent='Save';}}
 };
 
-// ── Save all ──
+// ══════════════════════════════════════════════
+// SAVE ALL
+// ══════════════════════════════════════════════
 window.saveAll=async function(){
   if(!students.length){toast('Load students first','err');return;}
   let done=0,skip=0;
-  for(const s of students){
-    const d=collectRow(s.id);
-    if(d.overallAvg>0){await saveRow(s.id);done++;}else skip++;
-  }
+  for(const s of students){const d=collectRow(s.id);if(d.overallAvg>0){await saveRow(s.id);done++;}else skip++;}
   toast(`${done} saved${skip?` · ${skip} skipped`:''}`);
 };
 
-// ── Export CSV — admin/secretary only ──
-window.exportCSV=function(){
-  if(currentUser?.role === 'teacher'){toast('Export restricted to admin/secretary','err');return;}
-  if(!students.length){toast('Load students first','err');return;}
-  const heads=['#','Name','Adm No','Grade','Stream','Term','Year'];
-  SUBS.forEach(s=>{
-    if(s.parts){
-      s.parts.forEach(p=>{heads.push(`${s.label} ${p.label}`);heads.push(`Out Of`);});
-      heads.push(`${s.label} Total`);
-    } else {
-      heads.push(s.label);heads.push('Out Of');
-    }
-  });
-  heads.push('Overall Avg%','Overall Level','Overall Pts');
-  const grade=el('selGrade').value,stream=el('selStream').value,
-        term=el('selTerm').value,year=el('selYear').value;
-  const rows=[heads];
-  students.forEach((s,i)=>{
-    const row=[i+1,s.name,s.admissionNumber||'',grade,stream,term,year];
-    SUBS.forEach(sub=>{
-      if(sub.parts){
-        sub.parts.forEach(p=>{
-          row.push(Number(el(`${sub.id}_${p.id}_${s.id}`)?.value)||'');
-          row.push(Number(el(`oof_${sub.id}_${p.id}`)?.value)||DEFAULT_OOF);
-        });
-        row.push(el(`${sub.id}_tot_${s.id}`)?.textContent||'');
-      } else {
-        row.push(Number(el(`${sub.id}_s_${s.id}`)?.value)||'');
-        row.push(Number(el(`oof_${sub.id}`)?.value)||DEFAULT_OOF);
-      }
-    });
-    row.push(el(`oa_${s.id}`)?.textContent||'',
-             el(`ol_${s.id}`)?.querySelector('.lbg')?.textContent||'',
-             el(`op_${s.id}`)?.textContent||'');
-    rows.push(row);
-  });
-  const csv=rows.map(r=>r.map(v=>`"${v}"`).join(',')).join('\n');
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
-  a.download=`CBE_${grade.replace(' ','')}_${stream}_${term.replace(' ','')}_${year}.csv`;
-  a.click();
-  toast('CSV exported');
-};
+// ══════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════
+const el=id=>document.getElementById(id);
 
-// ── Dark mode ──
+function toast(msg,type='ok'){
+  const t=document.createElement('div');t.className=`t ${type}`;
+  t.innerHTML=`<span>${type==='ok'?'✅':type==='err'?'❌':'ℹ️'}</span>${msg}`;
+  el('tc').appendChild(t);
+  setTimeout(()=>{t.style.animation='tout .25s ease forwards';setTimeout(()=>t.remove(),280);},2600);
+}
+
+async function doLogout(){
+  try{['cbe_streams','cbe_streams_ts'].forEach(k=>localStorage.removeItem(k));await auth.signOut();window.location.href='login';}
+  catch(e){toast('Sign out failed: '+e.message,'err');}
+}
+
+// Dark mode
 document.getElementById('themeBtn').addEventListener('click',function(){
-  document.body.classList.toggle('dark');
-  this.textContent=document.body.classList.contains('dark')?'☀️':'🌙';
+  document.body.classList.toggle('dark');this.textContent=document.body.classList.contains('dark')?'☀️':'🌙';
   localStorage.setItem('cbe_theme',document.body.classList.contains('dark')?'dark':'light');
 });
-if(localStorage.getItem('cbe_theme')==='dark'){
-  document.body.classList.add('dark');
-  el('themeBtn').textContent='☀️';
-}
+if(localStorage.getItem('cbe_theme')==='dark'){document.body.classList.add('dark');el('themeBtn').textContent='☀️';}
 
-// ── Block browser print shortcut for teachers ──
-window.addEventListener('beforeprint', function(e){
-  if(currentUser?.role === 'teacher'){ e.preventDefault(); toast('Printing restricted to admin/secretary','err'); }
-});
-
-// ── Logout ──
-async function doLogout(){
-  try{
-    clearSessionCache();
-    await auth.signOut();
-    window.location.href = 'login';
-  }catch(e){
-    toast('Sign out failed: '+e.message,'err');
-  }
-}
+window.addEventListener('beforeprint',function(e){if(currentUser?.role==='teacher'){e.preventDefault();toast('Printing restricted to admin/secretary','err');}});
 
 // ══════════════════════════════════════════════
-// SHARED COMPUTER SECURITY
+// SESSION TIMEOUT
 // ══════════════════════════════════════════════
-
-const SESSION_TIMEOUT_MS  = 30 * 60 * 1000; // 30 minutes idle
-const SESSION_WARNING_MS  = 2  * 60 * 1000; // warn 2 minutes before
-let   _idleTimer = null, _warnTimer = null, _warnEl = null;
-
-// ── Clear only user-session data on logout ──
-// Keeps: cbe_theme, cbe_school_settings (non-sensitive)
-// Clears: streams cache, any user-specific state
-function clearSessionCache(){
-  ['cbe_streams','cbe_streams_ts'].forEach(k=>localStorage.removeItem(k));
-}
-
-// ── Create warning banner (injected into DOM) ──
+const SESSION_TIMEOUT_MS=30*60*1000,SESSION_WARNING_MS=2*60*1000;
+let _idleTimer=null,_warnTimer=null,_warnEl=null;
 function createWarnBanner(){
-  if(document.getElementById('_sessionWarn')) return;
-  const d = document.createElement('div');
-  d.id = '_sessionWarn';
-  d.style.cssText = `
-    display:none;position:fixed;top:0;left:0;right:0;z-index:9999;
-    background:#7f1d1d;color:#fef2f2;font-family:inherit;
-    padding:10px 20px;font-size:13px;font-weight:600;
-    display:none;align-items:center;justify-content:space-between;gap:12px;
-    border-bottom:2px solid #ef4444;
-  `;
-  d.innerHTML = `
-    <span>⚠️ Your session will expire in <span id="_sessionCountdown">2:00</span> due to inactivity.</span>
-    <div style="display:flex;gap:8px">
-      <button onclick="_keepAlive()" style="padding:4px 12px;background:#059669;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:700;font-size:12px">Stay Logged In</button>
-      <button onclick="doLogout()" style="padding:4px 12px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:4px;cursor:pointer;font-size:12px">Sign Out Now</button>
-    </div>`;
-  document.body.prepend(d);
-  _warnEl = d;
+  if(document.getElementById('_sessionWarn'))return;
+  const d=document.createElement('div');d.id='_sessionWarn';
+  d.style.cssText='display:none;position:fixed;top:0;left:0;right:0;z-index:9999;background:#7f1d1d;color:#fef2f2;font-family:inherit;padding:10px 20px;font-size:13px;font-weight:600;display:none;align-items:center;justify-content:space-between;gap:12px;border-bottom:2px solid #ef4444';
+  d.innerHTML=`<span>⚠️ Session expires in <span id="_sessionCountdown">2:00</span> — inactivity.</span><div style="display:flex;gap:8px"><button onclick="_keepAlive()" style="padding:4px 12px;background:#059669;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:700;font-size:12px">Stay Logged In</button><button onclick="doLogout()" style="padding:4px 12px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:4px;cursor:pointer;font-size:12px">Sign Out Now</button></div>`;
+  document.body.prepend(d);_warnEl=d;
 }
-
-// ── Reset idle timer on any user activity ──
 function _resetIdleTimer(){
-  clearTimeout(_idleTimer);
-  clearTimeout(_warnTimer);
-  if(_warnEl) _warnEl.style.display = 'none';
-
-  // Warn 2 min before timeout
-  _warnTimer = setTimeout(()=>{
-    createWarnBanner();
-    _warnEl.style.display = 'flex';
-    // Countdown tick
-    let secs = SESSION_WARNING_MS / 1000;
-    const tick = setInterval(()=>{
-      secs--;
-      const el = document.getElementById('_sessionCountdown');
-      if(el) el.textContent = Math.floor(secs/60)+':'+(secs%60).toString().padStart(2,'0');
-      if(secs <= 0) clearInterval(tick);
-    }, 1000);
-  }, SESSION_TIMEOUT_MS - SESSION_WARNING_MS);
-
-  // Auto-logout after full timeout
-  _idleTimer = setTimeout(()=>{
-    doLogout();
-  }, SESSION_TIMEOUT_MS);
+  clearTimeout(_idleTimer);clearTimeout(_warnTimer);if(_warnEl)_warnEl.style.display='none';
+  _warnTimer=setTimeout(()=>{createWarnBanner();_warnEl.style.display='flex';let secs=SESSION_WARNING_MS/1000;const tick=setInterval(()=>{secs--;const e=document.getElementById('_sessionCountdown');if(e)e.textContent=Math.floor(secs/60)+':'+(secs%60).toString().padStart(2,'0');if(secs<=0)clearInterval(tick);},1000);},SESSION_TIMEOUT_MS-SESSION_WARNING_MS);
+  _idleTimer=setTimeout(doLogout,SESSION_TIMEOUT_MS);
 }
-
-window._keepAlive = function(){
-  _resetIdleTimer();
-};
-
-// ── Listen for activity ──
-['mousemove','keydown','click','touchstart','scroll'].forEach(evt=>{
-  document.addEventListener(evt, _resetIdleTimer, {passive:true});
-});
-
-// ── Start timer immediately ──
+window._keepAlive=function(){_resetIdleTimer();};
+['mousemove','keydown','click','touchstart','scroll'].forEach(evt=>document.addEventListener(evt,_resetIdleTimer,{passive:true}));
 _resetIdleTimer();
-
-
 </script>
 </body>
 </html>
