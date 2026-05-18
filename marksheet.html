@@ -214,12 +214,12 @@ body.dark .si.over-limit{background:#450a0a !important}
     <option>Term 1</option><option>Term 2</option><option>Term 3</option>
   </select>
 
-  <!-- CAT tabs — shown for grades 7-14 only -->
+  <!-- Exam tabs — shown once a grade is selected (all grades 1-14) -->
   <span class="tb-lbl" id="catSelectorLabel" style="display:none">Exam</span>
   <div class="cat-tabs-wrap" id="catTabsWrap" style="display:none">
-    <button class="cat-tab" id="catBtn_CAT 1" onclick="selectCat('CAT 1')">CAT 1</button>
-    <button class="cat-tab" id="catBtn_CAT 2" onclick="selectCat('CAT 2')">CAT 2</button>
-    <button class="cat-tab" id="catBtn_CAT 3" onclick="selectCat('CAT 3')">CAT 3</button>
+    <button class="cat-tab" id="catBtn_Exam 1" onclick="selectCat('Exam 1')">Exam 1</button>
+    <button class="cat-tab" id="catBtn_Exam 2" onclick="selectCat('Exam 2')">Exam 2</button>
+    <button class="cat-tab" id="catBtn_Exam 3" onclick="selectCat('Exam 3')">Exam 3</button>
   </div>
 
   <span class="tb-lbl">Year</span>
@@ -246,12 +246,12 @@ body.dark .si.over-limit{background:#450a0a !important}
     <option>Term 1</option><option>Term 2</option><option>Term 3</option>
   </select>
 
-  <!-- CAT tabs for teachers (grades 7-14) -->
+  <!-- Exam tabs for teachers (all grades) -->
   <span class="tb-lbl" id="catSelectorLabelT" style="display:none">Exam</span>
   <div class="cat-tabs-wrap" id="catTabsWrapT" style="display:none">
-    <button class="cat-tab" id="catBtnT_CAT 1" onclick="selectCat('CAT 1')">CAT 1</button>
-    <button class="cat-tab" id="catBtnT_CAT 2" onclick="selectCat('CAT 2')">CAT 2</button>
-    <button class="cat-tab" id="catBtnT_CAT 3" onclick="selectCat('CAT 3')">CAT 3</button>
+    <button class="cat-tab" id="catBtnT_Exam 1" onclick="selectCat('Exam 1')">Exam 1</button>
+    <button class="cat-tab" id="catBtnT_Exam 2" onclick="selectCat('Exam 2')">Exam 2</button>
+    <button class="cat-tab" id="catBtnT_Exam 3" onclick="selectCat('Exam 3')">Exam 3</button>
   </div>
 
   <span class="tb-lbl">Year</span>
@@ -281,7 +281,7 @@ body.dark .si.over-limit{background:#450a0a !important}
     <div class="pills">
       <div class="pill">👥 <span class="pv" id="pilS">0</span> students</div>
       <div class="pill">✅ <span class="pv" id="pilSv">0</span> saved</div>
-      <div class="pill" id="catPill" style="display:none">📝 <span class="pv" id="catPillTxt">CAT 1</span></div>
+      <div class="pill" id="catPill" style="display:none">📝 <span class="pv" id="catPillTxt">Exam 1</span></div>
     </div>
   </div>
   <div class="sheet-card">
@@ -323,7 +323,7 @@ const _settingsPromise=new Promise(res=>{_settingsResolve=res;});
 // ══════════════════════════════════════════════
 // CAT MODE
 // ══════════════════════════════════════════════
-let currentCat='CAT 1'; // active CAT: 'CAT 1' | 'CAT 2' | 'CAT 3'
+let currentCat='Exam 1'; // active exam: 'Exam 1' | 'Exam 2' | 'Exam 3'
 
 function applyCatUI(gradeStr){
   const usesCats=gradeUsesCats(gradeStr);
@@ -342,7 +342,7 @@ function applyCatUI(gradeStr){
 }
 
 function updateCatTabUI(){
-  ['CAT 1','CAT 2','CAT 3'].forEach((c,i)=>{
+  ['Exam 1','Exam 2','Exam 3'].forEach((c,i)=>{
     const cls=['active-1','active-2','active-3'][i];
     [el(`catBtn_${c}`),el(`catBtnT_${c}`)].forEach(btn=>{
       if(!btn) return;
@@ -361,11 +361,11 @@ window.selectCat=function(cat){
 
 window.onTermChange=function(){ loadStudents(); };
 
-// Auto-select correct CAT based on current month
+// Auto-select correct Exam based on current month
 function autoSelectCat(){
   const month=new Date().getMonth()+1;
   const mInTerm=month<=4?month:month<=8?month-4:month-8;
-  currentCat=mInTerm<=1?'CAT 1':mInTerm<=2?'CAT 2':'CAT 3';
+  currentCat=mInTerm<=1?'Exam 1':mInTerm<=2?'Exam 2':'Exam 3';
   updateCatTabUI();
 }
 
