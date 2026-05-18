@@ -281,6 +281,31 @@ body.dark .si.over-limit{background:#450a0a !important}
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script src="school-settings.js"></script>
 <script>
+// ── Fallback definitions — used if subjects.js did not define them globally.
+//    subjects.js versions (if present) take precedence because this script
+//    runs after subjects.js and only sets them when still undefined.
+if(typeof gradeUsesCats === 'undefined'){
+  window.gradeUsesCats = function(gradeStr){
+    const n = parseInt((gradeStr||'').replace(/\D/g,'')) || 0;
+    return n >= 7;
+  };
+}
+if(typeof getSubs === 'undefined'){
+  const _SUBS_13  = [{id:'math',label:'Mathematical Activities',icon:'🔢',gc:'g-math',sc:'s-math'},{id:'eng',label:'English',icon:'📖',gc:'g-eng',sc:'s-eng'},{id:'kis',label:'Kiswahili',icon:'🗣️',gc:'g-kis',sc:'s-kis'},{id:'int',label:'Integrated Activities',icon:'🌈',gc:'g-sci',sc:'s-sci'},{id:'crt',label:'Creative Activities',icon:'🎨',gc:'g-arts',sc:'s-arts'}];
+  const _SUBS_46  = [{id:'math',label:'Mathematics',icon:'🔢',gc:'g-math',sc:'s-math'},{id:'eng',label:'English',icon:'📖',gc:'g-eng',sc:'s-eng',parts:[{id:'lang',label:'Language'},{id:'comp',label:'Composition'}]},{id:'kis',label:'Kiswahili',icon:'🗣️',gc:'g-kis',sc:'s-kis',parts:[{id:'lugha',label:'Lugha'},{id:'insha',label:'Insha'}]},{id:'sci',label:'Science and Technology',icon:'🔬',gc:'g-sci',sc:'s-sci'},{id:'re',label:'CRE',icon:'✝️',gc:'g-re',sc:'s-re'},{id:'soc',label:'Social Studies',icon:'🌍',gc:'g-soc',sc:'s-soc'},{id:'arts',label:'Creative Art and Sport',icon:'🎨',gc:'g-arts',sc:'s-arts'},{id:'agri',label:'Agriculture and Nutrition',icon:'🌱',gc:'g-agri',sc:'s-agri'}];
+  const _SUBS_714 = [{id:'eng',label:'English',icon:'📖',gc:'g-eng',sc:'s-eng',parts:[{id:'lang',label:'Language'},{id:'comp',label:'Composition'}]},{id:'kis',label:'Kiswahili/KSL',icon:'🗣️',gc:'g-kis',sc:'s-kis',parts:[{id:'lugha',label:'Lugha'},{id:'insha',label:'Insha'}]},{id:'math',label:'Mathematics',icon:'🔢',gc:'g-math',sc:'s-math'},{id:'sci',label:'Integrated Science',icon:'🔬',gc:'g-sci',sc:'s-sci'},{id:'soc',label:'Social Studies',icon:'🌍',gc:'g-soc',sc:'s-soc'},{id:'re',label:'Religious Ed.',icon:'✝️',gc:'g-re',sc:'s-re'},{id:'arts',label:'Creative Arts & Sports',icon:'🎨',gc:'g-arts',sc:'s-arts'},{id:'pret',label:'Pre-Technical',icon:'🔧',gc:'g-pret',sc:'s-pret'},{id:'agri',label:'Agriculture & Nutrition',icon:'🌱',gc:'g-agri',sc:'s-agri'}];
+  window.getSubs = function(gradeStr){
+    const n = parseInt((gradeStr||'').replace(/\D/g,'')) || 0;
+    if(n>=1&&n<=3)  return _SUBS_13;
+    if(n>=4&&n<=6)  return _SUBS_46;
+    return _SUBS_714;
+  };
+}
+if(typeof getLevel === 'undefined'){
+  const _LEVELS=[{l:'EE1',p:8,c:'ee1',min:90},{l:'EE2',p:7,c:'ee2',min:75},{l:'ME1',p:6,c:'me1',min:58},{l:'ME2',p:5,c:'me2',min:41},{l:'AE1',p:4,c:'ae1',min:31},{l:'AE2',p:3,c:'ae2',min:21},{l:'BE1',p:2,c:'be1',min:11},{l:'BE2',p:1,c:'be2',min:0}];
+  window.getLevel = function(pct){ for(const lv of _LEVELS) if(pct>=lv.min) return lv; return _LEVELS[7]; };
+}
+
 firebase.initializeApp({
   apiKey:"AIzaSyBdabXqlBQ-6yVNJKdu8Zhb9Cm_-59_u24",
   authDomain:"bett-294a2.firebaseapp.com",
