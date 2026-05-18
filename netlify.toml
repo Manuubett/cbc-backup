@@ -1,0 +1,408 @@
+# ══════════════════════════════════════════════════════════════
+#  CBE Mark Sheet System — Netlify Configuration
+#  Site: https://bett.website
+#  Copyright © 2026 Bett Emanuel
+# ══════════════════════════════════════════════════════════════
+
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+# ── Pretty URLs — Netlify strips .html automatically ──
+[build.processing]
+  skip_processing = false
+
+[build.processing.html]
+  pretty_urls = true
+
+# ── Force HTTPS ──
+[[redirects]]
+  from = "http://bett.website/*"
+  to   = "https://bett.website/:splat"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "http://www.bett.website/*"
+  to   = "https://bett.website/:splat"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "https://www.bett.website/*"
+  to   = "https://bett.website/:splat"
+  status = 301
+  force  = true
+
+# ── Redirect .html to clean URL ──
+[[redirects]]
+  from = "/index.html"
+  to   = "/"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/login.html"
+  to   = "/login"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/admin.html"
+  to   = "/admin"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/marksheet.html"
+  to   = "/marksheet"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/admission.html"
+  to   = "/admission"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/analysis.html"
+  to   = "/analysis"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/registration.html"
+  to   = "/register"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/register.html"
+  to   = "/register"
+  status = 301
+  force  = true
+  # ── New public pages ──────────────────────────────────────────────
+# Paste these 3 redirect blocks into your existing netlify.toml
+
+[[redirects]]
+  from   = "/about"
+  to     = "/about.html"
+  status = 200
+
+[[redirects]]
+  from   = "/contact"
+  to     = "/contact.html"
+  status = 200
+
+[[redirects]]
+  from   = "/terms"
+  to     = "/terms.html"
+  status = 200
+
+[[redirects]]
+  from = "/demo.html"
+  to   = "/demo"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/approval.html"
+  to   = "/approval"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/owner.html"
+  to   = "/owner"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/settings.html"
+  to   = "/settings"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/db-cleaner.html"
+  to   = "/db-cleaner"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/school-monitor.html"
+  to   = "/school-monitor"
+  status = 301
+  force  = true
+
+# ── Serve clean URLs → actual .html files ──
+[[redirects]]
+  from = "/login"
+  to   = "/login.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin"
+  to   = "/admin.html"
+  status = 200
+
+[[redirects]]
+  from = "/marksheet"
+  to   = "/marksheet.html"
+  status = 200
+
+[[redirects]]
+  from = "/admission"
+  to   = "/admission.html"
+  status = 200
+
+[[redirects]]
+  from = "/analysis"
+  to   = "/analysis.html"
+  status = 200
+
+[[redirects]]
+  from = "/register"
+  to   = "/registration.html"
+  status = 200
+
+[[redirects]]
+  from = "/registration"
+  to   = "/registration.html"
+  status = 200
+
+[[redirects]]
+  from = "/demo"
+  to   = "/demo.html"
+  status = 200
+
+[[redirects]]
+  from = "/approval"
+  to   = "/approval.html"
+  status = 200
+
+[[redirects]]
+  from = "/owner"
+  to   = "/owner.html"
+  status = 200
+
+[[redirects]]
+  from = "/settings"
+  to   = "/settings.html"
+  status = 200
+
+[[redirects]]
+  from = "/db-cleaner"
+  to   = "/db-cleaner.html"
+  status = 200
+
+[[redirects]]
+  from = "/school-monitor"
+  to   = "/school-monitor.html"
+  status = 200
+
+[[redirects]]
+  from = "/notify-test"
+  to   = "/notify-test.html"
+  status = 200
+
+[[redirects]]
+  from = "/renew.html"
+  to   = "/renew"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/renew"
+  to   = "/renew.html"
+  status = 200
+
+# ══════════════════════════════════════════════════════════════
+#  SECURITY HEADERS
+# ══════════════════════════════════════════════════════════════
+
+# ── Global headers — ALL pages ──
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    Content-Security-Policy = '''default-src 'self'
+      https://fonts.googleapis.com
+      https://fonts.gstatic.com
+      https://www.gstatic.com
+      https://*.firebaseapp.com
+      https://*.googleapis.com
+      https://*.firebaseio.com
+      https://cdn.onesignal.com
+      https://onesignal.com;
+    script-src 'self' 'unsafe-inline'
+      https://www.gstatic.com
+      https://www.gstatic.com/firebasejs/
+      https://cdn.onesignal.com;
+    style-src 'self' 'unsafe-inline'
+      https://fonts.googleapis.com;
+    img-src 'self' data: blob: https:;
+    font-src 'self'
+      https://fonts.gstatic.com;
+    frame-src 'none';
+    object-src 'none';
+    connect-src 'self'
+      https://*.googleapis.com
+      https://*.firebaseio.com
+      wss://*.firebaseio.com
+      https://identitytoolkit.googleapis.com
+      https://securetoken.googleapis.com
+      https://onesignal.com
+      https://*.onesignal.com
+      https://api.telegram.org
+      https://instasend-backend.onrender.com
+      https://paynecta.co.ke;'''
+
+# ── Sensitive pages — no cache, no index ──
+[[headers]]
+  for = "/admin.html"
+  [headers.values]
+    Cache-Control = "no-store, no-cache, must-revalidate, private"
+    X-Robots-Tag = "noindex, nofollow, noarchive"
+
+[[headers]]
+  for = "/admin"
+  [headers.values]
+    Cache-Control = "no-store, no-cache, must-revalidate, private"
+    X-Robots-Tag = "noindex, nofollow, noarchive"
+
+[[headers]]
+  for = "/owner.html"
+  [headers.values]
+    Cache-Control = "no-store, no-cache, must-revalidate, private"
+    X-Robots-Tag = "noindex, nofollow, noarchive, nosnippet"
+
+[[headers]]
+  for = "/owner"
+  [headers.values]
+    Cache-Control = "no-store, no-cache, must-revalidate, private"
+    X-Robots-Tag = "noindex, nofollow, noarchive, nosnippet"
+
+[[headers]]
+  for = "/db-cleaner.html"
+  [headers.values]
+    Cache-Control = "no-store, no-cache, must-revalidate, private"
+    X-Robots-Tag = "noindex, nofollow, noarchive, nosnippet"
+
+[[headers]]
+  for = "/db-cleaner"
+  [headers.values]
+    Cache-Control = "no-store, no-cache, must-revalidate, private"
+    X-Robots-Tag = "noindex, nofollow, noarchive, nosnippet"
+
+[[headers]]
+  for = "/school-monitor.html"
+  [headers.values]
+    Cache-Control = "no-store, private"
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/school-monitor"
+  [headers.values]
+    Cache-Control = "no-store, private"
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/marksheet.html"
+  [headers.values]
+    Cache-Control = "no-store, private"
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/marksheet"
+  [headers.values]
+    Cache-Control = "no-store, private"
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/analysis.html"
+  [headers.values]
+    Cache-Control = "no-store, private"
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/analysis"
+  [headers.values]
+    Cache-Control = "no-store, private"
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/admission.html"
+  [headers.values]
+    Cache-Control = "no-store, private"
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/admission"
+  [headers.values]
+    Cache-Control = "no-store, private"
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/approval.html"
+  [headers.values]
+    Cache-Control = "no-store, private"
+    X-Robots-Tag = "noindex, nofollow"
+
+# ── Public pages — allow caching ──
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/demo.html"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/demo"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/registration.html"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/register"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+# ── Static assets ──
+[[headers]]
+  for = "/*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, immutable"
+
+[[headers]]
+  for = "/*.ico"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, immutable"
+
+[[headers]]
+  for = "/*.webmanifest"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
