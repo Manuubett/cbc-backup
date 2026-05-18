@@ -50,7 +50,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .sep{width:1px;height:20px;background:var(--border)}
 .tb-lbl{font-size:11px;color:var(--text3);font-weight:600}
 
-/* ── CAT TABS (mirrors analysis.html) ── */
+/* ── CAT TABS ── */
 .cat-tab{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;border:1.5px solid var(--border);background:var(--surface);color:var(--text2);transition:all .14s}
 .cat-tab.active-1{background:#eff6ff;border-color:#93c5fd;color:#1d4ed8}
 .cat-tab.active-2{background:#f0fdf4;border-color:#86efac;color:#166534}
@@ -192,9 +192,15 @@ body.dark .si.over-limit{background:#450a0a !important}
   </div>
 </header>
 
-<!-- ── ADMIN TOOLBAR ── -->
-<div class="toolbar" id="toolbarAdmin">
-  <span class="tb-lbl">Grade</span>
+<!-- ══════════════════════════════════════════════
+     SINGLE UNIFIED TOOLBAR — fixes all duplicate-ID bugs.
+     Role-specific elements are shown/hidden via JS,
+     not by swapping entire toolbars.
+     ══════════════════════════════════════════════ -->
+<div class="toolbar" id="mainToolbar">
+
+  <!-- Admin-only: Grade + Stream selectors -->
+  <span class="tb-lbl" id="gradeLbl">Grade</span>
   <select class="fsel" id="selGrade" onchange="onGradeChange()">
     <option value="">-- Grade --</option>
     <option>Grade 1</option><option>Grade 2</option><option>Grade 3</option>
@@ -209,53 +215,30 @@ body.dark .si.over-limit{background:#450a0a !important}
     <option value="">-- Stream --</option>
   </select>
 
-  <span class="tb-lbl">Term</span>
-  <select class="fsel" id="selTerm" onchange="onTermChange()">
-    <option>Term 1</option><option>Term 2</option><option>Term 3</option>
-  </select>
-
-  <!-- Exam tabs — shown once a grade is selected (all grades 1-14) -->
-  <span class="tb-lbl" id="catSelectorLabel" style="display:none">Exam</span>
-  <div class="cat-tabs-wrap" id="catTabsWrap" style="display:none">
-    <button class="cat-tab" id="catBtn_Exam 1" onclick="selectCat('Exam 1')">Exam 1</button>
-    <button class="cat-tab" id="catBtn_Exam 2" onclick="selectCat('Exam 2')">Exam 2</button>
-    <button class="cat-tab" id="catBtn_Exam 3" onclick="selectCat('Exam 3')">Exam 3</button>
-  </div>
-
-  <span class="tb-lbl">Year</span>
-  <input type="number" class="fsel" id="selYear" value="2026" min="2020" max="2040" style="width:68px" onchange="loadStudents()">
-
-  <div class="sep"></div>
-  <button class="btn btn-success" onclick="saveAll()">💾 Save All</button>
-  <span style="margin-left:auto;font-size:10.5px;color:var(--text3)">
-    ✏️ Edit <span style="color:#fbbf24;font-weight:700">Out Of</span> row to set max marks &nbsp;|&nbsp; ⌨️ Tab · Enter · Arrows
-  </span>
-</div>
-
-<!-- ── TEACHER TOOLBAR ── -->
-<div class="toolbar" id="toolbarTeacher" style="display:none">
-  <div style="display:flex;align-items:center;gap:8px;background:var(--alight);border:1px solid #c7d9ff;border-radius:var(--r2);padding:5px 12px">
+  <!-- Teacher-only: locked class badge (hidden by default, shown for teachers) -->
+  <div id="teacherBadgeWrap" style="display:none;align-items:center;gap:8px;background:var(--alight);border:1px solid #c7d9ff;border-radius:var(--r2);padding:5px 12px">
     <span style="font-size:13px">🔒</span>
     <span style="font-size:12px;font-weight:700;color:var(--accent)" id="teacherClassBadge">—</span>
   </div>
-  <input type="hidden" id="selGrade" value="">
-  <input type="hidden" id="selStream" value="">
 
+  <!-- Shared: Term -->
   <span class="tb-lbl">Term</span>
   <select class="fsel" id="selTerm" onchange="onTermChange()">
     <option>Term 1</option><option>Term 2</option><option>Term 3</option>
   </select>
 
-  <!-- Exam tabs for teachers (all grades) -->
-  <span class="tb-lbl" id="catSelectorLabelT" style="display:none">Exam</span>
-  <div class="cat-tabs-wrap" id="catTabsWrapT" style="display:none">
-    <button class="cat-tab" id="catBtnT_Exam 1" onclick="selectCat('Exam 1')">Exam 1</button>
-    <button class="cat-tab" id="catBtnT_Exam 2" onclick="selectCat('Exam 2')">Exam 2</button>
-    <button class="cat-tab" id="catBtnT_Exam 3" onclick="selectCat('Exam 3')">Exam 3</button>
+  <!-- Shared: CAT tabs — shown for grades 7-14 only -->
+  <span class="tb-lbl" id="catSelectorLabel" style="display:none">Exam</span>
+  <div class="cat-tabs-wrap" id="catTabsWrap" style="display:none">
+    <button class="cat-tab" id="catBtn_CAT1" onclick="selectCat('CAT 1')">CAT 1</button>
+    <button class="cat-tab" id="catBtn_CAT2" onclick="selectCat('CAT 2')">CAT 2</button>
+    <button class="cat-tab" id="catBtn_CAT3" onclick="selectCat('CAT 3')">CAT 3</button>
   </div>
 
+  <!-- Shared: Year -->
   <span class="tb-lbl">Year</span>
   <input type="number" class="fsel" id="selYear" value="2026" min="2020" max="2040" style="width:68px" onchange="loadStudents()">
+
   <div class="sep"></div>
   <button class="btn btn-success" onclick="saveAll()">💾 Save All</button>
   <span style="margin-left:auto;font-size:10.5px;color:var(--text3)">
@@ -281,7 +264,7 @@ body.dark .si.over-limit{background:#450a0a !important}
     <div class="pills">
       <div class="pill">👥 <span class="pv" id="pilS">0</span> students</div>
       <div class="pill">✅ <span class="pv" id="pilSv">0</span> saved</div>
-      <div class="pill" id="catPill" style="display:none">📝 <span class="pv" id="catPillTxt">Exam 1</span></div>
+      <div class="pill" id="catPill" style="display:none">📝 <span class="pv" id="catPillTxt">CAT 1</span></div>
     </div>
   </div>
   <div class="sheet-card">
@@ -320,52 +303,81 @@ let currentUser=null, streamsEnabled=true, gradeHasStreams=false;
 let _settingsReady=false, _settingsResolve=null;
 const _settingsPromise=new Promise(res=>{_settingsResolve=res;});
 
+// ── Single helper — always returns the one real element ──
+const el = id => document.getElementById(id);
+
+// ══════════════════════════════════════════════
+// UNIFIED SELECTOR HELPERS
+// These are the ONLY functions that read toolbar values.
+// No more el('selTerm') scattered through the codebase.
+// ══════════════════════════════════════════════
+
+function _getGrade(){
+  // Teachers: use their profile (hidden inputs gone — no duplicate IDs)
+  if(currentUser?.role==='teacher') return currentUser.grade||'';
+  return el('selGrade')?.value||'';
+}
+
+function _getStream(){
+  if(currentUser?.role==='teacher') return currentUser.stream||'';
+  return (streamsEnabled&&gradeHasStreams) ? (el('selStream')?.value||'') : '';
+}
+
+function _getTerm(){
+  return el('selTerm')?.value||'Term 1';
+}
+
+function _getYear(){
+  return el('selYear')?.value||String(new Date().getFullYear());
+}
+
+// Combined helper kept for compatibility
+function _getClassSelectors(){
+  return { grade: _getGrade(), stream: _getStream() };
+}
+
 // ══════════════════════════════════════════════
 // CAT MODE
 // ══════════════════════════════════════════════
-let currentCat='Exam 1'; // active exam: 'Exam 1' | 'Exam 2' | 'Exam 3'
+let currentCat='CAT 1';
 
 function applyCatUI(gradeStr){
-  const usesCats=gradeUsesCats(gradeStr);
-  // Admin toolbar
-  const lbl=el('catSelectorLabel'),wrap=el('catTabsWrap');
-  if(lbl) lbl.style.display=usesCats?'':'none';
-  if(wrap) wrap.style.display=usesCats?'flex':'none';
-  // Teacher toolbar
-  const lblT=el('catSelectorLabelT'),wrapT=el('catTabsWrapT');
-  if(lblT) lblT.style.display=usesCats?'':'none';
-  if(wrapT) wrapT.style.display=usesCats?'flex':'none';
-  // Pill
-  const pill=el('catPill');
-  if(pill) pill.style.display=usesCats?'flex':'none';
+  const usesCats = gradeUsesCats(gradeStr);
+  const lbl  = el('catSelectorLabel');
+  const wrap = el('catTabsWrap');
+  const pill = el('catPill');
+  if(lbl)  lbl.style.display  = usesCats ? '' : 'none';
+  if(wrap) wrap.style.display = usesCats ? 'flex' : 'none';
+  if(pill) pill.style.display = usesCats ? 'flex' : 'none';
   if(usesCats) updateCatTabUI();
 }
 
 function updateCatTabUI(){
-  ['Exam 1','Exam 2','Exam 3'].forEach((c,i)=>{
-    const cls=['active-1','active-2','active-3'][i];
-    [el(`catBtn_${c}`),el(`catBtnT_${c}`)].forEach(btn=>{
-      if(!btn) return;
-      btn.className='cat-tab';
-      if(currentCat===c) btn.classList.add(cls);
-    });
+  // IDs are now unique — catBtn_CAT1 / catBtn_CAT2 / catBtn_CAT3
+  const map = {'CAT 1':'catBtn_CAT1','CAT 2':'catBtn_CAT2','CAT 3':'catBtn_CAT3'};
+  const activeClass = {'CAT 1':'active-1','CAT 2':'active-2','CAT 3':'active-3'};
+  Object.entries(map).forEach(([cat,btnId])=>{
+    const btn = el(btnId);
+    if(!btn) return;
+    btn.className = 'cat-tab';
+    if(currentCat===cat) btn.classList.add(activeClass[cat]);
   });
-  const txt=el('catPillTxt'); if(txt) txt.textContent=currentCat;
+  const txt = el('catPillTxt');
+  if(txt) txt.textContent = currentCat;
 }
 
-window.selectCat=function(cat){
-  currentCat=cat;
+window.selectCat = function(cat){
+  currentCat = cat;
   updateCatTabUI();
   loadStudents();
 };
 
-window.onTermChange=function(){ loadStudents(); };
+window.onTermChange = function(){ loadStudents(); };
 
-// Auto-select correct Exam based on current month
 function autoSelectCat(){
-  const month=new Date().getMonth()+1;
-  const mInTerm=month<=4?month:month<=8?month-4:month-8;
-  currentCat=mInTerm<=1?'Exam 1':mInTerm<=2?'Exam 2':'Exam 3';
+  const month = new Date().getMonth()+1;
+  const mInTerm = month<=4 ? month : month<=8 ? month-4 : month-8;
+  currentCat = mInTerm<=1 ? 'CAT 1' : mInTerm<=2 ? 'CAT 2' : 'CAT 3';
   updateCatTabUI();
 }
 
@@ -374,26 +386,27 @@ function autoSelectCat(){
 // ══════════════════════════════════════════════
 async function loadStreamsEnabledSetting(schoolId){
   try{
-    const cached=localStorage.getItem('cbe_streams_enabled');
-    if(cached!==null){streamsEnabled=cached==='true';applyStreamMode();}
-    const snap=await db.collection('settings').doc(schoolId).get();
-    if(snap.exists&&snap.data().streamsEnabled!==undefined){
-      streamsEnabled=snap.data().streamsEnabled;
-      localStorage.setItem('cbe_streams_enabled',streamsEnabled?'true':'false');
+    const cached = localStorage.getItem('cbe_streams_enabled');
+    if(cached!==null){ streamsEnabled=cached==='true'; applyStreamMode(); }
+    const snap = await db.collection('settings').doc(schoolId).get();
+    if(snap.exists && snap.data().streamsEnabled!==undefined){
+      streamsEnabled = snap.data().streamsEnabled;
+      localStorage.setItem('cbe_streams_enabled', streamsEnabled?'true':'false');
       applyStreamMode();
     }
-  }catch(e){console.warn('[Marksheet] streams setting error:',e.message);}
-  finally{if(!_settingsReady){_settingsReady=true;_settingsResolve();}}
+  }catch(e){ console.warn('[Marksheet] streams setting error:',e.message); }
+  finally{ if(!_settingsReady){ _settingsReady=true; _settingsResolve(); } }
 }
 
 function applyStreamMode(){
-  const streamLabel=document.getElementById('streamLabel'),ss=document.getElementById('selStream');
+  const streamLabel = el('streamLabel');
+  const ss = el('selStream');
   if(!streamsEnabled){
-    if(streamLabel)streamLabel.style.display='none';
-    if(ss){ss.style.display='none';ss.value='';ss.disabled=true;}
+    if(streamLabel) streamLabel.style.display='none';
+    if(ss){ ss.style.display='none'; ss.value=''; ss.disabled=true; }
   }else{
-    if(streamLabel)streamLabel.style.display='';
-    if(ss){ss.style.display='';ss.disabled=false;}
+    if(streamLabel) streamLabel.style.display='';
+    if(ss){ ss.style.display=''; ss.disabled=false; }
   }
 }
 
@@ -401,109 +414,132 @@ function applyStreamMode(){
 // AUTH
 // ══════════════════════════════════════════════
 async function initUser(fbUser){
-  if(!fbUser){window.location.href='login';return;}
+  if(!fbUser){ window.location.href='login'; return; }
   try{
-    const snap=await db.collection('users').doc(fbUser.uid).get();
-    if(!snap.exists){await auth.signOut();window.location.href='login';return;}
-    currentUser=snap.data(); currentUser.uid=fbUser.uid;
-    if(currentUser.status==='suspended'){await auth.signOut();window.location.href='login?reason=suspended';return;}
-    if(currentUser.status==='pending'){await auth.signOut();window.location.href='login?reason=pending';return;}
-    if(currentUser.schoolId){sessionStorage.setItem('cbe_school_id',currentUser.schoolId);window._schoolId=currentUser.schoolId;}
-    if(currentUser.schoolId){loadSchoolBranding(currentUser.schoolId).catch(()=>{});}
+    const snap = await db.collection('users').doc(fbUser.uid).get();
+    if(!snap.exists){ await auth.signOut(); window.location.href='login'; return; }
+    currentUser = snap.data(); currentUser.uid = fbUser.uid;
+    if(currentUser.status==='suspended'){ await auth.signOut(); window.location.href='login?reason=suspended'; return; }
+    if(currentUser.status==='pending'){   await auth.signOut(); window.location.href='login?reason=pending';    return; }
+    if(currentUser.schoolId){ sessionStorage.setItem('cbe_school_id',currentUser.schoolId); window._schoolId=currentUser.schoolId; }
+    if(currentUser.schoolId){ loadSchoolBranding(currentUser.schoolId).catch(()=>{}); }
     if(currentUser.schoolId){
-      try{await loadStreamsEnabledSetting(currentUser.schoolId);}
-      catch(_){_settingsReady=true;_settingsResolve();}
-    }else{_settingsReady=true;_settingsResolve();}
-    const infoEl=el('hdrUserInfo'); if(infoEl)infoEl.style.display='flex';
-    const nameEl=el('hdrUserName'); if(nameEl)nameEl.textContent='👤 '+(currentUser.fullName||'Teacher');
-    const classEl=el('hdrUserClass');
+      try{ await loadStreamsEnabledSetting(currentUser.schoolId); }
+      catch(_){ _settingsReady=true; _settingsResolve(); }
+    } else { _settingsReady=true; _settingsResolve(); }
+
+    const infoEl  = el('hdrUserInfo');  if(infoEl)  infoEl.style.display='flex';
+    const nameEl  = el('hdrUserName');  if(nameEl)  nameEl.textContent='👤 '+(currentUser.fullName||'Teacher');
+    const classEl = el('hdrUserClass');
+
     if(currentUser.role==='teacher'){
-      if(classEl)classEl.textContent=(currentUser.grade||'No grade')+(currentUser.stream?' · '+currentUser.stream:'');
-      lockTeacherSelectors();
+      if(classEl) classEl.textContent=(currentUser.grade||'No grade')+(currentUser.stream?' · '+currentUser.stream:'');
+      setupTeacherUI();
       loadStudents();
-    }else{
-      if(classEl)classEl.textContent=(currentUser.role||'admin').toUpperCase();
+    } else {
+      if(classEl) classEl.textContent=(currentUser.role||'admin').toUpperCase();
+      // Admin: make sure grade/stream selectors are visible
+      el('selGrade').closest('select') && (el('gradeLbl').style.display='');
       applyStreamMode();
     }
-  }catch(e){toast(`Auth error: ${e.message}`,'err');}
+  }catch(e){ toast(`Auth error: ${e.message}`,'err'); }
 }
 
 async function loadSchoolBranding(schoolId){
   try{
-    const snap=await db.collection('settings').doc(schoolId).get();
-    if(!snap.exists)return;
-    const s=snap.data();
-    if(s.name)document.title=s.name+' | CBC Mark Sheet';
-    const nameEl=el('hdrSchoolName'); if(nameEl&&s.name)nameEl.textContent=s.name;
-    const subEl=el('hdrSchoolSub'); if(subEl){const parts=[s.motto,s.county,'Kenya CBC'].filter(Boolean);subEl.textContent=parts.join(' · ');}
-    if(s.logoUrl){const lm=el('hdrLogo');if(lm)lm.innerHTML=`<img src="${s.logoUrl}" style="width:100%;height:100%;object-fit:contain;border-radius:inherit" onerror="this.parentElement.textContent='📊'">`;}
-    if(s.primaryColor){document.documentElement.style.setProperty('--accent',s.primaryColor);document.documentElement.style.setProperty('--ah',s.primaryColor);}
+    const snap = await db.collection('settings').doc(schoolId).get();
+    if(!snap.exists) return;
+    const s = snap.data();
+    if(s.name) document.title = s.name+' | CBC Mark Sheet';
+    const nameEl = el('hdrSchoolName'); if(nameEl&&s.name) nameEl.textContent=s.name;
+    const subEl  = el('hdrSchoolSub');  if(subEl){ const parts=[s.motto,s.county,'Kenya CBC'].filter(Boolean); subEl.textContent=parts.join(' · '); }
+    if(s.logoUrl){ const lm=el('hdrLogo'); if(lm) lm.innerHTML=`<img src="${s.logoUrl}" style="width:100%;height:100%;object-fit:contain;border-radius:inherit" onerror="this.parentElement.textContent='📊'">`; }
+    if(s.primaryColor){ document.documentElement.style.setProperty('--accent',s.primaryColor); document.documentElement.style.setProperty('--ah',s.primaryColor); }
     window.schoolSettings=s;
-  }catch(e){console.warn('[Marksheet] School branding failed:',e.message);}
+  }catch(e){ console.warn('[Marksheet] School branding failed:',e.message); }
 }
 
-function lockTeacherSelectors(){
-  const grade=currentUser.grade||'',stream=currentUser.stream||'';
-  const adminBar=el('toolbarAdmin'),teacherBar=el('toolbarTeacher');
-  if(adminBar)adminBar.style.display='none';
-  if(teacherBar)teacherBar.style.display='';
-  const hGrade=el('selGrade'),hStream=el('selStream');
-  if(hGrade)hGrade.value=grade;
-  if(hStream)hStream.value=stream;
-  gradeHasStreams=Boolean(stream);
-  const badge=el('teacherClassBadge');
-  if(badge)badge.textContent=grade?(stream?`${grade} · ${stream}`:grade):'No class assigned';
-  const now=new Date(),month=now.getMonth()+1;
-  const autoTerm=month<=4?'Term 1':month<=8?'Term 2':'Term 3';
-  const termSel=el('selTerm'),yearInp=el('selYear');
-  if(termSel)termSel.value=autoTerm;
-  if(yearInp)yearInp.value=now.getFullYear();
-  // Apply CAT UI for teacher's grade
+// ── Teacher UI: hide admin-only controls, show teacher badge ──
+function setupTeacherUI(){
+  const grade  = currentUser.grade||'';
+  const stream = currentUser.stream||'';
+
+  // Hide admin-only grade/stream selectors
+  el('gradeLbl').style.display      = 'none';
+  el('selGrade').style.display      = 'none';
+  el('streamLabel').style.display   = 'none';
+  el('selStream').style.display     = 'none';
+
+  // Show teacher badge
+  const badgeWrap = el('teacherBadgeWrap');
+  const badge     = el('teacherClassBadge');
+  if(badgeWrap) badgeWrap.style.display='flex';
+  if(badge)     badge.textContent = grade ? (stream?`${grade} · ${stream}`:grade) : 'No class assigned';
+
+  gradeHasStreams = Boolean(stream);
+
+  // Set term/year to sensible defaults
+  const now = new Date(), month = now.getMonth()+1;
+  const autoTerm = month<=4?'Term 1':month<=8?'Term 2':'Term 3';
+  el('selTerm').value = autoTerm;
+  el('selYear').value = String(now.getFullYear());
+
+  // Apply CAT UI for teacher's grade (uses the same single toolbar elements)
   applyCatUI(grade);
-  if(gradeUsesCats(grade))autoSelectCat();
-}
-
-function _getClassSelectors(){
-  if(currentUser?.role==='teacher')return{grade:currentUser.grade||'',stream:currentUser.stream||''};
-  return{grade:el('selGrade')?.value||'',stream:el('selStream')?.value||''};
+  if(gradeUsesCats(grade)) autoSelectCat();
 }
 
 auth.onAuthStateChanged(initUser);
 
 // ══════════════════════════════════════════════
-// GRADE CHANGE
+// GRADE CHANGE (admin only)
 // ══════════════════════════════════════════════
-window.onGradeChange=async function(){
-  if(currentUser?.role==='teacher'){return;}
-  const grade=el('selGrade').value;
-  // Apply CAT UI when grade changes
+window.onGradeChange = async function(){
+  if(currentUser?.role==='teacher') return;
+  const grade = el('selGrade').value;
+
+  // Apply CAT UI whenever grade changes
   applyCatUI(grade);
-  if(gradeUsesCats(grade))autoSelectCat();
+  if(gradeUsesCats(grade)) autoSelectCat();
 
   if(!streamsEnabled){
     gradeHasStreams=false;
-    if(!grade){el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">📋</div><p>Select a <strong>Grade</strong></p></div>`;return;}
+    if(!grade){ el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">📋</div><p>Select a <strong>Grade</strong></p></div>`; return; }
     loadStudents(); return;
   }
-  const ss=el('selStream');
+
+  const ss = el('selStream');
   ss.disabled=true; ss.innerHTML='<option value="">Loading…</option>';
   el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">📋</div><p>Loading streams…</p></div>`;
-  if(!grade){ss.innerHTML='<option value="">-- Stream --</option>';ss.disabled=false;return;}
+
+  if(!grade){ ss.innerHTML='<option value="">-- Stream --</option>'; ss.disabled=false; return; }
+
   let arr=[];
-  try{const raw=localStorage.getItem('cbe_streams'),ts=localStorage.getItem('cbe_streams_ts');if(raw&&ts&&(Date.now()-parseInt(ts))<86400000){const map=JSON.parse(raw);if(map[grade]?.length)arr=map[grade];}}catch(_){}
+  try{
+    const raw=localStorage.getItem('cbe_streams'), ts=localStorage.getItem('cbe_streams_ts');
+    if(raw&&ts&&(Date.now()-parseInt(ts))<86400000){ const map=JSON.parse(raw); if(map[grade]?.length) arr=map[grade]; }
+  }catch(_){}
   try{
     const _sid=currentUser?.schoolId||sessionStorage.getItem('cbe_school_id');
-    if(!_sid){ss.innerHTML='<option value="">Not authenticated</option>';return;}
+    if(!_sid){ ss.innerHTML='<option value="">Not authenticated</option>'; return; }
     const snap=await db.collection('students').where('grade','==',grade).where('schoolId','==',_sid).get();
-    const set=new Set(arr); snap.forEach(d=>{const s=d.data();if(s.stream?.trim())set.add(s.stream.trim());});
+    const set=new Set(arr); snap.forEach(d=>{ const s=d.data(); if(s.stream?.trim()) set.add(s.stream.trim()); });
     arr=[...set].sort();
-    const raw=localStorage.getItem('cbe_streams'),map=raw?JSON.parse(raw):{};map[grade]=arr;localStorage.setItem('cbe_streams',JSON.stringify(map));localStorage.setItem('cbe_streams_ts',Date.now().toString());
-  }catch(e){if(!arr.length){ss.innerHTML='<option value="">-- Error --</option>';ss.disabled=false;return;}}
-  if(!arr.length){gradeHasStreams=false;ss.style.display='none';ss.value='';ss.disabled=true;const lbl=el('streamLabel');if(lbl)lbl.style.display='none';loadStudents();return;}
-  gradeHasStreams=true;ss.style.display='';const lbl2=el('streamLabel');if(lbl2)lbl2.style.display='';
-  ss.innerHTML='<option value="">-- Stream --</option>'+arr.map(s=>`<option>${s}</option>`).join('');ss.disabled=false;
-  if(arr.length===1){ss.value=arr[0];loadStudents();}
-  else{el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">📋</div><p>Select a <strong>Stream</strong></p></div>`;}
+    const raw=localStorage.getItem('cbe_streams'), map=raw?JSON.parse(raw):{};
+    map[grade]=arr; localStorage.setItem('cbe_streams',JSON.stringify(map)); localStorage.setItem('cbe_streams_ts',Date.now().toString());
+  }catch(e){ if(!arr.length){ ss.innerHTML='<option value="">-- Error --</option>'; ss.disabled=false; return; } }
+
+  if(!arr.length){
+    gradeHasStreams=false; ss.style.display='none'; ss.value=''; ss.disabled=true;
+    const lbl=el('streamLabel'); if(lbl) lbl.style.display='none';
+    loadStudents(); return;
+  }
+  gradeHasStreams=true; ss.style.display='';
+  const lbl2=el('streamLabel'); if(lbl2) lbl2.style.display='';
+  ss.innerHTML='<option value="">-- Stream --</option>'+arr.map(s=>`<option>${s}</option>`).join('');
+  ss.disabled=false;
+  if(arr.length===1){ ss.value=arr[0]; loadStudents(); }
+  else{ el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">📋</div><p>Select a <strong>Stream</strong></p></div>`; }
 };
 
 // ══════════════════════════════════════════════
@@ -511,80 +547,90 @@ window.onGradeChange=async function(){
 // ══════════════════════════════════════════════
 const _cache={};
 const _CACHE_TTL=5*60*1000;
-function _cacheKey(grade,stream,term,year,cat,sid){return`${sid}|${grade}|${stream}|${term}|${year}|${cat}`;}
-function _cacheGet(key){const c=_cache[key];if(!c)return null;if(Date.now()-c.ts>_CACHE_TTL){delete _cache[key];return null;}return c;}
-function _cacheSet(key,students,savedMap,savedCount){_cache[key]={ts:Date.now(),students,savedMap:{...savedMap},savedCount};}
-function _cacheUpdateSave(cacheKey,studentId,record){const c=_cache[cacheKey];if(!c)return;c.savedMap[studentId]={...(c.savedMap[studentId]||{}),...record};c.ts=Date.now();}
-function _cacheInvalidate(){Object.keys(_cache).forEach(k=>delete _cache[k]);}
+function _cacheKey(grade,stream,term,year,cat,sid){ return`${sid}|${grade}|${stream}|${term}|${year}|${cat}`; }
+function _cacheGet(key){ const c=_cache[key]; if(!c)return null; if(Date.now()-c.ts>_CACHE_TTL){delete _cache[key];return null;} return c; }
+function _cacheSet(key,students,savedMap,savedCount){ _cache[key]={ts:Date.now(),students,savedMap:{...savedMap},savedCount}; }
+function _cacheUpdateSave(cacheKey,studentId,record){ const c=_cache[cacheKey]; if(!c)return; c.savedMap[studentId]={...(c.savedMap[studentId]||{}),...record}; c.ts=Date.now(); }
+function _cacheInvalidate(){ Object.keys(_cache).forEach(k=>delete _cache[k]); }
 
 // ══════════════════════════════════════════════
 // LOAD STUDENTS
 // ══════════════════════════════════════════════
-window.loadStudents=async function(){
-  const{grade,stream:classStream}=_getClassSelectors();
-  const term=el('selTerm').value,year=el('selYear').value;
-  if(!_settingsReady)await _settingsPromise;
-  const stream=currentUser?.role==='teacher'?(currentUser.stream||''):classStream;
-  if(!grade)return;
-  if(currentUser?.role!=='teacher'&&gradeHasStreams&&!stream)return;
-  if(loadLock)return;
-  loadLock=true;
-  const _sid=currentUser?.schoolId||sessionStorage.getItem('cbe_school_id');
-  if(!_sid){el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">🔒</div><p>Not authenticated</p></div>`;loadLock=false;return;}
+window.loadStudents = async function(){
+  const grade  = _getGrade();
+  const stream = _getStream();
+  const term   = _getTerm();
+  const year   = _getYear();
 
-  // Include CAT in cache key for grades 7-14
-  const catKey=gradeUsesCats(grade)?currentCat:'';
-  const ck=_cacheKey(grade,stream,term,year,catKey,_sid);
-  const cached=_cacheGet(ck);
+  if(!_settingsReady) await _settingsPromise;
+  if(!grade) return;
+  if(currentUser?.role!=='teacher' && gradeHasStreams && !stream) return;
+  if(loadLock) return;
+  loadLock=true;
+
+  const _sid = currentUser?.schoolId||sessionStorage.getItem('cbe_school_id');
+  if(!_sid){ el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">🔒</div><p>Not authenticated</p></div>`; loadLock=false; return; }
+
+  const catKey = gradeUsesCats(grade) ? currentCat : '';
+  const ck = _cacheKey(grade,stream,term,year,catKey,_sid);
+  const cached = _cacheGet(ck);
   if(cached){
-    students=cached.students;savedMap={...cached.savedMap};savedCount=cached.savedCount;
-    el('pilS').textContent=students.length;el('pilSv').textContent=savedCount;
+    students=cached.students; savedMap={...cached.savedMap}; savedCount=cached.savedCount;
+    el('pilS').textContent=students.length; el('pilSv').textContent=savedCount;
     _setSheetTitle(grade,stream,term,year);
-    if(!students.length){el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">👥</div><p>No students in <strong>${stream?grade+' '+stream:grade}</strong>.</p></div>`;loadLock=false;return;}
-    renderTable();loadLock=false;toast('Loaded from cache','info');return;
+    if(!students.length){ el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">👥</div><p>No students in <strong>${stream?grade+' '+stream:grade}</strong>.</p></div>`; loadLock=false; return; }
+    renderTable(); loadLock=false; toast('Loaded from cache','info'); return;
   }
 
   el('tblWrap').innerHTML=`<div class="empty-msg"><div style="display:inline-flex;align-items:center;gap:9px;color:var(--text3)"><div class="spin"></div>Loading ${grade}${stream?' '+stream:''}${gradeUsesCats(grade)?' · '+currentCat:''}…</div></div>`;
   try{
     let studQuery=db.collection('students').where('grade','==',grade).where('schoolId','==',_sid);
-    if(stream)studQuery=studQuery.where('stream','==',stream);
+    if(stream) studQuery=studQuery.where('stream','==',stream);
     const snap=await studQuery.get();
-    students=[];snap.forEach(d=>students.push({id:d.id,...d.data()}));
+    students=[]; snap.forEach(d=>students.push({id:d.id,...d.data()}));
     students.sort((a,b)=>(a.name||'').localeCompare(b.name||''));
-    savedMap={};savedCount=0;
+
+    savedMap={}; savedCount=0;
     let rsQuery=db.collection('results').where('grade','==',grade).where('term','==',term).where('year','==',year).where('schoolId','==',_sid);
-    if(stream)rsQuery=rsQuery.where('stream','==',stream);
-    // For CAT grades: filter by exam field
-    if(gradeUsesCats(grade))rsQuery=rsQuery.where('exam','==',currentCat);
+    if(stream) rsQuery=rsQuery.where('stream','==',stream);
+    if(gradeUsesCats(grade)) rsQuery=rsQuery.where('exam','==',currentCat);
     const rs=await rsQuery.get();
-    rs.forEach(d=>{savedMap[d.data().studentId]={id:d.id,...d.data()};savedCount++;});
+    rs.forEach(d=>{ savedMap[d.data().studentId]={id:d.id,...d.data()}; savedCount++; });
+
     _cacheSet(ck,students,savedMap,savedCount);
-    el('pilS').textContent=students.length;el('pilSv').textContent=savedCount;
+    el('pilS').textContent=students.length; el('pilSv').textContent=savedCount;
     _setSheetTitle(grade,stream,term,year);
-    if(!students.length){const loc=stream?`${grade} ${stream}`:grade;el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">👥</div><p>No students in <strong>${loc}</strong>. Admit them first.</p></div>`;loadLock=false;return;}
+
+    if(!students.length){
+      const loc=stream?`${grade} ${stream}`:grade;
+      el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">👥</div><p>No students in <strong>${loc}</strong>. Admit them first.</p></div>`;
+      loadLock=false; return;
+    }
     renderTable();
-  }catch(e){el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">❌</div><p>${e.message}</p></div>`;}
+  }catch(e){ el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">❌</div><p>${e.message}</p></div>`; }
   loadLock=false;
 };
 
 function _setSheetTitle(grade,stream,term,year){
-  const examLabel=gradeUsesCats(grade)?` · ${currentCat}`:'';
-  el('sheetTitle').textContent=stream?`${grade} ${stream} — ${term}${examLabel} ${year}`:`${grade} — ${term}${examLabel} ${year}`;
+  const examLabel = gradeUsesCats(grade) ? ` · ${currentCat}` : '';
+  el('sheetTitle').textContent = stream
+    ? `${grade} ${stream} — ${term}${examLabel} ${year}`
+    : `${grade} — ${term}${examLabel} ${year}`;
 }
 
 // ══════════════════════════════════════════════
 // RENDER TABLE
 // ══════════════════════════════════════════════
 function renderTable(){
-  const{grade:currentGrade}=_getClassSelectors();
-  const SUBS=getSubs(currentGrade);
-  window._currentSubs=SUBS; // used by calcRow and collectRow
-  const anyRec=Object.values(savedMap)[0];
+  const currentGrade = _getGrade();
+  const SUBS = getSubs(currentGrade);
+  window._currentSubs = SUBS;
+  const anyRec = Object.values(savedMap)[0];
 
   let h=`<table id="mkT"><colgroup>
     <col style="width:34px"><col style="width:155px"><col style="width:80px">`;
   SUBS.forEach(s=>{
-    if(s.parts)h+=s.parts.map(()=>`<col style="width:52px">`).join('')+`<col style="width:56px">`;
+    if(s.parts) h+=s.parts.map(()=>`<col style="width:52px">`).join('')+`<col style="width:56px">`;
     else h+=`<col style="width:56px">`;
   });
   h+=`<col style="width:60px"><col style="width:82px"><col style="width:36px"><col style="width:58px"></colgroup>`;
@@ -604,7 +650,7 @@ function renderTable(){
   // Header row 2
   h+=`<tr>`;
   SUBS.forEach(s=>{
-    if(s.parts){s.parts.forEach(p=>h+=`<th class="${s.sc}">${p.label}</th>`);h+=`<th class="${s.sc}">Total</th>`;}
+    if(s.parts){ s.parts.forEach(p=>h+=`<th class="${s.sc}">${p.label}</th>`); h+=`<th class="${s.sc}">Total</th>`; }
     else h+=`<th class="${s.sc}">Score</th>`;
   });
   h+=`<th class="s-ovr">Avg%</th><th class="s-ovr">Level</th><th class="s-ovr">Pts</th></tr>`;
@@ -614,7 +660,7 @@ function renderTable(){
   SUBS.forEach(s=>{
     if(s.parts){
       s.parts.forEach(p=>{
-        const key=`${s.id}_${p.id}`,saved_oof=anyRec?.[`oof_${key}`]||DEFAULT_OOF;
+        const key=`${s.id}_${p.id}`, saved_oof=anyRec?.[`oof_${key}`]||DEFAULT_OOF;
         h+=`<th><input class="oof" type="number" min="1" inputmode="numeric" id="oof_${key}" value="${saved_oof}" title="Out of — ${s.label} ${p.label}" oninput="recalcAll()" onkeydown="navOof(event,this)"></th>`;
       });
       h+=`<th id="oof_${s.id}_tot_cell" style="font-size:10px;color:#fbbf24;font-weight:800;text-align:center">—</th>`;
@@ -628,7 +674,7 @@ function renderTable(){
   // Body
   h+=`<tbody>`;
   students.forEach((s,i)=>{
-    const rec=savedMap[s.id],yes=!!rec;
+    const rec=savedMap[s.id], yes=!!rec;
     h+=`<tr id="tr-${s.id}"${yes?' class="saved"':''}>`;
     h+=`<td class="cn no-c">${i+1}</td>`;
     h+=`<td class="cna tl"><span class="sname">${s.name}</span></td>`;
@@ -636,7 +682,7 @@ function renderTable(){
     SUBS.forEach(sub=>{
       if(sub.parts){
         sub.parts.forEach(p=>{
-          const fid=`${sub.id}_${p.id}_${s.id}`,val=rec?(rec[`${sub.id}_${p.id}`]??''):'';
+          const fid=`${sub.id}_${p.id}_${s.id}`, val=rec?(rec[`${sub.id}_${p.id}`]??''):'';
           h+=`<td><input class="si" type="number" min="0" inputmode="numeric" id="${fid}" value="${val}" placeholder="–"
             oninput="validateScore(this,'${sub.id}_${p.id}',true);calcRow('${s.id}');draftSave('${s.id}')"
             onblur="autoSaveRow('${s.id}')" onkeydown="nav(event,this)"></td>`;
@@ -644,13 +690,13 @@ function renderTable(){
         const totVal=rec?(rec[`${sub.id}_tot`]??''):'';
         h+=`<td class="tot-c" id="${sub.id}_tot_${s.id}">${totVal}</td>`;
       }else{
-        const fid=`${sub.id}_s_${s.id}`,val=rec?(rec[`${sub.id}_score`]??''):'';
+        const fid=`${sub.id}_s_${s.id}`, val=rec?(rec[`${sub.id}_score`]??''):'';
         h+=`<td><input class="si" type="number" min="0" inputmode="numeric" id="${fid}" value="${val}" placeholder="–"
           oninput="validateScore(this,'${sub.id}',false);calcRow('${s.id}');draftSave('${s.id}')"
           onblur="autoSaveRow('${s.id}')" onkeydown="nav(event,this)"></td>`;
       }
     });
-    const oa=rec?.overallAvg??'',ol=oa!==''?getLevel(Number(oa)):null;
+    const oa=rec?.overallAvg??'', ol=oa!==''?getLevel(Number(oa)):null;
     h+=`<td class="avg-c" id="oa_${s.id}">${oa!==''?Number(oa).toFixed(1):''}</td>`;
     h+=`<td id="ol_${s.id}">${ol?`<span class="lbg ${ol.c}">${ol.l}</span>`:''}</td>`;
     h+=`<td class="pts-c" id="op_${s.id}">${ol?ol.p:''}</td>`;
@@ -662,7 +708,7 @@ function renderTable(){
   // Footer
   h+=`<tfoot><tr><td colspan="3" class="lbl cn cna" style="left:0;min-width:269px">CLASS AVG</td>`;
   SUBS.forEach(sub=>{
-    if(sub.parts){sub.parts.forEach(p=>h+=`<td id="ca_${sub.id}_${p.id}"></td>`);h+=`<td id="ca_${sub.id}_tot"></td>`;}
+    if(sub.parts){ sub.parts.forEach(p=>h+=`<td id="ca_${sub.id}_${p.id}"></td>`); h+=`<td id="ca_${sub.id}_tot"></td>`; }
     else h+=`<td id="ca_${sub.id}"></td>`;
   });
   h+=`<td class="ov-c" id="ca_ovr"></td><td></td><td></td><td></td></tr></tfoot></table>`;
@@ -683,39 +729,41 @@ function updateOofTotals(){
   SUBS.forEach(sub=>{
     if(sub.parts){
       const tot=sub.parts.reduce((a,p)=>a+(Number(el(`oof_${sub.id}_${p.id}`)?.value)||DEFAULT_OOF),0);
-      const c=el(`oof_${sub.id}_tot_cell`);if(c)c.textContent=tot;
+      const c=el(`oof_${sub.id}_tot_cell`); if(c) c.textContent=tot;
     }
   });
 }
 
-window.recalcAll=function(){updateOofTotals();students.forEach(s=>calcRow(s.id));};
+window.recalcAll = function(){ updateOofTotals(); students.forEach(s=>calcRow(s.id)); };
 
-window.calcRow=function(sid){
+window.calcRow = function(sid){
   const SUBS=window._currentSubs||[];
   let pcts=[];
   SUBS.forEach(sub=>{
     if(sub.parts){
       const rawScores=sub.parts.map(p=>{
-        const inp=el(`${sub.id}_${p.id}_${sid}`),oofV=Number(el(`oof_${sub.id}_${p.id}`)?.value)||DEFAULT_OOF,raw=Number(inp?.value)||0;
-        if(inp)inp.classList.toggle('over-limit',raw>oofV&&raw>0);
+        const inp=el(`${sub.id}_${p.id}_${sid}`), oofV=Number(el(`oof_${sub.id}_${p.id}`)?.value)||DEFAULT_OOF, raw=Number(inp?.value)||0;
+        if(inp) inp.classList.toggle('over-limit',raw>oofV&&raw>0);
         return Math.min(raw,oofV);
       });
       const rawTotal=rawScores.reduce((a,b)=>a+b,0);
       const oofTotal=sub.parts.reduce((a,p)=>a+(Number(el(`oof_${sub.id}_${p.id}`)?.value)||DEFAULT_OOF),0);
-      if(rawScores.some(v=>v>0)){el(`${sub.id}_tot_${sid}`).textContent=rawTotal;pcts.push((rawTotal/oofTotal)*100);}
+      if(rawScores.some(v=>v>0)){ el(`${sub.id}_tot_${sid}`).textContent=rawTotal; pcts.push((rawTotal/oofTotal)*100); }
       else el(`${sub.id}_tot_${sid}`).textContent='';
     }else{
-      const inp=el(`${sub.id}_s_${sid}`),raw=Number(inp?.value)||0,oofVal=Number(el(`oof_${sub.id}`)?.value)||DEFAULT_OOF;
-      if(inp)inp.classList.toggle('over-limit',raw>oofVal&&raw>0);
-      if(raw>0)pcts.push((Math.min(raw,oofVal)/oofVal)*100);
+      const inp=el(`${sub.id}_s_${sid}`), raw=Number(inp?.value)||0, oofVal=Number(el(`oof_${sub.id}`)?.value)||DEFAULT_OOF;
+      if(inp) inp.classList.toggle('over-limit',raw>oofVal&&raw>0);
+      if(raw>0) pcts.push((Math.min(raw,oofVal)/oofVal)*100);
     }
   });
   if(pcts.length){
-    const avgPct=pcts.reduce((a,b)=>a+b,0)/pcts.length,lv=getLevel(avgPct);
+    const avgPct=pcts.reduce((a,b)=>a+b,0)/pcts.length, lv=getLevel(avgPct);
     el(`oa_${sid}`).textContent=avgPct.toFixed(1);
     el(`ol_${sid}`).innerHTML=`<span class="lbg ${lv.c}">${lv.l}</span>`;
     el(`op_${sid}`).textContent=lv.p;
-  }else{el(`oa_${sid}`).textContent='';el(`ol_${sid}`).innerHTML='';el(`op_${sid}`).textContent='';}
+  }else{
+    el(`oa_${sid}`).textContent=''; el(`ol_${sid}`).innerHTML=''; el(`op_${sid}`).textContent='';
+  }
   updateClassAvg();
 };
 
@@ -723,32 +771,37 @@ function updateClassAvg(){
   const SUBS=window._currentSubs||[];
   SUBS.forEach(sub=>{
     if(sub.parts){
-      sub.parts.forEach(p=>{const vals=students.map(s=>Number(el(`${sub.id}_${p.id}_${s.id}`)?.value)||0).filter(v=>v>0);const c=el(`ca_${sub.id}_${p.id}`);if(c)c.textContent=vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1):'';});
-      const tots=students.map(s=>{const t=el(`${sub.id}_tot_${s.id}`);return t?Number(t.textContent)||0:0;}).filter(v=>v>0);
-      const ct=el(`ca_${sub.id}_tot`);if(ct)ct.textContent=tots.length?(tots.reduce((a,b)=>a+b,0)/tots.length).toFixed(1):'';
+      sub.parts.forEach(p=>{
+        const vals=students.map(s=>Number(el(`${sub.id}_${p.id}_${s.id}`)?.value)||0).filter(v=>v>0);
+        const c=el(`ca_${sub.id}_${p.id}`); if(c) c.textContent=vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1):'';
+      });
+      const tots=students.map(s=>{ const t=el(`${sub.id}_tot_${s.id}`); return t?Number(t.textContent)||0:0; }).filter(v=>v>0);
+      const ct=el(`ca_${sub.id}_tot`); if(ct) ct.textContent=tots.length?(tots.reduce((a,b)=>a+b,0)/tots.length).toFixed(1):'';
     }else{
       const vals=students.map(s=>Number(el(`${sub.id}_s_${s.id}`)?.value)||0).filter(v=>v>0);
-      const c=el(`ca_${sub.id}`);if(c)c.textContent=vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1):'';
+      const c=el(`ca_${sub.id}`); if(c) c.textContent=vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1):'';
     }
   });
-  const oavgs=students.map(s=>{const t=el(`oa_${s.id}`);return t?Number(t.textContent)||0:0;}).filter(v=>v>0);
-  const co=el('ca_ovr');if(co)co.textContent=oavgs.length?(oavgs.reduce((a,b)=>a+b,0)/oavgs.length).toFixed(1):'';
+  const oavgs=students.map(s=>{ const t=el(`oa_${s.id}`); return t?Number(t.textContent)||0:0; }).filter(v=>v>0);
+  const co=el('ca_ovr'); if(co) co.textContent=oavgs.length?(oavgs.reduce((a,b)=>a+b,0)/oavgs.length).toFixed(1):'';
 }
 
 // ══════════════════════════════════════════════
 // KEYBOARD NAV
 // ══════════════════════════════════════════════
-window.nav=function(e,inp){
-  const idx=allInputs.indexOf(inp),firstTr=allInputs[0]?.closest('tr'),perRow=firstTr?allInputs.filter(x=>x.closest('tr')===firstTr).length:1;
+window.nav = function(e,inp){
+  const idx=allInputs.indexOf(inp), firstTr=allInputs[0]?.closest('tr');
+  const perRow=firstTr?allInputs.filter(x=>x.closest('tr')===firstTr).length:1;
   const map={Tab:1,Enter:1,ArrowRight:1,ArrowLeft:-1,ArrowDown:perRow,ArrowUp:-perRow};
   const d=e.shiftKey&&e.key==='Tab'?-1:map[e.key];
-  if(d!==undefined){const nx=allInputs[idx+d];if(nx){e.preventDefault();nx.focus();nx.select();}}
+  if(d!==undefined){ const nx=allInputs[idx+d]; if(nx){ e.preventDefault(); nx.focus(); nx.select(); } }
 };
-window.navOof=function(e,inp){
+window.navOof = function(e,inp){
   if(e.key==='Enter'||e.key==='Tab'){
     e.preventDefault();
-    const oofs=Array.from(document.querySelectorAll('#mkT .oof')),i=oofs.indexOf(inp),nx=oofs[e.shiftKey?i-1:i+1];
-    if(nx){nx.focus();nx.select();}else if(allInputs[0]){allInputs[0].focus();allInputs[0].select();}
+    const oofs=Array.from(document.querySelectorAll('#mkT .oof')), i=oofs.indexOf(inp);
+    const nx=oofs[e.shiftKey?i-1:i+1];
+    if(nx){ nx.focus(); nx.select(); } else if(allInputs[0]){ allInputs[0].focus(); allInputs[0].select(); }
   }
 };
 
@@ -760,7 +813,7 @@ function collectRow(sid){
   const d={};
   SUBS.forEach(sub=>{
     if(sub.parts){
-      sub.parts.forEach(p=>{d[`${sub.id}_${p.id}`]=Number(el(`${sub.id}_${p.id}_${sid}`)?.value)||0;d[`oof_${sub.id}_${p.id}`]=Number(el(`oof_${sub.id}_${p.id}`)?.value)||DEFAULT_OOF;});
+      sub.parts.forEach(p=>{ d[`${sub.id}_${p.id}`]=Number(el(`${sub.id}_${p.id}_${sid}`)?.value)||0; d[`oof_${sub.id}_${p.id}`]=Number(el(`oof_${sub.id}_${p.id}`)?.value)||DEFAULT_OOF; });
       d[`${sub.id}_tot`]=Number(el(`${sub.id}_tot_${sid}`)?.textContent)||0;
     }else{
       d[`${sub.id}_score`]=Number(el(`${sub.id}_s_${sid}`)?.value)||0;
@@ -776,201 +829,225 @@ function collectRow(sid){
 // ══════════════════════════════════════════════
 // VALIDATION
 // ══════════════════════════════════════════════
-window.validateScore=function(inp,subKey,isPart){
-  const val=Number(inp.value);if(isNaN(val)||inp.value==='')return;
+window.validateScore = function(inp,subKey,isPart){
+  const val=Number(inp.value); if(isNaN(val)||inp.value==='') return;
   const oofVal=Number(el(isPart?`oof_${subKey}`:`oof_${subKey}`)?.value)||DEFAULT_OOF;
-  if(val>oofVal){inp.classList.add('over-limit');inp.title=`⚠ Score ${val} exceeds maximum ${oofVal}`;showNetBar(`⚠ Score ${val} exceeds max ${oofVal} — please correct`,'offline');}
-  else{inp.classList.remove('over-limit');inp.title='';}
+  if(val>oofVal){ inp.classList.add('over-limit'); inp.title=`⚠ Score ${val} exceeds maximum ${oofVal}`; showNetBar(`⚠ Score ${val} exceeds max ${oofVal} — please correct`,'offline'); }
+  else{ inp.classList.remove('over-limit'); inp.title=''; }
 };
-function hasValidationErrors(){return document.querySelectorAll('.si.over-limit').length>0;}
+function hasValidationErrors(){ return document.querySelectorAll('.si.over-limit').length>0; }
 
 // ══════════════════════════════════════════════
 // NETWORK BAR
 // ══════════════════════════════════════════════
 let _netBarTimer=null;
-function showNetBar(msg,type='saving'){const bar=el('netBar');bar.className=type;bar.textContent=msg;clearTimeout(_netBarTimer);if(type==='saved')_netBarTimer=setTimeout(hideNetBar,2500);}
-function hideNetBar(){const bar=el('netBar');bar.className='';setTimeout(()=>{bar.style.display='none';bar.className='';},300);}
-window.addEventListener('offline',()=>{showNetBar('📡 No internet — marks saved locally','offline');});
-window.addEventListener('online',()=>{showNetBar('✅ Back online — syncing…','saving');setTimeout(syncPendingRows,1000);});
+function showNetBar(msg,type='saving'){ const bar=el('netBar'); bar.className=type; bar.textContent=msg; clearTimeout(_netBarTimer); if(type==='saved') _netBarTimer=setTimeout(hideNetBar,2500); }
+function hideNetBar(){ const bar=el('netBar'); bar.className=''; setTimeout(()=>{ bar.style.display='none'; bar.className=''; },300); }
+window.addEventListener('offline',()=>{ showNetBar('📡 No internet — marks saved locally','offline'); });
+window.addEventListener('online', ()=>{ showNetBar('✅ Back online — syncing…','saving'); setTimeout(syncPendingRows,1000); });
 
 // ══════════════════════════════════════════════
 // DRAFT (localStorage)
 // ══════════════════════════════════════════════
 let _draftKey=null;
 function getDraftKey(){
-  if(_draftKey)return _draftKey;
-  const sid=currentUser?.schoolId||sessionStorage.getItem('cbe_school_id')||'x';
-  const grade=currentUser?.role==='teacher'?(currentUser.grade||el('selGrade')?.value||''):(el('selGrade')?.value||'');
-  const stream=currentUser?.role==='teacher'?(currentUser.stream||el('selStream')?.value||''):(el('selStream')?.value||'');
-  const term=el('selTerm')?.value||'',year=el('selYear')?.value||'';
-  const cat=gradeUsesCats(grade)?currentCat:'';
-  _draftKey=`cbe_draft_${sid}_${grade}_${stream}_${term}_${year}_${cat}`.replace(/\s/g,'_');
+  if(_draftKey) return _draftKey;
+  const sid   = currentUser?.schoolId||sessionStorage.getItem('cbe_school_id')||'x';
+  const grade  = _getGrade();
+  const stream = _getStream();
+  const term   = _getTerm();
+  const year   = _getYear();
+  const cat    = gradeUsesCats(grade) ? currentCat : '';
+  _draftKey = `cbe_draft_${sid}_${grade}_${stream}_${term}_${year}_${cat}`.replace(/\s/g,'_');
   return _draftKey;
 }
 function draftSave(sid){
-  try{const key=getDraftKey();let draft={};try{draft=JSON.parse(localStorage.getItem(key)||'{}');}catch(_){}const d=collectRow(sid);d._savedAt=Date.now();draft[sid]=d;localStorage.setItem(key,JSON.stringify(draft));}catch(_){}
+  try{
+    const key=getDraftKey(); let draft={};
+    try{ draft=JSON.parse(localStorage.getItem(key)||'{}'); }catch(_){}
+    const d=collectRow(sid); d._savedAt=Date.now(); draft[sid]=d;
+    localStorage.setItem(key,JSON.stringify(draft));
+  }catch(_){}
 }
 function loadDraft(){
   const SUBS=window._currentSubs||[];
   try{
-    _draftKey=null;const key=getDraftKey(),raw=localStorage.getItem(key);if(!raw)return;
-    const draft=JSON.parse(raw);let restored=0;
+    _draftKey=null; const key=getDraftKey(), raw=localStorage.getItem(key);
+    if(!raw) return;
+    const draft=JSON.parse(raw); let restored=0;
     students.forEach(s=>{
       if(draft[s.id]&&!savedMap[s.id]){
         const d=draft[s.id];
         SUBS.forEach(sub=>{
-          if(sub.parts){sub.parts.forEach(p=>{const o=el(`oof_${sub.id}_${p.id}`);if(o&&d[`oof_${sub.id}_${p.id}`])o.value=d[`oof_${sub.id}_${p.id}`];});}
-          else{const o=el(`oof_${sub.id}`);if(o&&d[`oof_${sub.id}`])o.value=d[`oof_${sub.id}`];}
+          if(sub.parts){ sub.parts.forEach(p=>{ const o=el(`oof_${sub.id}_${p.id}`); if(o&&d[`oof_${sub.id}_${p.id}`]) o.value=d[`oof_${sub.id}_${p.id}`]; }); }
+          else{ const o=el(`oof_${sub.id}`); if(o&&d[`oof_${sub.id}`]) o.value=d[`oof_${sub.id}`]; }
         });
         SUBS.forEach(sub=>{
-          if(sub.parts){sub.parts.forEach(p=>{const inp=el(`${sub.id}_${p.id}_${s.id}`);if(inp&&d[`${sub.id}_${p.id}`]!==undefined&&d[`${sub.id}_${p.id}`]!==0)inp.value=d[`${sub.id}_${p.id}`];});}
-          else{const inp=el(`${sub.id}_s_${s.id}`);if(inp&&d[`${sub.id}_score`]!==undefined&&d[`${sub.id}_score`]!==0)inp.value=d[`${sub.id}_score`];}
+          if(sub.parts){ sub.parts.forEach(p=>{ const inp=el(`${sub.id}_${p.id}_${s.id}`); if(inp&&d[`${sub.id}_${p.id}`]!==undefined&&d[`${sub.id}_${p.id}`]!==0) inp.value=d[`${sub.id}_${p.id}`]; }); }
+          else{ const inp=el(`${sub.id}_s_${s.id}`); if(inp&&d[`${sub.id}_score`]!==undefined&&d[`${sub.id}_score`]!==0) inp.value=d[`${sub.id}_score`]; }
         });
-        calcRow(s.id);restored++;
+        calcRow(s.id); restored++;
       }
     });
     updateOofTotals();
-    if(restored>0)toast(`📋 ${restored} unsaved draft${restored>1?'s':''} restored`,'info');
-  }catch(e){console.warn('Draft restore failed:',e.message);}
+    if(restored>0) toast(`📋 ${restored} unsaved draft${restored>1?'s':''} restored`,'info');
+  }catch(e){ console.warn('Draft restore failed:',e.message); }
 }
-function clearDraft(sid){try{const key=getDraftKey(),raw=localStorage.getItem(key);if(!raw)return;const draft=JSON.parse(raw);delete draft[sid];if(Object.keys(draft).length===0)localStorage.removeItem(key);else localStorage.setItem(key,JSON.stringify(draft));}catch(_){}}
+function clearDraft(sid){
+  try{
+    const key=getDraftKey(), raw=localStorage.getItem(key); if(!raw) return;
+    const draft=JSON.parse(raw); delete draft[sid];
+    if(Object.keys(draft).length===0) localStorage.removeItem(key);
+    else localStorage.setItem(key,JSON.stringify(draft));
+  }catch(_){}
+}
 
 // ══════════════════════════════════════════════
 // AUTOSAVE
 // ══════════════════════════════════════════════
 const _autoSaveTimers={};
-window.autoSaveRow=function(sid){
-  if(hasValidationErrors())return;
+window.autoSaveRow = function(sid){
+  if(hasValidationErrors()) return;
   clearTimeout(_autoSaveTimers[sid]);
-  _autoSaveTimers[sid]=setTimeout(()=>{const d=collectRow(sid);if(!d.overallAvg)return;_doAutoSave(sid);},800);
+  _autoSaveTimers[sid]=setTimeout(()=>{ const d=collectRow(sid); if(!d.overallAvg) return; _doAutoSave(sid); },800);
 };
 async function _doAutoSave(sid){
   showNetBar('💾 Autosaving…','saving');
-  try{await _saveRowSilent(sid);showNetBar('✅ Autosaved','saved');}
-  catch(e){showNetBar('📡 Offline — draft saved locally','offline');console.warn('Autosave failed:',e.message);}
+  try{ await _saveRowSilent(sid); showNetBar('✅ Autosaved','saved'); }
+  catch(e){ showNetBar('📡 Offline — draft saved locally','offline'); console.warn('Autosave failed:',e.message); }
 }
 const _pendingSync=new Set();
 
-// ── Build save payload (shared by saveRow + _saveRowSilent) ──
 function _buildPayload(sid,d){
-  const s=students.find(x=>x.id===sid);
-  const{grade:saveGrade}=_getClassSelectors();
-  const saveStream=currentUser?.role==='teacher'?(currentUser.stream||''):(streamsEnabled&&gradeHasStreams?(el('selStream')?.value||''):'');
-  const usesCats=gradeUsesCats(saveGrade);
+  const s       = students.find(x=>x.id===sid);
+  const grade   = _getGrade();
+  const stream  = _getStream();
+  const usesCats = gradeUsesCats(grade);
   return{
-    studentId:sid,studentName:s.name,admissionNumber:s.admissionNumber||'',
-    grade:saveGrade,stream:saveStream,
-    term:el('selTerm').value,year:el('selYear').value,
-    // Store exam field for CAT grades — crucial for filtering
-    ...(usesCats?{exam:currentCat}:{}),
+    studentId:sid, studentName:s.name, admissionNumber:s.admissionNumber||'',
+    grade, stream,
+    term: _getTerm(), year: _getYear(),
+    ...(usesCats ? {exam:currentCat} : {}),
     schoolId:currentUser?.schoolId||sessionStorage.getItem('cbe_school_id')||'',
-    teacherId:currentUser?.uid||'',teacherName:currentUser?.fullName||'',
-    ...d,updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+    teacherId:currentUser?.uid||'', teacherName:currentUser?.fullName||'',
+    ...d, updatedAt:firebase.firestore.FieldValue.serverTimestamp()
   };
 }
 
 async function _saveRowSilent(sid){
-  const d=collectRow(sid); if(!d.overallAvg)return;
-  if(!navigator.onLine){_pendingSync.add(sid);draftSave(sid);throw new Error('offline');}
-  const payload=_buildPayload(sid,d);
-  const{grade:saveGrade}=_getClassSelectors();
-  const catKey=gradeUsesCats(saveGrade)?currentCat:'';
-  const ck=_cacheKey(saveGrade,payload.stream,payload.term,payload.year,catKey,payload.schoolId);
-  const ex=savedMap[sid];
-  if(ex){await db.collection('results').doc(ex.id).update(payload);savedMap[sid]={...ex,...payload};}
-  else{payload.createdAt=firebase.firestore.FieldValue.serverTimestamp();const ref=await db.collection('results').add(payload);savedMap[sid]={id:ref.id,...payload};el('pilSv').textContent=++savedCount;}
+  const d=collectRow(sid); if(!d.overallAvg) return;
+  if(!navigator.onLine){ _pendingSync.add(sid); draftSave(sid); throw new Error('offline'); }
+  const payload = _buildPayload(sid,d);
+  const grade   = _getGrade();
+  const catKey  = gradeUsesCats(grade) ? currentCat : '';
+  const ck      = _cacheKey(grade,payload.stream,payload.term,payload.year,catKey,payload.schoolId);
+  const ex      = savedMap[sid];
+  if(ex){ await db.collection('results').doc(ex.id).update(payload); savedMap[sid]={...ex,...payload}; }
+  else{ payload.createdAt=firebase.firestore.FieldValue.serverTimestamp(); const ref=await db.collection('results').add(payload); savedMap[sid]={id:ref.id,...payload}; el('pilSv').textContent=++savedCount; }
   _cacheUpdateSave(ck,sid,savedMap[sid]);
   el(`tr-${sid}`)?.classList.add('saved');
-  const actEl=el(`act_${sid}`);if(actEl)actEl.innerHTML=`<span class="sv-done">✓</span>`;
-  clearDraft(sid);_pendingSync.delete(sid);
+  const actEl=el(`act_${sid}`); if(actEl) actEl.innerHTML=`<span class="sv-done">✓</span>`;
+  clearDraft(sid); _pendingSync.delete(sid);
 }
 
 async function syncPendingRows(){
-  if(!_pendingSync.size)return;
-  const ids=[..._pendingSync];toast(`Syncing ${ids.length} pending rows…`,'info');
-  let done=0;for(const sid of ids){try{await _saveRowSilent(sid);done++;}catch(_){}}
-  if(done>0){showNetBar(`✅ Synced ${done} row${done>1?'s':''}`, 'saved');toast(`✅ Synced ${done} rows`);}
+  if(!_pendingSync.size) return;
+  const ids=[..._pendingSync]; toast(`Syncing ${ids.length} pending rows…`,'info');
+  let done=0; for(const sid of ids){ try{ await _saveRowSilent(sid); done++; }catch(_){} }
+  if(done>0){ showNetBar(`✅ Synced ${done} row${done>1?'s':''}`, 'saved'); toast(`✅ Synced ${done} rows`); }
 }
 
 // ══════════════════════════════════════════════
 // SAVE ROW (manual)
 // ══════════════════════════════════════════════
-window.saveRow=async function(sid){
-  const s=students.find(x=>x.id===sid); if(!s)return;
-  if(hasValidationErrors()){toast('Fix scores exceeding maximum before saving','err');return;}
-  const d=collectRow(sid); if(!d.overallAvg){toast('Enter at least one score','err');return;}
+window.saveRow = async function(sid){
+  const s=students.find(x=>x.id===sid); if(!s) return;
+  if(hasValidationErrors()){ toast('Fix scores exceeding maximum before saving','err'); return; }
+  const d=collectRow(sid); if(!d.overallAvg){ toast('Enter at least one score','err'); return; }
   const btn=el(`act_${sid}`)?.querySelector('.sv-btn');
-  if(btn){btn.disabled=true;btn.textContent='…';}
-  const payload=_buildPayload(sid,d);
-  const{grade:saveGrade}=_getClassSelectors();
-  const catKey=gradeUsesCats(saveGrade)?currentCat:'';
-  const ck=_cacheKey(saveGrade,payload.stream,payload.term,payload.year,catKey,payload.schoolId);
+  if(btn){ btn.disabled=true; btn.textContent='…'; }
+  const payload = _buildPayload(sid,d);
+  const grade   = _getGrade();
+  const catKey  = gradeUsesCats(grade) ? currentCat : '';
+  const ck      = _cacheKey(grade,payload.stream,payload.term,payload.year,catKey,payload.schoolId);
   try{
     const ex=savedMap[sid];
-    if(ex){await db.collection('results').doc(ex.id).update(payload);savedMap[sid]={...ex,...payload};}
-    else{payload.createdAt=firebase.firestore.FieldValue.serverTimestamp();const ref=await db.collection('results').add(payload);savedMap[sid]={id:ref.id,...payload};el('pilSv').textContent=++savedCount;}
+    if(ex){ await db.collection('results').doc(ex.id).update(payload); savedMap[sid]={...ex,...payload}; }
+    else{ payload.createdAt=firebase.firestore.FieldValue.serverTimestamp(); const ref=await db.collection('results').add(payload); savedMap[sid]={id:ref.id,...payload}; el('pilSv').textContent=++savedCount; }
     _cacheUpdateSave(ck,sid,savedMap[sid]);
     el(`tr-${sid}`)?.classList.add('saved');
     el(`act_${sid}`).innerHTML=`<span class="sv-done">✓</span>`;
-    clearDraft(sid);_pendingSync.delete(sid);
+    clearDraft(sid); _pendingSync.delete(sid);
     toast(`Saved: ${s.name}`);
-  }catch(e){toast(`Error: ${e.message}`,'err');if(btn){btn.disabled=false;btn.textContent='Save';}}
+  }catch(e){ toast(`Error: ${e.message}`,'err'); if(btn){ btn.disabled=false; btn.textContent='Save'; } }
 };
 
 // ══════════════════════════════════════════════
 // SAVE ALL
 // ══════════════════════════════════════════════
-window.saveAll=async function(){
-  if(!students.length){toast('Load students first','err');return;}
-  let done=0,skip=0;
-  for(const s of students){const d=collectRow(s.id);if(d.overallAvg>0){await saveRow(s.id);done++;}else skip++;}
+window.saveAll = async function(){
+  if(!students.length){ toast('Load students first','err'); return; }
+  let done=0, skip=0;
+  for(const s of students){ const d=collectRow(s.id); if(d.overallAvg>0){ await saveRow(s.id); done++; }else skip++; }
   toast(`${done} saved${skip?` · ${skip} skipped`:''}`);
 };
 
 // ══════════════════════════════════════════════
 // HELPERS
 // ══════════════════════════════════════════════
-const el=id=>document.getElementById(id);
-
 function toast(msg,type='ok'){
-  const t=document.createElement('div');t.className=`t ${type}`;
+  const t=document.createElement('div'); t.className=`t ${type}`;
   t.innerHTML=`<span>${type==='ok'?'✅':type==='err'?'❌':'ℹ️'}</span>${msg}`;
   el('tc').appendChild(t);
-  setTimeout(()=>{t.style.animation='tout .25s ease forwards';setTimeout(()=>t.remove(),280);},2600);
+  setTimeout(()=>{ t.style.animation='tout .25s ease forwards'; setTimeout(()=>t.remove(),280); },2600);
 }
 
 async function doLogout(){
-  try{['cbe_streams','cbe_streams_ts'].forEach(k=>localStorage.removeItem(k));await auth.signOut();window.location.href='login';}
-  catch(e){toast('Sign out failed: '+e.message,'err');}
+  try{
+    ['cbe_streams','cbe_streams_ts'].forEach(k=>localStorage.removeItem(k));
+    await auth.signOut(); window.location.href='login';
+  }catch(e){ toast('Sign out failed: '+e.message,'err'); }
 }
 
 // Dark mode
 document.getElementById('themeBtn').addEventListener('click',function(){
-  document.body.classList.toggle('dark');this.textContent=document.body.classList.contains('dark')?'☀️':'🌙';
+  document.body.classList.toggle('dark');
+  this.textContent=document.body.classList.contains('dark')?'☀️':'🌙';
   localStorage.setItem('cbe_theme',document.body.classList.contains('dark')?'dark':'light');
 });
-if(localStorage.getItem('cbe_theme')==='dark'){document.body.classList.add('dark');el('themeBtn').textContent='☀️';}
+if(localStorage.getItem('cbe_theme')==='dark'){ document.body.classList.add('dark'); el('themeBtn').textContent='☀️'; }
 
-window.addEventListener('beforeprint',function(e){if(currentUser?.role==='teacher'){e.preventDefault();toast('Printing restricted to admin/secretary','err');}});
+window.addEventListener('beforeprint',function(e){
+  if(currentUser?.role==='teacher'){ e.preventDefault(); toast('Printing restricted to admin/secretary','err'); }
+});
 
 // ══════════════════════════════════════════════
 // SESSION TIMEOUT
 // ══════════════════════════════════════════════
-const SESSION_TIMEOUT_MS=30*60*1000,SESSION_WARNING_MS=2*60*1000;
-let _idleTimer=null,_warnTimer=null,_warnEl=null;
+const SESSION_TIMEOUT_MS=30*60*1000, SESSION_WARNING_MS=2*60*1000;
+let _idleTimer=null, _warnTimer=null, _warnEl=null;
 function createWarnBanner(){
-  if(document.getElementById('_sessionWarn'))return;
-  const d=document.createElement('div');d.id='_sessionWarn';
+  if(document.getElementById('_sessionWarn')) return;
+  const d=document.createElement('div'); d.id='_sessionWarn';
   d.style.cssText='display:none;position:fixed;top:0;left:0;right:0;z-index:9999;background:#7f1d1d;color:#fef2f2;font-family:inherit;padding:10px 20px;font-size:13px;font-weight:600;display:none;align-items:center;justify-content:space-between;gap:12px;border-bottom:2px solid #ef4444';
   d.innerHTML=`<span>⚠️ Session expires in <span id="_sessionCountdown">2:00</span> — inactivity.</span><div style="display:flex;gap:8px"><button onclick="_keepAlive()" style="padding:4px 12px;background:#059669;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:700;font-size:12px">Stay Logged In</button><button onclick="doLogout()" style="padding:4px 12px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:4px;cursor:pointer;font-size:12px">Sign Out Now</button></div>`;
-  document.body.prepend(d);_warnEl=d;
+  document.body.prepend(d); _warnEl=d;
 }
 function _resetIdleTimer(){
-  clearTimeout(_idleTimer);clearTimeout(_warnTimer);if(_warnEl)_warnEl.style.display='none';
-  _warnTimer=setTimeout(()=>{createWarnBanner();_warnEl.style.display='flex';let secs=SESSION_WARNING_MS/1000;const tick=setInterval(()=>{secs--;const e=document.getElementById('_sessionCountdown');if(e)e.textContent=Math.floor(secs/60)+':'+(secs%60).toString().padStart(2,'0');if(secs<=0)clearInterval(tick);},1000);},SESSION_TIMEOUT_MS-SESSION_WARNING_MS);
+  clearTimeout(_idleTimer); clearTimeout(_warnTimer); if(_warnEl) _warnEl.style.display='none';
+  _warnTimer=setTimeout(()=>{
+    createWarnBanner(); _warnEl.style.display='flex';
+    let secs=SESSION_WARNING_MS/1000;
+    const tick=setInterval(()=>{
+      secs--;
+      const e=document.getElementById('_sessionCountdown');
+      if(e) e.textContent=Math.floor(secs/60)+':'+(secs%60).toString().padStart(2,'0');
+      if(secs<=0) clearInterval(tick);
+    },1000);
+  },SESSION_TIMEOUT_MS-SESSION_WARNING_MS);
   _idleTimer=setTimeout(doLogout,SESSION_TIMEOUT_MS);
 }
-window._keepAlive=function(){_resetIdleTimer();};
+window._keepAlive = function(){ _resetIdleTimer(); };
 ['mousemove','keydown','click','touchstart','scroll'].forEach(evt=>document.addEventListener(evt,_resetIdleTimer,{passive:true}));
 _resetIdleTimer();
 </script>
