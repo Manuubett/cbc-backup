@@ -259,11 +259,10 @@ body.dark .level-row .bar-wrap{background:#1a2030}
   <!-- CAT / Exam selector — shown for grades 7-14 -->
   <span class="tb-lbl" id="catSelectorLabel" style="display:none">Exam</span>
   <div class="cat-tabs-wrap" id="catTabsWrap" style="display:none">
-    <button class="cat-tab" id="catBtn_CAT 1"    onclick="selectCat('CAT 1')">CAT 1</button>
-    <button class="cat-tab" id="catBtn_CAT 2"    onclick="selectCat('CAT 2')">CAT 2</button>
-    <button class="cat-tab" id="catBtn_CAT 3"    onclick="selectCat('CAT 3')">CAT 3</button>
-    <button class="cat-tab" id="catBtn_Term Avg" onclick="selectCat('Term Avg')" title="Average of all 3 CATs">📊 Term Avg</button>
-  </div>
+   <button class="cat-tab" id="catBtn_Exam 1" onclick="selectCat('Exam 1')">Exam 1</button>
+<button class="cat-tab" id="catBtn_Exam 2" onclick="selectCat('Exam 2')">Exam 2</button>
+<button class="cat-tab" id="catBtn_Exam 3" onclick="selectCat('Exam 3')">Exam 3</button>
+<button class="cat-tab" id="catBtn_Term Avg" onclick="selectCat('Term Avg')" title="Average of all 3 Exams">📊 Term Avg</button>
 
   <span class="tb-lbl">Year</span>
   <input type="number" class="fsel" id="selYear" value="2026" min="2020" max="2040" style="width:68px" onchange="loadAnalysis()">
@@ -359,11 +358,11 @@ let _analysisSchoolId=null, _analysisRole=null;
 // ══════════════════════════════════════════════
 // CAT / EXAM SYSTEM
 // ══════════════════════════════════════════════
-let currentCat='CAT 1'; // active CAT selection — 'CAT 1','CAT 2','CAT 3','Term Avg'
+let currentCat='Exam 1';
 
 function gradeUsesCats(gradeStr){
   const n=parseInt((gradeStr||'').replace(/\D/g,''))||0;
-  return n>=7;
+  return n>=1;
 }
 
 function applyCatUI(gradeStr){
@@ -374,11 +373,11 @@ function applyCatUI(gradeStr){
 }
 
 function updateCatTabUI(){
-  ['CAT 1','CAT 2','CAT 3','Term Avg'].forEach(c=>{
+  ['Exam 1','Exam 2','Exam 3','Term Avg'].forEach(c=>{
     const btn=el(`catBtn_${c}`); if(!btn) return;
-    btn.className='cat-tab';
+    btn.className='cat-tab'; // reset first
     if(currentCat===c){
-      const cls=c==='CAT 1'?'active-1':c==='CAT 2'?'active-2':c==='CAT 3'?'active-3':'active-avg';
+      const cls=c==='Exam 1'?'active-1':c==='Exam 2'?'active-2':c==='Exam 3'?'active-3':'active-avg';
       btn.classList.add(cls);
     }
   });
