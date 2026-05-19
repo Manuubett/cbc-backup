@@ -577,7 +577,7 @@ window.onGradeChange=async function(){
   if(gradeUsesCats(grade)){
     const month=new Date().getMonth()+1;
     const mInTerm=month<=4?month:month<=8?month-4:month-8;
-    currentCat=mInTerm<=1?'CAT 1':mInTerm<=2?'CAT 2':'CAT 3';
+    currentCat=mInTerm<=1?'Exam 1':mInTerm<=2?'Exam 2':'Exam 3';
     updateCatTabUI();
   }
   ss.disabled=true; ss.innerHTML='<option value="">Loading…</option>';
@@ -632,7 +632,7 @@ window.loadAnalysis=async function(){
       renderAnalysis(grade,hasStream?stream:'',term,year,false);
     } else {
       // ── CAT mode (grades 7-14): fetch all 3 CATs ──
-      const cats=['CAT 1','CAT 2','CAT 3'];
+      const cats=['Exam 1','Exam 2','Exam 3'];
       const allCatResults={};
       cats.forEach(c=>allCatResults[c]=[]);
 
@@ -668,7 +668,7 @@ window.loadAnalysis=async function(){
 
 // ── Build synthetic term-average results by averaging CAT 1+2+3 per student ──
 function buildTermAvgResults(){
-  const cats=['CAT 1','CAT 2','CAT 3'];
+  const cats=['Exam 1','Exam 2','Exam 3'];
   const averaged=[];
   allStudents.forEach(s=>{
     const catRecs=cats.map(c=>catResultsMap[s.id]?.[c]).filter(Boolean);
@@ -749,7 +749,7 @@ function renderAnalysis(grade,stream,term,year,usesCats){
   let catProgressHtml='';
   if(usesCats&&currentCat!=='Term Avg'){
     // Show how many students have each CAT recorded
-    const cats=['CAT 1','CAT 2','CAT 3'];
+    const cats=['Exam 1','Exam 2','Exam 3'];
     catProgressHtml=`<div class="analysis-card" style="margin-bottom:14px">
       <div style="padding:12px 14px;border-bottom:1px solid var(--border);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text3)">Term CAT Progress</div>
       <div style="padding:14px 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px">`;
@@ -771,7 +771,7 @@ function renderAnalysis(grade,stream,term,year,usesCats){
   // Term Avg banner
   let avgBannerHtml='';
   if(usesCats&&currentCat==='Term Avg'){
-    const catCounts=(['CAT 1','CAT 2','CAT 3']).map(cat=>({cat,count:allStudents.filter(s=>catResultsMap[s.id]?.[cat]?.overallAvg>0).length}));
+    const catCounts=(['Exam 1','Exam 2','Exam 3']).map(cat=>({cat,count:allStudents.filter(s=>catResultsMap[s.id]?.[cat]?.overallAvg>0).length}));
     avgBannerHtml=`<div style="background:#fff7ed;border:1.5px solid #fdba74;border-radius:var(--r);padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
       <div>📊 <strong style="color:#c2410c">Term Average</strong> <span style="font-size:11.5px;color:var(--text2)">— averaged across all recorded CATs per student</span></div>
       <div style="display:flex;gap:10px;flex-wrap:wrap">`;
@@ -872,7 +872,9 @@ function renderAnalysis(grade,stream,term,year,usesCats){
         <th style="text-align:center">Trend</th>
       </tr></thead><tbody>`;
     allStudents.forEach(s=>{
-      const c1=catResultsMap[s.id]?.['CAT 1']?.overallAvg, c2=catResultsMap[s.id]?.['CAT 2']?.overallAvg, c3=catResultsMap[s.id]?.['CAT 3']?.overallAvg;
+      const c1=catResultsMap[s.id]?.['Exam 1']?.overallAvg
+const c2=catResultsMap[s.id]?.['Exam 2']?.overallAvg
+const c3=catResultsMap[s.id]?.['Exam 3']?.overallAvg
       const vals=[c1,c2,c3].filter(v=>v!=null&&v>0);
       if(!vals.length) return;
       const termAvg=vals.reduce((a,b)=>a+b,0)/vals.length;
@@ -917,7 +919,7 @@ window.openStudent=function(sid){
   // CAT mini-comparison for this student
   let catMiniHtml='';
   if(usesCats){
-    const cats=['CAT 1','CAT 2','CAT 3'];
+    const cats=['Exam 1','Exam 2','Exam 3'];
     const studentCats=catResultsMap[sid];
     catMiniHtml=`<div style="margin-bottom:16px">
       <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:#9aaabb;margin-bottom:8px">CAT Performance This Term</div>`;
