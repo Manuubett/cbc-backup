@@ -13,7 +13,7 @@
 <meta name="msvalidate.01" content="53F9D4CBAF293FA83D71044AB6B7898F">
 <title>CBE Mark Sheet — Kenya CBC Digital School Management System</title>
 <meta name="description" content="The fastest way to manage CBC mark sheets for Kenya Primary &amp; Junior Schools (Grades 1–9). Automatic EE, ME, AE, BE level calculation, class analysis, branded report cards and real-time cloud sync.">
-<meta name="keywords" content="CBC mark sheet, Kenya CBC, junior school marks, CBC grading, EE ME AE BE, Grade 1 2 3 4 5 6 7 8 9, CBC report card, Kenya school management, competency based curriculum, digital mark sheet">
+<meta name="keywords" content="...Grade 1 2 3 4 5 6 7 8 9 10 11 12, CBC report card, senior school CBC, Kenya school management, competency based curriculum, digital mark sheet">
 <meta name="author" content="CBE Mark Sheet System">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://bett.website/">
@@ -41,7 +41,7 @@
 <link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#0b1427">
 <meta name="msapplication-TileColor" content="#1553d4">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"CBE Mark Sheet System","applicationCategory":"EducationApplication","operatingSystem":"Web Browser","url":"https://bett.website/","description":"Digital CBC mark sheet management system for Kenya Primary and Junior Schools.","offers":{"@type":"Offer","price":"1499","priceCurrency":"KES"},"audience":{"@type":"EducationalAudience","educationalRole":"teacher administrator"},"educationalLevel":"Primary and Junior Secondary School","countryOfOrigin":"KE","inLanguage":"en-KE"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"CBE Mark Sheet System","applicationCategory":"EducationApplication","operatingSystem":"Web Browser","url":"https://bett.website/","description":"Digital CBC mark sheet management system for Kenya Primary and Junior Schools.","offers":{"@type":"Offer","price":"1499","priceCurrency":"KES"},"audience":{"@type":"EducationalAudience","educationalRole":"teacher administrator"},"educationalLevel":"Primary, Junior and Senior Secondary School","countryOfOrigin":"KE","inLanguage":"en-KE"}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <script src="https://www.google.com/recaptcha/enterprise.js?render=6Ldd1q4sAAAAADga6Ediw118NWAhCHZSl-pmL2Pc"></script>
@@ -416,6 +416,70 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:52px 36px 30px}
   .ann-banner{padding:10px 20px}
 }
 @media(max-width:420px){.foot-top{grid-template-columns:1fr}}
+
+/* ── TESTIMONIALS ── */
+.testi-section{padding:80px 32px;background:var(--page)}
+.testi-inner{max-width:960px;margin:0 auto}
+.testi-header{text-align:center;margin-bottom:48px}
+
+/* Write review form */
+.review-form-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:28px;box-shadow:var(--sh2);margin-bottom:44px;position:relative;overflow:hidden}
+.review-form-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--sky),var(--sky2))}
+.review-form-title{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.star-picker{display:flex;gap:6px;margin-bottom:16px}
+.star-btn{font-size:26px;cursor:pointer;background:none;border:none;padding:0;transition:transform .15s;line-height:1;opacity:.3;filter:grayscale(1)}
+.star-btn.lit{opacity:1;filter:none}
+.star-btn:hover{transform:scale(1.2)}
+.review-inputs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.review-input{padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--r2);font-family:'Outfit',sans-serif;font-size:13.5px;color:var(--ink);background:var(--card);outline:none;transition:border-color .15s;width:100%}
+.review-input:focus{border-color:var(--sky);box-shadow:0 0 0 3px rgba(21,83,212,.08)}
+.review-textarea{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--r2);font-family:'Outfit',sans-serif;font-size:13.5px;color:var(--ink);background:var(--card);outline:none;resize:vertical;min-height:90px;transition:border-color .15s;display:block;margin-bottom:14px}
+.review-textarea:focus{border-color:var(--sky);box-shadow:0 0 0 3px rgba(21,83,212,.08)}
+.review-submit{display:inline-flex;align-items:center;gap:7px;padding:10px 24px;border-radius:var(--r2);background:linear-gradient(135deg,var(--sky),var(--sky2));color:#fff;font-size:13.5px;font-weight:700;border:none;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .15s;box-shadow:0 2px 10px rgba(21,83,212,.25)}
+.review-submit:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(21,83,212,.35)}
+.review-submit:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.review-note{font-size:11.5px;color:var(--ink3);margin-top:10px}
+
+/* Summary bar */
+.testi-summary{display:flex;align-items:center;gap:28px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px 24px;box-shadow:var(--sh);margin-bottom:28px;flex-wrap:wrap;gap:20px}
+.testi-avg-big{font-family:'Libre Baskerville',serif;font-size:52px;font-weight:700;color:var(--ink);line-height:1}
+.testi-stars-row{display:flex;gap:3px;font-size:20px;margin:4px 0}
+.testi-count{font-size:12px;color:var(--ink3)}
+.testi-bars{flex:1;min-width:200px;display:flex;flex-direction:column;gap:5px}
+.testi-bar-row{display:flex;align-items:center;gap:8px;font-size:12px}
+.testi-bar-lbl{width:28px;color:var(--ink2);font-weight:600;text-align:right;flex-shrink:0}
+.testi-bar-track{flex:1;height:8px;background:var(--card2);border-radius:4px;overflow:hidden}
+.testi-bar-fill{height:100%;background:linear-gradient(90deg,#f59e0b,#fbbf24);border-radius:4px;transition:width .5s ease}
+.testi-bar-cnt{width:24px;font-size:11px;color:var(--ink3)}
+
+/* Cards */
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:28px}
+.testi-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;box-shadow:var(--sh);transition:transform .15s,box-shadow .15s;display:flex;flex-direction:column;gap:10px}
+.testi-card:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
+.testi-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.testi-card-stars{font-size:14px;line-height:1}
+.testi-card-date{font-size:10.5px;color:var(--ink3)}
+.testi-card-text{font-size:13.5px;color:var(--ink2);line-height:1.7;flex:1}
+.testi-card-footer{display:flex;align-items:center;gap:10px}
+.testi-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--sky),var(--sky2));display:grid;place-items:center;color:#fff;font-size:14px;font-weight:800;flex-shrink:0}
+.testi-author{font-size:12.5px;font-weight:700;color:var(--ink)}
+.testi-role{font-size:11px;color:var(--ink3)}
+.testi-verified{font-size:10.5px;color:var(--green);font-weight:600;background:var(--green-bg);padding:2px 8px;border-radius:20px;border:1px solid var(--green-bd)}
+
+.testi-load-more{display:flex;justify-content:center;margin-top:8px}
+.testi-load-btn{padding:9px 24px;border-radius:var(--r2);border:1.5px solid var(--border2);background:var(--card);color:var(--ink2);font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .15s}
+.testi-load-btn:hover{border-color:var(--sky);color:var(--sky)}
+
+.testi-empty{text-align:center;padding:40px;color:var(--ink3);font-size:14px}
+.testi-toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#0b1427;color:#fff;padding:11px 22px;border-radius:10px;font-size:13px;font-weight:600;z-index:9999;display:none;animation:annToastIn .3s ease;white-space:nowrap}
+.testi-toast.show{display:block}
+
+@media(max-width:640px){
+  .review-inputs{grid-template-columns:1fr}
+  .testi-section{padding:52px 20px}
+  .testi-avg-big{font-size:40px}
+  .testi-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -426,7 +490,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:52px 36px 30px}
     <div class="nav-icon">📊</div>
     <div>
       <div class="nav-name">CBE Mark Sheet</div>
-      <div class="nav-tagline">Kenya CBC · Grades 1–9</div>
+      <div class="nav-tagline">Kenya CBC · Grades 1–12</div>
     </div>
   </a>
 
@@ -434,6 +498,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:52px 36px 30px}
     <a class="nav-link" href="#how">How it works</a>
     <a class="nav-link demo" href="/demo">▶ Try Demo</a>
     <a class="nav-link" href="#features">Features</a>
+    <a class="nav-link" href="#reviews">Reviews</a>
     <div class="nav-dropdown" id="moreDropdown">
       <button class="nav-dropdown-toggle" onclick="toggleDropdown('moreDropdown')">
         More
@@ -472,7 +537,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:52px 36px 30px}
   <a class="mobile-nav-link" href="/terms"><span class="mobile-nav-link-ico">📄</span>Terms &amp; Privacy</a>
   <div class="mobile-nav-sep"></div>
   <a class="mobile-nav-link" href="/login"><span class="mobile-nav-link-ico">🔑</span>Teacher Sign In</a>
-  <a class="mobile-nav-btn" href="registration.html">Register Your School →</a>
+  <a class="mobile-nav-btn" href="/registration">Register Your School →</a>
 </div>
 
 <!-- ══ BANNERS ══ -->
@@ -481,7 +546,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:52px 36px 30px}
 <!-- ══ HERO ══ -->
 <div class="hero-wrap">
   <div class="hero">
-    <div class="hero-tag"><div class="hero-tag-dot"></div>Built for Kenya CBC · Grades 1–9</div>
+    <div class="hero-tag"><div class="hero-tag-dot"></div>Built for Kenya CBC · Grades 1–12</div>
     <h1>Mark sheets that<br>work the <i>smart way</i></h1>
     <p class="hero-sub">Digital CBC mark entry, automatic level calculation, class analysis and print-ready reports — for every teacher and admin in your school.</p>
     <div class="hero-actions">
@@ -490,7 +555,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:52px 36px 30px}
       <a class="btn-demo" href="/demo">▶ Try Live Demo</a>
     </div>
     <div class="stats-strip">
-      <div class="stat"><div class="stat-val">9</div><div class="stat-lbl">CBC Grades</div></div>
+      <div class="stat"><div class="stat-val">12</div><div class="stat-lbl">CBC Grades</div></div>
       <div class="stat"><div class="stat-val">EE–BE</div><div class="stat-lbl">Auto Levels</div></div>
       <div class="stat"><div class="stat-val">&lt;1s</div><div class="stat-lbl">Report Time</div></div>
       <div class="stat"><div class="stat-val">100%</div><div class="stat-lbl">Cloud-Based</div></div>
@@ -605,6 +670,61 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:52px 36px 30px}
   </div>
 </div>
 
+
+<!-- ══ TESTIMONIALS ══ -->
+<div class="testi-section" id="reviews">
+  <div class="testi-inner">
+    <div class="testi-header">
+      <div class="sec-eyebrow">Trusted by Kenyan schools</div>
+      <div class="sec-heading">What teachers &amp; admins say</div>
+      <p class="sec-sub">Real reviews from schools using CBE Mark Sheet System across Kenya.</p>
+    </div>
+
+    <!-- Write a review -->
+    <div class="review-form-wrap">
+      <div class="review-form-title">⭐ Share Your Experience</div>
+      <div class="star-picker" id="starPicker">
+        <button class="star-btn" data-val="1" onclick="setStar(1)" title="1 star">⭐</button>
+        <button class="star-btn" data-val="2" onclick="setStar(2)" title="2 stars">⭐</button>
+        <button class="star-btn" data-val="3" onclick="setStar(3)" title="3 stars">⭐</button>
+        <button class="star-btn" data-val="4" onclick="setStar(4)" title="4 stars">⭐</button>
+        <button class="star-btn" data-val="5" onclick="setStar(5)" title="5 stars">⭐</button>
+      </div>
+      <div class="review-inputs">
+        <input class="review-input" id="revName" placeholder="Your name (e.g. Jane Wanjiku)" maxlength="60">
+        <input class="review-input" id="revRole" placeholder="Your role (e.g. Grade 7 Teacher, Admin)" maxlength="60">
+      </div>
+      <textarea class="review-textarea" id="revText" placeholder="Tell us how CBE Mark Sheet has helped your school…" maxlength="400"></textarea>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+        <button class="review-submit" id="revSubmitBtn" onclick="submitReview()">📨 Post Review</button>
+        <div class="review-note">Reviews are public and visible to all visitors.</div>
+      </div>
+    </div>
+
+    <!-- Rating summary -->
+    <div class="testi-summary" id="testiSummary" style="display:none">
+      <div style="text-align:center">
+        <div class="testi-avg-big" id="avgScore">—</div>
+        <div class="testi-stars-row" id="avgStars">⭐⭐⭐⭐⭐</div>
+        <div class="testi-count" id="revCount">0 reviews</div>
+      </div>
+      <div class="testi-bars" id="ratingBars"></div>
+    </div>
+
+    <!-- Reviews grid -->
+    <div id="testiFilterNote" style="display:none;font-size:11.5px;color:var(--ink3);margin-bottom:12px;text-align:right">
+      Showing top-rated reviews &nbsp;·&nbsp; <span id="testiTotalCount"></span> total submitted
+    </div>
+    <div class="testi-grid" id="testiGrid">
+      <div class="testi-empty">⏳ Loading reviews…</div>
+    </div>
+    <div class="testi-load-more" id="loadMoreWrap" style="display:none">
+      <button class="testi-load-btn" onclick="loadMoreReviews()">Load more reviews ↓</button>
+    </div>
+  </div>
+</div>
+<div class="testi-toast" id="testiToast"></div>
+
 <!-- ══ FOOTER ══ -->
 <footer>
   <div class="foot-inner">
@@ -612,7 +732,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:52px 36px 30px}
       <div class="foot-brand-col">
         <div class="foot-logo-row">
           <div class="foot-logo">📊</div>
-          <div><div class="foot-name">CBE Mark Sheet System</div><div class="foot-tagline">Kenya CBC · Grades 1–9</div></div>
+          <div><div class="foot-name">CBE Mark Sheet System</div><div class="foot-tagline">Kenya CBC · Grades 1–12</div></div>
         </div>
         <p class="foot-about">Digital CBC mark sheet management for Kenya Primary &amp; Junior Schools. Built for teachers — fast, offline-ready and 100% cloud-synced.</p>
         <div class="foot-contacts">
@@ -630,6 +750,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:52px 36px 30px}
           <a class="foot-col-link" href="/demo"><span class="foot-col-link-ico">▶</span>Try Demo</a>
           <a class="foot-col-link" href="#features"><span class="foot-col-link-ico">⚡</span>Features</a>
           <a class="foot-col-link" href="#how"><span class="foot-col-link-ico">ℹ️</span>How it Works</a>
+          <a class="foot-col-link" href="#reviews"><span class="foot-col-link-ico">⭐</span>Reviews</a>
         </div>
       </div>
       <div>
@@ -772,8 +893,179 @@ function onClick(e){e.preventDefault();grecaptcha.enterprise.ready(async()=>{awa
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeNotifDrawer();});
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',loadAnnouncements);}else{loadAnnouncements();}
 })();
-</script>
-</body>
+
+// ══ TESTIMONIALS ══════════════════════════════════════════════════
+(function(){
+  const db2 = firebase.firestore();
+  const COLL = 'testimonials';
+  const PAGE = 3;
+  let _star = 0;
+  let _allDocs = [];     // all approved reviews (for stats)
+  let _displayDocs = []; // quality-filtered reviews (for cards)
+  let _shown = PAGE;
+
+  // ── Star picker ──
+  window.setStar = function(val){
+    _star = val;
+    document.querySelectorAll('.star-btn').forEach((b,i)=>{
+      b.classList.toggle('lit', i < val);
+    });
+  };
+
+  // ── Submit ──
+  window.submitReview = async function(){
+    const name = document.getElementById('revName').value.trim();
+    const role = document.getElementById('revRole').value.trim();
+    const text = document.getElementById('revText').value.trim();
+    const btn  = document.getElementById('revSubmitBtn');
+
+    if(!_star){ showTT('Please select a star rating first ⭐','#b91c1c'); return; }
+    if(!name)  { showTT('Please enter your name','#b91c1c'); return; }
+    if(text.length < 20){ showTT('Please write at least 20 characters','#b91c1c'); return; }
+
+    btn.disabled = true;
+    btn.textContent = '⏳ Posting…';
+    try{
+      await db2.collection(COLL).add({
+        name, role: role||'CBE User', text, rating: _star,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        approved: true
+      });
+      document.getElementById('revName').value='';
+      document.getElementById('revRole').value='';
+      document.getElementById('revText').value='';
+      setStar(0); _star=0;
+      showTT('✅ Thank you! Your review has been posted.','#047857');
+      loadReviews();
+    }catch(e){
+      showTT('Error: '+e.message,'#b91c1c');
+    }
+    btn.disabled=false; btn.innerHTML='📨 Post Review';
+  };
+
+  // ── Load ──
+  async function loadReviews(){
+    try{
+      const snap = await db2.collection(COLL).get();
+      const all = snap.docs
+        .map(d=>({id:d.id,...d.data()}))
+        .filter(d=>d.approved!==false)
+        .sort((a,b)=>{
+          const ta=a.createdAt?.toDate?.()?.getTime()||0;
+          const tb=b.createdAt?.toDate?.()?.getTime()||0;
+          return tb-ta;
+        });
+
+      // All approved → honest summary stats
+      _allDocs = all;
+
+      // Quality gate: 4+ stars, 30+ char review, sorted 5★ first then newest, capped at 9
+      _displayDocs = all
+        .filter(d=>(d.rating||0)>=4 && (d.text||'').trim().length>=30)
+        .sort((a,b)=>{
+          if((b.rating||0)!==(a.rating||0)) return (b.rating||0)-(a.rating||0);
+          const ta=a.createdAt?.toDate?.()?.getTime()||0;
+          const tb=b.createdAt?.toDate?.()?.getTime()||0;
+          return tb-ta;
+        })
+        .slice(0,9);
+
+      _shown = PAGE;
+      renderSummary();
+      renderCards();
+    }catch(e){
+      document.getElementById('testiGrid').innerHTML='<div class="testi-empty">No reviews yet — be the first! ☝️</div>';
+      console.warn('Reviews load error:',e.message);
+    }
+  }
+
+  function renderSummary(){
+    const docs = _allDocs;
+    if(!docs.length){ document.getElementById('testiSummary').style.display='none'; return; }
+    const avg = docs.reduce((a,d)=>a+(d.rating||0),0)/docs.length;
+    const counts = {5:0,4:0,3:0,2:0,1:0};
+    docs.forEach(d=>{ if(d.rating>=1&&d.rating<=5) counts[d.rating]++; });
+
+    document.getElementById('avgScore').textContent = avg.toFixed(1);
+    document.getElementById('avgStars').textContent = starsStr(avg);
+    document.getElementById('revCount').textContent = docs.length + ' review'+(docs.length!==1?'s':'');
+
+    let barsHtml='';
+    for(let i=5;i>=1;i--){
+      const pct = docs.length?(counts[i]/docs.length)*100:0;
+      barsHtml+=`<div class="testi-bar-row">
+        <div class="testi-bar-lbl">${i}⭐</div>
+        <div class="testi-bar-track"><div class="testi-bar-fill" style="width:${pct}%"></div></div>
+        <div class="testi-bar-cnt">${counts[i]}</div>
+      </div>`;
+    }
+    document.getElementById('ratingBars').innerHTML=barsHtml;
+    document.getElementById('testiSummary').style.display='flex';
+
+    // Show filter note if we're hiding some reviews
+    const note = document.getElementById('testiFilterNote');
+    const countEl = document.getElementById('testiTotalCount');
+    if(note && countEl && docs.length > 0){
+      note.style.display = 'block';
+      countEl.textContent = docs.length + ' review'+(docs.length!==1?'s':'');
+    }
+  }
+
+  function renderCards(){
+    const slice = _displayDocs.slice(0, _shown);
+    if(!slice.length){
+      document.getElementById('testiGrid').innerHTML='<div class="testi-empty">No reviews yet — be the first! ☝️</div>';
+      document.getElementById('loadMoreWrap').style.display='none';
+      return;
+    }
+    document.getElementById('testiGrid').innerHTML = slice.map(d=>{
+      const initials = (d.name||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+      const dateStr  = d.createdAt?.toDate ? d.createdAt.toDate().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'}) : '';
+      const stars    = starsStr(d.rating||0);
+      return `<div class="testi-card">
+        <div class="testi-card-top">
+          <div class="testi-card-stars">${stars}</div>
+          <div class="testi-card-date">${dateStr}</div>
+        </div>
+        <div class="testi-card-text">"${esc2(d.text)}"</div>
+        <div class="testi-card-footer">
+          <div class="testi-avatar">${initials}</div>
+          <div style="flex:1;min-width:0">
+            <div class="testi-author">${esc2(d.name)}</div>
+            <div class="testi-role">${esc2(d.role||'')}</div>
+          </div>
+          <span class="testi-verified">✓ Verified</span>
+        </div>
+      </div>`;
+    }).join('');
+    document.getElementById('loadMoreWrap').style.display = _displayDocs.length > _shown ? 'flex' : 'none';
+  }
+
+  window.loadMoreReviews = function(){
+    _shown = Math.min(_shown + PAGE, 9); // never exceed 9 on landing
+    renderCards();
+  };
+
+  function starsStr(rating){
+    const full = Math.round(rating);
+    return '⭐'.repeat(Math.min(5,Math.max(0,full))) + '☆'.repeat(Math.max(0,5-full));
+  }
+
+  function esc2(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  function showTT(msg, bg='#059669'){
+    const t = document.getElementById('testiToast');
+    t.textContent=msg; t.style.background=bg;
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer=setTimeout(()=>t.classList.remove('show'),3200);
+  }
+
+  // Load on page ready
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded',loadReviews); }
+  else{ loadReviews(); }
+})();
+
 </script>
 </body>
 </html>
