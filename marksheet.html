@@ -787,10 +787,7 @@ window.saveStudentSubs=async function(sid){
   if(!ids.length){toast('Select at least one subject','err');return;}
   const s=students.find(x=>x.id===sid);if(!s)return;
   try{
-    await db.collection('students').doc(sid).update({
-  subjects: ids,
-  updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-});
+    await db.collection('students').doc(sid).update({ subjects: ids });
     s.subjects=ids;
     toast(`Subjects saved for ${s.name} (${ids.length} subjects)`);
     closeAssignModal();_cacheInvalidate();renderTable();
