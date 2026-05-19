@@ -521,7 +521,60 @@ const _authPromise=new Promise(res=>{_authResolve=res;});
 const el=id=>document.getElementById(id);
 const val=id=>(el(id)?.value||'').trim();
 const CACHE_DURATION=0;
+// ── Inline fallback — defined here so admission.html never depends
+//    on subjects.js loading successfully ──
+function isSeniorGrade(gradeStr) {
+  const n = parseInt((gradeStr || '').replace(/\D/g, ''), 10) || 0;
+  return n >= 10 && n <= 12;
+}
 
+function getAllSeniorSubs() {
+  return [
+    { id:'eng',    label:'English',                   icon:'📖', gc:'g-eng'  },
+    { id:'kis',    label:'Kiswahili / KSL',           icon:'🗣️', gc:'g-kis'  },
+    { id:'math',   label:'Mathematics',               icon:'🔢', gc:'g-math' },
+    { id:'pe',     label:'Physical Education',        icon:'🏃', gc:'g-arts' },
+    { id:'csl',    label:'Community Service Learning',icon:'🤝', gc:'g-soc'  },
+    { id:'hist',   label:'History & Citizenship',     icon:'🏛️', gc:'g-soc'  },
+    { id:'geo',    label:'Geography',                 icon:'🌍', gc:'g-soc'  },
+    { id:'cre',    label:'CRE',                       icon:'✝️', gc:'g-re'   },
+    { id:'ire',    label:'IRE',                       icon:'☪️', gc:'g-re'   },
+    { id:'hre',    label:'HRE',                       icon:'🕉️', gc:'g-re'   },
+    { id:'biz',    label:'Business Studies',          icon:'💼', gc:'g-soc'  },
+    { id:'liteng', label:'Literature in English',     icon:'📚', gc:'g-eng'  },
+    { id:'kip',    label:'Kiswahili Kipevu',          icon:'📜', gc:'g-kis'  },
+    { id:'fasih',  label:'Fasihi ya Kiswahili',       icon:'📜', gc:'g-kis'  },
+    { id:'aeng',   label:'Advanced English',          icon:'📖', gc:'g-eng'  },
+    { id:'arabic', label:'Arabic',                    icon:'🕌', gc:'g-kis'  },
+    { id:'french', label:'French',                    icon:'🇫🇷', gc:'g-eng'  },
+    { id:'german', label:'German',                    icon:'🇩🇪', gc:'g-eng'  },
+    { id:'mandarin',label:'Chinese (Mandarin)',        icon:'🇨🇳', gc:'g-eng'  },
+    { id:'indig',  label:'Indigenous Languages',      icon:'🌿', gc:'g-eng'  },
+    { id:'signl',  label:'Sign Language',             icon:'🤟', gc:'g-eng'  },
+    { id:'ksl',    label:'Kenyan Sign Language',      icon:'🤟', gc:'g-eng'  },
+    { id:'phy',    label:'Physics',                   icon:'⚛️', gc:'g-sci'  },
+    { id:'chem',   label:'Chemistry',                 icon:'🧪', gc:'g-sci'  },
+    { id:'bio',    label:'Biology',                   icon:'🧬', gc:'g-sci'  },
+    { id:'gsci',   label:'General Science',           icon:'🔬', gc:'g-sci'  },
+    { id:'admath', label:'Advanced Mathematics',      icon:'📐', gc:'g-math' },
+    { id:'music',  label:'Music and Dance',           icon:'🎵', gc:'g-arts' },
+    { id:'theatre',label:'Theatre and Film',          icon:'🎭', gc:'g-arts' },
+    { id:'farts',  label:'Fine Arts',                 icon:'🎨', gc:'g-arts' },
+    { id:'sport',  label:'Sports and Recreation',     icon:'⚽', gc:'g-arts' },
+    { id:'media',  label:'Media Technology',          icon:'📷', gc:'g-pret' },
+    { id:'aviation',label:'Aviation',                 icon:'✈️', gc:'g-pret' },
+    { id:'bldg',   label:'Building & Construction',   icon:'🏗️', gc:'g-pret' },
+    { id:'elec',   label:'Electricity',               icon:'⚡', gc:'g-pret' },
+    { id:'draw',   label:'Drawing & Design',          icon:'📏', gc:'g-pret' },
+    { id:'marine', label:'Marine & Fisheries',        icon:'🐟', gc:'g-agri' },
+    { id:'tech',   label:'Technology',                icon:'💻', gc:'g-pret' },
+    { id:'metal',  label:'Metalwork',                 icon:'⚙️', gc:'g-pret' },
+    { id:'powmech',label:'Power Mechanics',           icon:'🔩', gc:'g-pret' },
+    { id:'agri',   label:'Agriculture',               icon:'🌱', gc:'g-agri' },
+    { id:'comp',   label:'Computer Studies',          icon:'🖥️', gc:'g-pret' },
+    { id:'home',   label:'Home Science',              icon:'🏠', gc:'g-agri' },
+  ];
+}
 // ══════════════════════════════════════════════
 // AUTH
 // ══════════════════════════════════════════════
