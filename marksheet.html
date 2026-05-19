@@ -1,3 +1,4 @@
+
 <!--
   CBE Mark Sheet System
   Copyright © 2026 Bett Emanuel — https://bett.website
@@ -786,7 +787,10 @@ window.saveStudentSubs=async function(sid){
   if(!ids.length){toast('Select at least one subject','err');return;}
   const s=students.find(x=>x.id===sid);if(!s)return;
   try{
-    await db.collection('students').doc(sid).update({subjects:ids});
+    await db.collection('students').doc(sid).update({
+  subjects: ids,
+  updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+});
     s.subjects=ids;
     toast(`Subjects saved for ${s.name} (${ids.length} subjects)`);
     closeAssignModal();_cacheInvalidate();renderTable();
