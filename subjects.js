@@ -119,12 +119,6 @@ const SUBS_SENIOR_CORE = [
 ];
 
 // ─────────────────────────────────────────────────────────────
-// GRADE 13–14  (Post-secondary / A-Level equivalent)
-// Uses same subject pool as Senior but schools configure per track
-// ─────────────────────────────────────────────────────────────
-const SUBS_POST_SENIOR = SUBS_SENIOR_CORE; // alias — extendable per school
-
-// ─────────────────────────────────────────────────────────────
 // DEFAULT subject sets per grade band
 // Schools that want a custom subset for senior can call
 //   setCustomSubs(gradeStr, subIdArray)  before rendering.
@@ -179,7 +173,7 @@ window.getSubs = function(gradeStr) {
   if (n >= 1  && n <= 3)  return SUBS_LOWER;
   if (n >= 4  && n <= 6)  return SUBS_UPPER;
   if (n >= 7  && n <= 9)  return SUBS_JUNIOR;
-  if (n >= 10 && n <= 14) return SUBS_SENIOR_DEFAULT;
+  if (n >= 10 && n <= 12) return SUBS_SENIOR_DEFAULT;
   return SUBS_JUNIOR; // fallback
 };
 
@@ -187,8 +181,39 @@ window.getSubs = function(gradeStr) {
  * Returns ALL available Senior School subjects (for a subject
  * picker UI that lets the admin choose which ones to show).
  */
+window.isSeniorGrade = function(gradeStr) {
+  const n = parseInt((gradeStr || '').replace(/\D/g, ''), 10) || 0;
+  return n >= 10 && n <= 12;
+};
+
 window.getAllSeniorSubs = function() {
   return SUBS_SENIOR_CORE;
+};
+
+/**
+ * For a SENIOR student — returns only the subjects they take.
+ * studentSubIds = array of subject IDs from the student Firestore doc.
+ * Falls back to SUBS_SENIOR_DEFAULT if none assigned yet.
+ */
+window.getStudentSubs = function(studentSubIds) {
+  if (!Array.isArray(studentSubIds) || !studentSubIds.length) {
+    return SUBS_SENIOR_DEFAULT;
+  }
+  return SUBS_SENIOR_CORE.filter(s => studentSubIds.includes(s.id));
+};
+
+/**
+ * Returns the UNION of all subjects taken by any student in the class,
+ * in SUBS_SENIOR_CORE order — used to build marksheet column headers.
+ * studentsArr = [{id, subjects:[...]}, ...]
+ */
+window.getSeniorClassSubs = function(studentsArr) {
+  const seen = new Set();
+  studentsArr.forEach(s => {
+    (Array.isArray(s.subjects) ? s.subjects : []).forEach(id => seen.add(id));
+  });
+  if (!seen.size) return SUBS_SENIOR_DEFAULT;
+  return SUBS_SENIOR_CORE.filter(s => seen.has(s.id));
 };
 
 /**
