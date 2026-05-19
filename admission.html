@@ -25,81 +25,62 @@
   --r:10px;--r2:6px
 }
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);font-size:13.5px;min-height:100vh}
-
-/* ── HEADER ── */
-header{
-  background:var(--surface);border-bottom:1px solid var(--border);
-  padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;
-  position:sticky;top:0;z-index:100;box-shadow:var(--sh)
-}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:var(--sh)}
 .logo{display:flex;align-items:center;gap:10px}
 .lm{width:32px;height:32px;background:var(--accent);border-radius:8px;display:grid;place-items:center;color:#fff;font-size:16px}
 .lt{font-family:'Familjen Grotesk',sans-serif;font-size:15px;font-weight:800;letter-spacing:-.3px}
 .ls{font-size:10px;color:var(--text3)}
 .hdr-r{display:flex;align-items:center;gap:8px}
-
-/* ── WRAP ── */
 .wrap{max-width:1100px;margin:0 auto;padding:22px 24px}
-
-/* ── BUTTONS ── */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--r2);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s;white-space:nowrap}
-.btn-primary{background:var(--accent);color:#fff}
-.btn-primary:hover{background:var(--ah);box-shadow:0 4px 10px rgba(26,86,219,.25)}
-.btn-outline{background:none;border:1.5px solid var(--border);color:var(--text2)}
-.btn-outline:hover{background:var(--bg);color:var(--text)}
-.btn-success{background:var(--green);color:#fff}
-.btn-success:hover{background:#047857}
-.btn-danger{background:var(--red);color:#fff}
-.btn-danger:hover{background:#b91c1c}
-.btn-amber{background:var(--amber);color:#fff}
-.btn-amber:hover{background:#b45309}
+.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:var(--ah);box-shadow:0 4px 10px rgba(26,86,219,.25)}
+.btn-outline{background:none;border:1.5px solid var(--border);color:var(--text2)}.btn-outline:hover{background:var(--bg);color:var(--text)}
+.btn-success{background:var(--green);color:#fff}.btn-success:hover{background:#047857}
+.btn-danger{background:var(--red);color:#fff}.btn-danger:hover{background:#b91c1c}
+.btn-amber{background:var(--amber);color:#fff}.btn-amber:hover{background:#b45309}
+.btn-purple{background:#7c3aed;color:#fff}.btn-purple:hover{background:#6d28d9}
 .btn-sm{padding:5px 11px;font-size:12px}
-
-/* ── CARD ── */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;margin-bottom:20px}
 .card-head{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--surf2)}
 .card-head h3{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
 .card-body{padding:20px}
-
-/* ── FORM ── */
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .form-group{display:flex;flex-direction:column;gap:5px}
 .form-group.full{grid-column:1/-1}
 label.fl{font-size:12px;font-weight:600;color:var(--text2)}
 label.fl .req{color:var(--red);margin-left:2px}
-input.fi,select.fi{
-  padding:8px 11px;border:1.5px solid var(--border);border-radius:var(--r2);
-  font-family:inherit;font-size:13px;color:var(--text);background:var(--surface);
-  outline:none;transition:border-color .15s,box-shadow .15s
-}
+input.fi,select.fi{padding:8px 11px;border:1.5px solid var(--border);border-radius:var(--r2);font-family:inherit;font-size:13px;color:var(--text);background:var(--surface);outline:none;transition:border-color .15s,box-shadow .15s}
 input.fi:focus,select.fi:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(26,86,219,.08)}
 input.fi.err,select.fi.err{border-color:var(--red);box-shadow:0 0 0 3px rgba(220,38,38,.08)}
 input.fi.ok{border-color:var(--green)}
 .field-hint{font-size:11px;color:var(--text3);margin-top:2px}
 .field-err{font-size:11px;color:var(--red);margin-top:2px;display:none}
 .field-err.show{display:block}
-
-/* STREAM SUGGESTIONS */
 .stream-wrap{position:relative}
-.stream-suggestions{
-  position:absolute;top:calc(100% + 2px);left:0;right:0;
-  background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);
-  box-shadow:var(--sh2);z-index:50;overflow:hidden;display:none
-}
+.stream-suggestions{position:absolute;top:calc(100% + 2px);left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);box-shadow:var(--sh2);z-index:50;overflow:hidden;display:none}
 .stream-suggestions.open{display:block}
 .ss-item{padding:8px 12px;cursor:pointer;font-size:13px;font-weight:500;transition:background .1s}
 .ss-item:hover{background:var(--alight);color:var(--accent)}
 .ss-item .ss-sub{font-size:10.5px;color:var(--text3)}
-
-/* FORM ACTIONS */
 .form-actions{display:flex;gap:10px;margin-top:6px;padding-top:14px;border-top:1px solid var(--border)}
 
-/* ── STATS PILLS ── */
+/* ── SUBJECT PICKER ── */
+.subj-picker-wrap{
+  border:1.5px solid var(--border);border-radius:var(--r2);padding:14px 16px;
+  background:var(--surf2);
+}
+.subj-picker-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.subj-picker-header strong{font-size:13px;color:var(--text)}
+.subj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;max-height:280px;overflow-y:auto;padding-right:4px}
+.subj-group-label{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:5px}
+.subj-check-label{display:flex;align-items:center;gap:6px;font-size:12.5px;cursor:pointer;padding:2px 0;color:var(--text)}
+.subj-check-label input[type=checkbox]{width:13px;height:13px;accent-color:var(--accent);cursor:pointer}
+.subj-count-badge{display:inline-flex;align-items:center;gap:4px;background:var(--alight);color:var(--accent);border:1px solid #c7d9ff;border-radius:20px;padding:2px 9px;font-size:11px;font-weight:700}
+.senior-notice{background:#ede9fe;border:1.5px solid #c4b5fd;border-radius:var(--r2);padding:10px 14px;font-size:12px;color:#5b21b6;display:flex;align-items:flex-start;gap:8px;margin-bottom:12px}
+
 .stats-row{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
 .stat-pill{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:5px 13px;font-size:12px;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:5px}
 .stat-pill .sv{font-weight:700;color:var(--text);font-size:13px}
-
-/* ── SEARCH / FILTERS ── */
 .toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--surf2)}
 .search{display:flex;align-items:center;gap:7px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r2);padding:6px 11px;min-width:230px;transition:border-color .15s}
 .search:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(26,86,219,.08)}
@@ -108,8 +89,6 @@ input.fi.ok{border-color:var(--green)}
 .si-ico{color:var(--text3);font-size:14px;flex-shrink:0}
 .fsel{padding:6px 10px;border:1.5px solid var(--border);border-radius:var(--r2);font-family:inherit;font-size:12.5px;color:var(--text);background:var(--surface);cursor:pointer;outline:none;height:34px}
 .fsel:focus{border-color:var(--accent)}
-
-/* ── TABLE ── */
 .tbl-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse}
 thead th{padding:9px 12px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);border-bottom:1.5px solid var(--border);background:var(--surf2);white-space:nowrap}
@@ -117,8 +96,6 @@ thead th.tc{text-align:center}
 tbody td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:middle;font-size:13px}
 tbody tr:last-child td{border-bottom:none}
 tbody tr:hover td{background:#f8faff}
-tbody tr.highlight td{background:var(--alight)}
-
 .av{width:28px;height:28px;border-radius:7px;background:var(--alight);color:var(--accent);font-size:10px;font-weight:800;display:grid;place-items:center;flex-shrink:0}
 .av.f{background:#fce7f3;color:#be185d}
 .sc{display:flex;align-items:center;gap:8px}
@@ -129,34 +106,22 @@ tbody tr.highlight td{background:var(--alight)}
 .tag-stream{background:#e0f2fe;color:#0369a1}
 .tag-m{background:#ede9fe;color:#7c3aed}
 .tag-f{background:#fce7f3;color:#be185d}
-.tag-retained{background:var(--amlight);color:var(--amber);border:1px solid #fcd34d}
-.tag-graduated{background:var(--glight);color:var(--green)}
-
-/* inline edit */
-.inline-input{
-  padding:4px 8px;border:1.5px solid var(--accent);border-radius:5px;
-  font-family:inherit;font-size:12.5px;color:var(--text);background:#fff;
-  outline:none;width:100%;min-width:90px
-}
-
-/* EMPTY */
+.tag-senior{background:#f5f3ff;color:#7c3aed;border:1px solid #ddd6fe}
 .empty{text-align:center;padding:50px 20px;color:var(--text3)}
 .empty .ei{font-size:34px;margin-bottom:8px}
-
-/* TOAST */
 #tc{position:fixed;top:68px;right:18px;z-index:999;display:flex;flex-direction:column;gap:7px}
 .t{display:flex;align-items:center;gap:9px;padding:10px 15px;border-radius:var(--r2);font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.15);animation:tin .28s ease;min-width:230px}
-.t.ok {background:#064e3b;color:#ecfdf5;border-left:3px solid var(--green)}
+.t.ok{background:#064e3b;color:#ecfdf5;border-left:3px solid var(--green)}
 .t.err{background:#7f1d1d;color:#fef2f2;border-left:3px solid var(--red)}
 .t.info{background:#1e3a5f;color:#dbeafe;border-left:3px solid var(--accent)}
-@keyframes tin {from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes tin{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
 @keyframes tout{to{transform:translateX(110%);opacity:0}}
 
-/* MODAL */
+/* MODALS */
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:200;display:none;place-items:center;backdrop-filter:blur(2px)}
 .modal-bg.open{display:grid;animation:fadeIn .2s}
-.modal{background:var(--surface);border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.18);width:460px;max-width:95vw;overflow:hidden;animation:popIn .22s cubic-bezier(.34,1.56,.64,1)}
-.modal-wide{width:700px}
+.modal{background:var(--surface);border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.18);width:480px;max-width:95vw;overflow:hidden;animation:popIn .22s cubic-bezier(.34,1.56,.64,1)}
+.modal-wide{width:720px}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes popIn{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
 .modal-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
@@ -166,7 +131,7 @@ tbody tr.highlight td{background:var(--alight)}
 .close-btn{padding:5px;border-radius:6px;background:none;border:none;cursor:pointer;color:var(--text3);font-size:16px;transition:all .15s}
 .close-btn:hover{background:var(--bg);color:var(--text)}
 
-/* ── PROMOTION PANEL ── */
+/* PROMOTION */
 .promo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
 .promo-grade-card{border:1.5px solid var(--border);border-radius:var(--r2);padding:12px 14px;cursor:pointer;transition:all .15s;position:relative}
 .promo-grade-card:hover{border-color:var(--accent);background:var(--alight)}
@@ -175,7 +140,6 @@ tbody tr.highlight td{background:var(--alight)}
 .promo-grade-card .pgc-count{font-size:20px;font-weight:800;color:var(--text);margin:2px 0}
 .promo-grade-card .pgc-sub{font-size:10.5px;color:var(--text3)}
 .promo-badge{position:absolute;top:8px;right:8px;width:18px;height:18px;background:var(--accent);color:#fff;border-radius:50%;font-size:10px;display:grid;place-items:center}
-
 .promo-student-list{max-height:320px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--r2)}
 .promo-student-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--border);transition:background .1s}
 .promo-student-row:last-child{border-bottom:none}
@@ -187,59 +151,30 @@ tbody tr.highlight td{background:var(--alight)}
 .psr-action{display:flex;align-items:center;gap:6px}
 .psr-action select{padding:3px 7px;border:1.5px solid var(--border);border-radius:4px;font-size:11.5px;font-family:inherit;color:var(--text);background:var(--surface);cursor:pointer;outline:none}
 .psr-action select:focus{border-color:var(--accent)}
-
 .promo-summary{background:var(--surf2);border:1px solid var(--border);border-radius:var(--r2);padding:12px 16px;margin-top:12px;font-size:12.5px}
 .promo-summary .ps-row{display:flex;justify-content:space-between;padding:3px 0}
 .promo-summary .ps-row .ps-val{font-weight:700}
 .promo-summary .ps-row.ps-promoted .ps-val{color:var(--green)}
 .promo-summary .ps-row.ps-retained .ps-val{color:var(--amber)}
 .promo-summary .ps-row.ps-graduated .ps-val{color:var(--accent)}
-
-/* Progress bar */
 .promo-progress{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin:10px 0}
 .promo-progress-bar{height:100%;background:var(--accent);border-radius:3px;transition:width .3s}
-
-/* ── PROMOTION HISTORY LOG ── */
-.history-entry{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
-.history-entry:last-child{border-bottom:none}
-.history-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);margin-top:5px;flex-shrink:0}
-.history-dot.retained{background:var(--amber)}
-.history-dot.graduated{background:var(--green)}
-.history-text{font-size:12.5px;color:var(--text2);line-height:1.6}
-.history-time{font-size:11px;color:var(--text3);margin-top:2px}
-
-/* DARK */
-body.dark{
-  --bg:#0d1017;--surface:#161a24;--surf2:#1c2030;--border:#272d3e;
-  --text:#e2e8f5;--text2:#7a8aa8;--text3:#434f65;--alight:#172050;--glight:#052e1c
-}
-
-/* SPINNER */
-.spin{width:16px;height:16px;border:2.5px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:sp .65s linear infinite;display:inline-block}
-@keyframes sp{to{transform:rotate(360deg)}}
-
-/* CACHE INDICATOR */
-.cache-badge{
-  display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border-radius:12px;
-  background:var(--surf2);color:var(--text2);font-size:11px;font-weight:500;
-  border:1px solid var(--border);margin-left:8px;
-}
+.cache-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border-radius:12px;background:var(--surf2);color:var(--text2);font-size:11px;font-weight:500;border:1px solid var(--border);margin-left:8px}
 .cache-badge.refresh{cursor:pointer;transition:all .15s}
 .cache-badge.refresh:hover{background:var(--alight);color:var(--accent);border-color:var(--accent)}
-
-@media(max-width:640px){.wrap{padding:12px}.form-grid{grid-column:1fr}.stats-row{gap:6px}.promo-grid{grid-template-columns:repeat(2,1fr)}}
+body.dark{--bg:#0d1017;--surface:#161a24;--surf2:#1c2030;--border:#272d3e;--text:#e2e8f5;--text2:#7a8aa8;--text3:#434f65;--alight:#172050;--glight:#052e1c}
+.spin{width:16px;height:16px;border:2.5px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:sp .65s linear infinite;display:inline-block}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media(max-width:640px){.wrap{padding:12px}.form-grid{grid-template-columns:1fr}.promo-grid{grid-template-columns:repeat(2,1fr)}.subj-grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
 <div id="tc"></div>
 
-<!-- DELETE CONFIRM MODAL -->
+<!-- DELETE MODAL -->
 <div class="modal-bg" id="delModal">
   <div class="modal">
-    <div class="modal-head">
-      <h3>⚠️ Delete Student</h3>
-      <button class="close-btn" onclick="closeDelModal()">✕</button>
-    </div>
+    <div class="modal-head"><h3>⚠️ Delete Student</h3><button class="close-btn" onclick="closeDelModal()">✕</button></div>
     <div class="modal-body">
       <p style="color:var(--text2);line-height:1.7">Are you sure you want to delete <strong id="delName"></strong>?<br>
       This will <strong>not</strong> delete their existing results. This action cannot be undone.</p>
@@ -253,13 +188,10 @@ body.dark{
 
 <!-- EDIT MODAL -->
 <div class="modal-bg" id="editModal">
-  <div class="modal">
-    <div class="modal-head">
-      <h3>✏️ Edit Student</h3>
-      <button class="close-btn" onclick="closeEditModal()">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-grid" style="gap:12px;">
+  <div class="modal modal-wide">
+    <div class="modal-head"><h3>✏️ Edit Student</h3><button class="close-btn" onclick="closeEditModal()">✕</button></div>
+    <div class="modal-body" style="max-height:80vh;overflow-y:auto">
+      <div class="form-grid" style="gap:12px">
         <div class="form-group">
           <label class="fl">Full Name <span class="req">*</span></label>
           <input class="fi" id="editName" type="text">
@@ -277,28 +209,36 @@ body.dark{
         </div>
         <div class="form-group">
           <label class="fl">Grade <span class="req">*</span></label>
-          <select class="fi" id="editGrade">
-            <option value="Grade 1">Grade 1</option>
-            <option value="Grade 2">Grade 2</option>
-            <option value="Grade 3">Grade 3</option>
-            <option value="Grade 4">Grade 4</option>
-            <option value="Grade 5">Grade 5</option>
-            <option value="Grade 6">Grade 6</option>
-            <option value="Grade 7">Grade 7</option>
-            <option value="Grade 8">Grade 8</option>
-            <option value="Grade 9">Grade 9</option>
-            <option value="Grade 10">Grade 10</option>
-            <option value="Grade 11">Grade 11</option>
-            <option value="Grade 12">Grade 12</option>
+          <select class="fi" id="editGrade" onchange="onEditGradeChange()">
+            <option value="Grade 1">Grade 1</option><option value="Grade 2">Grade 2</option>
+            <option value="Grade 3">Grade 3</option><option value="Grade 4">Grade 4</option>
+            <option value="Grade 5">Grade 5</option><option value="Grade 6">Grade 6</option>
+            <option value="Grade 7">Grade 7</option><option value="Grade 8">Grade 8</option>
+            <option value="Grade 9">Grade 9</option><option value="Grade 10">Grade 10</option>
+            <option value="Grade 11">Grade 11</option><option value="Grade 12">Grade 12</option>
           </select>
         </div>
         <div class="form-group">
-          <label class="fl">Stream <span style="font-size:10.5px;color:var(--text3);font-weight:400;">(optional)</span></label>
+          <label class="fl">Stream <span style="font-size:10.5px;color:var(--text3);font-weight:400">(optional)</span></label>
           <input class="fi" id="editStream" type="text" placeholder="Leave blank if no streams">
         </div>
         <div class="form-group">
           <label class="fl">Academic Year <span class="req">*</span></label>
           <input class="fi" id="editYear" type="number" min="2020" max="2040">
+        </div>
+      </div>
+      <!-- Senior subject picker shown when grade is 10-12 -->
+      <div id="editSubjectSection" style="display:none;margin-top:16px">
+        <div class="senior-notice">
+          <span>📚</span>
+          <div><strong>Senior School</strong> — tick the subjects this student will take. These determine which columns appear in their marksheet.</div>
+        </div>
+        <div class="subj-picker-wrap">
+          <div class="subj-picker-header">
+            <strong>Subject Selection</strong>
+            <span class="subj-count-badge" id="editSubjCount">0 selected</span>
+          </div>
+          <div class="subj-grid" id="editSubjGrid"></div>
         </div>
       </div>
     </div>
@@ -309,68 +249,44 @@ body.dark{
   </div>
 </div>
 
-<!-- ── PROMOTION MODAL ── -->
+<!-- PROMOTION MODAL -->
 <div class="modal-bg" id="promoModal">
   <div class="modal modal-wide">
-    <div class="modal-head">
-      <h3>🎓 End-of-Year Promotion</h3>
-      <button class="close-btn" onclick="closePromoModal()">✕</button>
-    </div>
+    <div class="modal-head"><h3>🎓 End-of-Year Promotion</h3><button class="close-btn" onclick="closePromoModal()">✕</button></div>
     <div class="modal-body" style="padding:16px 20px">
-
-      <!-- Step 1: Pick grade -->
       <div id="promoStep1">
-        <p style="color:var(--text2);font-size:12.5px;margin-bottom:14px;line-height:1.6">
-          Select a grade to promote. Each student can be individually marked as <strong>Promoted</strong>, <strong>Retained</strong>, or <strong>Graduated</strong> (Grade 9 only).
-        </p>
+        <p style="color:var(--text2);font-size:12.5px;margin-bottom:14px;line-height:1.6">Select a grade to promote. Each student can be individually marked as <strong>Promoted</strong>, <strong>Retained</strong>, or <strong>Graduated</strong> (Grade 12 only).</p>
         <div class="promo-grid" id="promoGradeGrid"></div>
         <div style="padding:10px 14px;background:var(--amlight);border-radius:var(--r2);font-size:12px;color:#92400e;border:1px solid #fcd34d">
           ⚠️ Promotion updates each student's Grade and Year in the database. This action can be undone by editing students individually.
         </div>
       </div>
-
-      <!-- Step 2: Review students -->
       <div id="promoStep2" style="display:none">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-          <div>
-            <strong id="promoGradeLabel" style="font-size:14px"></strong>
-            <span id="promoCountLabel" style="font-size:12px;color:var(--text3);margin-left:8px"></span>
-          </div>
+          <div><strong id="promoGradeLabel" style="font-size:14px"></strong><span id="promoCountLabel" style="font-size:12px;color:var(--text3);margin-left:8px"></span></div>
           <div style="display:flex;gap:6px">
             <button class="btn btn-outline btn-sm" onclick="promoSelectAll()">Select All</button>
             <button class="btn btn-outline btn-sm" onclick="promoDeselectAll()">Deselect All</button>
           </div>
         </div>
-
-        <!-- Search within modal -->
-        <div class="search" style="margin-bottom:10px;min-width:0">
-          <span class="si-ico">🔍</span>
-          <input type="text" id="promoSearch" placeholder="Filter students…" oninput="renderPromoList()">
-        </div>
-
+        <div class="search" style="margin-bottom:10px;min-width:0"><span class="si-ico">🔍</span><input type="text" id="promoSearch" placeholder="Filter students…" oninput="renderPromoList()"></div>
         <div class="promo-student-list" id="promoStudentList"></div>
-
         <div class="promo-summary" id="promoSummary">
           <div class="ps-row ps-promoted"><span>✅ Promote to next grade</span><span class="ps-val" id="psSumPromoted">0</span></div>
           <div class="ps-row ps-retained"><span>🔁 Retain (repeat same grade)</span><span class="ps-val" id="psSumRetained">0</span></div>
           <div class="ps-row ps-graduated"><span>🎓 Graduate (leave school)</span><span class="ps-val" id="psSumGraduated">0</span></div>
           <div class="ps-row" style="border-top:1px solid var(--border);margin-top:6px;padding-top:6px">
             <span style="color:var(--text3)">Target year</span>
-            <span>
-              <input type="number" id="promoTargetYear" class="fi" style="width:80px;padding:4px 8px;font-size:12px" min="2020" max="2040">
-            </span>
+            <input type="number" id="promoTargetYear" class="fi" style="width:80px;padding:4px 8px;font-size:12px" min="2020" max="2040">
           </div>
         </div>
       </div>
-
-      <!-- Step 3: Progress -->
       <div id="promoStep3" style="display:none;text-align:center;padding:20px 0">
         <div class="spin" style="width:32px;height:32px;border-width:3px;margin:0 auto 14px"></div>
         <div style="font-weight:600;font-size:14px;margin-bottom:6px">Applying promotions…</div>
         <div class="promo-progress"><div class="promo-progress-bar" id="promoProgressBar" style="width:0%"></div></div>
         <div style="font-size:12px;color:var(--text3)" id="promoProgressLabel">0 / 0 students updated</div>
       </div>
-
     </div>
     <div class="modal-foot" id="promoFooter">
       <button class="btn btn-outline" onclick="closePromoModal()">Cancel</button>
@@ -384,16 +300,9 @@ body.dark{
 <!-- PROMOTION LOG MODAL -->
 <div class="modal-bg" id="historyModal">
   <div class="modal modal-wide">
-    <div class="modal-head">
-      <h3>📋 Promotion History</h3>
-      <button class="close-btn" onclick="el('historyModal').classList.remove('open')">✕</button>
-    </div>
-    <div class="modal-body" style="max-height:60vh;overflow-y:auto" id="historyBody">
-      <div class="empty"><div class="ei">📋</div><p>No promotion records yet</p></div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn btn-outline" onclick="el('historyModal').classList.remove('open')">Close</button>
-    </div>
+    <div class="modal-head"><h3>📋 Promotion History</h3><button class="close-btn" onclick="el('historyModal').classList.remove('open')">✕</button></div>
+    <div class="modal-body" style="max-height:60vh;overflow-y:auto" id="historyBody"><div class="empty"><div class="ei">📋</div><p>No promotion records yet</p></div></div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="el('historyModal').classList.remove('open')">Close</button></div>
   </div>
 </div>
 
@@ -407,10 +316,9 @@ body.dark{
     </div>
   </div>
   <div class="hdr-r">
-    <button class="btn btn-outline btn-sm" id="nemisBtn" onclick="goToNemis()" style="border-color:#1a56db;color:#1a56db;">🇰🇪 NEMIS Data</button>
-    <span class="cache-badge" id="cacheIndicator" onclick="refreshData()">
-      <span id="cacheIcon">📦</span>
-      <span id="cacheTime">Cached</span>
+    <button class="btn btn-outline btn-sm" id="nemisBtn" onclick="goToNemis()" style="border-color:#1a56db;color:#1a56db">🇰🇪 NEMIS Data</button>
+    <span class="cache-badge refresh" id="cacheIndicator" onclick="refreshData()">
+      <span id="cacheIcon">📦</span><span id="cacheTime">Cached</span>
     </span>
     <button class="btn btn-outline btn-sm" id="themeBtn">🌙</button>
     <button class="btn btn-outline btn-sm" onclick="exportCSV()">📥 Export CSV</button>
@@ -423,7 +331,7 @@ body.dark{
   <div class="card">
     <div class="card-head">
       <h3>➕ Register New Student</h3>
-      <span style="font-size:11.5px;color:var(--text3);">All fields marked <span style="color:var(--red)">*</span> are required</span>
+      <span style="font-size:11.5px;color:var(--text3)">Fields marked <span style="color:var(--red)">*</span> are required</span>
     </div>
     <div class="card-body">
       <form id="admForm" novalidate autocomplete="off">
@@ -457,20 +365,18 @@ body.dark{
               <option value="Grade 5">Grade 5</option><option value="Grade 6">Grade 6</option>
               <option value="Grade 7">Grade 7</option><option value="Grade 8">Grade 8</option>
               <option value="Grade 9">Grade 9</option><option value="Grade 10">Grade 10</option>
-<option value="Grade 11">Grade 11</option>
-<option value="Grade 12">Grade 12</option>
-              
+              <option value="Grade 11">Grade 11</option><option value="Grade 12">Grade 12</option>
             </select>
             <span class="field-err" id="err-grade">Please select a grade</span>
           </div>
           <div class="form-group">
-            <label class="fl" for="fStream">Stream <span style="font-size:10.5px;color:var(--text3);font-weight:400;">(optional)</span></label>
+            <label class="fl" for="fStream">Stream <span style="font-size:10.5px;color:var(--text3);font-weight:400">(optional)</span></label>
             <div class="stream-wrap">
               <input class="fi" id="fStream" type="text" placeholder="Leave blank if no streams"
                 autocomplete="off" oninput="onStreamInput()" onfocus="onStreamFocus()" onblur="closeStreamSuggestions()">
               <div class="stream-suggestions" id="streamSuggestions"></div>
             </div>
-            <span class="field-hint">Leave blank for schools without streams. Must match exactly the stream used in the Mark Sheet.</span>
+            <span class="field-hint">Leave blank for schools without streams.</span>
             <span class="field-err" id="err-stream">Please enter a stream name</span>
           </div>
           <div class="form-group">
@@ -487,6 +393,27 @@ body.dark{
             <input class="fi" id="fPhone" type="tel" placeholder="e.g. 0712345678">
           </div>
         </div>
+
+        <!-- ── SENIOR SUBJECT PICKER (shown only for Grades 10-12) ── -->
+        <div id="subjectSection" style="display:none;margin-top:18px">
+          <div class="senior-notice">
+            <span>📚</span>
+            <div><strong>Senior School detected</strong> — select the subjects this student will take. This determines which mark sheet columns appear for them. You can change it later by editing the student.</div>
+          </div>
+          <div class="subj-picker-wrap">
+            <div class="subj-picker-header">
+              <strong>Subject Selection <span class="req">*</span></strong>
+              <div style="display:flex;gap:8px;align-items:center">
+                <span class="subj-count-badge" id="subjCount">0 selected</span>
+                <button type="button" class="btn btn-outline btn-sm" onclick="selectAllSubjects('formSubjGrid','subjCount')">Select All</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="clearAllSubjects('formSubjGrid','subjCount')">Clear</button>
+              </div>
+            </div>
+            <div class="subj-grid" id="formSubjGrid"></div>
+          </div>
+          <span class="field-err" id="err-subjects" style="margin-top:6px">Please select at least one subject for senior students</span>
+        </div>
+
         <div class="form-actions">
           <button type="submit" class="btn btn-primary" id="submitBtn">✅ Register Student</button>
           <button type="button" class="btn btn-outline" onclick="resetForm()">🔄 Clear Form</button>
@@ -495,92 +422,83 @@ body.dark{
     </div>
   </div>
 
-  <!-- ── PROMOTION PANEL ── -->
+  <!-- PROMOTION PANEL -->
   <div class="card">
     <div class="card-head">
       <h3>🎓 End-of-Year Promotion</h3>
       <div style="display:flex;gap:8px;align-items:center">
         <button class="btn btn-outline btn-sm" onclick="openHistoryModal()">📋 History</button>
-        <button class="btn btn-amber btn-sm" onclick="openPromoModal()" id="openPromoBtn">🎓 Promote Students</button>
+        <button class="btn btn-amber btn-sm" onclick="openPromoModal()">🎓 Promote Students</button>
       </div>
     </div>
     <div class="card-body" style="padding:14px 20px">
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px" id="promoQuickStats"></div>
-      <p style="font-size:12px;color:var(--text3);margin-top:12px;line-height:1.6">
-        Use <strong>Promote Students</strong> at the end of each academic year to move students to the next grade, retain those repeating, or graduate Grade 9 completers.
-      </p>
+      <p style="font-size:12px;color:var(--text3);margin-top:12px;line-height:1.6">Use <strong>Promote Students</strong> at end of year to move students to next grade, retain those repeating, or graduate Grade 12 completers.</p>
     </div>
   </div>
 
   <!-- STUDENT LIST -->
   <div class="card">
     <div class="toolbar">
-      <div class="search">
-        <span class="si-ico">🔍</span>
-        <input type="text" id="searchQ" placeholder="Search name or admission number…" oninput="filterTable()">
-      </div>
+      <div class="search"><span class="si-ico">🔍</span><input type="text" id="searchQ" placeholder="Search name or admission number…" oninput="filterTable()"></div>
       <select class="fsel" id="filterGrade" onchange="filterTable()">
         <option value="">All Grades</option>
         <option>Grade 1</option><option>Grade 2</option><option>Grade 3</option>
         <option>Grade 4</option><option>Grade 5</option><option>Grade 6</option>
         <option>Grade 7</option><option>Grade 8</option><option>Grade 9</option>
-        <option>Grade 10</option>
-        <option>Grade 11</option>
-        <option>Grade 12</option>
+        <option>Grade 10</option><option>Grade 11</option><option>Grade 12</option>
       </select>
-      <select class="fsel" id="filterStream" onchange="filterTable()">
-        <option value="">All Streams</option>
-      </select>
+      <select class="fsel" id="filterStream" onchange="filterTable()"><option value="">All Streams</option></select>
       <select class="fsel" id="filterGender" onchange="filterTable()">
-        <option value="">All Genders</option>
-        <option>Male</option><option>Female</option>
+        <option value="">All Genders</option><option>Male</option><option>Female</option>
       </select>
-      <span style="margin-left:auto;font-size:11.5px;color:var(--text3);" id="countLabel"></span>
+      <span style="margin-left:auto;font-size:11.5px;color:var(--text3)" id="countLabel"></span>
     </div>
-    <div style="padding:10px 16px;border-bottom:1px solid var(--border);">
+    <div style="padding:10px 16px;border-bottom:1px solid var(--border)">
       <div class="stats-row" id="statsRow">
         <div class="stat-pill">👥 Total <span class="sv" id="stTotal">0</span></div>
         <div class="stat-pill">♂️ Boys <span class="sv" id="stMale">0</span></div>
         <div class="stat-pill">♀️ Girls <span class="sv" id="stFemale">0</span></div>
-        <div class="stat-pill">📚 Grade 1 <span class="sv" id="stG1">0</span></div>
-        <div class="stat-pill">📚 Grade 2 <span class="sv" id="stG2">0</span></div>
-        <div class="stat-pill">📚 Grade 3 <span class="sv" id="stG3">0</span></div>
-        <div class="stat-pill">📚 Grade 4 <span class="sv" id="stG4">0</span></div>
-        <div class="stat-pill">📚 Grade 5 <span class="sv" id="stG5">0</span></div>
-        <div class="stat-pill">📚 Grade 6 <span class="sv" id="stG6">0</span></div>
-        <div class="stat-pill">📚 Grade 7 <span class="sv" id="stG7">0</span></div>
-        <div class="stat-pill">📚 Grade 8 <span class="sv" id="stG8">0</span></div>
-        <div class="stat-pill">📚 Grade 9 <span class="sv" id="stG9">0</span></div>
-        <div class="stat-pill">📚 Grade 10 <span class="sv" id="stG10">0</span></div>
-<div class="stat-pill">📚 Grade 11 <span class="sv" id="stG11">0</span></div>
-<div class="stat-pill">📚 Grade 12 <span class="sv" id="stG12">0</span></div>
-
+        <div class="stat-pill">📚 G1 <span class="sv" id="stG1">0</span></div>
+        <div class="stat-pill">📚 G2 <span class="sv" id="stG2">0</span></div>
+        <div class="stat-pill">📚 G3 <span class="sv" id="stG3">0</span></div>
+        <div class="stat-pill">📚 G4 <span class="sv" id="stG4">0</span></div>
+        <div class="stat-pill">📚 G5 <span class="sv" id="stG5">0</span></div>
+        <div class="stat-pill">📚 G6 <span class="sv" id="stG6">0</span></div>
+        <div class="stat-pill">📚 G7 <span class="sv" id="stG7">0</span></div>
+        <div class="stat-pill">📚 G8 <span class="sv" id="stG8">0</span></div>
+        <div class="stat-pill">📚 G9 <span class="sv" id="stG9">0</span></div>
+        <div class="stat-pill">📚 G10 <span class="sv" id="stG10">0</span></div>
+        <div class="stat-pill">📚 G11 <span class="sv" id="stG11">0</span></div>
+        <div class="stat-pill">📚 G12 <span class="sv" id="stG12">0</span></div>
       </div>
     </div>
     <div class="tbl-wrap">
       <table>
         <thead>
           <tr>
-            <th style="width:36px;">#</th>
+            <th style="width:36px">#</th>
             <th>Student</th>
             <th>Adm No.</th>
             <th>Gender</th>
             <th>Grade</th>
             <th>Stream</th>
             <th>Year</th>
+            <th>Subjects</th>
             <th>Parent/Guardian</th>
             <th class="tc">Actions</th>
           </tr>
         </thead>
         <tbody id="studentTable">
-          <tr><td colspan="9"><div class="empty"><div class="ei">⏳</div><p>Loading…</p></div></td></tr>
+          <tr><td colspan="10"><div class="empty"><div class="ei">⏳</div><p>Loading…</p></div></td></tr>
         </tbody>
       </table>
     </div>
   </div>
-
 </div>
 
+<!-- subjects.js MUST load first -->
+<script src="subjects.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
@@ -593,177 +511,187 @@ firebase.initializeApp({
   messagingSenderId:"1055511650032",
   appId:"1:1055511650032:web:7e0f9c28e58515f549ac35"
 });
-const db   = firebase.firestore();
-const auth = firebase.auth();
+const db=firebase.firestore(), auth=firebase.auth();
+let allStudents=[], visStudents=[], allStreams=[], pendingDelId=null, editId=null, streamsEnabled=true;
+let promoSelectedGrade=null, promoDecisions={}, promoGradeStudents=[];
+let _schoolId=null, _authUser=null;
+let _authResolve=null;
+const _authPromise=new Promise(res=>{_authResolve=res;});
 
-// ── State ──
-let allStudents  = [];
-let visStudents  = [];
-let allStreams    = [];
-let pendingDelId = null;
-let editId       = null;
-let streamsEnabled = true;
+const el=id=>document.getElementById(id);
+const val=id=>(el(id)?.value||'').trim();
+const CACHE_DURATION=0;
 
-// ── Promotion state ──
-let promoSelectedGrade = null;  // e.g. "Grade 3"
-let promoDecisions     = {};    // { studentId: 'promote' | 'retain' | 'graduate' }
-let promoGradeStudents = [];    // students in selected grade
-
-// ── Auth + School ID ──
-let _schoolId    = null;
-let _authUser    = null;
-let _authReady   = false;
-let _authResolve = null;
-const _authPromise = new Promise(res=>{ _authResolve = res; });
-
+// ══════════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════════
 auth.onAuthStateChanged(user=>{
-  _authReady = true;
-  if(!user){ window.location.href = 'admin.html'; return; }
-  _authUser = user;
-  const stored = sessionStorage.getItem('cbe_school_id');
-  _schoolId = stored || user.uid;
-  window._schoolId = _schoolId;
-  sessionStorage.setItem('cbe_school_id', _schoolId);
+  if(!user){window.location.href='admin.html';return;}
+  _authUser=user;
+  const stored=sessionStorage.getItem('cbe_school_id');
+  _schoolId=stored||user.uid;
+  window._schoolId=_schoolId;
+  sessionStorage.setItem('cbe_school_id',_schoolId);
   loadStreamsSetting();
   db.collection('approvedSchools').doc(_schoolId).get()
     .then(snap=>{
-      if(snap.exists){
-        const d = snap.data();
-        if(d.status === 'suspended' || (d.message && d.message.trim())){
-          window.location.href = 'admin.html'; return;
-        }
-      }
-      _authResolve(user);
-      loadSchoolInfo();
-      loadStudents();
+      if(snap.exists){const d=snap.data();if(d.status==='suspended'){window.location.href='admin.html';return;}}
+      _authResolve(user); loadSchoolInfo(); loadStudents();
     })
-    .catch(()=>{ _authResolve(user); loadSchoolInfo(); loadStudents(); });
+    .catch(()=>{_authResolve(user);loadSchoolInfo();loadStudents();});
 });
 
 async function loadStreamsSetting(){
   try{
-    const snap = await db.collection('settings').doc(_schoolId).get();
-    if(snap.exists){
-      streamsEnabled = snap.data().streamsEnabled !== undefined ? snap.data().streamsEnabled : true;
-      localStorage.setItem('cbe_streams_enabled', streamsEnabled ? 'true' : 'false');
+    const snap=await db.collection('settings').doc(_schoolId).get();
+    if(snap.exists&&snap.data().streamsEnabled!==undefined){
+      streamsEnabled=snap.data().streamsEnabled;
+      localStorage.setItem('cbe_streams_enabled',streamsEnabled?'true':'false');
       updateStreamsUI();
     }
-  }catch(e){ console.warn('[Admission] Failed to load streams setting:', e.message); }
+  }catch(e){console.warn('[Admission] streams setting error:',e.message);}
 }
 
 function updateStreamsUI(){
-  const streamInput = document.getElementById('fStream');
-  const streamLabel = document.querySelector('label[for="fStream"]');
-  const streamHint = document.querySelector('#fStream + .field-hint') || document.querySelector('#fStream').closest('.form-group').querySelector('.field-hint');
-  const filterStream = document.getElementById('filterStream');
+  const si=el('fStream'),sf=el('filterStream');
   if(!streamsEnabled){
-    if(streamInput){ streamInput.disabled=true; streamInput.placeholder="Streams are disabled for your school"; streamInput.value=""; }
-    if(streamLabel) streamLabel.style.opacity='0.6';
-    if(streamHint) streamHint.textContent="Streams are disabled. Leave this field blank.";
-    if(filterStream){ filterStream.disabled=true; filterStream.innerHTML='<option value="">Streams Disabled</option>'; }
-  } else {
-    if(streamInput){ streamInput.disabled=false; streamInput.placeholder="Leave blank if no streams"; }
-    if(streamLabel) streamLabel.style.opacity='1';
-    if(filterStream) filterStream.disabled=false;
+    if(si){si.disabled=true;si.placeholder='Streams disabled';si.value='';}
+    if(sf){sf.disabled=true;sf.innerHTML='<option value="">Streams Disabled</option>';}
+  }else{
+    if(si){si.disabled=false;si.placeholder='Leave blank if no streams';}
+    if(sf)sf.disabled=false;
   }
 }
 
-function _waitAuth(){ return _authPromise; }
-function _getSchoolId(){ if(_schoolId) return Promise.resolve(_schoolId); return _authPromise.then(()=>_schoolId); }
-function _cacheKey(){ return 'cbe_students_' + (_schoolId||'shared'); }
+function _waitAuth(){return _authPromise;}
+function _getSchoolId(){if(_schoolId)return Promise.resolve(_schoolId);return _authPromise.then(()=>_schoolId);}
+function _cacheKey(){return'cbe_students_'+(_schoolId||'shared');}
 
 async function loadSchoolInfo(){
   try{
-    const sid = await _getSchoolId(); if(!sid) return;
-    const snap = await db.collection('settings').doc(sid).get();
-    if(!snap.exists) return;
-    const s = snap.data();
-    const nameEl = document.getElementById('hdrSchoolName');
-    if(nameEl && s.name) nameEl.textContent = s.name;
-    const subEl = document.getElementById('hdrSchoolSub');
-    if(subEl){ const parts=[s.motto,s.county,'Kenya CBC'].filter(Boolean); subEl.textContent=parts.join(' · '); }
-    if(s.logoUrl){ const lm=document.getElementById('hdrLogo'); if(lm) lm.innerHTML=`<img src="${s.logoUrl}" style="width:100%;height:100%;object-fit:contain;border-radius:inherit" onerror="this.parentElement.textContent='🎓'">`; }
-    if(s.primaryColor) document.documentElement.style.setProperty('--accent', s.primaryColor);
-    if(s.name) document.title = s.name + ' · Student Admission';
-  }catch(e){ console.warn('School info load failed:', e.message); }
+    const sid=await _getSchoolId();if(!sid)return;
+    const snap=await db.collection('settings').doc(sid).get();if(!snap.exists)return;
+    const s=snap.data();
+    if(s.name){document.title=s.name+' · Admission';el('hdrSchoolName').textContent=s.name;}
+    if(s.motto||s.county){const parts=[s.motto,s.county,'Kenya CBC'].filter(Boolean);el('hdrSchoolSub').textContent=parts.join(' · ');}
+    if(s.logoUrl){el('hdrLogo').innerHTML=`<img src="${s.logoUrl}" style="width:100%;height:100%;object-fit:contain;border-radius:inherit" onerror="this.parentElement.textContent='🎓'">`;}
+    if(s.primaryColor)document.documentElement.style.setProperty('--accent',s.primaryColor);
+  }catch(e){console.warn('School info load failed:',e.message);}
 }
 
-const CACHE_DURATION = 0;
-const el  = id => document.getElementById(id);
-const val = id => (el(id)?.value||'').trim();
+// ══════════════════════════════════════════════
+// SUBJECT PICKER HELPERS (registration form)
+// ══════════════════════════════════════════════
+const GROUP_LABELS={
+  'g-eng':'Languages','g-kis':'Kiswahili','g-math':'Mathematics',
+  'g-sci':'Sciences','g-soc':'Humanities & Social','g-re':'Religious Education',
+  'g-arts':'Creative & Performing Arts','g-pret':'Technical & Applied',
+  'g-agri':'Agriculture & Home Science'
+};
 
-function toast(msg, type='ok'){
-  const t=document.createElement('div');
-  t.className=`t ${type}`;
-  t.innerHTML=`<span>${type==='ok'?'✅':type==='err'?'❌':'ℹ️'}</span>${msg}`;
-  el('tc').appendChild(t);
-  setTimeout(()=>{t.style.animation='tout .28s ease forwards';setTimeout(()=>t.remove(),300);},2800);
+function buildSubjectPickerGrid(gridId, countId, selectedIds=[]){
+  const grid=el(gridId); if(!grid) return;
+  const all=getAllSeniorSubs();
+  const groups={};
+  all.forEach(s=>{const g=s.gc||'other';if(!groups[g])groups[g]=[];groups[g].push(s);});
+  let html='';
+  Object.entries(groups).forEach(([gc,subs])=>{
+    html+=`<div><div class="subj-group-label">${GROUP_LABELS[gc]||gc}</div>`;
+    subs.forEach(s=>{
+      const chk=selectedIds.includes(s.id)?'checked':'';
+      html+=`<label class="subj-check-label">
+        <input type="checkbox" value="${s.id}" ${chk} onchange="updateSubjCount('${gridId}','${countId}')">
+        <span>${s.icon} ${s.label}</span>
+      </label>`;
+    });
+    html+=`</div>`;
+  });
+  grid.innerHTML=html;
+  updateSubjCount(gridId, countId);
 }
 
-function initials(n){return(n||'?').split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase()}
+window.updateSubjCount=function(gridId, countId){
+  const n=document.querySelectorAll(`#${gridId} input:checked`).length;
+  const badge=el(countId); if(badge)badge.textContent=n+' selected';
+};
 
-function saveToCache(data) {
-  try{
-    const key=_cacheKey();
-    localStorage.setItem(key,JSON.stringify(data));
-    localStorage.setItem(key+'_ts',Date.now().toString());
-    updateCacheIndicator();
-  }catch(e){}
+window.selectAllSubjects=function(gridId, countId){
+  document.querySelectorAll(`#${gridId} input[type=checkbox]`).forEach(cb=>cb.checked=true);
+  updateSubjCount(gridId, countId);
+};
+
+window.clearAllSubjects=function(gridId, countId){
+  document.querySelectorAll(`#${gridId} input[type=checkbox]`).forEach(cb=>cb.checked=false);
+  updateSubjCount(gridId, countId);
+};
+
+function getSelectedSubjects(gridId){
+  return [...document.querySelectorAll(`#${gridId} input[type=checkbox]:checked`)].map(cb=>cb.value);
 }
 
-function loadFromCache() {
-  try{
-    const key=_cacheKey();
-    const cached=localStorage.getItem(key);
-    const timestamp=localStorage.getItem(key+'_ts');
-    if(cached && timestamp){ const age=Date.now()-parseInt(timestamp); if(age<CACHE_DURATION) return JSON.parse(cached); }
-  }catch(e){}
+// Show/hide subject picker based on grade selection
+window.onFormGradeChange=function(){
+  const grade=val('fGrade');
+  const section=el('subjectSection');
+  if(isSeniorGrade(grade)){
+    section.style.display='';
+    // Only build grid if not already built
+    if(!el('formSubjGrid').children.length) buildSubjectPickerGrid('formSubjGrid','subjCount',[]);
+  }else{
+    section.style.display='none';
+  }
+  // Stream suggestions
+  if(!streamsEnabled)return;
+  const matches=grade?[...new Set(allStudents.filter(s=>s.grade===grade).map(s=>s.stream).filter(Boolean))].sort():allStreams;
+  if(matches.length)showStreamSuggestions(matches);
+};
+
+// Edit modal grade change
+window.onEditGradeChange=function(){
+  const grade=el('editGrade').value;
+  const section=el('editSubjectSection');
+  if(isSeniorGrade(grade)){
+    section.style.display='';
+    // Preserve previously checked if same student
+    const current=getSelectedSubjects('editSubjGrid');
+    buildSubjectPickerGrid('editSubjGrid','editSubjCount', current.length?current:[]);
+  }else{
+    section.style.display='none';
+  }
+};
+
+// ══════════════════════════════════════════════
+// CACHE
+// ══════════════════════════════════════════════
+function saveToCache(data){
+  try{const k=_cacheKey();localStorage.setItem(k,JSON.stringify(data));localStorage.setItem(k+'_ts',Date.now().toString());updateCacheIndicator();}catch(e){}
+}
+function loadFromCache(){
+  try{const k=_cacheKey(),raw=localStorage.getItem(k),ts=localStorage.getItem(k+'_ts');if(raw&&ts&&(Date.now()-parseInt(ts))<CACHE_DURATION)return JSON.parse(raw);}catch(e){}
   return null;
 }
-
-function isCacheValid() {
-  const key=_cacheKey();
-  const timestamp=localStorage.getItem(key+'_ts');
-  if(!timestamp) return false;
-  return(Date.now()-parseInt(timestamp))<CACHE_DURATION;
+function isCacheValid(){const ts=localStorage.getItem(_cacheKey()+'_ts');return ts&&(Date.now()-parseInt(ts))<CACHE_DURATION;}
+function updateCacheIndicator(){
+  const icon=el('cacheIcon'),timeEl=el('cacheTime');
+  if(isCacheValid()){const ago=Math.floor((Date.now()-parseInt(localStorage.getItem(_cacheKey()+'_ts')))/60000);icon.textContent='📦';timeEl.textContent=ago===0?'Just now':`${ago}m ago`;}
+  else{icon.textContent='🔄';timeEl.textContent='Refresh';}
 }
 
-function updateCacheIndicator() {
-  const indicator=el('cacheIndicator'); const icon=el('cacheIcon'); const timeEl=el('cacheTime');
-  if(isCacheValid()){
-    const timestamp=parseInt(localStorage.getItem(_cacheKey()+'_ts'));
-    const minutesAgo=Math.floor((Date.now()-timestamp)/60000);
-    icon.textContent='📦'; timeEl.textContent=minutesAgo===0?'Just now':`${minutesAgo}m ago`;
-    indicator.classList.add('refresh'); indicator.title='Click to refresh data';
-  } else {
-    icon.textContent='🔄'; timeEl.textContent='Refresh';
-    indicator.classList.add('refresh'); indicator.title='Click to load fresh data';
-  }
-}
-
+// ══════════════════════════════════════════════
+// STREAMS
+// ══════════════════════════════════════════════
 function buildStreamList(){
   const set=new Set(allStudents.map(s=>s.stream).filter(Boolean));
   allStreams=[...set].sort();
   const sf=el('filterStream');
-  if(sf && !sf.disabled){
-    const cur=sf.value;
-    sf.innerHTML='<option value="">All Streams</option>'+allStreams.map(s=>`<option>${s}</option>`).join('');
-    if(cur) sf.value=cur;
-  }
+  if(sf&&!sf.disabled){const cur=sf.value;sf.innerHTML='<option value="">All Streams</option>'+allStreams.map(s=>`<option>${s}</option>`).join('');if(cur)sf.value=cur;}
   const gradeStreamMap={};
-  allStudents.forEach(s=>{
-    if(!s.grade||!s.stream) return;
-    if(!gradeStreamMap[s.grade]) gradeStreamMap[s.grade]=new Set();
-    gradeStreamMap[s.grade].add(s.stream);
-  });
-  const serializable={};
-  Object.keys(gradeStreamMap).forEach(g=>{ serializable[g]=[...gradeStreamMap[g]].sort(); });
-  localStorage.setItem('cbe_streams',JSON.stringify(serializable));
-  localStorage.setItem('cbe_streams_ts',Date.now().toString());
+  allStudents.forEach(s=>{if(!s.grade||!s.stream)return;if(!gradeStreamMap[s.grade])gradeStreamMap[s.grade]=new Set();gradeStreamMap[s.grade].add(s.stream);});
+  const ser={};Object.keys(gradeStreamMap).forEach(g=>{ser[g]=[...gradeStreamMap[g]].sort();});
+  localStorage.setItem('cbe_streams',JSON.stringify(ser));localStorage.setItem('cbe_streams_ts',Date.now().toString());
 }
-
-window.onStreamInput=function(){ if(!streamsEnabled) return; const q=val('fStream').toLowerCase(); const matches=allStreams.filter(s=>s.toLowerCase().includes(q)); showStreamSuggestions(matches); };
-window.onStreamFocus=function(){ if(!streamsEnabled) return; if(allStreams.length) showStreamSuggestions(allStreams); };
+window.onStreamInput=function(){if(!streamsEnabled)return;const q=val('fStream').toLowerCase();showStreamSuggestions(allStreams.filter(s=>s.toLowerCase().includes(q)));};
+window.onStreamFocus=function(){if(!streamsEnabled)return;if(allStreams.length)showStreamSuggestions(allStreams);};
 function showStreamSuggestions(list){
   const box=el('streamSuggestions');
   if(!list.length){box.classList.remove('open');return;}
@@ -772,8 +700,21 @@ function showStreamSuggestions(list){
 }
 function closeStreamSuggestions(){setTimeout(()=>el('streamSuggestions').classList.remove('open'),150);}
 window.pickStream=function(s){el('fStream').value=s;el('streamSuggestions').classList.remove('open');};
-window.onFormGradeChange=function(){ if(!streamsEnabled) return; const grade=val('fGrade'); const matches=grade?[...new Set(allStudents.filter(s=>s.grade===grade).map(s=>s.stream).filter(Boolean))].sort():allStreams; if(matches.length) showStreamSuggestions(matches); };
 
+// ══════════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════════
+function toast(msg,type='ok'){
+  const t=document.createElement('div');t.className=`t ${type}`;
+  t.innerHTML=`<span>${type==='ok'?'✅':type==='err'?'❌':'ℹ️'}</span>${msg}`;
+  el('tc').appendChild(t);
+  setTimeout(()=>{t.style.animation='tout .28s ease forwards';setTimeout(()=>t.remove(),300);},2800);
+}
+function initials(n){return(n||'?').split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase();}
+
+// ══════════════════════════════════════════════
+// FORM VALIDATION & SUBMIT
+// ══════════════════════════════════════════════
 function validate(){
   let ok=true;
   const rules=[
@@ -783,479 +724,377 @@ function validate(){
     {id:'fGrade',  errId:'err-grade',  check:()=>val('fGrade')!==''},
     {id:'fYear',   errId:'err-year',   check:()=>Number(val('fYear'))>=2020},
   ];
-  rules.forEach(r=>{ const pass=r.check(); el(r.id).classList.toggle('err',!pass); el(r.errId)?.classList.toggle('show',!pass); if(!pass) ok=false; });
+  rules.forEach(r=>{const pass=r.check();el(r.id).classList.toggle('err',!pass);el(r.errId)?.classList.toggle('show',!pass);if(!pass)ok=false;});
+  // Senior subject validation
+  const grade=val('fGrade');
+  if(isSeniorGrade(grade)){
+    const selected=getSelectedSubjects('formSubjGrid');
+    const subjErr=el('err-subjects');
+    if(!selected.length){subjErr.classList.add('show');ok=false;}
+    else subjErr.classList.remove('show');
+  }
   return ok;
 }
 
-el('admForm').addEventListener('submit', async e=>{
+el('admForm').addEventListener('submit',async e=>{
   e.preventDefault();
-  if(!validate()) return;
+  if(!validate())return;
   const admNo=val('fAdm').toUpperCase();
   const dup=allStudents.find(s=>s.admissionNumber.toUpperCase()===admNo);
-  if(dup){ el('fAdm').classList.add('err'); el('err-adm').textContent=`Adm no. ${admNo} already assigned to ${dup.name}`; el('err-adm').classList.add('show'); toast(`Duplicate admission number: ${admNo}`,'err'); return; }
-  const btn=el('submitBtn');
-  btn.innerHTML='<div class="spin"></div> Saving…'; btn.disabled=true;
-  let streamNorm='';
-  if(streamsEnabled){ streamNorm=val('fStream').trim().replace(/^\w/,c=>c.toUpperCase()); } else { streamNorm=''; }
+  if(dup){el('fAdm').classList.add('err');el('err-adm').textContent=`Adm no. ${admNo} already assigned to ${dup.name}`;el('err-adm').classList.add('show');toast(`Duplicate admission number: ${admNo}`,'err');return;}
+  const btn=el('submitBtn');btn.innerHTML='<div class="spin"></div> Saving…';btn.disabled=true;
+  const grade=val('fGrade');
+  const streamNorm=streamsEnabled?val('fStream').trim().replace(/^\w/,c=>c.toUpperCase()):'';
+  // Collect senior subjects
+  const subjects=isSeniorGrade(grade)?getSelectedSubjects('formSubjGrid'):[];
   await _waitAuth();
   const schoolId=_schoolId;
-  if(!schoolId){ toast('Not authenticated — please sign in again','err'); btn.innerHTML='✅ Register Student'; btn.disabled=false; return; }
+  if(!schoolId){toast('Not authenticated','err');btn.innerHTML='✅ Register Student';btn.disabled=false;return;}
   const data={
     name:val('fName').trim().replace(/\s+/g,' '),
-    admissionNumber:admNo, gender:val('fGender'), grade:val('fGrade'),
-    stream:streamNorm||null, year:val('fYear'),
-    parentName:val('fParent'), parentPhone:val('fPhone'),
+    admissionNumber:admNo,gender:val('fGender'),grade,
+    stream:streamNorm||null,year:val('fYear'),
+    parentName:val('fParent'),parentPhone:val('fPhone'),
     schoolId,
+    // Store subjects array for senior students; empty array for others
+    subjects,
     createdAt:firebase.firestore.FieldValue.serverTimestamp(),
     updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
   };
   try{
     await db.collection('students').add(data);
-    toast(`${data.name} registered successfully`);
+    toast(`${data.name} registered${subjects.length?' with '+subjects.length+' subjects':''}`);
     resetForm();
     await loadStudents(true);
-  }catch(err){ toast('Error saving: '+err.message,'err'); }
-  btn.innerHTML='✅ Register Student'; btn.disabled=false;
+  }catch(err){toast('Error saving: '+err.message,'err');}
+  btn.innerHTML='✅ Register Student';btn.disabled=false;
 });
 
 window.resetForm=function(){
-  el('admForm').reset(); el('fYear').value='2026';
-  if(streamsEnabled){ el('fStream').disabled=false; } else { el('fStream').disabled=true; el('fStream').value=''; }
+  el('admForm').reset();el('fYear').value='2026';
+  el('subjectSection').style.display='none';
+  el('formSubjGrid').innerHTML='';
+  if(!streamsEnabled){el('fStream').disabled=true;el('fStream').value='';}
   document.querySelectorAll('.fi.err').forEach(x=>x.classList.remove('err','ok'));
   document.querySelectorAll('.field-err.show').forEach(x=>x.classList.remove('show'));
 };
 
-async function loadStudents(forceRefresh=false) {
+// ══════════════════════════════════════════════
+// LOAD STUDENTS
+// ══════════════════════════════════════════════
+async function loadStudents(forceRefresh=false){
   const schoolId=await _getSchoolId();
-  if(!schoolId){ el('studentTable').innerHTML=`<tr><td colspan="9"><div class="empty"><div class="ei">🔒</div><p>Not logged in</p></div></td></tr>`; return; }
-  if(!forceRefresh){ const cached=loadFromCache(); if(cached){ allStudents=cached; buildStreamList(); updateStats(); filterTable(); updatePromoQuickStats(); updateCacheIndicator(); return; } }
-  el('studentTable').innerHTML=`<tr><td colspan="9"><div class="empty"><div class="ei">⏳</div><p>Loading…</p></div></td></tr>`;
+  if(!schoolId){el('studentTable').innerHTML=`<tr><td colspan="10"><div class="empty"><div class="ei">🔒</div><p>Not logged in</p></div></td></tr>`;return;}
+  if(!forceRefresh){const cached=loadFromCache();if(cached){allStudents=cached;buildStreamList();updateStats();filterTable();updatePromoQuickStats();updateCacheIndicator();return;}}
+  el('studentTable').innerHTML=`<tr><td colspan="10"><div class="empty"><div class="ei">⏳</div><p>Loading…</p></div></td></tr>`;
   try{
     const snap=await db.collection('students').where('schoolId','==',schoolId).get();
-    allStudents=[];
-    snap.forEach(d=>allStudents.push({id:d.id,...d.data()}));
-    allStudents.sort((a,b)=>{ const ta=a.createdAt?.toDate?.()?.getTime()||0; const tb=b.createdAt?.toDate?.()?.getTime()||0; return tb-ta; });
-    saveToCache(allStudents); buildStreamList(); updateStats(); filterTable(); updatePromoQuickStats(); updateCacheIndicator();
+    allStudents=[];snap.forEach(d=>allStudents.push({id:d.id,...d.data()}));
+    allStudents.sort((a,b)=>(b.createdAt?.toDate?.()?.getTime()||0)-(a.createdAt?.toDate?.()?.getTime()||0));
+    saveToCache(allStudents);buildStreamList();updateStats();filterTable();updatePromoQuickStats();updateCacheIndicator();
   }catch(e){
-    el('studentTable').innerHTML=`<tr><td colspan="9"><div class="empty"><div class="ei">❌</div><p>${e.message}</p></div></td></tr>`;
+    el('studentTable').innerHTML=`<tr><td colspan="10"><div class="empty"><div class="ei">❌</div><p>${e.message}</p></div></td></tr>`;
     toast('Failed to load students: '+e.message,'err');
   }
 }
+window.refreshData=function(){loadStudents(true);toast('Refreshing data…','info');};
 
-window.refreshData=function(){ loadStudents(true); toast('Refreshing data...','info'); };
-
+// ══════════════════════════════════════════════
+// STATS & TABLE
+// ══════════════════════════════════════════════
 function updateStats(){
   el('stTotal').textContent=allStudents.length;
   el('stMale').textContent=allStudents.filter(s=>s.gender==='Male').length;
   el('stFemale').textContent=allStudents.filter(s=>s.gender==='Female').length;
- [1,2,3,4,5,6,7,8,9,10,11,12].forEach(function(n){
-  var e2=document.getElementById('stG'+n);
-  if(e2) e2.textContent=allStudents.filter(function(s){return s.grade==='Grade '+n;}).length;
-});
+  [1,2,3,4,5,6,7,8,9,10,11,12].forEach(n=>{const e=el('stG'+n);if(e)e.textContent=allStudents.filter(s=>s.grade==='Grade '+n).length;});
 }
 
 window.filterTable=function(){
-  const q=el('searchQ').value.toLowerCase();
-  const grade=el('filterGrade').value;
-  const stream=el('filterStream').value;
-  const gender=el('filterGender').value;
-  visStudents=allStudents.filter(s=>
-    (!q||s.name.toLowerCase().includes(q)||(s.admissionNumber||'').toLowerCase().includes(q))&&
-    (!grade||s.grade===grade)&&(!stream||s.stream===stream)&&(!gender||s.gender===gender)
-  );
+  const q=el('searchQ').value.toLowerCase(),grade=el('filterGrade').value,stream=el('filterStream').value,gender=el('filterGender').value;
+  visStudents=allStudents.filter(s=>(!q||s.name.toLowerCase().includes(q)||(s.admissionNumber||'').toLowerCase().includes(q))&&(!grade||s.grade===grade)&&(!stream||s.stream===stream)&&(!gender||s.gender===gender));
   el('countLabel').textContent=`${visStudents.length} of ${allStudents.length} students`;
   renderTable();
 };
 
 function renderTable(){
   const tbody=el('studentTable');
-  if(!visStudents.length){ tbody.innerHTML=`<tr><td colspan="9"><div class="empty"><div class="ei">👥</div><p>No students found</p></div></td></tr>`; return; }
-  tbody.innerHTML=visStudents.map((s,i)=>`
-    <tr id="row-${s.id}">
-      <td style="color:var(--text3);font-size:11px;font-weight:700;">${i+1}</td>
+  if(!visStudents.length){tbody.innerHTML=`<tr><td colspan="10"><div class="empty"><div class="ei">👥</div><p>No students found</p></div></td></tr>`;return;}
+  tbody.innerHTML=visStudents.map((s,i)=>{
+    const isSenior=isSeniorGrade(s.grade);
+    const subjCount=Array.isArray(s.subjects)?s.subjects.length:0;
+    const subjCell=isSenior
+      ?`<span class="tag tag-senior" title="${(s.subjects||[]).join(', ') || 'None assigned'}" style="cursor:help">📚 ${subjCount} subj${subjCount!==1?'s':''}</span>`
+      :`<span style="color:var(--text3);font-size:11px">—</span>`;
+    return`<tr id="row-${s.id}">
+      <td style="color:var(--text3);font-size:11px;font-weight:700">${i+1}</td>
       <td><div class="sc"><div class="av${s.gender==='Female'?' f':''}">${initials(s.name)}</div><div><div class="sn">${s.name}</div></div></div></td>
-      <td><code style="background:var(--surf2);padding:2px 7px;border-radius:4px;font-size:11px;">${s.admissionNumber}</code></td>
+      <td><code style="background:var(--surf2);padding:2px 7px;border-radius:4px;font-size:11px">${s.admissionNumber}</code></td>
       <td><span class="tag ${s.gender==='Female'?'tag-f':'tag-m'}">${s.gender}</span></td>
       <td><span class="tag tag-grade">${s.grade}</span></td>
       <td><span class="tag tag-stream">${s.stream||'—'}</span></td>
       <td>${s.year||'—'}</td>
-      <td style="font-size:12px;color:var(--text2);">${s.parentName||'<span style="color:var(--text3)">—</span>'}${s.parentPhone?`<br><code style="font-size:10.5px;">${s.parentPhone}</code>`:''}</td>
-      <td style="text-align:center;white-space:nowrap;">
+      <td>${subjCell}</td>
+      <td style="font-size:12px;color:var(--text2)">${s.parentName||'<span style="color:var(--text3)">—</span>'}${s.parentPhone?`<br><code style="font-size:10.5px">${s.parentPhone}</code>`:''}</td>
+      <td style="text-align:center;white-space:nowrap">
         <button class="btn btn-outline btn-sm" onclick="openEdit('${s.id}')" title="Edit">✏️</button>
-        <button class="btn btn-danger btn-sm" onclick="openDel('${s.id}','${s.name.replace(/'/g,"\\'")}') " title="Delete" style="margin-left:4px;">🗑️</button>
+        <button class="btn btn-danger btn-sm" onclick="openDel('${s.id}','${s.name.replace(/'/g,"\\'")}') " title="Delete" style="margin-left:4px">🗑️</button>
       </td>
-    </tr>
-  `).join('');
+    </tr>`;
+  }).join('');
 }
 
-window.openDel=function(id,name){ pendingDelId=id; el('delName').textContent=name; el('delModal').classList.add('open'); };
-window.closeDelModal=function(){ el('delModal').classList.remove('open'); pendingDelId=null; };
+// ══════════════════════════════════════════════
+// DELETE
+// ══════════════════════════════════════════════
+window.openDel=function(id,name){pendingDelId=id;el('delName').textContent=name;el('delModal').classList.add('open');};
+window.closeDelModal=function(){el('delModal').classList.remove('open');pendingDelId=null;};
 el('confirmDelBtn').addEventListener('click',async()=>{
-  if(!pendingDelId) return;
+  if(!pendingDelId)return;
   try{
     await db.collection('students').doc(pendingDelId).delete();
     allStudents=allStudents.filter(s=>s.id!==pendingDelId);
-    saveToCache(allStudents); buildStreamList(); updateStats(); filterTable(); updatePromoQuickStats(); updateCacheIndicator();
+    saveToCache(allStudents);buildStreamList();updateStats();filterTable();updatePromoQuickStats();
     toast('Student deleted');
-  }catch(e){ toast('Error: '+e.message,'err'); }
+  }catch(e){toast('Error: '+e.message,'err');}
   closeDelModal();
 });
 
+// ══════════════════════════════════════════════
+// EDIT
+// ══════════════════════════════════════════════
 window.openEdit=function(id){
-  const s=allStudents.find(x=>x.id===id); if(!s) return;
+  const s=allStudents.find(x=>x.id===id);if(!s)return;
   editId=id;
-  el('editName').value=s.name; el('editAdm').value=s.admissionNumber; el('editGender').value=s.gender;
-  el('editGrade').value=s.grade; el('editStream').value=s.stream||''; el('editYear').value=s.year||'2026';
+  el('editName').value=s.name;el('editAdm').value=s.admissionNumber;el('editGender').value=s.gender;
+  el('editGrade').value=s.grade;el('editStream').value=s.stream||'';el('editYear').value=s.year||'2026';
+  // Senior subject picker
+  const section=el('editSubjectSection');
+  if(isSeniorGrade(s.grade)){
+    section.style.display='';
+    buildSubjectPickerGrid('editSubjGrid','editSubjCount', Array.isArray(s.subjects)?s.subjects:[]);
+  }else{
+    section.style.display='none';
+    el('editSubjGrid').innerHTML='';
+  }
   el('editModal').classList.add('open');
 };
-window.closeEditModal=function(){ el('editModal').classList.remove('open'); editId=null; };
+
+window.closeEditModal=function(){el('editModal').classList.remove('open');editId=null;};
+
 window.saveEdit=async function(){
-  if(!editId) return;
-  const name=el('editName').value.trim();
-  const admNo=el('editAdm').value.trim().toUpperCase();
-  const gender=el('editGender').value; const grade=el('editGrade').value;
-  let stream=el('editStream').value.trim(); const year=el('editYear').value;
-  if(!name||!admNo||!grade){ toast('Fill all required fields','err'); return; }
-  if(streamsEnabled){ stream=stream.replace(/^\w/,c=>c.toUpperCase()); } else { stream=null; }
+  if(!editId)return;
+  const name=el('editName').value.trim(),admNo=el('editAdm').value.trim().toUpperCase();
+  const gender=el('editGender').value,grade=el('editGrade').value;
+  let stream=el('editStream').value.trim();const year=el('editYear').value;
+  if(!name||!admNo||!grade){toast('Fill all required fields','err');return;}
+  if(streamsEnabled)stream=stream.replace(/^\w/,c=>c.toUpperCase());else stream=null;
   const dup=allStudents.find(s=>s.id!==editId&&s.admissionNumber.toUpperCase()===admNo);
-  if(dup){ toast(`Adm no. ${admNo} belongs to ${dup.name}`,'err'); return; }
+  if(dup){toast(`Adm no. ${admNo} belongs to ${dup.name}`,'err');return;}
+  // Collect senior subjects
+  const subjects=isSeniorGrade(grade)?getSelectedSubjects('editSubjGrid'):[];
+  if(isSeniorGrade(grade)&&!subjects.length){toast('Please select at least one subject for senior students','err');return;}
   try{
-    await _waitAuth(); const editSchoolId=_schoolId;
+    await _waitAuth();
     await db.collection('students').doc(editId).update({
-      ...(editSchoolId?{schoolId:editSchoolId}:{}),
-      name,admissionNumber:admNo,gender,grade,stream,year,
+      ...(_schoolId?{schoolId:_schoolId}:{}),
+      name,admissionNumber:admNo,gender,grade,stream,year,subjects,
       updatedAt:firebase.firestore.FieldValue.serverTimestamp()
     });
     const idx=allStudents.findIndex(s=>s.id===editId);
-    if(idx>-1) allStudents[idx]={...allStudents[idx],name,admissionNumber:admNo,gender,grade,stream,year};
-    saveToCache(allStudents); buildStreamList(); updateStats(); filterTable(); updatePromoQuickStats(); updateCacheIndicator();
-    toast(`${name} updated`); closeEditModal();
-  }catch(e){ toast('Error: '+e.message,'err'); }
+    if(idx>-1)allStudents[idx]={...allStudents[idx],name,admissionNumber:admNo,gender,grade,stream,year,subjects};
+    saveToCache(allStudents);buildStreamList();updateStats();filterTable();updatePromoQuickStats();
+    toast(`${name} updated${subjects.length?' · '+subjects.length+' subjects':''}`);
+    closeEditModal();
+  }catch(e){toast('Error: '+e.message,'err');}
 };
 
+// ══════════════════════════════════════════════
+// EXPORT CSV
+// ══════════════════════════════════════════════
 window.exportCSV=function(){
-  if(!allStudents.length){ toast('No students to export','err'); return; }
-  const rows=[['#','Name','Admission No','Gender','Grade','Stream','Year','Parent Name','Parent Phone']];
-  allStudents.forEach((s,i)=>rows.push([i+1,s.name,s.admissionNumber,s.gender,s.grade,s.stream||'',s.year||'',s.parentName||'',s.parentPhone||'']));
+  if(!allStudents.length){toast('No students to export','err');return;}
+  const rows=[['#','Name','Admission No','Gender','Grade','Stream','Year','Subjects','Parent Name','Parent Phone']];
+  allStudents.forEach((s,i)=>rows.push([i+1,s.name,s.admissionNumber,s.gender,s.grade,s.stream||'',s.year||'',(s.subjects||[]).join(';'),s.parentName||'',s.parentPhone||'']));
   const csv=rows.map(r=>r.map(v=>`"${v}"`).join(',')).join('\n');
-  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
-  a.download=`Students_${new Date().toISOString().slice(0,10)}.csv`; a.click();
-  toast('CSV exported');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download=`Students_${new Date().toISOString().slice(0,10)}.csv`;a.click();toast('CSV exported');
 };
 
-// ── NEMIS Gate redirect ──
-window.goToNemis = async function(){
-  const btn = document.getElementById('nemisBtn'); const orig = btn.innerHTML;
-  btn.innerHTML = '<div class="spin"></div>'; btn.disabled = true;
+// ══════════════════════════════════════════════
+// NEMIS
+// ══════════════════════════════════════════════
+window.goToNemis=async function(){
+  const btn=el('nemisBtn');const orig=btn.innerHTML;btn.innerHTML='<div class="spin"></div>';btn.disabled=true;
   try{
-    if(!_schoolId){ window.location.href='nemis-gate.html'; return; }
-    const snap = await db.collection('settings').doc(_schoolId).get();
-    const data = snap.data() || {};
-    const active = data.subscriptionActive === true;
-    const expiry = data.subscriptionExpiry?.toDate?.() || null;
-    const subscribed = active && expiry && new Date() < expiry;
-    window.location.href = subscribed ? 'nemis.html' : 'nemis-gate.html';
-  }catch(e){ window.location.href = 'nemis-gate.html'; }
-  btn.innerHTML = orig; btn.disabled = false;
+    if(!_schoolId){window.location.href='nemis-gate.html';return;}
+    const snap=await db.collection('settings').doc(_schoolId).get();const data=snap.data()||{};
+    const exp=data.subscriptionExpiry?.toDate?.();
+    window.location.href=(data.subscriptionActive===true&&exp&&new Date()<exp)?'nemis.html':'nemis-gate.html';
+  }catch(e){window.location.href='nemis-gate.html';}
+  btn.innerHTML=orig;btn.disabled=false;
 };
 
-// ── Dark mode ──
-document.getElementById('themeBtn').addEventListener('click',function(){
-  document.body.classList.toggle('dark');
-  this.textContent=document.body.classList.contains('dark')?'☀️':'🌙';
+// ══════════════════════════════════════════════
+// DARK MODE
+// ══════════════════════════════════════════════
+el('themeBtn').addEventListener('click',function(){
+  document.body.classList.toggle('dark');this.textContent=document.body.classList.contains('dark')?'☀️':'🌙';
   localStorage.setItem('cbe_theme',document.body.classList.contains('dark')?'dark':'light');
 });
-if(localStorage.getItem('cbe_theme')==='dark'){ document.body.classList.add('dark'); el('themeBtn').textContent='☀️'; }
+if(localStorage.getItem('cbe_theme')==='dark'){document.body.classList.add('dark');el('themeBtn').textContent='☀️';}
 
-// ════════════════════════════════════════════
-// ── PROMOTION FEATURE ──────────────────────
-// ════════════════════════════════════════════
-
-const GRADES = [
-  'Grade 1','Grade 2','Grade 3','Grade 4','Grade 5','Grade 6',
-  'Grade 7','Grade 8','Grade 9','Grade 10','Grade 11','Grade 12'
-];
-const NEXT_GRADE = {
-  'Grade 1':'Grade 2','Grade 2':'Grade 3','Grade 3':'Grade 4',
-  'Grade 4':'Grade 5','Grade 5':'Grade 6','Grade 6':'Grade 7',
-  'Grade 7':'Grade 8','Grade 8':'Grade 9','Grade 9':'Grade 10',
-  'Grade 10':'Grade 11','Grade 11':'Grade 12','Grade 12':null
-};
+// ══════════════════════════════════════════════
+// PROMOTION FEATURE
+// ══════════════════════════════════════════════
+const GRADES=['Grade 1','Grade 2','Grade 3','Grade 4','Grade 5','Grade 6','Grade 7','Grade 8','Grade 9','Grade 10','Grade 11','Grade 12'];
+const NEXT_GRADE={'Grade 1':'Grade 2','Grade 2':'Grade 3','Grade 3':'Grade 4','Grade 4':'Grade 5','Grade 5':'Grade 6','Grade 6':'Grade 7','Grade 7':'Grade 8','Grade 8':'Grade 9','Grade 9':'Grade 10','Grade 10':'Grade 11','Grade 11':'Grade 12','Grade 12':null};
 
 function updatePromoQuickStats(){
-  const container = el('promoQuickStats'); if(!container) return;
-  container.innerHTML = GRADES.map(g=>{
-    const count = allStudents.filter(s=>s.grade===g).length;
-    const next = NEXT_GRADE[g];
-    const label = next ? `→ ${next}` : '→ Graduate';
-    const color = count===0 ? 'var(--text3)' : 'var(--text)';
-    return `<div style="border:1.5px solid var(--border);border-radius:var(--r2);padding:10px 12px;cursor:pointer;transition:all .15s"
+  const container=el('promoQuickStats');if(!container)return;
+  container.innerHTML=GRADES.map(g=>{
+    const count=allStudents.filter(s=>s.grade===g).length,next=NEXT_GRADE[g],color=count===0?'var(--text3)':'var(--text)';
+    return`<div style="border:1.5px solid var(--border);border-radius:var(--r2);padding:10px 12px;cursor:pointer;transition:all .15s"
       onmouseover="this.style.borderColor='var(--accent)';this.style.background='var(--alight)'"
       onmouseout="this.style.borderColor='var(--border)';this.style.background=''"
       onclick="openPromoModal('${g}')">
       <div style="font-size:11px;font-weight:700;color:var(--text2)">${g}</div>
       <div style="font-size:22px;font-weight:800;color:${color};margin:2px 0">${count}</div>
-      <div style="font-size:10.5px;color:var(--text3)">${label}</div>
+      <div style="font-size:10.5px;color:var(--text3)">${next?'→ '+next:'→ Graduate'}</div>
     </div>`;
   }).join('');
 }
 
-window.openPromoModal = function(preselect){
-  promoSelectedGrade = preselect || null;
-  promoDecisions = {};
-  goPromoStep1();
-  el('promoModal').classList.add('open');
+window.openPromoModal=function(preselect){
+  promoSelectedGrade=preselect||null;promoDecisions={};
+  goPromoStep1();el('promoModal').classList.add('open');
 };
-
-window.closePromoModal = function(){
-  el('promoModal').classList.remove('open');
-  promoSelectedGrade = null; promoDecisions = {};
-};
+window.closePromoModal=function(){el('promoModal').classList.remove('open');promoSelectedGrade=null;promoDecisions={};};
 
 function goPromoStep1(){
-  el('promoStep1').style.display='';
-  el('promoStep2').style.display='none';
-  el('promoStep3').style.display='none';
-  el('promoNextBtn').style.display='';
-  el('promoConfirmBtn').style.display='none';
-  el('promoBackBtn').style.display='none';
-
-  // Render grade cards
-  const grid = el('promoGradeGrid');
-  grid.innerHTML = GRADES.map(g=>{
-    const students = allStudents.filter(s=>s.grade===g);
-    const cnt = students.length;
-    const next = NEXT_GRADE[g];
-    const isG9 = g === 'Grade 9';
-    const isSel = g === promoSelectedGrade;
-    return `<div class="promo-grade-card${isSel?' selected':''}" onclick="selectPromoGrade('${g}')">
+  el('promoStep1').style.display='';el('promoStep2').style.display='none';el('promoStep3').style.display='none';
+  el('promoNextBtn').style.display='';el('promoConfirmBtn').style.display='none';el('promoBackBtn').style.display='none';
+  el('promoGradeGrid').innerHTML=GRADES.map(g=>{
+    const cnt=allStudents.filter(s=>s.grade===g).length,next=NEXT_GRADE[g],isSel=g===promoSelectedGrade;
+    return`<div class="promo-grade-card${isSel?' selected':''}" onclick="selectPromoGrade('${g}')">
       ${isSel?'<div class="promo-badge">✓</div>':''}
-      <div class="pgc-label">${g}</div>
-      <div class="pgc-count">${cnt}</div>
-      <div class="pgc-sub">${isG9?'Graduate / Retain':'→ '+(next||'')}</div>
+      <div class="pgc-label">${g}</div><div class="pgc-count">${cnt}</div>
+      <div class="pgc-sub">${g==='Grade 12'?'Graduate / Retain':'→ '+(next||'')}</div>
     </div>`;
   }).join('');
-
-  el('promoNextBtn').disabled = !promoSelectedGrade;
+  el('promoNextBtn').disabled=!promoSelectedGrade;
 }
 
-window.selectPromoGrade = function(grade){
-  promoSelectedGrade = grade;
-  // Re-render cards to show selection
+window.selectPromoGrade=function(grade){
+  promoSelectedGrade=grade;
   document.querySelectorAll('.promo-grade-card').forEach((card,i)=>{
-    const g = GRADES[i];
-    card.classList.toggle('selected', g===grade);
-    let badge = card.querySelector('.promo-badge');
-    if(g===grade && !badge){ badge=document.createElement('div'); badge.className='promo-badge'; badge.textContent='✓'; card.prepend(badge); }
-    else if(g!==grade && badge){ badge.remove(); }
+    const g=GRADES[i];card.classList.toggle('selected',g===grade);
+    let badge=card.querySelector('.promo-badge');
+    if(g===grade&&!badge){badge=document.createElement('div');badge.className='promo-badge';badge.textContent='✓';card.prepend(badge);}
+    else if(g!==grade&&badge)badge.remove();
   });
-  el('promoNextBtn').disabled = false;
+  el('promoNextBtn').disabled=false;
 };
 
 function goPromoStep2(){
-  if(!promoSelectedGrade) return;
-  promoGradeStudents = allStudents.filter(s=>s.grade===promoSelectedGrade);
-  // Default decisions
-  promoDecisions = {};
-  const isG9 = promoSelectedGrade === 'Grade 12';
-  promoGradeStudents.forEach(s=>{
-    promoDecisions[s.id] = isG9 ? 'graduate' : 'promote';
-  });
-
-  el('promoStep1').style.display='none';
-  el('promoStep2').style.display='';
-  el('promoStep3').style.display='none';
-  el('promoNextBtn').style.display='none';
-  el('promoConfirmBtn').style.display='';
-  el('promoBackBtn').style.display='';
-
-  el('promoGradeLabel').textContent = promoSelectedGrade + (NEXT_GRADE[promoSelectedGrade]?' → '+NEXT_GRADE[promoSelectedGrade]:' → Graduate');
-  el('promoCountLabel').textContent = promoGradeStudents.length + ' students';
-  el('promoTargetYear').value = (new Date().getFullYear());
-  el('promoSearch').value = '';
-
-  renderPromoList();
-  updatePromoSummary();
+  if(!promoSelectedGrade)return;
+  promoGradeStudents=allStudents.filter(s=>s.grade===promoSelectedGrade);
+  promoDecisions={};
+  const isG12=promoSelectedGrade==='Grade 12';
+  promoGradeStudents.forEach(s=>{promoDecisions[s.id]=isG12?'graduate':'promote';});
+  el('promoStep1').style.display='none';el('promoStep2').style.display='';el('promoStep3').style.display='none';
+  el('promoNextBtn').style.display='none';el('promoConfirmBtn').style.display='';el('promoBackBtn').style.display='';
+  el('promoGradeLabel').textContent=promoSelectedGrade+(NEXT_GRADE[promoSelectedGrade]?' → '+NEXT_GRADE[promoSelectedGrade]:' → Graduate');
+  el('promoCountLabel').textContent=promoGradeStudents.length+' students';
+  el('promoTargetYear').value=new Date().getFullYear();
+  el('promoSearch').value='';
+  renderPromoList();updatePromoSummary();
 }
 
-window.renderPromoList = function(){
-  const q = (el('promoSearch')?.value||'').toLowerCase();
-  const filtered = promoGradeStudents.filter(s=>!q||s.name.toLowerCase().includes(q)||(s.admissionNumber||'').toLowerCase().includes(q));
-  const isG9 = promoSelectedGrade === 'Grade 12';
-  const nextGrade = NEXT_GRADE[promoSelectedGrade];
-
-  el('promoStudentList').innerHTML = filtered.length ? filtered.map(s=>{
-    const decision = promoDecisions[s.id] || (isG9?'graduate':'promote');
-    const checked = decision !== 'skip';
-    return `<div class="promo-student-row">
+window.renderPromoList=function(){
+  const q=(el('promoSearch')?.value||'').toLowerCase();
+  const filtered=promoGradeStudents.filter(s=>!q||s.name.toLowerCase().includes(q)||(s.admissionNumber||'').toLowerCase().includes(q));
+  const isG12=promoSelectedGrade==='Grade 12',next=NEXT_GRADE[promoSelectedGrade];
+  el('promoStudentList').innerHTML=filtered.length?filtered.map(s=>{
+    const decision=promoDecisions[s.id]||(isG12?'graduate':'promote'),checked=decision!=='skip';
+    return`<div class="promo-student-row">
       <input type="checkbox" ${checked?'checked':''} onchange="togglePromoStudent('${s.id}',this.checked)">
-      <div class="psr-info">
-        <div class="psr-name">${s.name}</div>
-        <div class="psr-meta">${s.admissionNumber} · ${s.stream||'No stream'}</div>
-      </div>
+      <div class="psr-info"><div class="psr-name">${s.name}</div><div class="psr-meta">${s.admissionNumber} · ${s.stream||'No stream'}</div></div>
       <div class="psr-action">
         <select onchange="setPromoDecision('${s.id}',this.value)" ${!checked?'disabled':''}>
-          ${!isG9?`<option value="promote" ${decision==='promote'?'selected':''}>✅ Promote to ${nextGrade}</option>`:''}
+          ${!isG12?`<option value="promote" ${decision==='promote'?'selected':''}>✅ Promote to ${next}</option>`:''}
           <option value="retain" ${decision==='retain'?'selected':''}>🔁 Retain (repeat)</option>
-          ${isG9?`<option value="graduate" ${decision==='graduate'?'selected':''}>🎓 Graduate</option>`:''}
+          ${isG12?`<option value="graduate" ${decision==='graduate'?'selected':''}>🎓 Graduate</option>`:''}
         </select>
       </div>
     </div>`;
-  }).join('') : `<div style="padding:20px;text-align:center;color:var(--text3);font-size:13px">No students match your search</div>`;
+  }).join(''):`<div style="padding:20px;text-align:center;color:var(--text3);font-size:13px">No students match your search</div>`;
 };
 
-window.togglePromoStudent = function(id, checked){
-  if(!checked){
-    promoDecisions[id] = 'skip';
-  } else {
-    const isG9 = promoSelectedGrade === 'Grade 12';
-    promoDecisions[id] = isG9 ? 'graduate' : 'promote';
-  }
-  // Update the select in the row
-  const row = document.querySelector(`input[onchange*="${id}"]`)?.closest('.promo-student-row');
-  if(row){ const sel = row.querySelector('select'); if(sel){ sel.disabled=!checked; sel.value=promoDecisions[id]||'promote'; } }
+window.togglePromoStudent=function(id,checked){
+  if(!checked){promoDecisions[id]='skip';}
+  else{promoDecisions[id]=promoSelectedGrade==='Grade 12'?'graduate':'promote';}
+  const row=document.querySelector(`input[onchange*="${id}"]`)?.closest('.promo-student-row');
+  if(row){const sel=row.querySelector('select');if(sel){sel.disabled=!checked;sel.value=promoDecisions[id]||'promote';}}
   updatePromoSummary();
 };
-
-window.setPromoDecision = function(id, decision){
-  promoDecisions[id] = decision;
-  updatePromoSummary();
-};
-
-window.promoSelectAll = function(){
-  const isG9 = promoSelectedGrade === 'Grade 12';
-  promoGradeStudents.forEach(s=>{ promoDecisions[s.id] = isG9 ? 'graduate' : 'promote'; });
-  renderPromoList(); updatePromoSummary();
-};
-
-window.promoDeselectAll = function(){
-  promoGradeStudents.forEach(s=>{ promoDecisions[s.id]='skip'; });
-  renderPromoList(); updatePromoSummary();
-};
+window.setPromoDecision=function(id,decision){promoDecisions[id]=decision;updatePromoSummary();};
+window.promoSelectAll=function(){const isG12=promoSelectedGrade==='Grade 12';promoGradeStudents.forEach(s=>{promoDecisions[s.id]=isG12?'graduate':'promote';});renderPromoList();updatePromoSummary();};
+window.promoDeselectAll=function(){promoGradeStudents.forEach(s=>{promoDecisions[s.id]='skip';});renderPromoList();updatePromoSummary();};
 
 function updatePromoSummary(){
-  const promoted = promoGradeStudents.filter(s=>promoDecisions[s.id]==='promote').length;
-  const retained = promoGradeStudents.filter(s=>promoDecisions[s.id]==='retain').length;
-  const graduated = promoGradeStudents.filter(s=>promoDecisions[s.id]==='graduate').length;
-  el('psSumPromoted').textContent = promoted;
-  el('psSumRetained').textContent = retained;
-  el('psSumGraduated').textContent = graduated;
-  // Disable confirm if nothing to do
-  el('promoConfirmBtn').disabled = (promoted+retained+graduated)===0;
+  const promoted=promoGradeStudents.filter(s=>promoDecisions[s.id]==='promote').length;
+  const retained=promoGradeStudents.filter(s=>promoDecisions[s.id]==='retain').length;
+  const graduated=promoGradeStudents.filter(s=>promoDecisions[s.id]==='graduate').length;
+  el('psSumPromoted').textContent=promoted;el('psSumRetained').textContent=retained;el('psSumGraduated').textContent=graduated;
+  el('promoConfirmBtn').disabled=(promoted+retained+graduated)===0;
 }
 
-window.applyPromotions = async function(){
-  const targetYear = el('promoTargetYear').value;
-  if(!targetYear||Number(targetYear)<2020){ toast('Please enter a valid target year','err'); return; }
-  const toProcess = promoGradeStudents.filter(s=>promoDecisions[s.id]&&promoDecisions[s.id]!=='skip');
-  if(!toProcess.length){ toast('No students selected','err'); return; }
-
-  // Show step 3
-  el('promoStep2').style.display='none';
-  el('promoStep3').style.display='';
-  el('promoBackBtn').style.display='none';
-  el('promoConfirmBtn').style.display='none';
+window.applyPromotions=async function(){
+  const targetYear=el('promoTargetYear').value;
+  if(!targetYear||Number(targetYear)<2020){toast('Please enter a valid target year','err');return;}
+  const toProcess=promoGradeStudents.filter(s=>promoDecisions[s.id]&&promoDecisions[s.id]!=='skip');
+  if(!toProcess.length){toast('No students selected','err');return;}
+  el('promoStep2').style.display='none';el('promoStep3').style.display='';
+  el('promoBackBtn').style.display='none';el('promoConfirmBtn').style.display='none';
   el('promoFooter').querySelector('.btn-outline').disabled=true;
-
-  let done=0;
-  const logEntries=[];
-  const nextGrade=NEXT_GRADE[promoSelectedGrade];
-  const batch=db.batch();
-
+  let done=0;const logEntries=[],nextGrade=NEXT_GRADE[promoSelectedGrade],batch=db.batch();
   for(const s of toProcess){
     const decision=promoDecisions[s.id];
-    let newGrade=s.grade; let newYear=s.year;
-    if(decision==='promote'){ newGrade=nextGrade; newYear=targetYear; }
-    else if(decision==='retain'){ newGrade=s.grade; newYear=targetYear; }
-    else if(decision==='graduate'){
-      // Mark graduated but keep the record; admins can delete manually
-      batch.update(db.collection('students').doc(s.id),{
-        grade:s.grade, year:targetYear,
-        graduated:true, graduatedAt:firebase.firestore.FieldValue.serverTimestamp(),
-        updatedAt:firebase.firestore.FieldValue.serverTimestamp()
-      });
-      logEntries.push({name:s.name,adm:s.admissionNumber,action:'graduated',from:s.grade,to:'(Graduated)',year:targetYear});
-      done++;
-      el('promoProgressBar').style.width=Math.round((done/toProcess.length)*100)+'%';
-      el('promoProgressLabel').textContent=`${done} / ${toProcess.length} students updated`;
-      continue;
-    }
-    batch.update(db.collection('students').doc(s.id),{
-      grade:newGrade, year:targetYear,
-      updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
-      ...(decision==='retain'?{retained:true}:{retained:false})
-    });
-    logEntries.push({name:s.name,adm:s.admissionNumber,action:decision,from:s.grade,to:newGrade,year:targetYear});
+    if(decision==='promote'){batch.update(db.collection('students').doc(s.id),{grade:nextGrade,year:targetYear,retained:false,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});logEntries.push({name:s.name,adm:s.admissionNumber,action:'promote',from:s.grade,to:nextGrade,year:targetYear});}
+    else if(decision==='retain'){batch.update(db.collection('students').doc(s.id),{grade:s.grade,year:targetYear,retained:true,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});logEntries.push({name:s.name,adm:s.admissionNumber,action:'retain',from:s.grade,to:s.grade,year:targetYear});}
+    else if(decision==='graduate'){batch.update(db.collection('students').doc(s.id),{grade:s.grade,year:targetYear,graduated:true,graduatedAt:firebase.firestore.FieldValue.serverTimestamp(),updatedAt:firebase.firestore.FieldValue.serverTimestamp()});logEntries.push({name:s.name,adm:s.admissionNumber,action:'graduate',from:s.grade,to:'(Graduated)',year:targetYear});}
     done++;
     el('promoProgressBar').style.width=Math.round((done/toProcess.length)*100)+'%';
     el('promoProgressLabel').textContent=`${done} / ${toProcess.length} students updated`;
   }
-
   try{
     await batch.commit();
-
-    // Persist log to Firestore
-    const logDoc={
-      schoolId:_schoolId,
-      grade:promoSelectedGrade,
-      targetYear,
-      timestamp:firebase.firestore.FieldValue.serverTimestamp(),
-      entries:logEntries,
-      promotedCount:logEntries.filter(e=>e.action==='promote').length,
-      retainedCount:logEntries.filter(e=>e.action==='retain').length,
-      graduatedCount:logEntries.filter(e=>e.action==='graduate').length,
-    };
-    await db.collection('promotionLogs').add(logDoc);
-
-    // Update local state
-    toProcess.forEach(s=>{
-      const decision=promoDecisions[s.id];
-      const idx=allStudents.findIndex(x=>x.id===s.id);
-      if(idx>-1){
-        if(decision==='promote') allStudents[idx]={...allStudents[idx],grade:nextGrade,year:targetYear,retained:false};
-        else if(decision==='retain') allStudents[idx]={...allStudents[idx],year:targetYear,retained:true};
-        else if(decision==='graduate') allStudents[idx]={...allStudents[idx],year:targetYear,graduated:true};
-      }
-    });
-    saveToCache(allStudents); buildStreamList(); updateStats(); filterTable(); updatePromoQuickStats();
-
-    const promoted=logEntries.filter(e=>e.action==='promote').length;
-    const retained=logEntries.filter(e=>e.action==='retain').length;
-    const graduated=logEntries.filter(e=>e.action==='graduate').length;
-    toast(`Done! ${promoted} promoted, ${retained} retained, ${graduated} graduated`,'ok');
+    await db.collection('promotionLogs').add({schoolId:_schoolId,grade:promoSelectedGrade,targetYear,timestamp:firebase.firestore.FieldValue.serverTimestamp(),entries:logEntries,promotedCount:logEntries.filter(e=>e.action==='promote').length,retainedCount:logEntries.filter(e=>e.action==='retain').length,graduatedCount:logEntries.filter(e=>e.action==='graduate').length});
+    toProcess.forEach(s=>{const decision=promoDecisions[s.id],idx=allStudents.findIndex(x=>x.id===s.id);if(idx>-1){if(decision==='promote')allStudents[idx]={...allStudents[idx],grade:nextGrade,year:targetYear,retained:false};else if(decision==='retain')allStudents[idx]={...allStudents[idx],year:targetYear,retained:true};else if(decision==='graduate')allStudents[idx]={...allStudents[idx],year:targetYear,graduated:true};}});
+    saveToCache(allStudents);buildStreamList();updateStats();filterTable();updatePromoQuickStats();
+    const p=logEntries.filter(e=>e.action==='promote').length,r=logEntries.filter(e=>e.action==='retain').length,g=logEntries.filter(e=>e.action==='graduate').length;
+    toast(`Done! ${p} promoted, ${r} retained, ${g} graduated`);
     closePromoModal();
   }catch(e){
     toast('Error applying promotions: '+e.message,'err');
-    el('promoStep3').style.display='none';
-    el('promoStep2').style.display='';
-    el('promoConfirmBtn').style.display='';
-    el('promoBackBtn').style.display='';
+    el('promoStep3').style.display='none';el('promoStep2').style.display='';
+    el('promoConfirmBtn').style.display='';el('promoBackBtn').style.display='';
     el('promoFooter').querySelector('.btn-outline').disabled=false;
   }
 };
 
-// ── Promotion History ──
-window.openHistoryModal = async function(){
+window.openHistoryModal=async function(){
   el('historyModal').classList.add('open');
   el('historyBody').innerHTML='<div style="text-align:center;padding:30px"><div class="spin" style="margin:0 auto"></div></div>';
   try{
-    const snap=await db.collection('promotionLogs')
-      .where('schoolId','==',_schoolId)
-      .orderBy('timestamp','desc')
-      .limit(50)
-      .get();
-    if(snap.empty){ el('historyBody').innerHTML='<div class="empty"><div class="ei">📋</div><p>No promotion records yet</p></div>'; return; }
+    const snap=await db.collection('promotionLogs').where('schoolId','==',_schoolId).orderBy('timestamp','desc').limit(50).get();
+    if(snap.empty){el('historyBody').innerHTML='<div class="empty"><div class="ei">📋</div><p>No promotion records yet</p></div>';return;}
     let html='';
     snap.forEach(d=>{
-      const log=d.data();
-      const ts=log.timestamp?.toDate?.();
-      const dateStr=ts?ts.toLocaleDateString('en-KE',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):'Unknown date';
+      const log=d.data(),ts=log.timestamp?.toDate?.(),dateStr=ts?ts.toLocaleDateString('en-KE',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):'Unknown date';
       html+=`<div style="padding:12px 0;border-bottom:1px solid var(--border)">
         <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <div>
-            <strong style="font-size:13px">${log.grade}</strong>
-            <span style="font-size:11px;color:var(--text3);margin-left:8px">Year ${log.targetYear}</span>
-          </div>
+          <div><strong style="font-size:13px">${log.grade}</strong><span style="font-size:11px;color:var(--text3);margin-left:8px">Year ${log.targetYear}</span></div>
           <span style="font-size:11px;color:var(--text3)">${dateStr}</span>
         </div>
         <div style="display:flex;gap:12px;margin-top:6px;font-size:12px">
@@ -1263,26 +1102,15 @@ window.openHistoryModal = async function(){
           <span style="color:var(--amber)">🔁 ${log.retainedCount||0} retained</span>
           <span style="color:var(--accent)">🎓 ${log.graduatedCount||0} graduated</span>
         </div>
-        <details style="margin-top:8px">
-          <summary style="font-size:11.5px;color:var(--text3);cursor:pointer">View details (${(log.entries||[]).length} students)</summary>
-          <div style="margin-top:8px;font-size:11.5px;color:var(--text2);line-height:1.9">
-            ${(log.entries||[]).map(e=>`
-              <div style="display:flex;gap:6px;align-items:center">
-                <span style="color:${e.action==='promote'?'var(--green)':e.action==='retain'?'var(--amber)':'var(--accent)'}">${e.action==='promote'?'✅':e.action==='retain'?'🔁':'🎓'}</span>
-                <span>${e.name}</span>
-                <span style="color:var(--text3)">${e.adm}</span>
-                <span style="color:var(--text3)">→ ${e.to}</span>
-              </div>`).join('')}
-          </div>
-        </details>
+        <details style="margin-top:8px"><summary style="font-size:11.5px;color:var(--text3);cursor:pointer">View details (${(log.entries||[]).length} students)</summary>
+        <div style="margin-top:8px;font-size:11.5px;color:var(--text2);line-height:1.9">
+          ${(log.entries||[]).map(e=>`<div style="display:flex;gap:6px;align-items:center"><span>${e.action==='promote'?'✅':e.action==='retain'?'🔁':'🎓'}</span><span>${e.name}</span><span style="color:var(--text3)">${e.adm}</span><span style="color:var(--text3)">→ ${e.to}</span></div>`).join('')}
+        </div></details>
       </div>`;
     });
     el('historyBody').innerHTML=html;
-  }catch(e){
-    el('historyBody').innerHTML=`<div class="empty"><div class="ei">❌</div><p>${e.message}</p></div>`;
-  }
+  }catch(e){el('historyBody').innerHTML=`<div class="empty"><div class="ei">❌</div><p>${e.message}</p></div>`;}
 };
-
 </script>
 </body>
 </html>
