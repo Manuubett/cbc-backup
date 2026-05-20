@@ -663,19 +663,23 @@ function buildTermAvgResults(){
   return averaged;
 }
 
-function getSubjectScore(rec,sub){
-  if(!rec) return null;
-  if(sub.parts){
-    const tot=rec[`${sub.id}_tot`]; if(tot!==undefined&&tot!==null&&tot>0) return tot;
-    const partSum=sub.parts.reduce((a,p)=>{ const v=rec[`${sub.id}_${p.id}`]; return a+(v!==undefined&&v!==null?Number(v):0); },0);
-    return partSum>0?partSum:null;
-  }
-  const sc=rec[`${sub.id}_score`]; return(sc!==undefined&&sc!==null&&sc>0)?sc:null;
+if(typeof getSubjectScore!=='function'){
+  window.getSubjectScore=function(rec,sub){
+    if(!rec) return null;
+    if(sub.parts){
+      const tot=rec[`${sub.id}_tot`]; if(tot!==undefined&&tot!==null&&tot>0) return tot;
+      const partSum=sub.parts.reduce((a,p)=>{ const v=rec[`${sub.id}_${p.id}`]; return a+(v!==undefined&&v!==null?Number(v):0); },0);
+      return partSum>0?partSum:null;
+    }
+    const sc=rec[`${sub.id}_score`]; return(sc!==undefined&&sc!==null&&sc>0)?sc:null;
+  };
 }
-function getSubjectOof(rec,sub){
-  if(!rec) return DEFAULT_OOF;
-  if(sub.parts) return sub.parts.reduce((a,p)=>a+(rec[`oof_${sub.id}_${p.id}`]||DEFAULT_OOF),0);
-  return rec[`oof_${sub.id}`]||DEFAULT_OOF;
+if(typeof getSubjectOof!=='function'){
+  window.getSubjectOof=function(rec,sub){
+    if(!rec) return DEFAULT_OOF;
+    if(sub.parts) return sub.parts.reduce((a,p)=>a+(rec[`oof_${sub.id}_${p.id}`]||DEFAULT_OOF),0);
+    return rec[`oof_${sub.id}`]||DEFAULT_OOF;
+  };
 }
 
 // ══════════════════════════════════════════════
