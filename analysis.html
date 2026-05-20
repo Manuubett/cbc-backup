@@ -262,7 +262,7 @@ body.dark .level-row .bar-wrap{background:#1a2030}
    <button class="cat-tab" id="catBtn_Exam 1" onclick="selectCat('Exam 1')">Exam 1</button>
 <button class="cat-tab" id="catBtn_Exam 2" onclick="selectCat('Exam 2')">Exam 2</button>
 <button class="cat-tab" id="catBtn_Exam 3" onclick="selectCat('Exam 3')">Exam 3</button>
-<button class="cat-tab" id="catBtn_Term Avg" onclick="selectCat('Term Avg')" title="Average of all 3 Exams">📊 Term Avg</button>
+<button class="cat-tab" id="catBtn_Term Avg" onclick="selectCat('Term Avg')" title="Average of all 3 Exams">📊 Term Avg</button>   </div> 
 
   <span class="tb-lbl">Year</span>
   <input type="number" class="fsel" id="selYear" value="2026" min="2020" max="2040" style="width:68px" onchange="loadAnalysis()">
@@ -333,7 +333,7 @@ body.dark .level-row .bar-wrap{background:#1a2030}
   <a class="_subbar-renew" href="/renew?from=analysis-bar">🔄 Renew</a>
 </div>
 <div id="_renewalBanner">🎉 Renewal detected — access restored!</div>
-
+<script src="subjects.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
@@ -485,50 +485,12 @@ function _showRenewalBanner(){ if(_renewalShown)return;_renewalShown=true;const 
 // ══════════════════════════════════════════════
 // SUBJECT CONFIG (mirrors marksheet.html)
 // ══════════════════════════════════════════════
-const SUBS_BY_GROUP={
-  '1-3':[
-    {id:'math',label:'Mathematical Activities',icon:'🔢'},{id:'eng',label:'English',icon:'📖'},
-    {id:'kis',label:'Kiswahili',icon:'🗣️'},{id:'int',label:'Integrated Activities',icon:'🌈'},
-    {id:'crt',label:'Creative Activities',icon:'🎨'},
-  ],
-  '4-6':[
-    {id:'math',label:'Mathematics',icon:'🔢'},
-    {id:'eng',label:'English',icon:'📖',parts:[{id:'lang',label:'Language'},{id:'comp',label:'Composition'}]},
-    {id:'kis',label:'Kiswahili',icon:'🗣️',parts:[{id:'lugha',label:'Lugha'},{id:'insha',label:'Insha'}]},
-    {id:'sci',label:'Science and Technology',icon:'🔬'},{id:'re',label:'CRE',icon:'✝️'},
-    {id:'soc',label:'Social Studies',icon:'🌍'},{id:'arts',label:'Creative Art and Sport',icon:'🎨'},
-    {id:'agri',label:'Agriculture and Nutrition',icon:'🌱'},
-  ],
-  '7-9':[
-    {id:'eng',label:'English',icon:'📖',parts:[{id:'lang',label:'Language'},{id:'comp',label:'Composition'}]},
-    {id:'kis',label:'Kiswahili/KSL',icon:'🗣️',parts:[{id:'lugha',label:'Lugha'},{id:'insha',label:'Insha'}]},
-    {id:'math',label:'Mathematics',icon:'🔢'},{id:'sci',label:'Integrated Science',icon:'🔬'},
-    {id:'soc',label:'Social Studies',icon:'🌍'},{id:'re',label:'Religious Ed.',icon:'✝️'},
-    {id:'arts',label:'Creative Arts & Sports',icon:'🎨'},{id:'pret',label:'Pre-Technical',icon:'🔧'},
-    {id:'agri',label:'Agriculture & Nutrition',icon:'🌱'},
-  ],
-  // Grades 10-14: same as 7-9 until subjects provided
-  '10-14':[
-    {id:'eng',label:'English',icon:'📖',parts:[{id:'lang',label:'Language'},{id:'comp',label:'Composition'}]},
-    {id:'kis',label:'Kiswahili/KSL',icon:'🗣️',parts:[{id:'lugha',label:'Lugha'},{id:'insha',label:'Insha'}]},
-    {id:'math',label:'Mathematics',icon:'🔢'},{id:'sci',label:'Integrated Science',icon:'🔬'},
-    {id:'soc',label:'Social Studies',icon:'🌍'},{id:'re',label:'Religious Ed.',icon:'✝️'},
-    {id:'arts',label:'Creative Arts & Sports',icon:'🎨'},{id:'pret',label:'Pre-Technical',icon:'🔧'},
-    {id:'agri',label:'Agriculture & Nutrition',icon:'🌱'},
-  ],
-};
-
-function getSubsForGrade(grade){
-  const n=parseInt((grade||'').replace(/\D/g,''),10);
-  if(n>=1&&n<=3)  return SUBS_BY_GROUP['1-3'];
-  if(n>=4&&n<=6)  return SUBS_BY_GROUP['4-6'];
-  if(n>=7&&n<=9)  return SUBS_BY_GROUP['7-9'];
-  if(n>=10&&n<=12)return SUBS_BY_GROUP['10-14'];
-  return SUBS_BY_GROUP['7-9'];
+const DEFAULT_OOF = 100;
+function getSubsForGrade(grade) {
+  return typeof getSubs === 'function' ? getSubs(grade) : [];
 }
-let SUBS=SUBS_BY_GROUP['7-9'];
+let SUBS = getSubsForGrade('Grade 7');
 
-const DEFAULT_OOF=100;
 const LEVELS=[
   {l:'EE1',p:8,c:'ee1',min:90},{l:'EE2',p:7,c:'ee2',min:75},
   {l:'ME1',p:6,c:'me1',min:58},{l:'ME2',p:5,c:'me2',min:41},
