@@ -319,19 +319,41 @@ if(typeof getSubs==='undefined'){
   window.getSubs=function(g){const n=parseInt((g||'').replace(/\D/g,''),10)||0;if(n>=1&&n<=3)return SL;if(n>=4&&n<=6)return SU;if(n>=7&&n<=9)return SJ;if(n>=10&&n<=12)return SS;return SJ;};
 }
 if(typeof getAllSeniorSubs==='undefined'){
-  window.getAllSeniorSubs=function(){return getSubs('Grade 10');};
+  window.getAllSeniorSubs=function(){
+    return[
+      {id:'eng',label:'English',icon:'📖',gc:'g-eng',sc:'s-eng',parts:[{id:'lang',label:'Language'},{id:'comp',label:'Composition'}]},
+      {id:'kis',label:'Kiswahili/KSL',icon:'🗣️',gc:'g-kis',sc:'s-kis',parts:[{id:'lugha',label:'Lugha'},{id:'insha',label:'Insha'}]},
+      {id:'math',label:'Mathematics',icon:'🔢',gc:'g-math',sc:'s-math'},
+      {id:'phy',label:'Physics',icon:'⚛️',gc:'g-sci',sc:'s-sci'},
+      {id:'chem',label:'Chemistry',icon:'🧪',gc:'g-sci',sc:'s-sci'},
+      {id:'bio',label:'Biology',icon:'🧬',gc:'g-sci',sc:'s-sci'},
+      {id:'hist',label:'History & Citizenship',icon:'🏛️',gc:'g-soc',sc:'s-soc'},
+      {id:'geo',label:'Geography',icon:'🌍',gc:'g-soc',sc:'s-soc'},
+      {id:'biz',label:'Business Studies',icon:'💼',gc:'g-soc',sc:'s-soc'},
+      {id:'cre',label:'CRE',icon:'✝️',gc:'g-re',sc:'s-re'},
+      {id:'ire',label:'IRE',icon:'☪️',gc:'g-re',sc:'s-re'},
+      {id:'music',label:'Music and Dance',icon:'🎵',gc:'g-arts',sc:'s-arts'},
+      {id:'farts',label:'Fine Arts',icon:'🎨',gc:'g-arts',sc:'s-arts'},
+      {id:'comp',label:'Computer Studies',icon:'🖥️',gc:'g-pret',sc:'s-pret'},
+      {id:'agri',label:'Agriculture',icon:'🌱',gc:'g-agri',sc:'s-agri'},
+      {id:'home',label:'Home Science',icon:'🏠',gc:'g-agri',sc:'s-agri'},
+      {id:'elec',label:'Electricity',icon:'⚡',gc:'g-pret',sc:'s-pret'},
+      {id:'bldg',label:'Building & Construction',icon:'🏗️',gc:'g-pret',sc:'s-pret'},
+      {id:'draw',label:'Drawing & Design',icon:'📏',gc:'g-pret',sc:'s-pret'},
+    ];
+  };
 }
 if(typeof getSeniorClassSubs==='undefined'){
   window.getSeniorClassSubs=function(arr){
     const seen=new Set();arr.forEach(s=>(s.subjects||[]).forEach(id=>seen.add(id)));
     if(!seen.size)return getSubs('Grade 10');
-    return getSubs('Grade 10').filter(s=>seen.has(s.id));
+    return getAllSeniorSubs().filter(s=>seen.has(s.id));
   };
 }
 if(typeof getStudentSubs==='undefined'){
   window.getStudentSubs=function(ids){
     if(!Array.isArray(ids)||!ids.length)return getSubs('Grade 10');
-    return getSubs('Grade 10').filter(s=>ids.includes(s.id));
+    return getAllSeniorSubs().filter(s=>ids.includes(s.id));
   };
 }
 
