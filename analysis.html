@@ -357,6 +357,21 @@ let _analysisSchoolId=null, _analysisRole=null;
 // ══════════════════════════════════════════════
 // CAT / EXAM SYSTEM
 // ══════════════════════════════════════════════
+if(typeof isSeniorGrade!=='function'){
+  window.isSeniorGrade=function(g){
+    const n=parseInt((g||'').replace(/\D/g,''),10)||0;
+    return n>=10&&n<=12;
+  };
+}
+if(typeof getSeniorClassSubs!=='function'){
+  window.getSeniorClassSubs=function(arr){
+    const seen=new Set();
+    arr.forEach(s=>(Array.isArray(s.subjects)?s.subjects:[]).forEach(id=>seen.add(id)));
+    if(!seen.size)return getSubsForGrade('Grade 10');
+    const allSenior=typeof getAllSeniorSubs==='function'?getAllSeniorSubs():getSubsForGrade('Grade 10');
+    return allSenior.filter(s=>seen.has(s.id));
+  };
+}
 let currentCat='Exam 1';
 
 function gradeUsesCats(gradeStr){
@@ -581,6 +596,12 @@ window.loadAnalysis=async function(){
     stuSnap.forEach(d=>allStudents.push({id:d.id,...d.data()}));
     if(hasStream) allStudents=allStudents.filter(s=>(s.stream||'').trim()===stream);
     allStudents.sort((a,b)=>(a.name||'').localeCompare(b.name||''));
+    // Rebuild SUBS from actual student subjects for senior grades
+if(isSeniorGrade(grade)){
+  SUBS=getSeniorClassSubs(allStudents);
+}else{
+  SUBS=getSubsForGrade(grade);
+}
 
     if(!usesCats){
       // ── Legacy mode (grades 1-6): single result per student per term ──
