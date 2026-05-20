@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>School Settings | CBE System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Familjen+Grotesk:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#e8ecf4;--surface:#fff;--surf2:#f3f5fa;--border:#dce1ec;
+  --text:#131c2e;--text2:#4f6080;--text3:#9aaabb;
+  --accent:#1a56db;--ah:#1447c0;--alight:#eff4ff;
+  --green:#059669;--green-bg:#d1fae5;--green-tx:#065f46;
+  --red:#dc2626;--red-bg:#fee2e2;
+  --sh:0 1px 3px rgba(0,0,0,.06);--sh2:0 8px 28px rgba(0,0,0,.12);
+  --r:10px;--r2:6px;
+}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);font-size:13px;min-height:100vh}
+
+/* ── LOADING ── */
+#pageLoader{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;z-index:900}
+#pageLoader .spin{width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:sp .65s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+#pageLoader p{font-size:12px;color:var(--text3);font-weight:600}
+
+/* ── HEADER ── */
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:var(--sh)}
+.logo{display:flex;align-items:center;gap:9px}
+.lm{width:30px;height:30px;background:var(--accent);border-radius:7px;display:grid;place-items:center;color:#fff;font-size:15px}
+.lt{font-family:'Familjen Grotesk',sans-serif;font-size:14px;font-weight:800;letter-spacing:-.3px}
+.ls{font-size:10px;color:var(--text3)}
+.hdr-r{display:flex;align-items:center;gap:8px}
+.admin-badge{background:var(--alight);color:var(--accent);border:1px solid #c7d9ff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.3px}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:5px 13px;border-radius:var(--r2);font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;border:none;transition:all .14s;white-space:nowrap;height:32px}
+.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:var(--ah)}
+.btn-success{background:var(--green);color:#fff}.btn-success:hover{background:#047857}
+.btn-outline{background:none;border:1.5px solid var(--border);color:var(--text2)}.btn-outline:hover{background:var(--bg)}
+.btn-sm{padding:3px 9px;font-size:11.5px;height:26px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* ── OUTER ── */
+.outer{max-width:860px;margin:0 auto;padding:24px}
+
+/* ── SECTION CARD ── */
+.sec-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:20px;overflow:hidden;animation:fadeUp .3s ease both}
+.sec-card:nth-child(2){animation-delay:.05s}
+.sec-card:nth-child(3){animation-delay:.1s}
+.sec-card:nth-child(4){animation-delay:.15s}
+.sec-card:nth-child(5){animation-delay:.2s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.sec-head{padding:14px 20px;border-bottom:1px solid var(--border);background:var(--surf2);display:flex;align-items:center;justify-content:space-between}
+.sec-title{font-family:'Familjen Grotesk',sans-serif;font-size:14px;font-weight:800;display:flex;align-items:center;gap:8px}
+.sec-body{padding:20px}
+
+/* ── FORM ── */
+.field{margin-bottom:16px}
+.field:last-child{margin-bottom:0}
+.field label{display:block;font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
+.field .hint{font-size:11px;color:var(--text3);margin-top:4px}
+.inp{width:100%;height:38px;padding:0 11px;border:1.5px solid var(--border);border-radius:var(--r2);font-family:inherit;font-size:13px;color:var(--text);background:var(--surface);outline:none;transition:border-color .14s}
+.inp:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(26,86,219,.1)}
+.inp::placeholder{color:var(--text3)}
+textarea.inp{height:auto;padding:9px 11px;resize:vertical;min-height:70px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* ── LOGO UPLOAD ── */
+.logo-upload{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo-preview{
+  width:72px;height:72px;border:2px dashed var(--border);border-radius:10px;
+  display:grid;place-items:center;background:var(--surf2);overflow:hidden;flex-shrink:0;
+  font-size:26px;cursor:pointer;transition:border-color .14s;
+}
+.logo-preview:hover{border-color:var(--accent)}
+.logo-preview img{width:100%;height:100%;object-fit:contain}
+.logo-upload-info{flex:1}
+.logo-upload-info p{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px}
+#logoFileInput{display:none}
+
+/* ── COLOR PICKER ── */
+.color-row{display:flex;align-items:center;gap:10px}
+.color-swatch{width:38px;height:38px;border-radius:var(--r2);border:2px solid var(--border);cursor:pointer;overflow:hidden;flex-shrink:0}
+.color-swatch input[type=color]{width:150%;height:150%;margin:-25%;border:none;cursor:pointer;background:none}
+.color-presets{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.color-preset{width:22px;height:22px;border-radius:5px;cursor:pointer;border:2px solid transparent;transition:all .14s}
+.color-preset:hover,.color-preset.active{border-color:var(--text);transform:scale(1.1)}
+
+/* ── STREAMS TABLE ── */
+.streams-grid{display:flex;flex-direction:column;gap:12px}
+.grade-row{border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
+.grade-row-head{background:var(--surf2);padding:8px 12px;display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:700}
+.grade-row-body{padding:10px 12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.stream-tag{display:inline-flex;align-items:center;gap:5px;padding:3px 10px 3px 12px;background:var(--alight);color:var(--accent);border-radius:20px;font-size:12px;font-weight:600}
+.stream-tag button{background:none;border:none;cursor:pointer;color:var(--text3);font-size:13px;line-height:1;padding:0;margin-left:2px;transition:color .12s}
+.stream-tag button:hover{color:var(--red)}
+.add-stream{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border:1.5px dashed var(--border);border-radius:20px;font-size:12px;color:var(--text3);cursor:pointer;background:none;font-family:inherit;transition:all .12s}
+.add-stream:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ── PREVIEW CARD ── */
+.preview-card{border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
+.preview-print{
+  padding:16px;background:#fff;
+  display:flex;align-items:center;gap:14px;
+  border-bottom:2px solid #1e2d4d;
+}
+.preview-logo{width:60px;height:60px;border-radius:8px;object-fit:contain;background:var(--surf2);border:1px solid var(--border);display:grid;place-items:center;font-size:24px;flex-shrink:0}
+.preview-school-name{font-family:'Familjen Grotesk',sans-serif;font-size:18px;font-weight:800;color:#131c2e}
+.preview-motto{font-size:11px;color:#4f6080;font-style:italic;margin-top:2px}
+.preview-label{padding:8px 12px;background:var(--surf2);font-size:10.5px;color:var(--text3);font-weight:600;letter-spacing:.3px}
+
+/* ── SAVE BAR ── */
+.save-bar{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--surface);border-top:1px solid var(--border);
+  padding:12px 24px;display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 -4px 20px rgba(0,0,0,.08);z-index:50;
+  animation:slideUp .3s ease both;
+}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:none}}
+.save-bar-left{font-size:12.5px;color:var(--text2)}
+.save-bar-left strong{color:var(--text)}
+
+/* ── TOAST ── */
+#tc{position:fixed;top:62px;right:16px;z-index:999;display:flex;flex-direction:column;gap:6px}
+.t{display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:var(--r2);font-size:12.5px;font-weight:500;box-shadow:var(--sh2);animation:tin .25s ease;min-width:210px}
+.t.ok{background:#064e3b;color:#ecfdf5;border-left:3px solid #10b981}
+.t.err{background:#7f1d1d;color:#fef2f2;border-left:3px solid #ef4444}
+.t.info{background:#1e3a5f;color:#dbeafe;border-left:3px solid var(--accent)}
+@keyframes tin{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes tout{to{transform:translateX(110%);opacity:0}}
+
+.spin-sm{width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .6s linear infinite;display:inline-block}
+
+/* ── OWNER MESSAGE BANNER ── */
+#ownerMsgBanner{
+  display:none;position:sticky;top:52px;z-index:90;
+  background:#7f1d1d;color:#fef2f2;
+  border-bottom:2px solid #ef4444;
+  padding:11px 24px;
+  animation:slideDown .3s ease;
+}
+@keyframes slideDown{from{transform:translateY(-100%);opacity:0}to{transform:none;opacity:1}}
+.omsg-inner{display:flex;align-items:flex-start;gap:12px;max-width:860px;margin:0 auto}
+.omsg-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.omsg-body{flex:1}
+.omsg-title{font-weight:800;font-size:13px;margin-bottom:3px}
+.omsg-text{font-size:12.5px;line-height:1.6;opacity:.9}
+.omsg-actions{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.omsg-btn{padding:4px 13px;border-radius:5px;font-size:12px;font-weight:700;cursor:pointer;border:none;font-family:inherit;transition:all .13s}
+.omsg-pay{background:#059669;color:#fff}.omsg-pay:hover{background:#047857}
+.omsg-dismiss{background:rgba(255,255,255,.15);color:#fef2f2;border:1px solid rgba(255,255,255,.25)}.omsg-dismiss:hover{background:rgba(255,255,255,.25)}
+
+/* ── FIRST SETUP BANNER ── */
+#setupBanner{
+  display:none;
+  background:linear-gradient(135deg,var(--accent),#2563eb);
+  color:#fff;padding:12px 24px;
+  position:sticky;top:52px;z-index:89;
+}
+.sbanner-inner{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:860px;margin:0 auto;flex-wrap:wrap}
+.sbanner-txt strong{font-family:'Familjen Grotesk',sans-serif;font-size:14px;font-weight:800;display:block}
+.sbanner-txt span{font-size:12px;opacity:.85}
+.sbanner-step{font-size:11px;background:rgba(255,255,255,.2);padding:3px 10px;border-radius:20px;font-weight:700;white-space:nowrap}
+</style>
+</head>
+<body>
+
+<div id="pageLoader"><div class="spin"></div><p>Loading settings…</p></div>
+<div id="tc"></div>
+
+<div id="pageContent" style="display:none">
+
+<!-- OWNER MESSAGE BANNER (shown when owner sends a payment message) -->
+<div id="ownerMsgBanner">
+  <div class="omsg-inner">
+    <div class="omsg-icon">📩</div>
+    <div class="omsg-body">
+      <div class="omsg-title">Message from System Administrator</div>
+      <div class="omsg-text" id="ownerMsgText">—</div>
+      <div class="omsg-actions">
+        <button class="omsg-btn omsg-pay" id="ownerMsgContactBtn" style="display:none">📞 Contact to Pay</button>
+        <button class="omsg-btn omsg-dismiss" onclick="dismissOwnerMsg()">Dismiss (will reappear on reload)</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FIRST SETUP BANNER (shown when schoolSetupDone is not set) -->
+<div id="setupBanner">
+  <div class="sbanner-inner">
+    <div class="sbanner-txt">
+      <strong>🏫 Welcome! Set up your school before using the system</strong>
+      <span>Fill in your school name and county below, then click Save Settings to activate.</span>
+    </div>
+    <span class="sbanner-step">Required — Step 1</span>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <div class="lm">⚙️</div>
+    <div><div class="lt">School Settings</div><div class="ls">CBE System Configuration</div></div>
+  </div>
+  <div class="hdr-r">
+    <span class="admin-badge">ADMIN</span>
+    <a href="admin.html" class="btn btn-outline btn-sm">👥 Teachers</a>
+    <a href="marksheet.html" class="btn btn-outline btn-sm">📊 Mark Sheet</a>
+    <button class="btn btn-outline btn-sm" style="color:#ef4444;border-color:rgba(239,68,68,.3)" onclick="doLogout()">🚪 Sign Out</button>
+  </div>
+</header>
+
+<div class="outer" style="padding-bottom:80px">
+
+  <!-- ── SECTION 1: SCHOOL IDENTITY ── -->
+  <div class="sec-card">
+    <div class="sec-head">
+      <div class="sec-title">🏫 School Identity</div>
+    </div>
+    <div class="sec-body">
+      <div class="grid2">
+        <div class="field">
+          <label>School Name <span style="color:var(--red)">*</span></label>
+          <input class="inp" id="setName" type="text" placeholder="e.g. Embu Junior School" oninput="updatePreview()">
+        </div>
+        <div class="field">
+          <label>Short Name / Abbreviation</label>
+          <input class="inp" id="setShortName" type="text" placeholder="e.g. EJS">
+        </div>
+      </div>
+      <div class="field">
+        <label>School Motto</label>
+        <input class="inp" id="setMotto" type="text" placeholder="e.g. Excellence in Learning" oninput="updatePreview()">
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label>County</label>
+          <select class="inp" id="setCounty" onchange="onCountyChange()">
+            <option value="">-- Select County --</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Sub-County</label>
+          <select class="inp" id="setSubCounty">
+            <option value="">-- Select Sub-County --</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Principal / Head Teacher Name</label>
+        <input class="inp" id="setPrincipal" type="text" placeholder="e.g. Mr. James Mwangi">
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 2: LOGO ── -->
+  <div class="sec-card">
+    <div class="sec-head">
+      <div class="sec-title">🖼️ School Logo</div>
+    </div>
+    <div class="sec-body">
+      <div class="logo-upload">
+        <div class="logo-preview" id="logoPreview" onclick="document.getElementById('logoFileInput').click()">
+          <span id="logoPlaceholder">🏫</span>
+          <img id="logoImg" style="display:none" alt="School logo">
+        </div>
+        <div class="logo-upload-info">
+          <p>Upload your school logo. It will appear on the header of all pages and on printed reports.<br>
+          Recommended: square PNG or JPG, at least 200×200px.</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-outline btn-sm" onclick="document.getElementById('logoFileInput').click()">📁 Choose Image</button>
+            <button class="btn btn-outline btn-sm" id="clearLogoBtn" onclick="clearLogo()" style="display:none">🗑️ Remove</button>
+          </div>
+          <input type="file" id="logoFileInput" accept="image/*" onchange="handleLogoFile(event)">
+          <div class="field" style="margin-top:12px;margin-bottom:0">
+            <label>Or paste image URL</label>
+            <input class="inp" id="setLogoUrl" type="url" placeholder="https://..." oninput="updateLogoFromUrl()">
+            <div class="hint">Direct link to your school logo image (ImgBB, Google Drive public link, etc.)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 3: BRAND COLOR ── -->
+  <div class="sec-card">
+    <div class="sec-head">
+      <div class="sec-title">🎨 Brand Color</div>
+    </div>
+    <div class="sec-body">
+      <div class="field">
+        <label>Primary Color</label>
+        <div class="color-row">
+          <div class="color-swatch">
+            <input type="color" id="colorPicker" value="#1a56db" oninput="onColorChange(this.value)">
+          </div>
+          <input class="inp" id="colorHex" type="text" value="#1a56db" placeholder="#1a56db" style="width:120px" oninput="onColorHexInput(this.value)">
+          <span style="font-size:12px;color:var(--text3)">Used across buttons, highlights, and accents</span>
+        </div>
+        <div class="color-presets" id="colorPresets"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 4: ACADEMIC STRUCTURE ── -->
+  <div class="sec-card">
+    <div class="sec-head">
+      <div class="sec-title">📚 Grades & Streams</div>
+      <span style="font-size:11.5px;color:var(--text3)">These control what teachers see in dropdowns</span>
+    </div>
+    <div class="sec-body">
+      <div class="streams-grid" id="streamsGrid">
+        <!-- built by JS -->
+      </div>
+      <div class="hint" style="margin-top:10px">💡 Streams added here will appear in teacher signup, mark sheet, and admin pages automatically.</div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 5: CURRENT TERM ── -->
+  <div class="sec-card">
+    <div class="sec-head">
+      <div class="sec-title">📅 Current Term</div>
+    </div>
+    <div class="sec-body">
+      <div class="grid2">
+        <div class="field">
+          <label>Current Academic Year</label>
+          <input class="inp" id="setYear" type="number" min="2020" max="2040" value="2026">
+        </div>
+        <div class="field">
+          <label>Current Term</label>
+          <select class="inp" id="setTerm">
+            <option>Term 1</option>
+            <option>Term 2</option>
+            <option>Term 3</option>
+          </select>
+        </div>
+      </div>
+      <div class="hint">This pre-fills the term and year selectors on the Mark Sheet page.</div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 6: PRINT PREVIEW ── -->
+  <div class="sec-card">
+    <div class="sec-head">
+      <div class="sec-title">🖨️ Print Header Preview</div>
+    </div>
+    <div class="sec-body" style="padding:0">
+      <div class="preview-label">PREVIEW — This is how reports will look when printed</div>
+      <div class="preview-print" id="previewPrint">
+        <div class="preview-logo" id="previewLogo">🏫</div>
+        <div>
+          <div class="preview-school-name" id="previewName">School Name</div>
+          <div class="preview-motto" id="previewMotto">School Motto</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /outer -->
+
+<!-- SAVE BAR -->
+<div class="save-bar">
+  <div class="save-bar-left">
+    <strong>School Settings</strong> — Changes are saved to your Firebase project
+  </div>
+  <div style="display:flex;gap:8px">
+    <button class="btn btn-outline" onclick="loadSettings()">↩️ Reset</button>
+    <button class="btn btn-success" id="saveBtn" onclick="saveSettings()">
+      <span id="saveBtnTxt">💾 Save Settings</span>
+    </button>
+  </div>
+</div>
+
+</div><!-- /pageContent -->
+
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+<script>
+firebase.initializeApp({
+  apiKey:"AIzaSyBdabXqlBQ-6yVNJKdu8Zhb9Cm_-59_u24",
+  authDomain:"bett-294a2.firebaseapp.com",
+  projectId:"bett-294a2",
+  storageBucket:"bett-294a2.appspot.com",
+  messagingSenderId:"1055511650032",
+  appId:"1:1055511650032:web:7e0f9c28e58515f549ac35"
+});
+const db   = firebase.firestore();
+const auth = firebase.auth();
+
+const el = id => document.getElementById(id);
+
+// ── State ──
+let streams = { 'Grade 1':[], 'Grade 2':[], 'Grade 3':[], 'Grade 4':[], 'Grade 5':[], 'Grade 6':[], 'Grade 7':[], 'Grade 8':[], 'Grade 9':[], 'Grade 10':[], 'Grade 11':[], 'Grade 12':[], 'Grade 10':[], 'Grade 11':[], 'Grade 12':[], 'Grade 10':[], 'Grade 11':[], 'Grade 12':[], 'Grade 10':[], 'Grade 11':[], 'Grade 12':[], 'Grade 10':[], 'Grade 11':[], 'Grade 12':[] };
+let logoBase64 = null; // for file upload preview only
+let currentLogoUrl = '';
+
+// ── Color presets ──
+const PRESETS = [
+  '#1a56db','#0ea5e9','#7c3aed','#059669',
+  '#d97706','#dc2626','#be185d','#0f766e','#1d4ed8','#6d28d9'
+];
+
+// ── Auth gate — admin only ── (ORIGINAL — UNCHANGED)
+auth.onAuthStateChanged(async u => {
+  if(!u){ window.location.href='admin.html'; return; }
+  try{
+    const snap = await db.collection('users').doc(u.uid).get();
+    if(!snap.exists || snap.data().role === 'teacher'){
+      await auth.signOut();
+      window.location.href='admin.html';
+      return;
+    }
+    el('pageLoader').style.display='none';
+    el('pageContent').style.display='block';
+    buildColorPresets();
+    buildStreamsGrid();
+    buildCountyDropdown(); // ← added: populate county dropdown
+    // ── ADDITIONS (do not affect existing functionality) ──
+    _currentUid = u.uid; // must be set BEFORE loadSettings so path is correct
+    window._schoolId = u.uid; // session-scoped only — never persisted to localStorage
+    loadSettings();
+    checkFirstSetup(snap.data());          // show setup banner if needed
+    listenOwnerMessages(u.uid);            // real-time owner message listener
+  }catch(e){
+    window.location.href='admin.html';
+  }
+});
+
+// ── Toast ──
+function toast(msg, type='ok'){
+  const t=document.createElement('div');
+  t.className=`t ${type}`;
+  t.innerHTML=`<span>${type==='ok'?'✅':type==='err'?'❌':'ℹ️'}</span>${msg}`;
+  el('tc').appendChild(t);
+  setTimeout(()=>{t.style.animation='tout .25s ease forwards';setTimeout(()=>t.remove(),280);},2800);
+}
+
+// ── Build color presets ──
+function buildColorPresets(){
+  el('colorPresets').innerHTML = PRESETS.map(c=>
+    `<div class="color-preset" style="background:${c}" title="${c}" onclick="onColorChange('${c}')"></div>`
+  ).join('');
+}
+
+function onColorChange(hex){
+  el('colorPicker').value = hex;
+  el('colorHex').value    = hex;
+  document.documentElement.style.setProperty('--accent', hex);
+  document.querySelectorAll('.color-preset').forEach(p=>{
+    p.classList.toggle('active', p.style.background===hex||p.title===hex);
+  });
+}
+function onColorHexInput(val){
+  if(/^#[0-9a-fA-F]{6}$/.test(val)) onColorChange(val);
+}
+
+// ── Build streams grid ──
+function buildStreamsGrid(){
+  const grades = ['Grade 1','Grade 2','Grade 3','Grade 4','Grade 5','Grade 6','Grade 7','Grade 8','Grade 9','Grade 10','Grade 11','Grade 12'];
+  el('streamsGrid').innerHTML = grades.map(g=>`
+    <div class="grade-row">
+      <div class="grade-row-head">
+        <span>${g}</span>
+        <span style="font-size:11px;color:var(--text3)">${(streams[g]||[]).length} streams</span>
+      </div>
+      <div class="grade-row-body" id="sb-${g.replace(' ','')}">
+        ${renderStreamTags(g)}
+        <button class="add-stream" onclick="addStream('${g}')">+ Add Stream</button>
+      </div>
+    </div>`).join('');
+}
+
+function renderStreamTags(grade){
+  return (streams[grade]||[]).map(s=>
+    `<span class="stream-tag">${s}<button onclick="removeStream('${grade}','${s}')" title="Remove">×</button></span>`
+  ).join('');
+}
+
+function refreshGradeRow(grade){
+  const key = grade.replace(' ','');
+  const body = el(`sb-${key}`);
+  if(!body) return;
+  body.innerHTML = renderStreamTags(grade) +
+    `<button class="add-stream" onclick="addStream('${grade}')">+ Add Stream</button>`;
+  // update count
+  const head = body.closest('.grade-row').querySelector('.grade-row-head span:last-child');
+  if(head) head.textContent = `${(streams[grade]||[]).length} streams`;
+  // sync to shared localStorage so other pages benefit immediately
+  syncStreamsCache();
+}
+
+function addStream(grade){
+  const name = prompt(`New stream name for ${grade}:`);
+  if(!name || !name.trim()) return;
+  const norm = name.trim().replace(/^\w/,c=>c.toUpperCase());
+  if(!streams[grade]) streams[grade]=[];
+  if(streams[grade].includes(norm)){ toast(`${norm} already exists`,'err'); return; }
+  streams[grade].push(norm);
+  streams[grade].sort();
+  refreshGradeRow(grade);
+}
+
+function removeStream(grade, name){
+  if(!confirm(`Remove stream "${name}" from ${grade}?`)) return;
+  streams[grade] = (streams[grade]||[]).filter(s=>s!==name);
+  refreshGradeRow(grade);
+}
+
+function syncStreamsCache(){
+  try{
+    localStorage.setItem('cbe_streams', JSON.stringify(streams));
+    localStorage.setItem('cbe_streams_ts', Date.now().toString());
+  }catch(_){}
+}
+
+// ── Logo handling ──
+function handleLogoFile(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  if(file.size > 2*1024*1024){ toast('Image too large. Max 2MB.','err'); return; }
+  const reader = new FileReader();
+  reader.onload = ev => {
+    logoBase64 = ev.target.result;
+    currentLogoUrl = ev.target.result; // use base64 directly
+    el('setLogoUrl').value = '';
+    showLogoPreview(ev.target.result);
+    updatePreview();
+  };
+  reader.readAsDataURL(file);
+}
+
+function updateLogoFromUrl(){
+  const url = el('setLogoUrl').value.trim();
+  if(!url){ clearLogo(); return; }
+  logoBase64 = null;
+  currentLogoUrl = url;
+  showLogoPreview(url);
+  updatePreview();
+}
+
+function showLogoPreview(src){
+  el('logoImg').src = src;
+  el('logoImg').style.display = 'block';
+  el('logoPlaceholder').style.display = 'none';
+  el('clearLogoBtn').style.display = 'inline-flex';
+}
+
+function clearLogo(){
+  logoBase64 = null;
+  currentLogoUrl = '';
+  el('logoImg').style.display = 'none';
+  el('logoImg').src = '';
+  el('logoPlaceholder').style.display = '';
+  el('clearLogoBtn').style.display = 'none';
+  el('setLogoUrl').value = '';
+  updatePreview();
+}
+
+// ── Print preview ──
+function updatePreview(){
+  const name  = el('setName').value.trim() || 'School Name';
+  const motto = el('setMotto').value.trim() || 'School Motto';
+  el('previewName').textContent  = name;
+  el('previewMotto').textContent = motto;
+  if(currentLogoUrl){
+    el('previewLogo').innerHTML = `<img src="${currentLogoUrl}" style="width:100%;height:100%;object-fit:contain" onerror="this.style.display='none'">`;
+  } else {
+    el('previewLogo').innerHTML = '🏫';
+  }
+}
+
+// ── Load existing settings ──
+async function loadSettings(){
+  try{
+    // Load THIS school's settings — keyed by admin uid, not shared 'school' doc
+    const snap = await db.collection('settings').doc(_currentUid).get();
+    if(!snap.exists){ toast('No settings saved yet — fill in and save below','info'); return; }
+    const s = snap.data();
+
+    el('setName').value      = s.name      || '';
+    el('setShortName').value = s.shortName || '';
+    el('setMotto').value     = s.motto     || '';
+    // county & subCounty handled by dropdown patch
+    _patchCountyAfterLoad(s.county||'', s.subCounty||'');
+    el('setPrincipal').value = s.principal || '';
+    el('setYear').value      = s.currentYear || 2026;
+    el('setTerm').value      = s.currentTerm || 'Term 1';
+
+    if(s.primaryColor) onColorChange(s.primaryColor);
+
+    if(s.logoUrl){
+      currentLogoUrl = s.logoUrl;
+      el('setLogoUrl').value = s.logoUrl;
+      showLogoPreview(s.logoUrl);
+    }
+
+    if(s.streams && typeof s.streams === 'object'){
+      streams = { 'Grade 1':[], 'Grade 2':[], 'Grade 3':[], 'Grade 4':[], 'Grade 5':[], 'Grade 6':[], 'Grade 7':[], 'Grade 8':[], 'Grade 9':[], 'Grade 10':[], 'Grade 11':[], 'Grade 12':[], 'Grade 10':[], 'Grade 11':[], 'Grade 12':[], 'Grade 10':[], 'Grade 11':[], 'Grade 12':[], 'Grade 10':[], 'Grade 11':[], 'Grade 12':[], 'Grade 10':[], 'Grade 11':[], 'Grade 12':[], 'Grade 10':[], 'Grade 11':[], 'Grade 12':[], ...s.streams };
+    }
+    buildStreamsGrid();
+    updatePreview();
+    syncStreamsCache();
+  }catch(e){
+    toast('Failed to load settings: '+e.message,'err');
+  }
+}
+
+// ── Save settings ──
+async function saveSettings(){
+  const name = el('setName').value.trim();
+  if(!name){ toast('School name is required','err'); el('setName').focus(); return; }
+
+  const btn = el('saveBtn');
+  const txt = el('saveBtnTxt');
+  btn.disabled = true;
+  txt.innerHTML = '<div class="spin-sm"></div> Saving…';
+
+  try{
+    const data = {
+      name,
+      shortName:   el('setShortName').value.trim(),
+      motto:       el('setMotto').value.trim(),
+      county:      el('setCounty').value.trim(),
+      subCounty:   el('setSubCounty').value.trim(),
+      principal:   el('setPrincipal').value.trim(),
+      currentYear: Number(el('setYear').value) || 2026,
+      currentTerm: el('setTerm').value,
+      primaryColor: el('colorHex').value || '#1a56db',
+      logoUrl:     currentLogoUrl || '',
+      streams,
+      updatedAt:   firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+    // Save settings
+    await db.collection('settings').doc(_currentUid).set(data, {merge:true});
+
+    // Clear cache
+    localStorage.removeItem('cbe_school_settings');
+    syncStreamsCache();
+
+    // 🔥 MARK SETUP COMPLETE LOCALLY (for modal)
+    localStorage.setItem('cbe_school_setup_done', 'true');
+
+    toast('✅ Settings saved — redirecting to dashboard…');
+
+    // ── Sync to approvedSchools ──
+    if(_currentUid){
+      db.collection('approvedSchools').doc(_currentUid).get().then(doc => {
+        const payload = {
+          schoolName: data.name,
+          county:     data.county   || '—',
+          subCounty:  data.subCounty || '',
+          principal:  data.principal || '',
+          uid:        _currentUid,
+          status:     doc.exists && doc.data().status ? doc.data().status : 'pending',
+          updatedAt:  firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        if(!doc.exists || !doc.data().detectedAt){
+          payload.detectedAt = firebase.firestore.FieldValue.serverTimestamp();
+        }
+
+        return db.collection('approvedSchools').doc(_currentUid).set(payload, {merge:true});
+      }).catch(()=>{});
+    }
+
+    // ── Update user profile ──
+    if(_currentUid){
+      try{
+        await db.collection('users').doc(_currentUid).update({
+          school:          data.name,
+          county:          data.county,
+          schoolSetupDone: true,
+          updatedAt:       firebase.firestore.FieldValue.serverTimestamp()
+        });
+      }catch(_){}
+
+      // Log first setup
+      if(_isFirstSetup){
+        db.collection('ownerLog').add({
+          type:'school_setup',
+          message:'New school setup: '+data.name,
+          school:data.name,
+          county:data.county||'',
+          adminUid:_currentUid,
+          color:'green',
+          createdAt:firebase.firestore.FieldValue.serverTimestamp()
+        }).catch(()=>{});
+
+        _isFirstSetup = false;
+        el('setupBanner').style.display = 'none';
+      }
+    }
+
+    // 🔥 SMALL DELAY → ENSURE localStorage SAVED BEFORE REDIRECT
+    setTimeout(()=>{ 
+      window.location.href='admin.html'; 
+    }, 800);
+
+  }catch(e){
+    toast('Save failed: '+e.message,'err');
+  }
+
+  btn.disabled = false;
+  txt.innerHTML = '💾 Save Settings';
+}
+
+// ── Logout ──
+async function doLogout(){
+  // Clear all school-specific cache on logout
+  Object.keys(localStorage)
+    .filter(k=>k.startsWith('cbe_school_settings_'))
+    .forEach(k=>localStorage.removeItem(k));
+  localStorage.removeItem('cbe_current_uid');
+  await auth.signOut();
+  window.location.href = 'admin.html';
+}
+
+// ════════════════════════════════════════════
+// ADDITIONS — new functionality below
+// (original code above is untouched)
+// ════════════════════════════════════════════
+
+let _currentUid = null;
+let _isFirstSetup = false;
+let _ownerMsgUnsub = null;
+
+// ── First setup check ──
+function checkFirstSetup(profile){
+  if(!profile.schoolSetupDone){
+    _isFirstSetup = true;
+    el('setupBanner').style.display = 'block';
+  }
+}
+
+// ── Real-time owner message listener ──
+// Listens to approvedSchools/{uid} in real-time
+// Shows banner immediately when owner sends/updates a message
+function listenOwnerMessages(uid){
+  if(_ownerMsgUnsub) _ownerMsgUnsub(); // clear previous listener
+  _ownerMsgUnsub = db.collection('approvedSchools').doc(uid)
+    .onSnapshot(snap => {
+      if(!snap.exists) return;
+      const d = snap.data();
+      if(d.status === 'suspended'){
+        // Suspended — show blocking message, force logout
+        showOwnerMessage(d, true);
+        return;
+      }
+      if(d.message && d.status !== 'approved'){
+        showOwnerMessage(d, false);
+      } else {
+        // Approved or no message — hide banner
+        el('ownerMsgBanner').style.display = 'none';
+      }
+    }, ()=>{});
+}
+
+function showOwnerMessage(d, isSuspended){
+  el('ownerMsgText').textContent = d.message || 'Please contact the system administrator.';
+  const contactBtn = el('ownerMsgContactBtn');
+  if(d.contact){
+    contactBtn.style.display = 'inline-flex';
+    contactBtn.onclick = ()=> window.open(d.contact, '_blank');
+  } else {
+    contactBtn.style.display = 'none';
+  }
+  el('ownerMsgBanner').style.display = 'block';
+  if(isSuspended){
+    // Add a stronger blocked message if suspended
+    el('ownerMsgBanner').style.background = '#450a0a';
+    document.querySelector('.omsg-title').textContent = '🚫 Account Suspended';
+  }
+}
+
+function dismissOwnerMsg(){
+  el('ownerMsgBanner').style.display = 'none';
+}
+
+// ── Kenya Counties & Sub-Counties ──
+const KENYA_COUNTIES = {
+  "Baringo":["Baringo Central","Baringo North","Baringo South","Eldama Ravine","Mogotio","Tiaty"],
+  "Bomet":["Bomet Central","Bomet East","Chepalungu","Konoin","Sotik"],
+  "Bungoma":["Bumula","Kabuchai","Kanduyi","Kimilili","Mt. Elgon","Sirisia","Tongaren","Webuye East","Webuye West"],
+  "Busia":["Budalangi","Butula","Funyula","Nambale","Teso North","Teso South"],
+  "Elgeyo-Marakwet":["Keiyo North","Keiyo South","Marakwet East","Marakwet West"],
+  "Embu":["Manyatta","Mbeere North","Mbeere South","Runyenjes"],
+  "Garissa":["Dadaab","Fafi","Garissa Township","Hulugho","Ijara","Lagdera"],
+  "Homa Bay":["Kabondo Kasipul","Karachuonyo","Kasipul","Mbita","Ndhiwa","Rangwe","Suba North","Suba South"],
+  "Isiolo":["Garbatulla","Isiolo","Merti"],
+  "Kajiado":["Isinya","Kajiado Central","Kajiado East","Kajiado North","Loitokitok","Mashuuru"],
+  "Kakamega":["Butere","Ikolomani","Khwisero","Likuyani","Lugari","Lurambi","Malava","Matungu","Mumias East","Mumias West","Navakholo","Shinyalu"],
+  "Kericho":["Ainamoi","Belgut","Bureti","Kipkelion East","Kipkelion West","Soin Sigowet"],
+  "Kiambu":["Gatundu North","Gatundu South","Githunguri","Juja","Kabete","Kiambaa","Kiambu","Kikuyu","Limuru","Ruiru","Thika Town","Lari"],
+  "Kilifi":["Ganze","Kaloleni","Kilifi North","Kilifi South","Magarini","Malindi","Rabai"],
+  "Kirinyaga":["Gichugu","Kirinyaga Central","Mwea","Ndia"],
+  "Kisii":["Bobasi","Bomachoge Borabu","Bomachoge Chache","Bonchari","Kitutu Chache North","Kitutu Chache South","Nyaribari Chache","Nyaribari Masaba","South Mugirango"],
+  "Kisumu":["Kisumu Central","Kisumu East","Kisumu West","Muhoroni","Nyakach","Nyando","Seme"],
+  "Kitui":["Kitui Central","Kitui East","Kitui Rural","Kitui South","Kitui West","Mwingi Central","Mwingi North","Mwingi West"],
+  "Kwale":["Kinango","Lunga Lunga","Msambweni","Matuga"],
+  "Laikipia":["Laikipia East","Laikipia North","Laikipia West","Nyahururu","Ol Jorok","Ol Kalou"],
+  "Lamu":["Lamu East","Lamu West"],
+  "Machakos":["Kathiani","Machakos Town","Masinga","Matungulu","Mavoko","Mwala","Yatta"],
+  "Makueni":["Kaiti","Kibwezi East","Kibwezi West","Kilome","Makueni","Mbooni"],
+  "Mandera":["Banissa","Lafey","Mandera East","Mandera North","Mandera South","Mandera West"],
+  "Marsabit":["Laisamis","Moyale","North Horr","Saku"],
+  "Meru":["Buuri","Igembe Central","Igembe North","Igembe South","Imenti North","Imenti South","Tigania East","Tigania West"],
+  "Migori":["Awendo","Kuria East","Kuria West","Mabera","Ntimaru","Nyatike","Rongo","Suna East","Suna West","Uriri"],
+  "Mombasa":["Changamwe","Jomvu","Kisauni","Likoni","Mvita","Nyali"],
+  "Murang'a":["Gatanga","Kahuro","Kandara","Kangema","Kigumo","Kiharu","Mathioya","Murang'a South"],
+  "Nairobi":["Dagoretti North","Dagoretti South","Embakasi Central","Embakasi East","Embakasi North","Embakasi South","Embakasi West","Githurai","Kamukunji","Kasarani","Kibra","Lang'ata","Makadara","Mathare","Roysambu","Ruaraka","Starehe","Westlands"],
+  "Nakuru":["Bahati","Gilgil","Kuresoi North","Kuresoi South","Molo","Nakuru Town East","Nakuru Town West","Naivasha","Njoro","Rongai","Subukia"],
+  "Nandi":["Aldai","Chesumei","Emgwen","Mosop","Nandi Hills","Tindiret"],
+  "Narok":["Kilgoris","Narok East","Narok North","Narok South","Narok West","Transmara East","Transmara West"],
+  "Nyamira":["Borabu","Manga","Masaba North","Nyamira North","Nyamira South"],
+  "Nyandarua":["Kinangop","Kipipiri","Ndaragwa","Ol Kalou","Ol Joro Orok"],
+  "Nyeri":["Kieni","Mathira","Mukurweini","Nyeri Town","Othaya","Tetu"],
+  "Samburu":["Samburu East","Samburu North","Samburu West"],
+  "Siaya":["Alego Usonga","Bondo","Gem","Rarieda","Ugenya","Ugunja"],
+  "Taita-Taveta":["Mwatate","Taveta","Voi","Wundanyi"],
+  "Tana River":["Bura","Galole","Garsen"],
+  "Tharaka-Nithi":["Chuka","Igambang'ombe","Maara","Tharaka North","Tharaka South"],
+  "Trans Nzoia":["Cherangany","Endebess","Kiminini","Kwanza","Saboti"],
+  "Turkana":["Kibish","Loima","Turkana Central","Turkana East","Turkana North","Turkana South","Turkana West"],
+  "Uasin Gishu":["Ainabkoi","Kapseret","Kesses","Moiben","Soy","Turbo"],
+  "Vihiga":["Emuhaya","Hamisi","Luanda","Sabatia","Vihiga"],
+  "Wajir":["Eldas","Tarbaj","Wajir East","Wajir North","Wajir South","Wajir West"],
+  "West Pokot":["Central Pokot","North Pokot","Pokot South","West Pokot"]
+};
+
+function buildCountyDropdown(){
+  const sel = el('setCounty');
+  const counties = Object.keys(KENYA_COUNTIES).sort();
+  sel.innerHTML = '<option value="">-- Select County --</option>' +
+    counties.map(county => `<option value="${county}">${county}</option>`).join('');
+}
+
+function onCountyChange(){
+  const county = el('setCounty').value;
+  const subSel = el('setSubCounty');
+  const subs   = KENYA_COUNTIES[county] || [];
+  subSel.innerHTML = '<option value="">-- Select Sub-County --</option>' +
+    subs.map(s => `<option value="${s}">${s}</option>`).join('');
+}
+
+// ── Update loadSettings to pre-select county dropdown ──
+// We override the county/subCounty assignment from the original loadSettings
+// by patching after the fact via a post-load hook
+const _origLoadSettings = loadSettings;
+// Re-declare after original to handle dropdown selection
+function _patchCountyAfterLoad(county, subCounty){
+  if(county){
+    el('setCounty').value = county;
+    onCountyChange();
+    if(subCounty){
+      setTimeout(()=>{ el('setSubCounty').value = subCounty; }, 50);
+    }
+  }
+}
+</script>
+</body>
+</html>
