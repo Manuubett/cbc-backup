@@ -1007,7 +1007,9 @@ function clearDraft(sid){
 // ══════════════════════════════════════════════
 function collectRow(sid){
   const d={};
-  const SUBS=window._currentSubs||[];
+  const isSenior=window._isSenior||false;
+  const s=students.find(x=>x.id===sid);
+  const SUBS=isSenior?getStudentSubs(s?.subjects):(window._currentSubs||[]);
   SUBS.forEach(sub=>{
     if(sub.parts){
       sub.parts.forEach(p=>{
