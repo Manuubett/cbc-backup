@@ -1149,28 +1149,40 @@ async function _endSession(){ if(!_sessionId) return; await db.collection('admin
 async function sendResultsSMS(){
   if(!_schoolId){ toast('Not authenticated — please refresh','err'); return; }
 
-  // Guard: check SMS is configured
-  let creds;
-  try{ creds=await CBE_SMS.loadATCredentials(_schoolId); }
-  catch(e){ toast('SMS check failed: '+e.message,'err'); return; }
-  if(!creds){
+  // ── Guard: sms-integration.js must be loaded ──────────────────
+  if(typeof window.CBE_SMS === 'undefined'){
+    toast('SMS module not loaded — check sms-integration.js is in the same folder','err');
+    console.error('[CBE Admin] CBE_SMS is undefined. Make sure sms-integration.js is served at the same path as admin.html.');
+    return;
+  }
+
+  // ── Read settings doc (credentials + senderId + schoolName) ───
+  let settingsData = {};
+  try{
+    const settingsSnap = await db.collection('settings').doc(_schoolId).get();
+    if(settingsSnap.exists) settingsData = settingsSnap.data();
+  }catch(e){ toast('Could not read school settings: '+e.message,'err'); return; }
+
+  const atApiKey  = settingsData.atApiKey  || '';
+  const atUsername= settingsData.atUsername|| '';
+  if(!atApiKey || !atUsername){
     toast('SMS not configured — go to Settings → SMS Setup','err');
     setTimeout(()=>window.open('settings','_blank'),1400);
     return;
   }
 
-  // Determine term & year
-  const month=new Date().getMonth();
-  const term=month<4?'Term 1':month<8?'Term 2':'Term 3';
-  const year=String(new Date().getFullYear());
+  // ── Determine term & year ──────────────────────────────────────
+  const month = new Date().getMonth();
+  const term  = month < 4 ? 'Term 1' : month < 8 ? 'Term 2' : 'Term 3';
+  const year  = String(new Date().getFullYear());
 
-  // Loading state on button
-  const btn=el('sendSmsBtn');
+  // ── Loading state ──────────────────────────────────────────────
+  const btn = el('sendSmsBtn');
   if(btn){ btn.disabled=true; btn.textContent='⏳ Loading results…'; }
 
   try{
-    // Load results
-    const resultsSnap=await db.collection('results')
+    // Load results for this school / term / year
+    const resultsSnap = await db.collection('results')
       .where('schoolId','==',_schoolId)
       .where('term','==',term)
       .where('year','==',year)
@@ -1181,47 +1193,45 @@ async function sendResultsSMS(){
       return;
     }
 
-    // Load students for parent phone map
-    const studentsSnap=await db.collection('students')
+    // Load students → parent phone map
+    const studentsSnap = await db.collection('students')
       .where('schoolId','==',_schoolId).get();
-    const phoneMap={};
+    const phoneMap = {};
     studentsSnap.forEach(d=>{
-      const s=d.data();
-      const phone=s.parentPhone||s.guardianPhone||s.motherPhone||'';
-      if(phone) phoneMap[d.id]=phone;
+      const s = d.data();
+      const phone = s.parentPhone||s.guardianPhone||s.motherPhone||'';
+      if(phone) phoneMap[d.id] = phone;
     });
 
-    // Build recipients
-    const recipients=[];
+    // Build recipients array
+    const recipients = [];
     resultsSnap.forEach(d=>{
-      const r=d.data();
-      let subjects=[];
+      const r = d.data();
+      let subjects = [];
       if(Array.isArray(r.subjects)){
-        subjects=r.subjects;
-      }else if(r.marks&&typeof r.marks==='object'){
-        subjects=Object.entries(r.marks).map(([name,val])=>
+        subjects = r.subjects;
+      }else if(r.marks && typeof r.marks==='object'){
+        subjects = Object.entries(r.marks).map(([name,val])=>
           typeof val==='object'
-            ?{name,score:val.score??val.marks??val.total??'—',grade:val.grade||''}
-            :{name,score:val}
+            ? {name, score:val.score??val.marks??val.total??'—', grade:val.grade||''}
+            : {name, score:val}
         );
       }
       recipients.push({
-        studentId:  d.id,
-        studentName:r.studentName||r.fullName||'—',
-        grade:      r.grade||'',
-        stream:     r.stream||'',
-        parentPhone:phoneMap[d.id]||r.parentPhone||'',
+        studentId:   d.id,
+        studentName: r.studentName||r.fullName||'—',
+        grade:       r.grade  ||'',
+        stream:      r.stream ||'',
+        parentPhone: phoneMap[d.id]||r.parentPhone||'',
         subjects,
       });
     });
 
-    // Load sender ID & school name
-    const senderId=await CBE_SMS.loadSenderId(_schoolId);
-    const settingsSnap=await db.collection('settings').doc(_schoolId).get();
-    const schoolName=(settingsSnap.exists?settingsSnap.data()?.name:'')||window.schoolSettings?.name||_schoolName||'';
+    const senderId   = settingsData.smsSenderId || '';
+    const schoolName = settingsData.name || window.schoolSettings?.name || _schoolName || '';
 
-    // Open the send modal
-    CBE_SMS.openSendModal(recipients,_schoolId,{name:schoolName,term,year,senderId});
+    // Open the CBE_SMS send modal
+    CBE_SMS.openSendModal(recipients, _schoolId, {name:schoolName, term, year, senderId});
 
   }catch(e){
     toast('Failed to load results: '+e.message,'err');
@@ -1232,8 +1242,8 @@ async function sendResultsSMS(){
 
 </script>
 
-<script src="school-settings.js"></script>
 <script src="sms-integration.js"></script>
+<script src="school-settings.js"></script>
 <script src="subscription-guard.js?v=2"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"9a6fdd38ee454483a9aa3baf59e5691f","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
