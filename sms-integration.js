@@ -1,3 +1,4 @@
+/**
  * CBE Mark Sheet — Africa's Talking SMS Integration
  * ─────────────────────────────────────────────────
  * Each school uses their OWN AT account & airtime.
@@ -204,12 +205,6 @@ window.CBE_SMS = (() => {
       display:flex;align-items:center;justify-content:center;padding:20px;
       font-family:'Plus Jakarta Sans',sans-serif;
     `;
-
-    // Safely encode recipients for the inline onclick
-    const recipientsJson = JSON.stringify(withPhone)
-      .replace(/\\/g, '\\\\')
-      .replace(/'/g, "\\'")
-      .replace(/"/g, '&quot;');
 
     modal.innerHTML = `
       <div style="background:#fff;border-radius:14px;width:100%;max-width:520px;
@@ -521,7 +516,6 @@ window.CBE_SMS = (() => {
         badge.style.background = '#d1fae5';
         badge.style.color      = '#065f46';
       }
-      // Also load senderId
       try {
         const snap = await db().collection('settings').doc(schoolId).get();
         if (snap.exists) {
@@ -659,3 +653,5 @@ window.CBE_SMS = (() => {
     _saveSettings,
     _testSMS,
   };
+
+})(); // ← THIS WAS MISSING — executes the IIFE and assigns window.CBE_SMS
