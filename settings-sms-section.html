@@ -1,0 +1,382 @@
+<!--
+  ════════════════════════════════════════════════════════════════
+  CBE Mark Sheet — SMS Settings Section
+  Drop this block inside your settings page container.
+  Requires: firebase already initialised, sms-integration.js loaded.
+  ════════════════════════════════════════════════════════════════
+
+  HOW TO USE:
+    1. Paste this <div id="smsSettingsSection"> anywhere in your settings page body.
+    2. Add <script src="sms-integration.js"></script> before </body> (if not already there).
+    3. In your settings page's auth/load handler, call:
+         CBE_SMS.initSettingsUI(schoolId);
+    4. To read the sender ID back when sending SMS, call:
+         const sid = await CBE_SMS.loadSenderId(schoolId);
+-->
+
+<div id="smsSettingsSection" style="
+  background:#fff;border:1px solid #dce1ec;border-radius:10px;
+  padding:22px 24px;margin-top:24px;max-width:680px;
+">
+
+  <!-- ── Header ── -->
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">
+    <div style="width:38px;height:38px;background:#eff4ff;border:1px solid #c7d9ff;
+      border-radius:9px;display:grid;place-items:center;font-size:19px;flex-shrink:0">📱</div>
+    <div style="flex:1">
+      <div style="font-family:'Familjen Grotesk',sans-serif;font-size:15px;font-weight:800;color:#131c2e">
+        SMS via Africa's Talking
+      </div>
+      <div style="font-size:12px;color:#64748b;margin-top:1px">
+        Each school uses their own AT account — your airtime, your control.
+      </div>
+    </div>
+    <span id="smsStatusBadge" style="
+      font-size:10.5px;font-weight:700;padding:3px 11px;
+      border-radius:20px;background:#f1f5f9;color:#64748b;
+      border:1px solid #e2e8f0;white-space:nowrap;flex-shrink:0
+    ">Not configured</span>
+  </div>
+
+  <div style="border-top:1px solid #f1f5f9;margin:16px 0"></div>
+
+  <!-- ── Credential fields ── -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+    <div>
+      <label style="display:block;font-size:11px;font-weight:700;color:#64748b;
+        text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">
+        AT API Key *
+      </label>
+      <div style="position:relative">
+        <input id="smsApiKey" type="password" placeholder="Paste your AT API key"
+          autocomplete="new-password"
+          style="width:100%;height:36px;padding:0 36px 0 10px;border:1.5px solid #dce1ec;
+            border-radius:6px;font-family:inherit;font-size:13px;outline:none;
+            transition:border-color .14s;color:#131c2e;background:#fff"
+          onfocus="this.style.borderColor='#1a56db'"
+          onblur="this.style.borderColor='#dce1ec'">
+        <!-- toggle visibility -->
+        <button type="button" id="smsApiKeyToggle" title="Show/hide"
+          onclick="(function(btn){
+            const inp=document.getElementById('smsApiKey');
+            inp.type=inp.type==='password'?'text':'password';
+            btn.textContent=inp.type==='password'?'👁':'🙈';
+          })(this)"
+          style="position:absolute;right:8px;top:50%;transform:translateY(-50%);
+            background:none;border:none;cursor:pointer;font-size:13px;padding:2px;
+            color:#94a3b8;line-height:1">👁</button>
+      </div>
+    </div>
+    <div>
+      <label style="display:block;font-size:11px;font-weight:700;color:#64748b;
+        text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">
+        AT Username *
+      </label>
+      <input id="smsUsername" type="text" placeholder="Your AT app username"
+        autocomplete="off"
+        style="width:100%;height:36px;padding:0 10px;border:1.5px solid #dce1ec;
+          border-radius:6px;font-family:inherit;font-size:13px;outline:none;
+          transition:border-color .14s;color:#131c2e;background:#fff"
+        onfocus="this.style.borderColor='#1a56db'"
+        onblur="this.style.borderColor='#dce1ec'">
+    </div>
+  </div>
+
+  <!-- ── Sender ID ── -->
+  <div style="margin-bottom:14px">
+    <label style="display:block;font-size:11px;font-weight:700;color:#64748b;
+      text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">
+      Sender ID
+      <span style="font-size:10px;font-weight:400;text-transform:none;color:#94a3b8">
+        — optional; must be registered with AT
+      </span>
+    </label>
+    <input id="smsSenderId" type="text"
+      placeholder="e.g. MySchool  (leave blank to use AT default short-code)"
+      style="width:100%;height:36px;padding:0 10px;border:1.5px solid #dce1ec;
+        border-radius:6px;font-family:inherit;font-size:13px;outline:none;
+        transition:border-color .14s;color:#131c2e;background:#fff"
+      onfocus="this.style.borderColor='#1a56db'"
+      onblur="this.style.borderColor='#dce1ec'">
+  </div>
+
+  <!-- ── Test phone ── -->
+  <div style="margin-bottom:16px">
+    <label style="display:block;font-size:11px;font-weight:700;color:#64748b;
+      text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">
+      Test Phone Number
+      <span style="font-size:10px;font-weight:400;text-transform:none;color:#94a3b8">
+        — used by the "Send Test SMS" button below
+      </span>
+    </label>
+    <input id="smsTestPhone" type="tel" placeholder="+254712345678"
+      style="width:100%;height:36px;padding:0 10px;border:1.5px solid #dce1ec;
+        border-radius:6px;font-family:inherit;font-size:13px;outline:none;
+        transition:border-color .14s;color:#131c2e;background:#fff"
+      onfocus="this.style.borderColor='#1a56db'"
+      onblur="this.style.borderColor='#dce1ec'">
+  </div>
+
+  <!-- ── Info box ── -->
+  <div style="
+    background:#eff4ff;border:1px solid #c7d9ff;border-left:3px solid #1a56db;
+    border-radius:6px;padding:11px 14px;font-size:12px;color:#1e3a8a;
+    line-height:1.75;margin-bottom:16px
+  ">
+    <strong>How to get your AT credentials:</strong><br>
+    1. Go to <a href="https://africastalking.com" target="_blank"
+       style="color:#1a56db;font-weight:600">africastalking.com</a>
+       → Create a free account<br>
+    2. Create an app (or use the Sandbox for testing)<br>
+    3. Copy your <strong>API Key</strong> and <strong>Username</strong>
+       from the AT dashboard → Settings → API Key<br>
+    4. Top up airtime in your AT wallet —
+       <strong>~KES 0.80 per SMS</strong> in Kenya
+  </div>
+
+  <!-- ── Buttons ── -->
+  <div style="display:flex;gap:9px;flex-wrap:wrap;align-items:center">
+    <button id="smsSaveBtn" onclick="CBE_SMS._saveSettingsExt()"
+      style="padding:7px 20px;background:#1a56db;color:#fff;border:none;
+        border-radius:6px;font-family:inherit;font-size:12.5px;font-weight:700;
+        cursor:pointer;display:inline-flex;align-items:center;gap:6px;
+        transition:background .14s"
+      onmouseover="this.style.background='#1447c0'"
+      onmouseout="this.style.background='#1a56db'">
+      💾 Save SMS Settings
+    </button>
+    <button onclick="CBE_SMS._testSMSExt()"
+      style="padding:7px 18px;background:#f0fdf4;color:#059669;
+        border:1.5px solid #bbf7d0;border-radius:6px;font-family:inherit;
+        font-size:12.5px;font-weight:700;cursor:pointer;
+        display:inline-flex;align-items:center;gap:6px;transition:all .14s"
+      onmouseover="this.style.background='#dcfce7'"
+      onmouseout="this.style.background='#f0fdf4'">
+      🧪 Send Test SMS
+    </button>
+    <button id="smsClearBtn" onclick="CBE_SMS._clearCredentials()"
+      style="padding:7px 14px;background:none;color:#94a3b8;
+        border:1.5px solid #e2e8f0;border-radius:6px;font-family:inherit;
+        font-size:12px;font-weight:600;cursor:pointer;
+        transition:all .14s"
+      onmouseover="this.style.color='#dc2626';this.style.borderColor='#fca5a5'"
+      onmouseout="this.style.color='#94a3b8';this.style.borderColor='#e2e8f0'">
+      🗑 Clear
+    </button>
+  </div>
+
+  <!-- ── Feedback message ── -->
+  <div id="smsSaveMsg"
+    style="font-size:12.5px;margin-top:10px;display:none;
+      padding:8px 12px;border-radius:6px;font-weight:500;line-height:1.5">
+  </div>
+
+  <!-- ── SMS logs mini-viewer ── -->
+  <div style="margin-top:20px">
+    <div style="display:flex;align-items:center;justify-content:space-between;
+      margin-bottom:8px">
+      <div style="font-size:11px;font-weight:700;color:#64748b;
+        text-transform:uppercase;letter-spacing:.4px">
+        Recent SMS Logs
+      </div>
+      <button onclick="CBE_SMS._loadLogsExt()"
+        style="font-size:11px;color:#1a56db;background:none;border:none;
+          cursor:pointer;font-family:inherit;font-weight:600;padding:0">
+        🔄 Refresh
+      </button>
+    </div>
+    <div id="smsLogsContainer" style="
+      background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:8px;
+      max-height:180px;overflow-y:auto;font-size:12px
+    ">
+      <div id="smsLogsInner" style="padding:10px 14px;color:#94a3b8;
+        text-align:center;font-style:italic">
+        Save settings to load recent logs.
+      </div>
+    </div>
+  </div>
+
+</div><!-- /smsSettingsSection -->
+
+
+<!--
+  ════════════════════════════════════════════════════════════════
+  Extended Settings UI helpers — add to your settings page <script>
+  or paste after your existing script block.
+  These are extension methods wired to the form above.
+  ════════════════════════════════════════════════════════════════
+-->
+<script>
+/* ── Extend CBE_SMS with Settings-page helpers ── */
+(function(){
+  if(!window.CBE_SMS){ console.warn('CBE_SMS not loaded'); return; }
+
+  /** Read schoolId from wherever your settings page stores it */
+  function _sid(){ return window._schoolId || sessionStorage.getItem('cbe_school_id'); }
+
+  /** Save with extended fields (senderId + testPhone) */
+  CBE_SMS._saveSettingsExt = async function(){
+    const apiKey   = document.getElementById('smsApiKey')?.value.trim();
+    const username = document.getElementById('smsUsername')?.value.trim();
+    const senderId = document.getElementById('smsSenderId')?.value.trim();
+    const testPhone= document.getElementById('smsTestPhone')?.value.trim();
+    const btn      = document.getElementById('smsSaveBtn');
+    if(!apiKey || !username){ _msg('⚠️ API Key and Username are required.','#dc2626','#fef2f2'); return; }
+    btn.disabled=true; btn.textContent='Saving…';
+    try{
+      const schoolId=_sid();
+      await CBE_SMS.saveATCredentials(schoolId, apiKey, username);
+      const db=firebase.firestore();
+      const extra={};
+      if(senderId)  extra.smsSenderId  = senderId;
+      if(testPhone) extra.smsTestPhone = testPhone;
+      if(Object.keys(extra).length){
+        await db.collection('settings').doc(schoolId).set(extra,{merge:true});
+      }
+      _setBadge(true);
+      _msg('✅ SMS settings saved successfully!','#059669','#f0fdf4');
+      CBE_SMS._loadLogsExt();
+    }catch(e){ _msg('❌ '+e.message,'#dc2626','#fef2f2'); }
+    btn.disabled=false; btn.textContent='💾 Save SMS Settings';
+  };
+
+  /** Test SMS using the phone in the test-phone field (no prompt) */
+  CBE_SMS._testSMSExt = async function(){
+    const schoolId=_sid();
+    let phone = document.getElementById('smsTestPhone')?.value.trim();
+    if(!phone){
+      phone=prompt('Enter a phone number to test:\n(Format: +254712345678)');
+      if(!phone) return;
+    }
+    const creds=await CBE_SMS.loadATCredentials(schoolId);
+    if(!creds){ alert('Save your AT credentials first.'); return; }
+    const sender= document.getElementById('smsSenderId')?.value.trim()||'';
+    try{
+      const res=await CBE_SMS.sendSMS(
+        creds.atApiKey, creds.atUsername,
+        CBE_SMS.normalisePhone(phone),
+        'CBE Mark Sheet test SMS ✅\nSMS integration is working correctly!\n— Your School System',
+        sender
+      );
+      const status=res?.SMSMessageData?.Recipients?.[0]?.status;
+      if(status==='Success'){
+        _msg('✅ Test SMS sent to '+phone,'#059669','#f0fdf4');
+      }else{
+        _msg('⚠️ AT responded: '+(res?.SMSMessageData?.Message||JSON.stringify(res?.SMSMessageData)),'#d97706','#fef3c7');
+      }
+    }catch(e){ _msg('❌ Failed: '+e.message,'#dc2626','#fef2f2'); }
+  };
+
+  /** Clear credentials from Firestore + reset the form */
+  CBE_SMS._clearCredentials = async function(){
+    if(!confirm('Remove saved SMS credentials for this school?')) return;
+    try{
+      const schoolId=_sid();
+      await firebase.firestore().collection('settings').doc(schoolId).update({
+        atApiKey:    firebase.firestore.FieldValue.delete(),
+        atUsername:  firebase.firestore.FieldValue.delete(),
+        smsSenderId: firebase.firestore.FieldValue.delete(),
+        smsTestPhone:firebase.firestore.FieldValue.delete(),
+        smsEnabled:  false,
+      });
+      ['smsApiKey','smsUsername','smsSenderId','smsTestPhone'].forEach(id=>{
+        const el=document.getElementById(id); if(el) el.value='';
+      });
+      _setBadge(false);
+      _msg('🗑 Credentials cleared.','#64748b','#f1f5f9');
+    }catch(e){ _msg('❌ '+e.message,'#dc2626','#fef2f2'); }
+  };
+
+  /** Load + render last 10 SMS logs for this school */
+  CBE_SMS._loadLogsExt = async function(){
+    const schoolId=_sid(); if(!schoolId) return;
+    const inner=document.getElementById('smsLogsInner');
+    if(inner) inner.innerHTML='<div style="padding:10px 14px;color:#94a3b8;text-align:center">Loading…</div>';
+    try{
+      const snap=await firebase.firestore()
+        .collection('smsLogs').doc(schoolId).collection('logs')
+        .orderBy('sentAt','desc').limit(10).get();
+      if(snap.empty){
+        if(inner) inner.innerHTML='<div style="padding:10px 14px;color:#94a3b8;text-align:center;font-style:italic">No SMS logs yet.</div>';
+        return;
+      }
+      const rows=[];
+      snap.forEach(d=>{
+        const l=d.data();
+        const when=l.sentAt?.toDate?l.sentAt.toDate().toLocaleString('en-KE',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}):'—';
+        const dot=l.status==='sent'?'#059669':l.status==='failed'?'#dc2626':'#d97706';
+        rows.push(`
+          <div style="display:flex;align-items:center;gap:8px;padding:7px 14px;
+            border-bottom:1px solid #f1f5f9;font-size:12px">
+            <span style="width:7px;height:7px;border-radius:50%;background:${dot};flex-shrink:0"></span>
+            <span style="flex:1;font-weight:600;color:#131c2e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+              ${l.studentName||'—'}
+            </span>
+            <span style="color:#94a3b8;font-size:11px;white-space:nowrap">${l.phone||'—'}</span>
+            <span style="color:#64748b;font-size:11px;white-space:nowrap">${l.term||''} ${l.year||''}</span>
+            <span style="color:${dot};font-weight:700;font-size:11px;white-space:nowrap">${l.status}</span>
+            <span style="color:#94a3b8;font-size:11px;white-space:nowrap">${when}</span>
+          </div>`);
+      });
+      if(inner) inner.innerHTML=rows.join('');
+    }catch(e){
+      if(inner) inner.innerHTML=`<div style="padding:10px 14px;color:#dc2626">Error: ${e.message}</div>`;
+    }
+  };
+
+  /** Helper: return the saved senderId (useful when opening send modal) */
+  CBE_SMS.loadSenderId = async function(schoolId){
+    try{
+      const snap=await firebase.firestore().collection('settings').doc(schoolId).get();
+      return snap.exists ? (snap.data().smsSenderId||'') : '';
+    }catch(_){ return ''; }
+  };
+
+  /* internal helpers */
+  function _msg(txt, color, bg){
+    const el=document.getElementById('smsSaveMsg');
+    if(!el) return;
+    el.textContent=txt; el.style.color=color; el.style.background=bg;
+    el.style.border=`1px solid ${color}33`;
+    el.style.display='block';
+    setTimeout(()=>{ el.style.display='none'; },5000);
+  }
+  function _setBadge(ok){
+    const b=document.getElementById('smsStatusBadge');
+    if(!b) return;
+    b.textContent  = ok ? '✅ Configured' : '⚙️ Not configured';
+    b.style.background = ok ? '#d1fae5' : '#f1f5f9';
+    b.style.color      = ok ? '#065f46' : '#64748b';
+    b.style.border     = ok ? '1px solid #6ee7b7' : '1px solid #e2e8f0';
+  }
+
+  /* Auto-populate form on load */
+  document.addEventListener('DOMContentLoaded', ()=>{
+    const tryInit=setInterval(async ()=>{
+      const sid=_sid();
+      if(!sid) return;
+      clearInterval(tryInit);
+      try{
+        const creds=await CBE_SMS.loadATCredentials(sid);
+        if(creds){
+          const k=document.getElementById('smsApiKey');
+          const u=document.getElementById('smsUsername');
+          if(k) k.value=creds.atApiKey;
+          if(u) u.value=creds.atUsername;
+          _setBadge(true);
+          /* load sender ID + test phone */
+          const snap=await firebase.firestore().collection('settings').doc(sid).get();
+          if(snap.exists){
+            const d=snap.data();
+            const si=document.getElementById('smsSenderId');
+            const tp=document.getElementById('smsTestPhone');
+            if(si&&d.smsSenderId)  si.value=d.smsSenderId;
+            if(tp&&d.smsTestPhone) tp.value=d.smsTestPhone;
+          }
+          CBE_SMS._loadLogsExt();
+        }
+      }catch(_){}
+    }, 400);
+  });
+})();
+</script>
