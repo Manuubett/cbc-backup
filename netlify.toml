@@ -245,6 +245,7 @@
       https://www.gstatic.com
       https://www.gstatic.com/firebasejs/
       https://cdn.onesignal.com;
+       https://static.cloudflareinsights.com;
     style-src 'self' 'unsafe-inline'
       https://fonts.googleapis.com;
     img-src 'self' data: blob: https:;
@@ -253,17 +254,18 @@
     frame-src 'none';
     object-src 'none';
     connect-src 'self'
-      https://*.googleapis.com
-      https://*.firebaseio.com
-      wss://*.firebaseio.com
-      https://identitytoolkit.googleapis.com
-      https://securetoken.googleapis.com
-      https://onesignal.com
-      https://*.onesignal.com
-      https://api.telegram.org
-      https://instasend-backend.onrender.com
-      https://paynecta.co.ke;'''
-
+  https://*.googleapis.com
+  https://*.firebaseio.com
+  wss://*.firebaseio.com
+  https://identitytoolkit.googleapis.com
+  https://securetoken.googleapis.com
+  https://onesignal.com
+  https://*.onesignal.com
+  https://api.telegram.org
+  https://instasend-backend.onrender.com
+  https://paynecta.co.ke
+  https://api.africastalking.com
+  https://api.ipify.org;'''
 # ── Sensitive pages — no cache, no index ──
 [[headers]]
   for = "/admin.html"
