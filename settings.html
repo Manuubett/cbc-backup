@@ -51,6 +51,8 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .sec-card:nth-child(3){animation-delay:.1s}
 .sec-card:nth-child(4){animation-delay:.15s}
 .sec-card:nth-child(5){animation-delay:.2s}
+.sec-card:nth-child(6){animation-delay:.25s}
+.sec-card:nth-child(7){animation-delay:.3s}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .sec-head{padding:14px 20px;border-bottom:1px solid var(--border);background:var(--surf2);display:flex;align-items:center;justify-content:space-between}
 .sec-title{font-family:'Familjen Grotesk',sans-serif;font-size:14px;font-weight:800;display:flex;align-items:center;gap:8px}
@@ -96,7 +98,7 @@ textarea.inp{height:auto;padding:9px 11px;resize:vertical;min-height:70px}
 .stream-tag{display:inline-flex;align-items:center;gap:5px;padding:3px 10px 3px 12px;background:var(--alight);color:var(--accent);border-radius:20px;font-size:12px;font-weight:600}
 .stream-tag button{background:none;border:none;cursor:pointer;color:var(--text3);font-size:13px;line-height:1;padding:0;margin-left:2px;transition:color .12s}
 .stream-tag button:hover{color:var(--red)}
-.add-stream{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border:1.5px dashed var(--border);border-radius:20px;font-size:12px;color:var(--text3);cursor:pointer;background:none;font-family:inherit;transition:all .12s}
+.add-stream{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border:1.5px dashed var(--border);border-radius:20px;font-size:12px;color:var(--text3);cursor:pointer;background:none;font-family:inherit;transition:all .12px}
 .add-stream:hover{border-color:var(--accent);color:var(--accent)}
 
 /* ── PREVIEW CARD ── */
@@ -173,7 +175,7 @@ textarea.inp{height:auto;padding:9px 11px;resize:vertical;min-height:70px}
 
 <div id="pageContent" style="display:none">
 
-<!-- OWNER MESSAGE BANNER (shown when owner sends a payment message) -->
+<!-- OWNER MESSAGE BANNER -->
 <div id="ownerMsgBanner">
   <div class="omsg-inner">
     <div class="omsg-icon">📩</div>
@@ -188,7 +190,7 @@ textarea.inp{height:auto;padding:9px 11px;resize:vertical;min-height:70px}
   </div>
 </div>
 
-<!-- FIRST SETUP BANNER (shown when schoolSetupDone is not set) -->
+<!-- FIRST SETUP BANNER -->
 <div id="setupBanner">
   <div class="sbanner-inner">
     <div class="sbanner-txt">
@@ -360,6 +362,22 @@ textarea.inp{height:auto;padding:9px 11px;resize:vertical;min-height:70px}
     </div>
   </div>
 
+  <!-- ── SECTION 7: SMS SETTINGS ── -->
+  <div class="sec-card">
+    <div class="sec-head">
+      <div class="sec-title">📱 SMS Settings</div>
+      <span style="font-size:11.5px;color:var(--text3)">Africa's Talking — send results to parents</span>
+    </div>
+    <div class="sec-body" style="padding:0">
+      <div id="smsSettingsMount" style="padding:20px">
+        <div style="text-align:center;padding:20px;color:var(--text3);font-size:12.5px">
+          <div style="font-size:24px;margin-bottom:8px">📱</div>
+          Loading SMS settings…
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div><!-- /outer -->
 
 <!-- SAVE BAR -->
@@ -381,6 +399,10 @@ textarea.inp{height:auto;padding:9px 11px;resize:vertical;min-height:70px}
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+
+<!-- ✅ sms-integration.js MUST load before inline script -->
+<script src="sms-integration.js"></script>
+
 <script>
 firebase.initializeApp({
   apiKey:"AIzaSyBdabXqlBQ-6yVNJKdu8Zhb9Cm_-59_u24",
@@ -396,8 +418,11 @@ const auth = firebase.auth();
 const el = id => document.getElementById(id);
 
 // ── State ──
-let streams = { 'Grade 1':[], 'Grade 2':[], 'Grade 3':[], 'Grade 4':[], 'Grade 5':[], 'Grade 6':[], 'Grade 7':[], 'Grade 8':[], 'Grade 9':[], 'Grade 10':[], 'Grade 11':[], 'Grade 12':[], 'Grade 10':[], 'Grade 11':[], 'Grade 12':[], 'Grade 10':[], 'Grade 11':[], 'Grade 12':[], 'Grade 10':[], 'Grade 11':[], 'Grade 12':[], 'Grade 10':[], 'Grade 11':[], 'Grade 12':[] };
-let logoBase64 = null; // for file upload preview only
+let streams = {
+  'Grade 1':[],'Grade 2':[],'Grade 3':[],'Grade 4':[],'Grade 5':[],'Grade 6':[],
+  'Grade 7':[],'Grade 8':[],'Grade 9':[],'Grade 10':[],'Grade 11':[],'Grade 12':[]
+};
+let logoBase64 = null;
 let currentLogoUrl = '';
 
 // ── Color presets ──
@@ -406,7 +431,7 @@ const PRESETS = [
   '#d97706','#dc2626','#be185d','#0f766e','#1d4ed8','#6d28d9'
 ];
 
-// ── Auth gate — admin only ── (ORIGINAL — UNCHANGED)
+// ── Auth gate — admin only ──
 auth.onAuthStateChanged(async u => {
   if(!u){ window.location.href='admin.html'; return; }
   try{
@@ -420,13 +445,30 @@ auth.onAuthStateChanged(async u => {
     el('pageContent').style.display='block';
     buildColorPresets();
     buildStreamsGrid();
-    buildCountyDropdown(); // ← added: populate county dropdown
-    // ── ADDITIONS (do not affect existing functionality) ──
-    _currentUid = u.uid; // must be set BEFORE loadSettings so path is correct
-    window._schoolId = u.uid; // session-scoped only — never persisted to localStorage
+    buildCountyDropdown();
+    _currentUid = u.uid;
+    window._schoolId = u.uid;
     loadSettings();
-    checkFirstSetup(snap.data());          // show setup banner if needed
-    listenOwnerMessages(u.uid);            // real-time owner message listener
+    checkFirstSetup(snap.data());
+    listenOwnerMessages(u.uid);
+
+    // ── Mount SMS settings section ──
+    const smsMount = el('smsSettingsMount');
+    if(smsMount){
+      if(window.CBE_SMS){
+        smsMount.innerHTML = CBE_SMS.settingsHTML();
+        CBE_SMS.initSettingsUI(u.uid);
+      } else {
+        smsMount.innerHTML = `
+          <div style="padding:16px;background:#fef3c7;border:1px solid #fcd34d;
+            border-left:3px solid #f59e0b;border-radius:6px;font-size:12.5px;color:#92400e">
+            ⚠️ SMS module not loaded — make sure
+            <code style="background:#fde68a;padding:1px 5px;border-radius:3px">sms-integration.js</code>
+            is deployed in the same folder as this page.
+          </div>`;
+      }
+    }
+
   }catch(e){
     window.location.href='admin.html';
   }
@@ -462,7 +504,8 @@ function onColorHexInput(val){
 
 // ── Build streams grid ──
 function buildStreamsGrid(){
-  const grades = ['Grade 1','Grade 2','Grade 3','Grade 4','Grade 5','Grade 6','Grade 7','Grade 8','Grade 9','Grade 10','Grade 11','Grade 12'];
+  const grades = ['Grade 1','Grade 2','Grade 3','Grade 4','Grade 5','Grade 6',
+                  'Grade 7','Grade 8','Grade 9','Grade 10','Grade 11','Grade 12'];
   el('streamsGrid').innerHTML = grades.map(g=>`
     <div class="grade-row">
       <div class="grade-row-head">
@@ -488,10 +531,8 @@ function refreshGradeRow(grade){
   if(!body) return;
   body.innerHTML = renderStreamTags(grade) +
     `<button class="add-stream" onclick="addStream('${grade}')">+ Add Stream</button>`;
-  // update count
   const head = body.closest('.grade-row').querySelector('.grade-row-head span:last-child');
   if(head) head.textContent = `${(streams[grade]||[]).length} streams`;
-  // sync to shared localStorage so other pages benefit immediately
   syncStreamsCache();
 }
 
@@ -527,7 +568,7 @@ function handleLogoFile(e){
   const reader = new FileReader();
   reader.onload = ev => {
     logoBase64 = ev.target.result;
-    currentLogoUrl = ev.target.result; // use base64 directly
+    currentLogoUrl = ev.target.result;
     el('setLogoUrl').value = '';
     showLogoPreview(ev.target.result);
     updatePreview();
@@ -578,7 +619,6 @@ function updatePreview(){
 // ── Load existing settings ──
 async function loadSettings(){
   try{
-    // Load THIS school's settings — keyed by admin uid, not shared 'school' doc
     const snap = await db.collection('settings').doc(_currentUid).get();
     if(!snap.exists){ toast('No settings saved yet — fill in and save below','info'); return; }
     const s = snap.data();
@@ -586,7 +626,6 @@ async function loadSettings(){
     el('setName').value      = s.name      || '';
     el('setShortName').value = s.shortName || '';
     el('setMotto').value     = s.motto     || '';
-    // county & subCounty handled by dropdown patch
     _patchCountyAfterLoad(s.county||'', s.subCounty||'');
     el('setPrincipal').value = s.principal || '';
     el('setYear').value      = s.currentYear || 2026;
@@ -601,7 +640,11 @@ async function loadSettings(){
     }
 
     if(s.streams && typeof s.streams === 'object'){
-      streams = { 'Grade 1':[], 'Grade 2':[], 'Grade 3':[], 'Grade 4':[], 'Grade 5':[], 'Grade 6':[], 'Grade 7':[], 'Grade 8':[], 'Grade 9':[], 'Grade 10':[], 'Grade 11':[], 'Grade 12':[], 'Grade 10':[], 'Grade 11':[], 'Grade 12':[], 'Grade 10':[], 'Grade 11':[], 'Grade 12':[], 'Grade 10':[], 'Grade 11':[], 'Grade 12':[], 'Grade 10':[], 'Grade 11':[], 'Grade 12':[], 'Grade 10':[], 'Grade 11':[], 'Grade 12':[], ...s.streams };
+      streams = {
+        'Grade 1':[],'Grade 2':[],'Grade 3':[],'Grade 4':[],'Grade 5':[],'Grade 6':[],
+        'Grade 7':[],'Grade 8':[],'Grade 9':[],'Grade 10':[],'Grade 11':[],'Grade 12':[],
+        ...s.streams
+      };
     }
     buildStreamsGrid();
     updatePreview();
@@ -637,19 +680,14 @@ async function saveSettings(){
       updatedAt:   firebase.firestore.FieldValue.serverTimestamp()
     };
 
-    // Save settings
     await db.collection('settings').doc(_currentUid).set(data, {merge:true});
 
-    // Clear cache
     localStorage.removeItem('cbe_school_settings');
     syncStreamsCache();
-
-    // 🔥 MARK SETUP COMPLETE LOCALLY (for modal)
     localStorage.setItem('cbe_school_setup_done', 'true');
 
     toast('✅ Settings saved — redirecting to dashboard…');
 
-    // ── Sync to approvedSchools ──
     if(_currentUid){
       db.collection('approvedSchools').doc(_currentUid).get().then(doc => {
         const payload = {
@@ -661,16 +699,13 @@ async function saveSettings(){
           status:     doc.exists && doc.data().status ? doc.data().status : 'pending',
           updatedAt:  firebase.firestore.FieldValue.serverTimestamp()
         };
-
         if(!doc.exists || !doc.data().detectedAt){
           payload.detectedAt = firebase.firestore.FieldValue.serverTimestamp();
         }
-
         return db.collection('approvedSchools').doc(_currentUid).set(payload, {merge:true});
       }).catch(()=>{});
     }
 
-    // ── Update user profile ──
     if(_currentUid){
       try{
         await db.collection('users').doc(_currentUid).update({
@@ -681,7 +716,6 @@ async function saveSettings(){
         });
       }catch(_){}
 
-      // Log first setup
       if(_isFirstSetup){
         db.collection('ownerLog').add({
           type:'school_setup',
@@ -692,16 +726,12 @@ async function saveSettings(){
           color:'green',
           createdAt:firebase.firestore.FieldValue.serverTimestamp()
         }).catch(()=>{});
-
         _isFirstSetup = false;
         el('setupBanner').style.display = 'none';
       }
     }
 
-    // 🔥 SMALL DELAY → ENSURE localStorage SAVED BEFORE REDIRECT
-    setTimeout(()=>{ 
-      window.location.href='admin.html'; 
-    }, 800);
+    setTimeout(()=>{ window.location.href='admin.html'; }, 800);
 
   }catch(e){
     toast('Save failed: '+e.message,'err');
@@ -713,7 +743,6 @@ async function saveSettings(){
 
 // ── Logout ──
 async function doLogout(){
-  // Clear all school-specific cache on logout
   Object.keys(localStorage)
     .filter(k=>k.startsWith('cbe_school_settings_'))
     .forEach(k=>localStorage.removeItem(k));
@@ -723,15 +752,13 @@ async function doLogout(){
 }
 
 // ════════════════════════════════════════════
-// ADDITIONS — new functionality below
-// (original code above is untouched)
+// ADDITIONS
 // ════════════════════════════════════════════
 
 let _currentUid = null;
 let _isFirstSetup = false;
 let _ownerMsgUnsub = null;
 
-// ── First setup check ──
 function checkFirstSetup(profile){
   if(!profile.schoolSetupDone){
     _isFirstSetup = true;
@@ -739,24 +766,19 @@ function checkFirstSetup(profile){
   }
 }
 
-// ── Real-time owner message listener ──
-// Listens to approvedSchools/{uid} in real-time
-// Shows banner immediately when owner sends/updates a message
 function listenOwnerMessages(uid){
-  if(_ownerMsgUnsub) _ownerMsgUnsub(); // clear previous listener
+  if(_ownerMsgUnsub) _ownerMsgUnsub();
   _ownerMsgUnsub = db.collection('approvedSchools').doc(uid)
     .onSnapshot(snap => {
       if(!snap.exists) return;
       const d = snap.data();
       if(d.status === 'suspended'){
-        // Suspended — show blocking message, force logout
         showOwnerMessage(d, true);
         return;
       }
       if(d.message && d.status !== 'approved'){
         showOwnerMessage(d, false);
       } else {
-        // Approved or no message — hide banner
         el('ownerMsgBanner').style.display = 'none';
       }
     }, ()=>{});
@@ -773,7 +795,6 @@ function showOwnerMessage(d, isSuspended){
   }
   el('ownerMsgBanner').style.display = 'block';
   if(isSuspended){
-    // Add a stronger blocked message if suspended
     el('ownerMsgBanner').style.background = '#450a0a';
     document.querySelector('.omsg-title').textContent = '🚫 Account Suspended';
   }
@@ -849,11 +870,6 @@ function onCountyChange(){
     subs.map(s => `<option value="${s}">${s}</option>`).join('');
 }
 
-// ── Update loadSettings to pre-select county dropdown ──
-// We override the county/subCounty assignment from the original loadSettings
-// by patching after the fact via a post-load hook
-const _origLoadSettings = loadSettings;
-// Re-declare after original to handle dropdown selection
 function _patchCountyAfterLoad(county, subCounty){
   if(county){
     el('setCounty').value = county;
