@@ -19,18 +19,12 @@
   --r:10px;--r2:6px;
 }
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);font-size:13px;min-height:100vh}
-
-/* LOADING */
 #screenLoad{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;z-index:900}
 #screenLoad .spin{width:26px;height:26px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:sp .65s linear infinite}
 #screenLoad p{font-size:12px;color:var(--text3);font-weight:600;letter-spacing:.3px}
 @keyframes sp{to{transform:rotate(360deg)}}
-
-/* DASHBOARD */
 #screenDash{display:none}
 #screenDash.show{display:block}
-
-/* header */
 header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:var(--sh)}
 .logo{display:flex;align-items:center;gap:9px}
 .lm{width:30px;height:30px;background:var(--accent);border-radius:7px;display:grid;place-items:center;color:#fff;font-size:15px}
@@ -38,8 +32,6 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .ls{font-size:10px;color:var(--text3)}
 .hdr-r{display:flex;align-items:center;gap:8px}
 .admin-badge{background:var(--alight);color:var(--accent);border:1px solid #c7d9ff;font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;letter-spacing:.3px}
-
-/* buttons */
 .btn{display:inline-flex;align-items:center;gap:5px;padding:5px 13px;border-radius:var(--r2);font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;border:none;transition:all .14s;white-space:nowrap;height:32px}
 .btn-primary{background:var(--accent);color:#fff}
 .btn-primary:hover{background:var(--ah)}
@@ -47,11 +39,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .btn-outline:hover{background:var(--bg);color:var(--text)}
 .btn-sm{padding:3px 9px;font-size:11.5px;height:26px}
 .btn:disabled{opacity:.5;cursor:not-allowed}
-
-/* outer */
 .outer{padding:20px 24px;max-width:1200px;margin:0 auto}
-
-/* stats */
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin-bottom:22px}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;box-shadow:var(--sh);display:flex;flex-direction:column;gap:4px;animation:fadeUp .3s ease both}
 .stat-card:nth-child(2){animation-delay:.05s}
@@ -63,10 +51,8 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .stat-lbl{font-size:10.5px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
 .s-active .stat-val{color:var(--green)}
 .s-pending .stat-val{color:var(--amber)}
-.s-suspended .stat-val,.s-suspended .stat-val{color:var(--red)}
+.s-suspended .stat-val{color:var(--red)}
 .s-results .stat-val{color:var(--accent)}
-
-/* sec head */
 .sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:10px}
 .sec-title{font-family:'Familjen Grotesk',sans-serif;font-size:16px;font-weight:800}
 .sec-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -76,11 +62,9 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .search-wrap::before{content:'🔍';position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:12px;pointer-events:none;opacity:.5}
 .fsel{height:32px;padding:0 9px;border:1.5px solid var(--border);border-radius:var(--r2);font-family:inherit;font-size:12.5px;color:var(--text);background:var(--surface);cursor:pointer;outline:none}
 .fsel:focus{border-color:var(--accent)}
-
-/* table */
 .table-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:fadeUp .35s .1s ease both}
 .tbl-scroll{overflow-x:auto}
-table{border-collapse:collapse;width:100%;min-width:700px}
+table{border-collapse:collapse;width:100%;min-width:820px}
 thead th{background:#1e2d4d;color:#c8d8f8;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:0 14px;text-align:left;height:34px;white-space:nowrap;border-bottom:1px solid #2d3e61}
 thead th.tc{text-align:center}
 tbody td{padding:0 14px;height:46px;border-bottom:1px solid var(--border);font-size:12.5px;vertical-align:middle}
@@ -89,16 +73,12 @@ tbody tr:hover td{background:var(--surf2)}
 tbody td.tc{text-align:center}
 .t-name{font-weight:700}
 .t-email{font-size:11.5px;color:var(--text3)}
-.t-meta{font-size:11.5px;color:var(--text2)}
-
-/* status badge */
+.t-meta{font-size:12.5px;color:var(--text2)}
 .sbadge{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:20px;font-size:10.5px;font-weight:700}
 .sbadge::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0}
 .sbadge.active{background:var(--green-bg);color:var(--green-tx)}.sbadge.active::before{background:var(--green)}
 .sbadge.pending{background:var(--amber-bg);color:var(--amber-tx)}.sbadge.pending::before{background:var(--amber)}
 .sbadge.suspended{background:var(--red-bg);color:var(--red-tx)}.sbadge.suspended::before{background:var(--red)}
-
-/* action buttons */
 .act-wrap{display:flex;align-items:center;gap:5px;justify-content:flex-end}
 .act-btn{padding:3px 10px;border-radius:5px;font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;border:none;transition:all .12s;white-space:nowrap}
 .act-approve{background:var(--green-bg);color:var(--green-tx)}.act-approve:hover{background:#a7f3d0}
@@ -106,12 +86,8 @@ tbody td.tc{text-align:center}
 .act-activate{background:var(--alight);color:var(--accent)}.act-activate:hover{background:#c7d9ff}
 .act-edit{background:var(--surf2);color:var(--text2);border:1px solid var(--border)}.act-edit:hover{background:var(--bg)}
 .act-delete{background:none;color:var(--text3);border:none;font-size:14px;padding:3px 6px;line-height:1}.act-delete:hover{color:var(--red)}
-
-/* empty row */
 .empty-row td{text-align:center;padding:44px;color:var(--text3)}
 .empty-icon{font-size:30px;margin-bottom:8px}
-
-/* MODALS */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);backdrop-filter:blur(4px);z-index:500;align-items:center;justify-content:center;padding:20px}
 .overlay.open{display:flex}
 .modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh2);width:100%;max-width:440px;animation:modalIn .22s cubic-bezier(.22,1,.36,1) both}
@@ -128,13 +104,9 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
 .mfield label{display:block;font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
 .confirm-icon{font-size:36px;text-align:center;margin-bottom:10px}
 .confirm-msg{font-size:13px;color:var(--text2);text-align:center;line-height:1.7}
-
-/* alert (used in add teacher modal) */
 .alert{display:none;align-items:flex-start;gap:8px;padding:9px 12px;border-radius:var(--r2);font-size:12px;font-weight:500;line-height:1.5;margin-bottom:14px}
 .alert.show{display:flex}
 .alert.err{background:var(--red-bg);border:1px solid #fca5a5;color:var(--red-tx)}
-
-/* PENDING TEACHERS BANNER */
 .pending-banner{background:var(--surface);border:1.5px solid #fcd34d;border-left:4px solid var(--amber);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:20px;overflow:hidden;animation:fadeUp .3s ease}
 .pb-head{padding:11px 18px;background:var(--amber-bg);display:flex;align-items:center;justify-content:space-between;gap:8px}
 .pb-title{font-family:'Familjen Grotesk',sans-serif;font-size:13.5px;font-weight:800;color:var(--amber-tx);display:flex;align-items:center;gap:7px}
@@ -152,19 +124,13 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
 .pb-approve:hover{background:#a7f3d0}
 .pb-reject{padding:5px 10px;border-radius:5px;font-family:inherit;font-size:11.5px;font-weight:700;cursor:pointer;background:var(--red-bg);color:var(--red-tx);border:none;transition:all .12s}
 .pb-reject:hover{background:#fecaca}
-
-/* REASSIGN CLASS MODAL */
 .reassign-field{margin-bottom:12px}
 .reassign-field label{display:block;font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
-
-/* ══ PAYMENT GATE OVERLAY ══ */
-#paymentOverlay{
-  display:none;position:fixed;inset:0;z-index:800;
-  background:rgba(6,12,28,.78);
-  backdrop-filter:blur(20px) saturate(.35);
-  -webkit-backdrop-filter:blur(20px) saturate(.35);
-  align-items:center;justify-content:center;padding:20px;
-}
+/* phone badge */
+.phone-badge{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-family:monospace;color:var(--green-tx);background:var(--green-bg);padding:1px 7px;border-radius:4px;letter-spacing:.2px}
+.phone-missing{font-size:11px;color:#cbd5e1;font-style:italic}
+/* ══ PAYMENT GATE ══ */
+#paymentOverlay{display:none;position:fixed;inset:0;z-index:800;background:rgba(6,12,28,.78);backdrop-filter:blur(20px) saturate(.35);-webkit-backdrop-filter:blur(20px) saturate(.35);align-items:center;justify-content:center;padding:20px}
 #paymentOverlay.show{display:flex}
 .pov-card{background:#fff;border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.5);width:100%;max-width:400px;overflow:hidden;animation:povIn .35s cubic-bezier(.22,1,.36,1) both}
 @keyframes povIn{from{opacity:0;transform:scale(.94) translateY(20px)}to{opacity:1;transform:none}}
@@ -182,38 +148,16 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
 .pov-wa-btn:hover{background:#15803d}
 .pov-logout-btn{padding:9px 14px;border-radius:8px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;background:none;border:1.5px solid #e2e8f0;color:#94a3b8;transition:all .14s}
 .pov-logout-btn:hover{border-color:#cbd5e1;color:#64748b}
-
-/* ── Expiry countdown bar (shows inside payment overlay) ── */
-#expiryCountdown{
-  display:none;background:#0f172a;border-top:1px solid rgba(255,255,255,.08);
-  padding:10px 20px;text-align:center;font-size:12px;color:rgba(255,255,255,.6);
-}
+#expiryCountdown{display:none;background:#0f172a;border-top:1px solid rgba(255,255,255,.08);padding:10px 20px;text-align:center;font-size:12px;color:rgba(255,255,255,.6)}
 #expiryCountdown.show{display:block}
 #expiryCountdown strong{color:#f59e0b;font-weight:700}
-
-/* ── Live subscription status bar (shows when active, near expiry) ── */
-#subStatusBar{
-  display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;
-  background:#7c2d12;border-top:2px solid #f97316;
-  padding:8px 20px;font-size:12px;color:#fed7aa;font-weight:600;
-  align-items:center;justify-content:space-between;gap:12px;
-}
+#subStatusBar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;background:#7c2d12;border-top:2px solid #f97316;padding:8px 20px;font-size:12px;color:#fed7aa;font-weight:600;align-items:center;justify-content:space-between;gap:12px}
 #subStatusBar.show{display:flex}
 #subStatusBar .sub-timer{color:#fbbf24;font-family:'Familjen Grotesk',sans-serif;font-size:14px;font-weight:800}
 #subStatusBar .sub-renew{padding:4px 14px;background:#f97316;color:#fff;border:none;border-radius:5px;cursor:pointer;font-family:inherit;font-size:11.5px;font-weight:700}
 #subStatusBar .sub-renew:hover{background:#ea580c}
-
-/* ── Renewal detected banner ── */
-#renewalDetectedBanner{
-  display:none;position:fixed;top:20px;left:50%;transform:translateX(-50%);
-  background:#064e3b;color:#ecfdf5;border:1.5px solid #10b981;
-  border-radius:10px;padding:12px 24px;font-size:13px;font-weight:700;
-  z-index:900;box-shadow:0 8px 24px rgba(0,0,0,.3);
-  animation:slideDown .3s ease;
-}
+#renewalDetectedBanner{display:none;position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#064e3b;color:#ecfdf5;border:1.5px solid #10b981;border-radius:10px;padding:12px 24px;font-size:13px;font-weight:700;z-index:900;box-shadow:0 8px 24px rgba(0,0,0,.3);animation:slideDown .3s ease}
 @keyframes slideDown{from{opacity:0;transform:translateX(-50%) translateY(-12px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-
-/* toast */
 #tc{position:fixed;top:62px;right:16px;z-index:999;display:flex;flex-direction:column;gap:6px}
 .t{display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:var(--r2);font-size:12.5px;font-weight:500;box-shadow:var(--sh2);animation:tin .25s ease;min-width:210px}
 .t.ok{background:#064e3b;color:#ecfdf5;border-left:3px solid #10b981}
@@ -229,22 +173,19 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
 <div id="tc"></div>
 <div id="renewalDetectedBanner">🎉 Renewal detected — restoring access…</div>
 
-<!-- Live subscription warning bar (shown when expiry < 7 days away) -->
 <div id="subStatusBar">
   <span>⚠️ Your subscription expires in <span class="sub-timer" id="subTimerText">—</span> — renew now to avoid disruption.</span>
   <a class="sub-renew" href="/renew?from=statusbar">🔄 Renew Now</a>
 </div>
 
-<!-- LOADING -->
 <div id="screenLoad">
   <div class="spin"></div>
   <p>VERIFYING ACCESS…</p>
 </div>
 
-<!-- DASHBOARD -->
 <div id="screenDash">
 
-  <!-- PAYMENT GATE OVERLAY -->
+  <!-- PAYMENT GATE -->
   <div id="paymentOverlay">
     <div class="pov-card">
       <div class="pov-top">
@@ -256,13 +197,11 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
         <p class="pov-exp-msg" id="povMsgText">Your subscription has expired. Renew now to continue using the system — your data is safe.</p>
         <a class="pov-renew-btn" id="povRenewBtn" href="/renew?from=guard">🔄 Renew Subscription Now →</a>
         <div style="text-align:center;margin-bottom:16px">
-          <a href="https://wa.me/254704518130?text=Hello%2C%20I%20need%20help%20renewing%20my%20CBE%20Mark%20Sheet%20subscription."
-             target="_blank" class="pov-wa-btn" style="display:inline-flex;width:auto;padding:8px 20px;font-size:12px">
+          <a href="https://wa.me/254704518130?text=Hello%2C%20I%20need%20help%20renewing%20my%20CBE%20Mark%20Sheet%20subscription." target="_blank" class="pov-wa-btn" style="display:inline-flex;width:auto;padding:8px 20px;font-size:12px">
             💬 Need help? WhatsApp us
           </a>
         </div>
       </div>
-      <!-- Expiry countdown shown inside gate when subscription is expired -->
       <div id="expiryCountdown"></div>
       <div class="pov-actions" style="padding-top:0">
         <button class="pov-logout-btn" style="width:100%;text-align:center" onclick="doLogout()">← Sign out</button>
@@ -283,6 +222,12 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
           <div class="mfield"><label>Last Name</label><input class="minp" type="text" id="eLast"></div>
         </div>
         <div class="mfield"><label>TSC Number</label><input class="minp" type="text" id="eTSC" placeholder="Optional"></div>
+        <div class="mfield">
+          <label>Parent / Guardian Phone
+            <span style="font-size:10px;font-weight:400;text-transform:none;color:var(--text3)"> — for SMS results delivery</span>
+          </label>
+          <input class="minp" type="tel" id="eParentPhone" placeholder="+254712345678">
+        </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
           <div class="mfield">
             <label>Grade</label>
@@ -291,9 +236,7 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
               <option>Grade 1</option><option>Grade 2</option><option>Grade 3</option>
               <option>Grade 4</option><option>Grade 5</option><option>Grade 6</option>
               <option>Grade 7</option><option>Grade 8</option><option>Grade 9</option>
-              <option>Grade 10</option>
-<option>Grade 11</option>
-<option>Grade 12</option>
+              <option>Grade 10</option><option>Grade 11</option><option>Grade 12</option>
             </select>
           </div>
           <div class="mfield">
@@ -385,9 +328,7 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
             <option>Grade 1</option><option>Grade 2</option><option>Grade 3</option>
             <option>Grade 4</option><option>Grade 5</option><option>Grade 6</option>
             <option>Grade 7</option><option>Grade 8</option><option>Grade 9</option>
-            <option>Grade 10</option>
-<option>Grade 11</option>
-<option>Grade 12</option>
+            <option>Grade 10</option><option>Grade 11</option><option>Grade 12</option>
           </select>
         </div>
         <div class="reassign-field">
@@ -443,7 +384,7 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
       </div>
     </div>
 
-    <!-- TABLE -->
+    <!-- TABLE SECTION -->
     <div class="sec-head">
       <div class="sec-title">Teachers</div>
       <div class="sec-tools">
@@ -461,12 +402,16 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
           <option>Grade 1</option><option>Grade 2</option><option>Grade 3</option>
           <option>Grade 4</option><option>Grade 5</option><option>Grade 6</option>
           <option>Grade 7</option><option>Grade 8</option><option>Grade 9</option>
-          <option>Grade 10</option>
-<option>Grade 11</option>
-<option>Grade 12</option>
+          <option>Grade 10</option><option>Grade 11</option><option>Grade 12</option>
         </select>
         <button class="btn btn-outline btn-sm" onclick="loadTeachers()">🔄 Refresh</button>
         <button class="btn btn-outline btn-sm" onclick="copyRegLink()" title="Copy self-registration link for teachers">🔗 Reg Link</button>
+        <!-- ── SMS BUTTON ── -->
+        <button class="btn btn-sm" id="sendSmsBtn" onclick="sendResultsSMS()"
+          style="color:#059669;border:1.5px solid #bbf7d0;background:#f0fdf4"
+          title="Send term results to parents via SMS">
+          📱 Send Results SMS
+        </button>
         <button class="btn btn-primary btn-sm" onclick="openAddTeacher()">➕ Add Teacher</button>
       </div>
     </div>
@@ -480,13 +425,14 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
               <th>Teacher</th>
               <th>TSC No.</th>
               <th>Class</th>
+              <th>Parent Phone</th>
               <th class="tc">Status</th>
               <th>Registered</th>
               <th class="tc">Actions</th>
             </tr>
           </thead>
           <tbody id="teacherTbody">
-            <tr class="empty-row"><td colspan="7"><div class="empty-icon">⏳</div><div>Loading…</div></td></tr>
+            <tr class="empty-row"><td colspan="8"><div class="empty-icon">⏳</div><div>Loading…</div></td></tr>
           </tbody>
         </table>
       </div>
@@ -509,6 +455,12 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
         </div>
         <div class="mfield"><label>Email Address *</label><input class="minp" type="email" id="atEmail" placeholder="teacher@school.ac.ke"></div>
         <div class="mfield"><label>TSC Number</label><input class="minp" id="atTSC" placeholder="Optional"></div>
+        <div class="mfield">
+          <label>Parent / Guardian Phone
+            <span style="font-size:10px;font-weight:400;text-transform:none;color:var(--text3)"> — for SMS results delivery</span>
+          </label>
+          <input class="minp" type="tel" id="atParentPhone" placeholder="+254712345678 (optional)">
+        </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
           <div class="mfield">
             <label>Grade *</label>
@@ -517,9 +469,7 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
               <option>Grade 1</option><option>Grade 2</option><option>Grade 3</option>
               <option>Grade 4</option><option>Grade 5</option><option>Grade 6</option>
               <option>Grade 7</option><option>Grade 8</option><option>Grade 9</option>
-              <option>Grade 10</option>
-<option>Grade 11</option>
-<option>Grade 12</option>
+              <option>Grade 10</option><option>Grade 11</option><option>Grade 12</option>
             </select>
           </div>
           <div class="mfield">
@@ -557,7 +507,7 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
         <div class="mfield">
           <label>Base URL of your site</label>
           <input class="minp" id="regBaseUrl" placeholder="e.g. https://yoursite.com/" oninput="updateRegLink()">
-          <div style="font-size:11px;color:var(--text3);margin-top:3px">The folder/domain where login.html is hosted. Edit if the auto-detected URL is wrong.</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:3px">The folder/domain where login.html is hosted.</div>
         </div>
         <div class="mfield">
           <label>Full Registration Link</label>
@@ -601,7 +551,7 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
       <div style="background:#fef3c7;border:1px solid #fcd34d;border-left:3px solid #f59e0b;border-radius:var(--r2);padding:10px 14px;margin-bottom:18px;font-size:12px;color:#92400e;line-height:1.6">
         ⚠️ <strong>Setup is required</strong> — you cannot admit students or use the system until your school details are saved.
       </div>
-      <a class='btn btn-primary' href='/settings' style='width:100%;justify-content:center;height:40px;font-size:13.5px;font-family:\'Familjen Grotesk\',sans-serif;font-weight:800;border-radius:8px'>⚙️ Go to School Settings →</a>
+      <a class='btn btn-primary' href='/settings' style='width:100%;justify-content:center;height:40px;font-size:13.5px;font-family:inherit;font-weight:800;border-radius:8px'>⚙️ Go to School Settings →</a>
       <div style="text-align:center;margin-top:12px">
         <button onclick="doLogout()" style="background:none;border:none;font-size:11.5px;color:var(--text3);cursor:pointer;font-family:inherit">← Sign out and try a different account</button>
       </div>
@@ -611,8 +561,8 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
 
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script> 
-  
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
 <script>
 if(!firebase.apps.length){
   firebase.initializeApp({
@@ -630,7 +580,6 @@ const auth = firebase.auth();
 let allTeachers=[], editingUid=null, deletingUid=null;
 const el = id => document.getElementById(id);
 
-// ── Logger ──
 const _logs=[];
 function log(level,msg,data){
   const entry={level,msg,data:data||null,ts:new Date().toISOString()};
@@ -640,31 +589,22 @@ function log(level,msg,data){
 }
 window._getLogs=()=>_logs.map(l=>`[${l.ts}] ${l.level.toUpperCase()}: ${l.msg}${l.data?' | '+JSON.stringify(l.data):''}`).join('\n');
 
-// ── In-memory state ──
 let _schoolId=null, _schoolName='', _ownerMsgUnsub=null, _sessionId=null;
 let _redirecting=false;
 
-// ══════════════════════════════════════════════════════════════════
-// SUBSCRIPTION STATE  — single source of truth
-// ══════════════════════════════════════════════════════════════════
-let _lastKnownExpiry   = null;   // last expiry Date we saw from Firestore
-let _renewalShown      = false;  // guard: don't flash the renewal banner twice
-let _expiryCheckTimer  = null;   // one-shot setTimeout: fires exactly at expiry
-let _expiryPollTimer   = null;   // setInterval: 30-second renewal poll while expired
-let _liveCountdownTimer= null;   // setInterval: ticks the live countdown every second
-const WARN_DAYS = 7;
+// ── SUBSCRIPTION STATE ──
+let _lastKnownExpiry=null, _renewalShown=false, _expiryCheckTimer=null;
+let _expiryPollTimer=null, _liveCountdownTimer=null;
+const WARN_DAYS=7;
 
-// ── SCREEN SWITCHER ──
 function show(screen){
   ['screenLoad','screenDash'].forEach(s=>{
     const node=el(s); if(!node) return;
     node.style.display='none'; node.classList.remove('show');
   });
   if(screen==='Login'){
-    if(_redirecting) return;
-    _redirecting=true;
-    window.location.href='registration.html';
-    return;
+    if(_redirecting) return; _redirecting=true;
+    window.location.href='registration.html'; return;
   }
   const target=el('screen'+screen);
   if(!target) return;
@@ -672,7 +612,6 @@ function show(screen){
   else{ target.style.display='block'; target.classList.add('show'); }
 }
 
-// ── TOAST ──
 function toast(msg,type='ok'){
   const t=document.createElement('div');
   t.className=`t ${type}`;
@@ -681,7 +620,6 @@ function toast(msg,type='ok'){
   setTimeout(()=>{t.style.animation='tout .25s ease forwards';setTimeout(()=>t.remove(),280);},2800);
 }
 
-// ── AUTH STATE ──
 auth.onAuthStateChanged(async u=>{
   if(_redirecting) return;
   if(!u){ log('info','No user — redirecting'); show('Login'); return; }
@@ -690,10 +628,7 @@ auth.onAuthStateChanged(async u=>{
     const snap=await db.collection('users').doc(u.uid).get();
     if(!snap.exists){ log('warn','No profile',u.uid); show('Login'); return; }
     const profile=snap.data();
-    if(profile.role==='teacher'){
-      log('warn','Teacher attempted admin access',u.email);
-      await auth.signOut(); show('login'); return;
-    }
+    if(profile.role==='teacher'){ log('warn','Teacher attempted admin access',u.email); await auth.signOut(); show('login'); return; }
     _schoolId=u.uid;
     window._schoolId=u.uid;
     sessionStorage.setItem('cbe_school_id',u.uid);
@@ -705,7 +640,6 @@ auth.onAuthStateChanged(async u=>{
     loadResultsCount();
     applySchoolSettings(db).catch(()=>{});
     _patchTeachersSchoolId(_schoolId).catch(()=>{});
-    // ── Start the real-time payment gate ──
     _listenPayment(_schoolId);
     _trackSession(u,profile).catch(()=>{});
     log('info','Dashboard loaded',{uid:u.uid,role:profile.role});
@@ -716,13 +650,9 @@ auth.onAuthStateChanged(async u=>{
   }
 });
 
-// ── LOGOUT ──
 async function doLogout(){
   if(_ownerMsgUnsub){ _ownerMsgUnsub(); _ownerMsgUnsub=null; }
-  _clearAllSubTimers();
-  _lastKnownExpiry=null;
-  _renewalShown=false;
-  _hideSubStatusBar();
+  _clearAllSubTimers(); _lastKnownExpiry=null; _renewalShown=false; _hideSubStatusBar();
   await _endSession().catch(()=>{});
   _schoolId=null; window._schoolId=null;
   localStorage.removeItem('cbe_user_role');
@@ -734,452 +664,171 @@ async function doLogout(){
 }
 
 // ══════════════════════════════════════════════════════════════════
-//  PAYMENT GATE  — mirrors analysis.html logic exactly
+//  PAYMENT GATE
 // ══════════════════════════════════════════════════════════════════
-
-/**
- * _listenPayment(schoolId)
- *
- * Real-time Firestore listener on approvedSchools/{schoolId}.
- * Decision order (do NOT reorder):
- *   1. No doc → show gate ("not configured")
- *   2. status === 'suspended' → show gate (always wins)
- *   3. No expiry + message → show gate (legacy manual block) + renewal poll
- *   4. No expiry, no message, not suspended → allow freely
- *   5. Expiry in future, moved forward → renewal detected → hide gate
- *   6. Expiry in future (first valid load) → hide gate, start countdown
- *   7. Expiry in past → show gate + expired countdown + renewal poll
- *   On Firestore error → show gate (never silently allow on failure)
- */
 function _listenPayment(schoolId){
   if(_ownerMsgUnsub){ _ownerMsgUnsub(); _ownerMsgUnsub=null; }
   _clearAllSubTimers();
-  log('info','Payment gate listener started',schoolId);
-
-  _ownerMsgUnsub = db.collection('approvedSchools').doc(schoolId)
-    .onSnapshot(snap=>{
-
-      // Step 1: No doc = no subscription record = block immediately
-      if(!snap.exists){
-        _clearAllSubTimers();
-        _stopLiveCountdown();
-        _hideSubStatusBar();
-        _showPaymentGate(
-          {schoolName: window.schoolSettings?.name || _schoolName},
-          'Access not configured for this school. Please contact the administrator.'
-        );
-        _startRenewalPoll(schoolId);
-        return;
-      }
-
-      const d   = snap.data();
-      const now = new Date();
-      const newExpiry = d.subscriptionExpiry?.toDate?.() || null;
-
-      // Step 2: Suspended — always wins regardless of expiry or message
-      if(d.status === 'suspended'){
-        _clearAllSubTimers();
-        _stopLiveCountdown();
-        _hideSubStatusBar();
-        _showPaymentGate(d, 'Your account has been suspended. Please contact the administrator to reactivate.');
-        _startRenewalPoll(schoolId);
-        return;
-      }
-
-      // Step 3: No expiry + message = legacy manual block
-      if(!newExpiry && d.message && d.message.trim()){
-        _clearAllSubTimers();
-        _stopLiveCountdown();
-        _hideSubStatusBar();
-        _showPaymentGate(d, d.message);
-        _startRenewalPoll(schoolId);
-        return;
-      }
-
-      // Step 4: No expiry, no message, not suspended = allow
-      if(!newExpiry){
-        _hidePayment();
-        return;
-      }
-
-      // Step 5: Expiry in future AND moved forward = renewal detected
-      if(newExpiry > now){
-        if(_lastKnownExpiry && newExpiry > _lastKnownExpiry){
-          log('info','Renewal detected via snapshot',newExpiry.toISOString());
-          _clearAllSubTimers();
-          _lastKnownExpiry = newExpiry;
-          _showRenewalBanner();
-          _hidePayment();
-          _startLiveCountdown(newExpiry);
-          _scheduleExpiryCheck(schoolId, newExpiry);
-          return;
-        }
-        // Step 6: First valid load
-        _lastKnownExpiry = newExpiry;
-        _hidePayment();
-        _startLiveCountdown(newExpiry);
-        _scheduleExpiryCheck(schoolId, newExpiry);
-        return;
-      }
-
-      // Step 7: Expired
-      if(newExpiry <= now){
-        _clearAllSubTimers();
-        _stopLiveCountdown();
-        _hideSubStatusBar();
-        const msg = (d.message && d.message.trim())
-          ? d.message
-          : 'Your subscription has expired. Please renew to continue using the system.';
-        _showPaymentGate(d, msg);
-        _startExpiredCountdown(newExpiry);
-        _startRenewalPoll(schoolId);
-        return;
-      }
-
-    }, e=>{
-      // On error: show gate — never silently allow free access on failure
-      log('warn','Payment gate listener error',e.message);
-      _clearAllSubTimers();
-      _stopLiveCountdown();
-      _hideSubStatusBar();
-      _showPaymentGate(
-        {schoolName: window.schoolSettings?.name || _schoolName},
-        'Unable to verify subscription. Please check your connection and refresh.'
-      );
-    });
+  _ownerMsgUnsub=db.collection('approvedSchools').doc(schoolId).onSnapshot(snap=>{
+    if(!snap.exists){ _clearAllSubTimers(); _stopLiveCountdown(); _hideSubStatusBar(); _showPaymentGate({schoolName:window.schoolSettings?.name||_schoolName},'Access not configured for this school. Please contact the administrator.'); _startRenewalPoll(schoolId); return; }
+    const d=snap.data(), now=new Date(), newExpiry=d.subscriptionExpiry?.toDate?.()??null;
+    if(d.status==='suspended'){ _clearAllSubTimers(); _stopLiveCountdown(); _hideSubStatusBar(); _showPaymentGate(d,'Your account has been suspended. Please contact the administrator to reactivate.'); _startRenewalPoll(schoolId); return; }
+    if(!newExpiry&&d.message?.trim()){ _clearAllSubTimers(); _stopLiveCountdown(); _hideSubStatusBar(); _showPaymentGate(d,d.message); _startRenewalPoll(schoolId); return; }
+    if(!newExpiry){ _hidePayment(); return; }
+    if(newExpiry>now){
+      if(_lastKnownExpiry&&newExpiry>_lastKnownExpiry){ _clearAllSubTimers(); _lastKnownExpiry=newExpiry; _showRenewalBanner(); _hidePayment(); _startLiveCountdown(newExpiry); _scheduleExpiryCheck(schoolId,newExpiry); return; }
+      _lastKnownExpiry=newExpiry; _hidePayment(); _startLiveCountdown(newExpiry); _scheduleExpiryCheck(schoolId,newExpiry); return;
+    }
+    if(newExpiry<=now){ _clearAllSubTimers(); _stopLiveCountdown(); _hideSubStatusBar(); const msg=(d.message?.trim())?d.message:'Your subscription has expired. Please renew to continue using the system.'; _showPaymentGate(d,msg); _startExpiredCountdown(newExpiry); _startRenewalPoll(schoolId); return; }
+  },e=>{ _clearAllSubTimers(); _stopLiveCountdown(); _hideSubStatusBar(); _showPaymentGate({schoolName:window.schoolSettings?.name||_schoolName},'Unable to verify subscription. Please check your connection and refresh.'); });
 }
-
-// ── Show / hide the gate overlay ────────────────────────────────────────────
-function _showPaymentGate(d, message){
-  const nameEl = el('povSchoolName');
-  if(nameEl) nameEl.textContent = d.schoolName || window.schoolSettings?.name || _schoolName || '—';
-  const msgEl = el('povMsgText');
-  if(msgEl && message) msgEl.textContent = message;
-  const ov = el('paymentOverlay');
-  if(ov && !ov.classList.contains('show')){
-    ov.classList.add('show');
-    log('info','Payment gate shown');
-  }
+function _showPaymentGate(d,message){
+  const nameEl=el('povSchoolName'); if(nameEl) nameEl.textContent=d.schoolName||window.schoolSettings?.name||_schoolName||'—';
+  const msgEl=el('povMsgText'); if(msgEl&&message) msgEl.textContent=message;
+  const ov=el('paymentOverlay'); if(ov&&!ov.classList.contains('show')){ ov.classList.add('show'); }
 }
-
 function _hidePayment(){
-  const ov = el('paymentOverlay');
-  if(ov && ov.classList.contains('show')){
-    ov.classList.remove('show');
-    log('info','Payment gate hidden — access restored');
-    toast('✅ Access restored — subscription active');
-  }
-  const cd = el('expiryCountdown');
-  if(cd){ cd.classList.remove('show'); cd.textContent=''; }
+  const ov=el('paymentOverlay'); if(ov&&ov.classList.contains('show')){ ov.classList.remove('show'); toast('✅ Access restored — subscription active'); }
+  const cd=el('expiryCountdown'); if(cd){ cd.classList.remove('show'); cd.textContent=''; }
   _clearAllSubTimers();
 }
-
-// ── Clear ALL subscription-related timers ────────────────────────────────────
 function _clearAllSubTimers(){
   if(_expiryCheckTimer){ clearTimeout(_expiryCheckTimer); _expiryCheckTimer=null; }
   if(_expiryPollTimer){ clearInterval(_expiryPollTimer); _expiryPollTimer=null; }
   if(_liveCountdownTimer){ clearInterval(_liveCountdownTimer); _liveCountdownTimer=null; }
 }
-
-// ── Expiry check timer — fires exactly when subscription expires ─────────────
-function _scheduleExpiryCheck(schoolId, expiresAt){
+function _scheduleExpiryCheck(schoolId,expiresAt){
   if(_expiryCheckTimer){ clearTimeout(_expiryCheckTimer); _expiryCheckTimer=null; }
-  const msUntil = expiresAt - new Date();
-  if(msUntil <= 0) return;
-  log('info',`Subscription expires in ${Math.round(msUntil/1000)}s — expiry check scheduled`);
-  _expiryCheckTimer = setTimeout(()=>{
-    log('info','Expiry timer fired — re-reading subscription');
-    db.collection('approvedSchools').doc(schoolId).get()
-      .then(snap=>{
-        if(!snap.exists){
-          _stopLiveCountdown();
-          _hideSubStatusBar();
-          _showPaymentGate(
-            {schoolName: window.schoolSettings?.name || _schoolName},
-            'Access not configured for this school. Please contact the administrator.'
-          );
-          _startRenewalPoll(schoolId);
-          return;
-        }
-        const d   = snap.data();
-        const exp = d.subscriptionExpiry?.toDate?.();
-        if(!exp || exp <= new Date()){
-          const msg = (d.message && d.message.trim())
-            ? d.message
-            : 'Your subscription has expired. Please renew to continue using the system.';
-          _stopLiveCountdown();
-          _hideSubStatusBar();
-          _showPaymentGate(d, msg);
-          if(exp) _startExpiredCountdown(exp);
-          _startRenewalPoll(schoolId);
-        }
-      }).catch(()=>{});
-  }, msUntil + 500);
+  const msUntil=expiresAt-new Date(); if(msUntil<=0) return;
+  _expiryCheckTimer=setTimeout(()=>{
+    db.collection('approvedSchools').doc(schoolId).get().then(snap=>{
+      if(!snap.exists){ _stopLiveCountdown(); _hideSubStatusBar(); _showPaymentGate({schoolName:window.schoolSettings?.name||_schoolName},'Access not configured.'); _startRenewalPoll(schoolId); return; }
+      const d=snap.data(),exp=d.subscriptionExpiry?.toDate?.();
+      if(!exp||exp<=new Date()){ const msg=(d.message?.trim())?d.message:'Your subscription has expired.'; _stopLiveCountdown(); _hideSubStatusBar(); _showPaymentGate(d,msg); if(exp) _startExpiredCountdown(exp); _startRenewalPoll(schoolId); }
+    }).catch(()=>{});
+  },msUntil+500);
 }
-
-// ── Renewal poll — reads Firestore every 30s while expired ──────────────────
 function _startRenewalPoll(schoolId){
   if(_expiryPollTimer) return;
-  log('info','Renewal poll started (30s interval)');
-  _expiryPollTimer = setInterval(async ()=>{
+  _expiryPollTimer=setInterval(async()=>{
     try{
-      const snap = await db.collection('approvedSchools').doc(schoolId).get();
+      const snap=await db.collection('approvedSchools').doc(schoolId).get();
       if(!snap.exists) return;
-      const d         = snap.data();
-      const newExpiry = d.subscriptionExpiry?.toDate?.();
-      // Only restore if expiry is future AND not suspended
-      if(newExpiry && newExpiry > new Date() && d.status !== 'suspended'){
-        log('info','Renewal detected via poll');
-        _clearAllSubTimers();
-        _lastKnownExpiry = newExpiry;
-        _renewalShown    = false;
-        _showRenewalBanner();
-        _hidePayment();
-        _startLiveCountdown(newExpiry);
-        _scheduleExpiryCheck(schoolId, newExpiry);
-      }
+      const d=snap.data(),newExpiry=d.subscriptionExpiry?.toDate?.();
+      if(newExpiry&&newExpiry>new Date()&&d.status!=='suspended'){ _clearAllSubTimers(); _lastKnownExpiry=newExpiry; _renewalShown=false; _showRenewalBanner(); _hidePayment(); _startLiveCountdown(newExpiry); _scheduleExpiryCheck(schoolId,newExpiry); }
     }catch(_){}
-  }, 30_000);
+  },30000);
 }
-
-// ══════════════════════════════════════════════════════════════════
-//  LIVE COUNTDOWN SYSTEM
-// ══════════════════════════════════════════════════════════════════
 function _startLiveCountdown(expiresAt){
   _stopLiveCountdown();
-  log('info','Live countdown started',expiresAt?.toISOString());
-
   function tick(){
-    const now    = new Date();
-    const msLeft = expiresAt - now;
-
-    if(msLeft <= 0){
-      log('info','Live countdown reached zero — triggering expiry');
-      _stopLiveCountdown();
-      _hideSubStatusBar();
-      if(_schoolId){
-        db.collection('approvedSchools').doc(_schoolId).get()
-          .then(snap=>{
-            if(!snap.exists){
-              _showPaymentGate(
-                {schoolName: window.schoolSettings?.name || _schoolName},
-                'Access not configured for this school. Please contact the administrator.'
-              );
-              _startRenewalPoll(_schoolId);
-              return;
-            }
-            const d   = snap.data();
-            const exp = d.subscriptionExpiry?.toDate?.();
-            if(!exp || exp <= new Date()){
-              const msg = (d.message && d.message.trim())
-                ? d.message
-                : 'Your subscription has expired. Please renew to continue using the system.';
-              _showPaymentGate(d, msg);
-              _startExpiredCountdown(exp || expiresAt);
-              _startRenewalPoll(_schoolId);
-            }
-          }).catch(()=>{});
-      }
-      return;
-    }
-
-    const daysLeft  = msLeft / 86400000;
-    const hoursLeft = msLeft / 3600000;
-
-    if(daysLeft > WARN_DAYS){ _hideSubStatusBar(); return; }
-
+    const now=new Date(),msLeft=expiresAt-now;
+    if(msLeft<=0){ _stopLiveCountdown(); _hideSubStatusBar(); if(_schoolId){ db.collection('approvedSchools').doc(_schoolId).get().then(snap=>{ if(!snap.exists){ _showPaymentGate({schoolName:window.schoolSettings?.name||_schoolName},'Access not configured.'); _startRenewalPoll(_schoolId); return; } const d=snap.data(),exp=d.subscriptionExpiry?.toDate?.(); if(!exp||exp<=new Date()){ const msg=(d.message?.trim())?d.message:'Your subscription has expired.'; _showPaymentGate(d,msg); _startExpiredCountdown(exp||expiresAt); _startRenewalPoll(_schoolId); } }).catch(()=>{}); } return; }
+    const daysLeft=msLeft/86400000,hoursLeft=msLeft/3600000;
+    if(daysLeft>WARN_DAYS){ _hideSubStatusBar(); return; }
     let timerStr;
-    if(hoursLeft < 24){
-      const h = Math.floor(msLeft/3600000);
-      const m = Math.floor((msLeft%3600000)/60000);
-      const s = Math.floor((msLeft%60000)/1000);
-      timerStr = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-    } else {
-      const d = Math.floor(daysLeft);
-      const h = Math.floor((msLeft % 86400000) / 3600000);
-      timerStr = `${d}d ${h}h`;
-    }
-    _showSubStatusBar(timerStr, hoursLeft < 24);
+    if(hoursLeft<24){ const h=Math.floor(msLeft/3600000),m=Math.floor((msLeft%3600000)/60000),s=Math.floor((msLeft%60000)/1000); timerStr=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; }
+    else{ const d=Math.floor(daysLeft),h=Math.floor((msLeft%86400000)/3600000); timerStr=`${d}d ${h}h`; }
+    _showSubStatusBar(timerStr,hoursLeft<24);
   }
-
-  tick();
-  _liveCountdownTimer = setInterval(tick, 1000);
+  tick(); _liveCountdownTimer=setInterval(tick,1000);
 }
-
-function _stopLiveCountdown(){
-  if(_liveCountdownTimer){ clearInterval(_liveCountdownTimer); _liveCountdownTimer=null; }
-}
-
-function _showSubStatusBar(timerStr, isUrgent){
-  const bar = el('subStatusBar');
-  if(!bar) return;
-  const timerEl = el('subTimerText');
-  if(timerEl) timerEl.textContent = timerStr;
-  if(isUrgent){
-    bar.style.background='#7f1d1d'; bar.style.borderTopColor='#ef4444';
-    bar.style.color='#fef2f2';
-    bar.querySelector('.sub-timer').style.color='#fca5a5';
-  } else {
-    bar.style.background='#7c2d12'; bar.style.borderTopColor='#f97316';
-    bar.style.color='#fed7aa';
-    bar.querySelector('.sub-timer').style.color='#fbbf24';
-  }
+function _stopLiveCountdown(){ if(_liveCountdownTimer){ clearInterval(_liveCountdownTimer); _liveCountdownTimer=null; } }
+function _showSubStatusBar(timerStr,isUrgent){
+  const bar=el('subStatusBar'); if(!bar) return;
+  const timerEl=el('subTimerText'); if(timerEl) timerEl.textContent=timerStr;
+  if(isUrgent){ bar.style.background='#7f1d1d'; bar.style.borderTopColor='#ef4444'; bar.style.color='#fef2f2'; bar.querySelector('.sub-timer').style.color='#fca5a5'; }
+  else{ bar.style.background='#7c2d12'; bar.style.borderTopColor='#f97316'; bar.style.color='#fed7aa'; bar.querySelector('.sub-timer').style.color='#fbbf24'; }
   bar.classList.add('show');
 }
-
-function _hideSubStatusBar(){
-  const bar = el('subStatusBar');
-  if(bar) bar.classList.remove('show');
-}
-
+function _hideSubStatusBar(){ const bar=el('subStatusBar'); if(bar) bar.classList.remove('show'); }
 function _startExpiredCountdown(expiredAt){
-  const cd = el('expiryCountdown');
-  if(!cd) return;
+  const cd=el('expiryCountdown'); if(!cd) return;
   function renderExpired(){
-    const msAgo = new Date() - expiredAt;
-    if(msAgo < 0){ cd.classList.remove('show'); return; }
-    const days  = Math.floor(msAgo / 86400000);
-    const hours = Math.floor((msAgo % 86400000) / 3600000);
-    const mins  = Math.floor((msAgo % 3600000) / 60000);
-    let agoStr;
-    if(days > 0)       agoStr = `${days} day${days>1?'s':''} ${hours}h ago`;
-    else if(hours > 0) agoStr = `${hours}h ${mins}m ago`;
-    else               agoStr = `${mins} minute${mins!==1?'s':''} ago`;
-    cd.innerHTML = `Subscription expired <strong>${agoStr}</strong>`;
-    cd.classList.add('show');
+    const msAgo=new Date()-expiredAt; if(msAgo<0){ cd.classList.remove('show'); return; }
+    const days=Math.floor(msAgo/86400000),hours=Math.floor((msAgo%86400000)/3600000),mins=Math.floor((msAgo%3600000)/60000);
+    let agoStr; if(days>0) agoStr=`${days} day${days>1?'s':''} ${hours}h ago`; else if(hours>0) agoStr=`${hours}h ${mins}m ago`; else agoStr=`${mins} minute${mins!==1?'s':''} ago`;
+    cd.innerHTML=`Subscription expired <strong>${agoStr}</strong>`; cd.classList.add('show');
   }
-  renderExpired();
-  setInterval(renderExpired, 60_000);
+  renderExpired(); setInterval(renderExpired,60000);
 }
-
-// ── Renewal detected banner ──────────────────────────────────────────────────
 function _showRenewalBanner(){
-  if(_renewalShown) return;
-  _renewalShown = true;
-  const b = el('renewalDetectedBanner');
-  if(!b) return;
+  if(_renewalShown) return; _renewalShown=true;
+  const b=el('renewalDetectedBanner'); if(!b) return;
   b.style.display='block'; b.style.opacity='1'; b.style.transition='';
   setTimeout(()=>{ b.style.opacity='0'; b.style.transition='opacity .6s'; },3000);
-  setTimeout(()=>{
-    b.style.display='none'; b.style.opacity=''; b.style.transition='';
-    _renewalShown=false;
-  },3700);
+  setTimeout(()=>{ b.style.display='none'; b.style.opacity=''; b.style.transition=''; _renewalShown=false; },3700);
 }
 
-// ══ SCHOOL SETUP GATE ══════════════════════════════════════════════
+// ══ SCHOOL SETUP GATE ══
 async function checkSchoolSetup(){
   try{
     const settingsDoc=await db.collection('settings').doc(_schoolId).get();
     const isSetup=settingsDoc.exists&&settingsDoc.data()?.name?.trim();
     if(!isSetup){ _showSetupGate(); }
-    else{
-      localStorage.setItem('cbe_school_setup_done','true');
-      db.collection('users').doc(_schoolId).update({schoolSetupDone:true}).catch(()=>{});
-    }
-  }catch(e){
-    log('warn','checkSchoolSetup error',e.message);
-    if(!localStorage.getItem('cbe_school_setup_done')) _showSetupGate();
-  }
+    else{ localStorage.setItem('cbe_school_setup_done','true'); db.collection('users').doc(_schoolId).update({schoolSetupDone:true}).catch(()=>{}); }
+  }catch(e){ if(!localStorage.getItem('cbe_school_setup_done')) _showSetupGate(); }
 }
 function _showSetupGate(){
-  const ov=el('setupOverlay');
-  if(ov){
-    ov.classList.add('open');
-    ov.addEventListener('click',e=>e.stopPropagation(),true);
-  }
+  const ov=el('setupOverlay'); if(ov){ ov.classList.add('open'); ov.addEventListener('click',e=>e.stopPropagation(),true); }
   document.addEventListener('keydown',function blockEsc(e){ if(e.key==='Escape') e.stopImmediatePropagation(); },true);
-  log('info','Setup gate shown');
 }
 
-// ══ IDLE SESSION TIMEOUT ══════════════════════════════════════════
-const SESSION_TIMEOUT_MS=30*60*1000;
-const SESSION_WARNING_MS=2*60*1000;
+// ══ IDLE SESSION TIMEOUT ══
+const SESSION_TIMEOUT_MS=30*60*1000, SESSION_WARNING_MS=2*60*1000;
 let _idleTimer=null,_warnTimer=null,_warnEl=null;
-
-function clearSessionCache(){
-  ['cbe_streams','cbe_streams_ts'].forEach(k=>localStorage.removeItem(k));
-}
+function clearSessionCache(){ ['cbe_streams','cbe_streams_ts'].forEach(k=>localStorage.removeItem(k)); }
 function createWarnBanner(){
   if(document.getElementById('_sessionWarn')) return;
-  const d=document.createElement('div');
-  d.id='_sessionWarn';
+  const d=document.createElement('div'); d.id='_sessionWarn';
   d.style.cssText='display:none;position:fixed;top:0;left:0;right:0;z-index:9999;background:#7f1d1d;color:#fef2f2;font-family:inherit;padding:10px 20px;font-size:13px;font-weight:600;align-items:center;justify-content:space-between;gap:12px;border-bottom:2px solid #ef4444;';
   d.innerHTML=`<span>⚠️ Your session will expire in <span id="_sessionCountdown">2:00</span> due to inactivity.</span><div style="display:flex;gap:8px"><button onclick="_keepAlive()" style="padding:4px 12px;background:#059669;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:700;font-size:12px">Stay Logged In</button><button onclick="doLogout()" style="padding:4px 12px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:4px;cursor:pointer;font-size:12px">Sign Out Now</button></div>`;
-  document.body.prepend(d);
-  _warnEl=d;
+  document.body.prepend(d); _warnEl=d;
 }
 function _resetIdleTimer(){
   clearTimeout(_idleTimer); clearTimeout(_warnTimer);
   if(_warnEl) _warnEl.style.display='none';
   _warnTimer=setTimeout(()=>{
-    createWarnBanner();
-    _warnEl.style.display='flex';
+    createWarnBanner(); _warnEl.style.display='flex';
     let secs=SESSION_WARNING_MS/1000;
-    const tick=setInterval(()=>{
-      secs--;
-      const e=document.getElementById('_sessionCountdown');
-      if(e) e.textContent=Math.floor(secs/60)+':'+(secs%60).toString().padStart(2,'0');
-      if(secs<=0) clearInterval(tick);
-    },1000);
-  }, SESSION_TIMEOUT_MS-SESSION_WARNING_MS);
+    const tick=setInterval(()=>{ secs--; const e=document.getElementById('_sessionCountdown'); if(e) e.textContent=Math.floor(secs/60)+':'+(secs%60).toString().padStart(2,'0'); if(secs<=0) clearInterval(tick); },1000);
+  },SESSION_TIMEOUT_MS-SESSION_WARNING_MS);
   _idleTimer=setTimeout(()=>doLogout(),SESSION_TIMEOUT_MS);
 }
 window._keepAlive=function(){ _resetIdleTimer(); };
-['mousemove','keydown','click','touchstart','scroll'].forEach(evt=>{
-  document.addEventListener(evt,_resetIdleTimer,{passive:true});
-});
+['mousemove','keydown','click','touchstart','scroll'].forEach(evt=>document.addEventListener(evt,_resetIdleTimer,{passive:true}));
 _resetIdleTimer();
 
-// ══ RESULTS COUNT ══════════════════════════════════════════════════
+// ══ RESULTS COUNT ══
 async function loadResultsCount(){
-  try{
-    const snap=await db.collection('results').where('schoolId','==',_schoolId).get();
-    el('statResults').textContent=snap.size;
-  }catch(e){ el('statResults').textContent='?'; }
+  try{ const snap=await db.collection('results').where('schoolId','==',_schoolId).get(); el('statResults').textContent=snap.size; }
+  catch(e){ el('statResults').textContent='?'; }
 }
 
-// ══ ANALYSIS SHORTCUT ══════════════════════════════════════════════
+// ══ ANALYSIS SHORTCUT ══
 function openAnalysisFor(grade,stream){
-  const term=new Date().getMonth()<4?'Term 1':new Date().getMonth()<8?'Term 2':'Term 3';
+  const month=new Date().getMonth();
+  const term=month<4?'Term 1':month<8?'Term 2':'Term 3';
   const year=new Date().getFullYear();
-  const params=new URLSearchParams({grade,stream,term,year});
-  window.open(`analysis?${params}`,'_blank');
+  window.open(`analysis?grade=${grade}&stream=${stream}&term=${term}&year=${year}`,'_blank');
 }
 
-// ══ PENDING BANNER ═════════════════════════════════════════════════
+// ══ PENDING BANNER ══
 function renderPendingBanner(){
   const pending=allTeachers.filter(t=>t.status==='pending');
-  const banner=el('pendingBanner');
-  if(!banner) return;
+  const banner=el('pendingBanner'); if(!banner) return;
   if(!pending.length){ banner.style.display='none'; return; }
-  el('pendingCount').textContent=pending.length;
-  banner.style.display='block';
+  el('pendingCount').textContent=pending.length; banner.style.display='block';
   el('pendingCards').innerHTML=pending.map(t=>{
-    const when=t.createdAt?.toDate
-      ?t.createdAt.toDate().toLocaleString('en-KE',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}):'—';
-    return `<div class="pb-card">
-      <div class="pb-avatar">👤</div>
-      <div class="pb-info">
-        <div class="pb-name">${t.fullName||'—'}</div>
-        <div class="pb-meta">${t.email||''}${t.phone?` · 📞 ${t.phone}`:''}${t.tscNumber?` · TSC: ${t.tscNumber}`:''}
-        ${t.grade&&t.stream?` · <strong>${t.grade} ${t.stream}</strong>`:' · <span style="color:var(--amber-tx);font-size:11px">awaiting class assignment</span>'}</div>
-      </div>
-      <div class="pb-time">${when}</div>
-      <div class="pb-actions">
-        <button class="pb-approve" onclick="quickApprove('${t.uid}')">✅ Approve</button>
-        <button class="pb-reject" onclick="quickReject('${t.uid}')">✗ Reject</button>
-      </div>
-    </div>`;
+    const when=t.createdAt?.toDate?t.createdAt.toDate().toLocaleString('en-KE',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}):'—';
+    return `<div class="pb-card"><div class="pb-avatar">👤</div><div class="pb-info"><div class="pb-name">${t.fullName||'—'}</div><div class="pb-meta">${t.email||''}${t.phone?` · 📞 ${t.phone}`:''}${t.tscNumber?` · TSC: ${t.tscNumber}`:''}${t.grade&&t.stream?` · <strong>${t.grade} ${t.stream}</strong>`:' · <span style="color:var(--amber-tx);font-size:11px">awaiting class assignment</span>'}</div></div><div class="pb-time">${when}</div><div class="pb-actions"><button class="pb-approve" onclick="quickApprove('${t.uid}')">✅ Approve</button><button class="pb-reject" onclick="quickReject('${t.uid}')">✗ Reject</button></div></div>`;
   }).join('');
 }
-
 async function quickApprove(uid){
-  const t=allTeachers.find(x=>x.uid===uid);
-  if(!t){ toast('Teacher not found','err'); return; }
+  const t=allTeachers.find(x=>x.uid===uid); if(!t){ toast('Teacher not found','err'); return; }
   if(!_schoolId){ toast('Not authenticated — please refresh','err'); return; }
   if(t.schoolId&&t.schoolId!==_schoolId){ toast('⚠️ This teacher belongs to a different school','err'); return; }
-  const btn=event?.target;
-  if(btn){ btn.disabled=true; btn.textContent='Approving…'; }
+  const btn=event?.target; if(btn){ btn.disabled=true; btn.textContent='Approving…'; }
   try{
     const schoolName=_schoolName||window.schoolSettings?.name||'';
     await db.collection('users').doc(uid).update({status:'active',schoolId:_schoolId,schoolName,approvedAt:firebase.firestore.FieldValue.serverTimestamp()});
@@ -1187,32 +836,23 @@ async function quickApprove(uid){
     t.status='active'; t.schoolId=_schoolId;
     updateStats(); renderTable(); renderPendingBanner();
     toast(`✅ ${t.fullName} approved`);
-  }catch(e){
-    toast(`Failed: ${e.message}`,'err');
-    if(btn){ btn.disabled=false; btn.textContent='✅ Approve'; }
-  }
+  }catch(e){ toast(`Failed: ${e.message}`,'err'); if(btn){ btn.disabled=false; btn.textContent='✅ Approve'; } }
 }
-
 async function quickReject(uid){
   const t=allTeachers.find(x=>x.uid===uid); if(!t) return;
   if(!confirm('Reject and suspend '+t.fullName+'?')) return;
-  try{
-    await db.collection('users').doc(uid).update({status:'suspended'});
-    t.status='suspended';
-    updateStats(); renderTable(); renderPendingBanner();
-    toast(`${t.fullName} rejected`,'info');
-  }catch(e){ toast('Failed: '+e.message,'err'); }
+  try{ await db.collection('users').doc(uid).update({status:'suspended'}); t.status='suspended'; updateStats(); renderTable(); renderPendingBanner(); toast(`${t.fullName} rejected`,'info'); }
+  catch(e){ toast('Failed: '+e.message,'err'); }
 }
 
-// ══ REASSIGN CLASS MODAL ═══════════════════════════════════════════
+// ══ REASSIGN CLASS MODAL ══
 let _reassignUid=null;
 function openReassign(uid){
   const t=allTeachers.find(x=>x.uid===uid); if(!t) return;
   _reassignUid=uid;
   el('reassignTeacherName').textContent=t.fullName||t.email||'—';
   el('reassignCurrentClass').textContent='Currently: '+(t.grade&&t.stream?t.grade+' '+t.stream:'No class assigned');
-  el('reassignGrade').value=t.grade||'';
-  el('reassignStatus').value=t.status||'active';
+  el('reassignGrade').value=t.grade||''; el('reassignStatus').value=t.status||'active';
   el('reassignStream').innerHTML='<option value="">-- Select Grade first --</option>';
   if(t.grade){ el('reassignGrade').dispatchEvent(new Event('change')); setTimeout(()=>{ el('reassignStream').value=t.stream||''; },200); }
   el('reassignOverlay').classList.add('open');
@@ -1220,8 +860,7 @@ function openReassign(uid){
 function closeReassign(){ el('reassignOverlay').classList.remove('open'); _reassignUid=null; }
 async function onReassignGradeChange(){
   const grade=el('reassignGrade').value,ss=el('reassignStream'),hint=el('reassignStreamHint');
-  ss.innerHTML='<option value="">Loading…</option>';
-  if(!grade){ ss.innerHTML='<option value="">-- No Stream --</option>'; hint.textContent=''; return; }
+  ss.innerHTML='<option value="">Loading…</option>'; if(!grade){ ss.innerHTML='<option value="">-- No Stream --</option>'; hint.textContent=''; return; }
   try{
     const snap=await db.collection('students').where('grade','==',grade).where('schoolId','==',_schoolId).get();
     const set=new Set(); snap.forEach(d=>{ const s=d.data(); if(s.stream?.trim()) set.add(s.stream.trim()); });
@@ -1234,23 +873,17 @@ async function saveReassign(){
   if(!_reassignUid) return;
   const grade=el('reassignGrade').value,stream=el('reassignStream').value,status=el('reassignStatus').value;
   const t=allTeachers.find(x=>x.uid===_reassignUid); if(!t) return;
-  const btn=el('reassignOverlay').querySelector('.btn-primary');
-  btn.disabled=true; btn.textContent='Saving…';
+  const btn=el('reassignOverlay').querySelector('.btn-primary'); btn.disabled=true; btn.textContent='Saving…';
   try{
-    const upd={status};
-    if(grade){ upd.grade=grade; if(stream) upd.stream=stream; else upd.stream=null; }
-    else{ upd.grade=null; upd.stream=null; }
+    const upd={status}; if(grade){ upd.grade=grade; upd.stream=stream||null; } else{ upd.grade=null; upd.stream=null; }
     await db.collection('users').doc(_reassignUid).update(upd);
-    Object.assign(t,upd);
-    updateStats(); renderTable(); renderPendingBanner();
-    closeReassign();
-    const statusMsg=status==='active'?'activated ✅':status==='suspended'?'suspended 🚫':'set to pending';
-    toast(`${t.fullName} — ${grade?grade+' '+stream:'no class'} · ${statusMsg}`);
+    Object.assign(t,upd); updateStats(); renderTable(); renderPendingBanner(); closeReassign();
+    toast(`${t.fullName} — ${grade?grade+' '+stream:'no class'} · ${status==='active'?'activated ✅':status==='suspended'?'suspended 🚫':'set to pending'}`);
   }catch(e){ toast('Save failed: '+e.message,'err'); }
   btn.disabled=false; btn.textContent='💾 Save Changes';
 }
 
-// ══ PATCH TEACHERS MISSING schoolId ═══════════════════════════════
+// ══ PATCH TEACHERS MISSING schoolId ══
 async function _patchTeachersSchoolId(schoolId){
   if(!schoolId) return;
   try{
@@ -1258,48 +891,33 @@ async function _patchTeachersSchoolId(schoolId){
     if(reqSnap.empty) return;
     const batch=db.batch(); let count=0;
     for(const req of reqSnap.docs){
-      const uid=req.id, userRef=db.collection('users').doc(uid);
-      try{
-        const userSnap=await userRef.get();
-        if(userSnap.exists){
-          const d=userSnap.data();
-          if(!d.schoolId||d.schoolId!==schoolId){ batch.update(userRef,{schoolId,updatedAt:firebase.firestore.FieldValue.serverTimestamp()}); count++; }
-        }
-      }catch(_){}
+      const uid=req.id,userRef=db.collection('users').doc(uid);
+      try{ const userSnap=await userRef.get(); if(userSnap.exists){ const d=userSnap.data(); if(!d.schoolId||d.schoolId!==schoolId){ batch.update(userRef,{schoolId,updatedAt:firebase.firestore.FieldValue.serverTimestamp()}); count++; } } }catch(_){}
     }
-    if(count>0){
-      await batch.commit();
-      log('info',`Patched ${count} teacher(s) schoolId`);
-      toast(`✅ Fixed ${count} teacher request(s)`,'info');
-      if(_teachersUnsub){ _teachersUnsub(); _teachersUnsub=null; }
-      loadTeachers();
-    }
+    if(count>0){ await batch.commit(); toast(`✅ Fixed ${count} teacher request(s)`,'info'); if(_teachersUnsub){ _teachersUnsub(); _teachersUnsub=null; } loadTeachers(); }
   }catch(e){ log('warn','Patch teachers failed',e.message); }
 }
 
-// ══ LOAD TEACHERS ══════════════════════════════════════════════════
+// ══ LOAD TEACHERS ══
 let _teachersUnsub=null;
 function _onTeachersSnap(snap){
   allTeachers=[];
   snap.forEach(d=>{ const data=d.data(); if(data.role==='teacher'||!data.role) allTeachers.push({uid:d.id,...data}); });
   allTeachers.sort((a,b)=>(b.createdAt?.toMillis?.()??0)-(a.createdAt?.toMillis?.()??0));
-  log('info','Teachers loaded',allTeachers.length);
   updateStats(); renderTable();
   const pending=allTeachers.filter(t=>t.status==='pending').length;
   document.title=pending>0?`(${pending}) Admin — CBE`:'Admin — CBE Mark Sheet';
 }
 function loadTeachers(){
-  if(!_schoolId){ log('warn','loadTeachers: no schoolId'); return; }
+  if(!_schoolId) return;
   if(_teachersUnsub){ _teachersUnsub(); _teachersUnsub=null; }
-  el('teacherTbody').innerHTML=`<tr class="empty-row"><td colspan="7"><div class="empty-icon">⏳</div><div>Loading teachers…</div></td></tr>`;
-  _teachersUnsub=db.collection('users').where('schoolId','==',_schoolId)
-    .onSnapshot(_onTeachersSnap, e=>{
-      log('error','Teachers listener error',e.code,e.message);
-      el('teacherTbody').innerHTML=`<tr class="empty-row"><td colspan="7"><div class="empty-icon">❌</div><div>${e.code==='permission-denied'?'Permission denied — check Firestore rules':e.message}</div></td></tr>`;
-    });
+  el('teacherTbody').innerHTML=`<tr class="empty-row"><td colspan="8"><div class="empty-icon">⏳</div><div>Loading teachers…</div></td></tr>`;
+  _teachersUnsub=db.collection('users').where('schoolId','==',_schoolId).onSnapshot(_onTeachersSnap,e=>{
+    el('teacherTbody').innerHTML=`<tr class="empty-row"><td colspan="8"><div class="empty-icon">❌</div><div>${e.code==='permission-denied'?'Permission denied — check Firestore rules':e.message}</div></td></tr>`;
+  });
 }
 
-// ══ STATS ══════════════════════════════════════════════════════════
+// ══ STATS ══
 function updateStats(){
   el('statTotal').textContent=allTeachers.length;
   el('statActive').textContent=allTeachers.filter(t=>t.status==='active').length;
@@ -1308,30 +926,27 @@ function updateStats(){
   renderPendingBanner();
 }
 
-// ══ RENDER TABLE ═══════════════════════════════════════════════════
+// ══ RENDER TABLE ══
 function renderTable(){
   const q=el('searchInp').value.trim().toLowerCase();
-  const fs=el('filterStatus').value, fg=el('filterGrade').value;
+  const fs=el('filterStatus').value,fg=el('filterGrade').value;
   const list=allTeachers.filter(t=>{
-    const mq=!q||[t.fullName,t.email,t.grade,t.stream,t.tscNumber].some(v=>(v||'').toLowerCase().includes(q));
+    const mq=!q||[t.fullName,t.email,t.grade,t.stream,t.tscNumber,t.parentPhone].some(v=>(v||'').toLowerCase().includes(q));
     return mq&&(!fs||t.status===fs)&&(!fg||t.grade===fg);
   });
-  if(!list.length){
-    el('teacherTbody').innerHTML=`<tr class="empty-row"><td colspan="7"><div class="empty-icon">👤</div><div>No teachers found</div></td></tr>`;
-    return;
-  }
+  if(!list.length){ el('teacherTbody').innerHTML=`<tr class="empty-row"><td colspan="8"><div class="empty-icon">👤</div><div>No teachers found</div></td></tr>`; return; }
   el('teacherTbody').innerHTML=list.map((t,i)=>{
     const date=t.createdAt?.toDate?t.createdAt.toDate().toLocaleDateString('en-KE',{day:'2-digit',month:'short',year:'numeric'}):'—';
-    const sc=t.status||'pending', sl=sc.charAt(0).toUpperCase()+sc.slice(1);
+    const sc=t.status||'pending',sl=sc.charAt(0).toUpperCase()+sc.slice(1);
+    // Phone cell
+    const phoneCell=t.parentPhone
+      ?`<td class="t-meta"><span class="phone-badge">📞 ${t.parentPhone}</span></td>`
+      :`<td><span class="phone-missing">not set</span></td>`;
+    // Action buttons
     let actions='';
-    if(sc==='pending'){
-      actions+=`<button class="act-btn act-approve" onclick="setStatus('${t.uid}','active')">✅ Approve</button>`;
-      actions+=`<button class="act-btn act-suspend" onclick="setStatus('${t.uid}','suspended')">🚫 Reject</button>`;
-    }else if(sc==='active'){
-      actions+=`<button class="act-btn act-suspend" onclick="setStatus('${t.uid}','suspended')">🚫 Suspend</button>`;
-    }else{
-      actions+=`<button class="act-btn act-activate" onclick="setStatus('${t.uid}','active')">✅ Reinstate</button>`;
-    }
+    if(sc==='pending'){ actions+=`<button class="act-btn act-approve" onclick="setStatus('${t.uid}','active')">✅ Approve</button><button class="act-btn act-suspend" onclick="setStatus('${t.uid}','suspended')">🚫 Reject</button>`; }
+    else if(sc==='active'){ actions+=`<button class="act-btn act-suspend" onclick="setStatus('${t.uid}','suspended')">🚫 Suspend</button>`; }
+    else{ actions+=`<button class="act-btn act-activate" onclick="setStatus('${t.uid}','active')">✅ Reinstate</button>`; }
     actions+=`<button class="act-btn act-edit" onclick="openEdit('${t.uid}')">✏️ Edit</button>`;
     actions+=`<button class="act-btn" style="background:var(--alight);color:var(--accent)" onclick="openReassign('${t.uid}')">🔄 Class</button>`;
     if(t.grade&&t.stream) actions+=`<button class="act-btn" style="background:var(--alight);color:var(--accent)" onclick="openAnalysisFor('${t.grade}','${t.stream}')">📈</button>`;
@@ -1341,6 +956,7 @@ function renderTable(){
       <td><div class="t-name">${t.fullName||'—'}</div><div class="t-email">${t.email||''}</div></td>
       <td class="t-meta">${t.tscNumber||'—'}</td>
       <td class="t-meta"><strong>${t.grade||'—'}</strong> · ${t.stream||'—'}</td>
+      ${phoneCell}
       <td class="tc"><span class="sbadge ${sc}">${sl}</span></td>
       <td class="t-meta">${date}</td>
       <td><div class="act-wrap">${actions}</div></td>
@@ -1348,29 +964,28 @@ function renderTable(){
   }).join('');
 }
 
-// ══ SET STATUS ═════════════════════════════════════════════════════
+// ══ SET STATUS ══
 async function setStatus(uid,newStatus){
   const t=allTeachers.find(x=>x.uid===uid); if(!t) return;
   if(!_schoolId){ toast('Not authenticated — please refresh','err'); return; }
   try{
-    const upd={status:newStatus};
-    if(newStatus==='active') upd.schoolId=_schoolId;
+    const upd={status:newStatus}; if(newStatus==='active') upd.schoolId=_schoolId;
     await db.collection('users').doc(uid).update(upd);
-    t.status=newStatus;
-    if(newStatus==='active') t.schoolId=_schoolId;
+    t.status=newStatus; if(newStatus==='active') t.schoolId=_schoolId;
     updateStats(); renderTable(); renderPendingBanner();
     const labels={active:'activated ✅',suspended:'suspended 🚫',pending:'set to pending'};
     toast(`${t.fullName} ${labels[newStatus]||newStatus}`);
   }catch(e){ toast(`Update failed: ${e.message}`,'err'); }
 }
 
-// ══ EDIT MODAL ═════════════════════════════════════════════════════
+// ══ EDIT MODAL ══
 async function openEdit(uid){
   const t=allTeachers.find(x=>x.uid===uid); if(!t) return;
   editingUid=uid;
   el('eFirst').value=t.firstName||'';
   el('eLast').value=t.lastName||'';
   el('eTSC').value=t.tscNumber||'';
+  el('eParentPhone').value=t.parentPhone||'';
   el('eGrade').value=t.grade||'';
   el('eStatus').value=t.status||'pending';
   el('editOverlay').classList.add('open');
@@ -1381,34 +996,19 @@ async function onEditGradeChange(preselect=''){
   ss.innerHTML='<option value="">Loading…</option>';
   if(!grade){ ss.innerHTML='<option value="">-- Select Grade first --</option>'; if(hint) hint.textContent=''; return; }
   let streams=[];
-  try{
-    const raw=localStorage.getItem('cbe_streams');
-    if(raw){ const map=JSON.parse(raw); if(map[grade]?.length) streams=map[grade]; }
-  }catch(_){}
+  try{ const raw=localStorage.getItem('cbe_streams'); if(raw){ const map=JSON.parse(raw); if(map[grade]?.length) streams=map[grade]; } }catch(_){}
   try{
     if(_schoolId){
       const snap=await db.collection('students').where('grade','==',grade).where('schoolId','==',_schoolId).get();
-      const set=new Set(streams);
-      snap.forEach(d=>{ const s=d.data(); if(s.stream?.trim()) set.add(s.stream.trim()); });
-      streams=[...set].sort();
-      try{
-        const raw=localStorage.getItem('cbe_streams');
-        const map=raw?JSON.parse(raw):{};
-        map[grade]=streams;
-        localStorage.setItem('cbe_streams',JSON.stringify(map));
-        localStorage.setItem('cbe_streams_ts',Date.now().toString());
-      }catch(_){}
+      const set=new Set(streams); snap.forEach(d=>{ const s=d.data(); if(s.stream?.trim()) set.add(s.stream.trim()); }); streams=[...set].sort();
+      try{ const raw=localStorage.getItem('cbe_streams'); const map=raw?JSON.parse(raw):{}; map[grade]=streams; localStorage.setItem('cbe_streams',JSON.stringify(map)); localStorage.setItem('cbe_streams_ts',Date.now().toString()); }catch(_){}
     }
   }catch(_){}
-  if(!streams.length){
-    ss.innerHTML='<option value="">-- No Stream --</option>';
-    if(hint){ hint.textContent='No streams found for this grade.'; hint.style.color='var(--text3)'; }
-  }else{
+  if(!streams.length){ ss.innerHTML='<option value="">-- No Stream --</option>'; if(hint){ hint.textContent='No streams found for this grade.'; hint.style.color='var(--text3)'; } }
+  else{
     ss.innerHTML='<option value="">-- No Stream --</option>'+streams.map(s=>`<option value="${s}"${s===preselect?' selected':''}>${s}</option>`).join('');
     if(hint){ hint.textContent=`${streams.length} stream${streams.length>1?'s':''} available`; hint.style.color='var(--green)'; }
-    if(preselect&&!streams.includes(preselect)){
-      ss.innerHTML='<option value="">-- No Stream --</option><option value="'+preselect+'">'+preselect+' (current)</option>'+streams.map(s=>`<option value="${s}">${s}</option>`).join('');
-    }
+    if(preselect&&!streams.includes(preselect)) ss.innerHTML+='<option value="'+preselect+'">'+preselect+' (current)</option>';
   }
 }
 function closeEdit(){ el('editOverlay').classList.remove('open'); editingUid=null; }
@@ -1417,26 +1017,21 @@ async function saveEdit(){
   const first=el('eFirst').value.trim(),last=el('eLast').value.trim();
   const grade=el('eGrade').value,stream=el('eStream').value;
   const status=el('eStatus').value,tsc=el('eTSC').value.trim();
+  const parentPhone=el('eParentPhone').value.trim();
   if(!first||!last){ toast('Name required','err'); return; }
   if(!grade){ toast('Grade is required','err'); return; }
   const btn=el('editSaveBtn'); btn.disabled=true; btn.textContent='Saving…';
   try{
-    const upd={firstName:first,lastName:last,fullName:`${first} ${last}`,grade,stream,status,tscNumber:tsc||null};
+    const upd={firstName:first,lastName:last,fullName:`${first} ${last}`,grade,stream,status,tscNumber:tsc||null,parentPhone:parentPhone||null};
     await db.collection('users').doc(editingUid).update(upd);
     Object.assign(allTeachers.find(x=>x.uid===editingUid),upd);
-    updateStats(); renderTable(); closeEdit();
-    toast(`${first} ${last} updated`);
+    updateStats(); renderTable(); closeEdit(); toast(`${first} ${last} updated`);
   }catch(e){ toast('Save failed: '+e.message,'err'); }
   btn.disabled=false; btn.textContent='Save Changes';
 }
 
-// ══ DELETE MODAL ═══════════════════════════════════════════════════
-function openDel(uid){
-  const t=allTeachers.find(x=>x.uid===uid); if(!t) return;
-  deletingUid=uid;
-  el('delName').textContent=t.fullName||t.email||uid;
-  el('delOverlay').classList.add('open');
-}
+// ══ DELETE MODAL ══
+function openDel(uid){ const t=allTeachers.find(x=>x.uid===uid); if(!t) return; deletingUid=uid; el('delName').textContent=t.fullName||t.email||uid; el('delOverlay').classList.add('open'); }
 function closeDel(){ el('delOverlay').classList.remove('open'); deletingUid=null; }
 async function confirmDelete(){
   if(!deletingUid) return;
@@ -1444,23 +1039,22 @@ async function confirmDelete(){
   try{
     await db.collection('users').doc(deletingUid).delete();
     allTeachers=allTeachers.filter(x=>x.uid!==deletingUid);
-    updateStats(); renderTable(); closeDel();
-    toast('Teacher profile deleted');
+    updateStats(); renderTable(); closeDel(); toast('Teacher profile deleted');
   }catch(e){ toast('Delete failed: '+e.message,'err'); }
   btn.disabled=false; btn.textContent='Delete Profile';
 }
 
-// ══ MODAL CLOSE ON BACKDROP / ESC ══════════════════════════════════
+// ══ MODAL CLOSE ON BACKDROP / ESC ══
 el('editOverlay').addEventListener('click',e=>{ if(e.target===el('editOverlay')) closeEdit(); });
 el('delOverlay').addEventListener('click',e=>{ if(e.target===el('delOverlay')) closeDel(); });
 el('reassignOverlay').addEventListener('click',e=>{ if(e.target===el('reassignOverlay')) closeReassign(); });
 el('addTeacherOverlay').addEventListener('click',e=>{ if(e.target===el('addTeacherOverlay')) closeAddTeacher(); });
 document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeEdit(); closeDel(); closeReassign(); closeAddTeacher(); } });
 
-// ══ ADD TEACHER ════════════════════════════════════════════════════
+// ══ ADD TEACHER ══
 function openAddTeacher(){
   el('addTeacherErr').classList.remove('show');
-  ['atFirst','atLast','atEmail','atTSC'].forEach(id=>el(id).value='');
+  ['atFirst','atLast','atEmail','atTSC','atParentPhone'].forEach(id=>{ const el2=el(id); if(el2) el2.value=''; });
   el('atGrade').value=''; el('atStream').innerHTML='<option value="">-- Select Grade --</option>';
   el('atPass').value='Teacher@2026';
   el('addTeacherOverlay').classList.add('open');
@@ -1468,12 +1062,10 @@ function openAddTeacher(){
 function closeAddTeacher(){ el('addTeacherOverlay').classList.remove('open'); }
 async function onAddTeacherGradeChange(){
   const grade=el('atGrade').value,ss=el('atStream');
-  ss.innerHTML='<option value="">Loading…</option>';
-  if(!grade){ ss.innerHTML='<option value="">-- Select Grade --</option>'; return; }
+  ss.innerHTML='<option value="">Loading…</option>'; if(!grade){ ss.innerHTML='<option value="">-- Select Grade --</option>'; return; }
   try{
     const snap=await db.collection('students').where('grade','==',grade).where('schoolId','==',_schoolId).get();
-    const set=new Set(); snap.forEach(d=>{ const s=d.data(); if(s.stream?.trim()) set.add(s.stream.trim()); });
-    const streams=[...set].sort();
+    const set=new Set(); snap.forEach(d=>{ const s=d.data(); if(s.stream?.trim()) set.add(s.stream.trim()); }); const streams=[...set].sort();
     ss.innerHTML='<option value="">-- No Stream --</option>'+streams.map(s=>`<option>${s}</option>`).join('');
   }catch(_){ ss.innerHTML='<option value="">-- No Stream --</option>'; }
 }
@@ -1485,6 +1077,7 @@ function generatePassword(){
 async function saveAddTeacher(){
   const first=el('atFirst').value.trim(),last=el('atLast').value.trim();
   const email=el('atEmail').value.trim(),tsc=el('atTSC').value.trim();
+  const parentPhone=el('atParentPhone').value.trim();
   const grade=el('atGrade').value,stream=el('atStream').value;
   const pass=el('atPass').value.trim();
   el('addTeacherErr').classList.remove('show');
@@ -1495,64 +1088,38 @@ async function saveAddTeacher(){
   const btn=el('addTeacherBtn'); btn.disabled=true; btn.textContent='Creating…';
   try{
     const apiKey='AIzaSyBdabXqlBQ-6yVNJKdu8Zhb9Cm_-59_u24';
-    const res=await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`,{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({email,password:pass,returnSecureToken:true})
-    });
+    const res=await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass,returnSecureToken:true})});
     const data=await res.json();
-    if(data.error){
-      el('addTeacherErrMsg').textContent=data.error.message==='EMAIL_EXISTS'?'This email is already registered.':data.error.message;
-      el('addTeacherErr').classList.add('show');
-      btn.disabled=false; btn.textContent='➕ Add Teacher'; return;
-    }
+    if(data.error){ el('addTeacherErrMsg').textContent=data.error.message==='EMAIL_EXISTS'?'This email is already registered.':data.error.message; el('addTeacherErr').classList.add('show'); btn.disabled=false; btn.textContent='➕ Add Teacher'; return; }
     const uid=data.localId;
     await db.collection('users').doc(uid).set({
       firstName:first,lastName:last,fullName:`${first} ${last}`,
       email,tscNumber:tsc||null,grade,stream,
+      parentPhone:parentPhone||null,
       role:'teacher',status:'active',schoolId:_schoolId,
       schoolName:_schoolName||window.schoolSettings?.name||'',
       addedByAdmin:true,
       createdAt:firebase.firestore.FieldValue.serverTimestamp()
     });
-    log('info','Teacher added manually',{name:`${first} ${last}`,email,grade,stream});
     toast(`✅ ${first} ${last} added — ${grade} ${stream} · Share password: ${pass}`);
     closeAddTeacher();
-  }catch(e){
-    log('error','Add teacher failed',e.message);
-    el('addTeacherErrMsg').textContent=e.message;
-    el('addTeacherErr').classList.add('show');
-  }
+  }catch(e){ el('addTeacherErrMsg').textContent=e.message; el('addTeacherErr').classList.add('show'); }
   btn.disabled=false; btn.textContent='➕ Add Teacher';
 }
 
-// ══ REGISTRATION LINK ══════════════════════════════════════════════
+// ══ REGISTRATION LINK ══
 function copyRegLink(){
   if(!_schoolId){ toast('Not logged in','err'); return; }
   const href=window.location.href.split('?')[0].split('#')[0];
   const base=href.substring(0,href.lastIndexOf('/')+1);
-  el('regBaseUrl').value=base;
-  updateRegLink();
+  el('regBaseUrl').value=base; updateRegLink();
   el('regLinkOverlay').classList.add('open');
 }
-function updateRegLink(){
-  let base=el('regBaseUrl').value.trim();
-  if(!base) return;
-  if(!base.endsWith('/')) base+='/';
-  el('regLinkText').value=base+'login?sid='+_schoolId;
-}
-function doCopyLink(){
-  const link=el('regLinkText').value;
-  navigator.clipboard.writeText(link)
-    .then(()=>toast('✅ Link copied to clipboard'))
-    .catch(()=>{ el('regLinkText').select?.(); document.execCommand('copy'); toast('✅ Copied'); });
-}
-function doShareWhatsApp(){
-  const link=el('regLinkText').value;
-  const msg=encodeURIComponent(`Hello! Please use this link to register as a teacher on our CBE Mark Sheet System:\n\n${link}\n\nFill in your details and submit. I will approve your account.`);
-  window.open(`https://wa.me/?text=${msg}`,'_blank');
-}
+function updateRegLink(){ let base=el('regBaseUrl').value.trim(); if(!base) return; if(!base.endsWith('/')) base+='/'; el('regLinkText').value=base+'login?sid='+_schoolId; }
+function doCopyLink(){ const link=el('regLinkText').value; navigator.clipboard.writeText(link).then(()=>toast('✅ Link copied to clipboard')).catch(()=>{ el('regLinkText').select?.(); document.execCommand('copy'); toast('✅ Copied'); }); }
+function doShareWhatsApp(){ const link=el('regLinkText').value; const msg=encodeURIComponent(`Hello! Please use this link to register as a teacher on our CBE Mark Sheet System:\n\n${link}\n\nFill in your details and submit. I will approve your account.`); window.open(`https://wa.me/?text=${msg}`,'_blank'); }
 
-// ══ SESSION TRACKING ═══════════════════════════════════════════════
+// ══ SESSION TRACKING ══
 async function _trackSession(user,profile){
   let ip='—';
   try{ const ctrl=new AbortController(); setTimeout(()=>ctrl.abort(),3000); const r=await fetch('https://api.ipify.org?format=json',{signal:ctrl.signal}); ip=(await r.json()).ip||'—'; }catch(_){}
@@ -1560,11 +1127,9 @@ async function _trackSession(user,profile){
   function gd(u){return /iPhone/.test(u)?'iPhone':/iPad/.test(u)?'iPad':/Android/.test(u)?'Android':/Chrome/.test(u)?'Chrome':/Firefox/.test(u)?'Firefox':'Desktop';}
   function go(u){return /Windows/.test(u)?'Windows':/Mac/.test(u)?'macOS':/Linux/.test(u)?'Linux':/Android/.test(u)?'Android':'Unknown';}
   const ref=await db.collection('adminSessions').add({
-    schoolId:user.uid,adminId:user.uid,
-    adminName:profile.fullName||profile.email||'',
-    adminEmail:user.email||'',schoolName:window.schoolSettings?.name||'',
-    role:profile.role||'admin',ip,device:gd(ua),os:go(ua),
-    active:true,forcedLogout:false,
+    schoolId:user.uid,adminId:user.uid,adminName:profile.fullName||profile.email||'',adminEmail:user.email||'',
+    schoolName:window.schoolSettings?.name||'',role:profile.role||'admin',
+    ip,device:gd(ua),os:go(ua),active:true,forcedLogout:false,
     loginAt:firebase.firestore.FieldValue.serverTimestamp()
   });
   _sessionId=ref.id;
@@ -1574,21 +1139,102 @@ async function _trackSession(user,profile){
 }
 function _listenSessionControl(){
   if(!_sessionId) return;
-  db.collection('adminSessions').doc(_sessionId).onSnapshot(doc=>{
-    if(!doc.exists) return;
-    const d=doc.data();
-    if(d&&d.forcedLogout){ toast('⚠️ Session ended — another login detected','err'); setTimeout(()=>doLogout(),2000); }
-  });
+  db.collection('adminSessions').doc(_sessionId).onSnapshot(doc=>{ if(!doc.exists) return; const d=doc.data(); if(d&&d.forcedLogout){ toast('⚠️ Session ended — another login detected','err'); setTimeout(()=>doLogout(),2000); } });
 }
-async function _endSession(){
-  if(!_sessionId) return;
-  await db.collection('adminSessions').doc(_sessionId).update({active:false,logoutAt:firebase.firestore.FieldValue.serverTimestamp()}).catch(()=>{});
-  _sessionId=null;
+async function _endSession(){ if(!_sessionId) return; await db.collection('adminSessions').doc(_sessionId).update({active:false,logoutAt:firebase.firestore.FieldValue.serverTimestamp()}).catch(()=>{}); _sessionId=null; }
+
+// ══════════════════════════════════════════════════════════════════
+//  SEND RESULTS SMS
+// ══════════════════════════════════════════════════════════════════
+async function sendResultsSMS(){
+  if(!_schoolId){ toast('Not authenticated — please refresh','err'); return; }
+
+  // Guard: check SMS is configured
+  let creds;
+  try{ creds=await CBE_SMS.loadATCredentials(_schoolId); }
+  catch(e){ toast('SMS check failed: '+e.message,'err'); return; }
+  if(!creds){
+    toast('SMS not configured — go to Settings → SMS Setup','err');
+    setTimeout(()=>window.open('settings','_blank'),1400);
+    return;
+  }
+
+  // Determine term & year
+  const month=new Date().getMonth();
+  const term=month<4?'Term 1':month<8?'Term 2':'Term 3';
+  const year=String(new Date().getFullYear());
+
+  // Loading state on button
+  const btn=el('sendSmsBtn');
+  if(btn){ btn.disabled=true; btn.textContent='⏳ Loading results…'; }
+
+  try{
+    // Load results
+    const resultsSnap=await db.collection('results')
+      .where('schoolId','==',_schoolId)
+      .where('term','==',term)
+      .where('year','==',year)
+      .get();
+
+    if(resultsSnap.empty){
+      toast(`No results saved for ${term} ${year} yet.`,'info');
+      return;
+    }
+
+    // Load students for parent phone map
+    const studentsSnap=await db.collection('students')
+      .where('schoolId','==',_schoolId).get();
+    const phoneMap={};
+    studentsSnap.forEach(d=>{
+      const s=d.data();
+      const phone=s.parentPhone||s.guardianPhone||s.motherPhone||'';
+      if(phone) phoneMap[d.id]=phone;
+    });
+
+    // Build recipients
+    const recipients=[];
+    resultsSnap.forEach(d=>{
+      const r=d.data();
+      let subjects=[];
+      if(Array.isArray(r.subjects)){
+        subjects=r.subjects;
+      }else if(r.marks&&typeof r.marks==='object'){
+        subjects=Object.entries(r.marks).map(([name,val])=>
+          typeof val==='object'
+            ?{name,score:val.score??val.marks??val.total??'—',grade:val.grade||''}
+            :{name,score:val}
+        );
+      }
+      recipients.push({
+        studentId:  d.id,
+        studentName:r.studentName||r.fullName||'—',
+        grade:      r.grade||'',
+        stream:     r.stream||'',
+        parentPhone:phoneMap[d.id]||r.parentPhone||'',
+        subjects,
+      });
+    });
+
+    // Load sender ID & school name
+    const senderId=await CBE_SMS.loadSenderId(_schoolId);
+    const settingsSnap=await db.collection('settings').doc(_schoolId).get();
+    const schoolName=(settingsSnap.exists?settingsSnap.data()?.name:'')||window.schoolSettings?.name||_schoolName||'';
+
+    // Open the send modal
+    CBE_SMS.openSendModal(recipients,_schoolId,{name:schoolName,term,year,senderId});
+
+  }catch(e){
+    toast('Failed to load results: '+e.message,'err');
+  }finally{
+    if(btn){ btn.disabled=false; btn.textContent='📱 Send Results SMS'; }
+  }
 }
+
 </script>
+
 <script src="school-settings.js"></script>
-<script src="subscription-guard.js?v=2"></script> 
-  
+<script src="sms-integration.js"></script>
+<script src="subscription-guard.js?v=2"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"9a6fdd38ee454483a9aa3baf59e5691f","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
