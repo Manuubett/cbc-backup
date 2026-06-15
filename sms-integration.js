@@ -669,5 +669,30 @@ window.CBE_SMS = (() => {
     _saveSettings,
     _testSMS,
   };
+  // ── Backend SMS proxy (avoids browser CORS block on AT's API) ──
+  const SMS_PROXY_ENDPOINT = 'https://instasend-backend.onrender.com/api/sms/send';
+
+  async function sendSMS(apiKey, username, to, message, from = '') {
+    const res = await fetch(SMS_PROXY_ENDPOINT, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ apiKey, username, to, message, from }),
+    });
+
+    let data;
+    try {
+      data = await res.json();
+    } catch (_) {
+      throw new Error(`SMS proxy error: ${res.status} ${res.statusText}`);
+    }
+
+    if (!res.ok) {
+      throw new Error(data?.message || `SMS proxy error: ${res.status} ${res.statusText}`);
+    }
+    if (data?.success === false) {
+      throw new Error(data.message || 'SMS send failed');
+    }
+    return data;
+  }
 
 })(); // ← executes the IIFE and assigns window.CBE_SMS
