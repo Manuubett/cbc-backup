@@ -1,22 +1,20 @@
 /**
- * CBE Mark Sheet — Africa's Talking SMS Integration (v2)
- * ─────────────────────────────────────────────────
+ * CBE Mark Sheet — Africa's Talking SMS Integration (v3)
+ * ─────────────────────────────────────────────────────
  * Each school uses their OWN AT account & airtime.
  * This module never uses a central API key — zero cost to you (the SaaS owner).
  *
- * v2 CHANGE:
- *  - Browser → AT direct calls are blocked by CORS (AT does not allow
- *    cross-origin requests from the browser).
- *  - sendSMS() now POSTs to our own backend proxy
- *    (https://instasend-backend.onrender.com/api/sms/send), which forwards
- *    the request to Africa's Talking server-side and returns the response.
- *  - The school's AT API key still travels with the request (over HTTPS) and
- *    is NOT stored on our server — it's only relayed.
+ * v3 FIXES:
+ *  - Bug 1: _schoolId() race condition — buttons now guard against undefined schoolId
+ *  - Bug 2: Added AbortController with 15s timeout on fetch (handles Render cold starts)
+ *  - Bug 3: Replaced prompt() in _testSMS() with an inline phone input field
+ *  - Bug 4: normalisePhone() now handles bare 7XXXXXXXX format
+ *  - Bug 5: Removed misplaced dead comment at bottom of file
  *
  * HOW IT WORKS:
  *  1. School saves their AT API key + username in Settings → Firestore settings/{schoolId}
  *  2. When sending SMS, we fetch THEIR credentials from Firestore
- *  3. We POST to our backend proxy, which forwards to AT using their key — AT bills their account directly
+ *  3. We POST to our backend proxy, which forwards to AT using their key — AT bills their account
  *  4. We log delivery status in Firestore smsLogs/{schoolId}/logs/{docId}
  *
  * USAGE:
@@ -30,11 +28,11 @@
  *  CBE_SMS.sendSMS(apiKey, username, to, message, from)
  *  CBE_SMS.buildResultsSMS({studentName, grade, stream, term, year, schoolName, subjects, footer})
  *  CBE_SMS.saveATCredentials(schoolId, apiKey, username)
- *  CBE_SMS.loadATCredentials(schoolId)          → {atApiKey, atUsername, smsEnabled} | null
- *  CBE_SMS.loadSenderId(schoolId)               → string
- *  CBE_SMS.normalisePhone(raw)                  → +254... string
- *  CBE_SMS.settingsHTML()                       → HTML string for settings page
- *  CBE_SMS.initSettingsUI(schoolId)             → wires up the settings form
+ *  CBE_SMS.loadATCredentials(schoolId)   → {atApiKey, atUsername, smsEnabled} | null
+ *  CBE_SMS.loadSenderId(schoolId)        → string
+ *  CBE_SMS.normalisePhone(raw)           → +254... string
+ *  CBE_SMS.settingsHTML()                → HTML string for settings page
+ *  CBE_SMS.initSettingsUI(schoolId)      → wires up the settings form
  */
 
 window.CBE_SMS = (() => {
@@ -45,6 +43,9 @@ window.CBE_SMS = (() => {
 
   // ── Backend SMS proxy (avoids browser CORS block on AT's API) ──
   const SMS_PROXY_ENDPOINT = 'https://instasend-backend.onrender.com/api/sms/send';
+
+  // ── Fetch timeout (ms) — handles Render.com free-tier cold starts ──
+  const FETCH_TIMEOUT_MS = 15000;
 
   // ══════════════════════════════════════════════════════════════
   //  1. SETTINGS HELPERS
@@ -61,6 +62,7 @@ window.CBE_SMS = (() => {
   }
 
   async function loadATCredentials(schoolId) {
+    if (!schoolId) return null;
     const snap = await db().collection('settings').doc(schoolId).get();
     if (!snap.exists) return null;
     const d = snap.data();
@@ -77,15 +79,34 @@ window.CBE_SMS = (() => {
   }
 
   // ══════════════════════════════════════════════════════════════
-  //  2. CORE SEND FUNCTION (v2 — via backend proxy)
+  //  2. CORE SEND FUNCTION (v3 — with timeout via AbortController)
   // ══════════════════════════════════════════════════════════════
 
   async function sendSMS(apiKey, username, to, message, from = '') {
-    const res = await fetch(SMS_PROXY_ENDPOINT, {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ apiKey, username, to, message, from }),
-    });
+    // FIX: AbortController gives us a hard timeout so Render cold-start
+    // hangs (20-30s) don't leave the UI frozen indefinitely.
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+
+    let res;
+    try {
+      res = await fetch(SMS_PROXY_ENDPOINT, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ apiKey, username, to, message, from }),
+        signal:  controller.signal,
+      });
+    } catch (err) {
+      clearTimeout(timer);
+      if (err.name === 'AbortError') {
+        throw new Error(
+          'SMS proxy timed out after 15 s — the server may be waking up. ' +
+          'Wait 30 seconds and try again.'
+        );
+      }
+      throw new Error('Network error: ' + err.message);
+    }
+    clearTimeout(timer);
 
     let data;
     try {
@@ -123,8 +144,8 @@ window.CBE_SMS = (() => {
 
   async function sendBulkResults(schoolId, recipients, opts = {}) {
     const creds = await loadATCredentials(schoolId);
-    if (!creds)             throw new Error('SMS not configured — go to Settings → SMS Setup');
-    if (!creds.smsEnabled)  throw new Error('SMS is disabled for this school');
+    if (!creds)            throw new Error('SMS not configured — go to Settings → SMS Setup');
+    if (!creds.smsEnabled) throw new Error('SMS is disabled for this school');
 
     const { term, year, schoolName, senderId = '', onProgress } = opts;
     const results = [];
@@ -194,7 +215,7 @@ window.CBE_SMS = (() => {
 
   /**
    * Open the SMS send modal.
-   * @param {Array}  recipients   — each: {studentName, parentPhone, grade, stream, subjects[]}
+   * @param {Array}  recipients    — each: {studentName, parentPhone, grade, stream, subjects[]}
    * @param {string} schoolId
    * @param {object} schoolSettings — {name, term, year, senderId}
    */
@@ -350,7 +371,7 @@ window.CBE_SMS = (() => {
     }
   }
 
-  // ── Internal: kick off the bulk send ────────────────────────────
+  // ── Internal: kick off the bulk send ──────────────────────────
   async function _startSend(schoolId, schoolName, term, year, senderId) {
     const modal      = document.getElementById('cbeSmsModal');
     const recipients = modal?._smsRecipients || [];
@@ -379,10 +400,10 @@ window.CBE_SMS = (() => {
           if (last) {
             const s = last.status;
             summary[s] = (summary[s] || 0) + 1;
-            const dot   = `<span class="_sms-dot ${s}"></span>`;
-            const name  = _esc(last.studentName || '—');
-            const phone = _esc(last.phone || last.parentPhone || '—');
-            const note  = s === 'sent' ? 'Delivered'
+            const dot      = `<span class="_sms-dot ${s}"></span>`;
+            const name     = _esc(last.studentName || '—');
+            const phone    = _esc(last.phone || last.parentPhone || '—');
+            const note     = s === 'sent' ? 'Delivered'
               : s === 'skipped' ? 'No phone'
               : _esc(last.reason || s);
             const noteColor = s === 'sent' ? '#059669' : s === 'skipped' ? '#d97706' : '#dc2626';
@@ -415,7 +436,7 @@ window.CBE_SMS = (() => {
     if (cancelBtn) { cancelBtn.disabled = false; cancelBtn.textContent = 'Close'; }
   }
 
-  function _closeModal()    { _removeSendModal(); }
+  function _closeModal()     { _removeSendModal(); }
   function _removeSendModal() {
     const m = document.getElementById('cbeSmsModal');
     if (m) m.remove();
@@ -429,6 +450,7 @@ window.CBE_SMS = (() => {
     return `
     <div id="smsSettingsSection" style="background:#fff;border:1px solid #dce1ec;
       border-radius:10px;padding:20px;margin-top:20px">
+
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
         <span style="font-size:20px">📱</span>
         <div>
@@ -450,7 +472,8 @@ window.CBE_SMS = (() => {
         <div>
           <label style="display:block;font-size:11px;font-weight:700;color:#64748b;
             text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">AT API Key *</label>
-          <input id="smsApiKey" type="password" placeholder="Paste your Africa's Talking API key"
+          <input id="smsApiKey" type="password" autocomplete="new-password"
+            placeholder="Paste your Africa's Talking API key"
             style="width:100%;height:36px;padding:0 10px;border:1.5px solid #dce1ec;
               border-radius:6px;font-family:inherit;font-size:13px;outline:none;
               transition:border-color .14s"
@@ -460,7 +483,8 @@ window.CBE_SMS = (() => {
         <div>
           <label style="display:block;font-size:11px;font-weight:700;color:#64748b;
             text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">AT Username *</label>
-          <input id="smsUsername" type="text" placeholder="Your AT app username (use 'sandbox' for testing)"
+          <input id="smsUsername" type="text" autocomplete="off"
+            placeholder="Your AT app username (use 'sandbox' for testing)"
             style="width:100%;height:36px;padding:0 10px;border:1.5px solid #dce1ec;
               border-radius:6px;font-family:inherit;font-size:13px;outline:none;
               transition:border-color .14s"
@@ -469,7 +493,7 @@ window.CBE_SMS = (() => {
         </div>
       </div>
 
-      <div style="margin-bottom:14px">
+      <div style="margin-bottom:12px">
         <label style="display:block;font-size:11px;font-weight:700;color:#64748b;
           text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">
           Sender ID
@@ -479,6 +503,23 @@ window.CBE_SMS = (() => {
         </label>
         <input id="smsSenderId" type="text"
           placeholder="e.g. MySchool  (leave blank to use AT default)"
+          style="width:100%;height:36px;padding:0 10px;border:1.5px solid #dce1ec;
+            border-radius:6px;font-family:inherit;font-size:13px;outline:none;
+            transition:border-color .14s"
+          onfocus="this.style.borderColor='#1a56db'"
+          onblur="this.style.borderColor='#dce1ec'">
+      </div>
+
+      <!-- FIX: inline test phone field replaces prompt() -->
+      <div style="margin-bottom:14px">
+        <label style="display:block;font-size:11px;font-weight:700;color:#64748b;
+          text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">
+          Test Phone Number
+          <span style="font-size:10px;font-weight:400;text-transform:none">
+            (used by Send Test SMS button)
+          </span>
+        </label>
+        <input id="smsTestPhone" type="tel" placeholder="+254712345678"
           style="width:100%;height:36px;padding:0 10px;border:1.5px solid #dce1ec;
             border-radius:6px;font-family:inherit;font-size:13px;outline:none;
             transition:border-color .14s"
@@ -500,7 +541,7 @@ window.CBE_SMS = (() => {
            Settings → Sandbox Simulator on the AT dashboard before sending a test SMS.
       </div>
 
-      <div style="display:flex;gap:8px">
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button id="smsSaveBtn" onclick="CBE_SMS._saveSettings()"
           style="padding:7px 18px;background:#1a56db;color:#fff;border:none;
             border-radius:6px;font-family:inherit;font-size:12.5px;font-weight:700;
@@ -528,39 +569,51 @@ window.CBE_SMS = (() => {
       if (keyInp)  keyInp.value  = creds.atApiKey;
       if (userInp) userInp.value = creds.atUsername;
       if (badge) {
-        badge.textContent  = '✅ Configured';
+        badge.textContent      = '✅ Configured';
         badge.style.background = '#d1fae5';
         badge.style.color      = '#065f46';
       }
       try {
         const snap = await db().collection('settings').doc(schoolId).get();
         if (snap.exists) {
+          const d  = snap.data();
           const si = document.getElementById('smsSenderId');
-          if (si && snap.data().smsSenderId) si.value = snap.data().smsSenderId;
+          const tp = document.getElementById('smsTestPhone');
+          if (si && d.smsSenderId)  si.value = d.smsSenderId;
+          if (tp && d.smsTestPhone) tp.value = d.smsTestPhone;
         }
       } catch (_) {}
     }
   }
 
   async function _saveSettings() {
+    // FIX: guard against schoolId not yet available (auth race)
     const schoolId = _schoolId();
+    if (!schoolId) {
+      _showSaveMsg('⚠️ Not signed in yet — please wait and try again.', '#dc2626');
+      return;
+    }
+
     const apiKey   = document.getElementById('smsApiKey')?.value.trim();
     const username = document.getElementById('smsUsername')?.value.trim();
     const senderId = document.getElementById('smsSenderId')?.value.trim();
+    const testPhone= document.getElementById('smsTestPhone')?.value.trim();
     const btn      = document.getElementById('smsSaveBtn');
 
     if (!apiKey || !username) {
       _showSaveMsg('⚠️ API Key and Username are required.', '#dc2626');
       return;
     }
+
     btn.disabled = true; btn.textContent = 'Saving…';
     try {
       await saveATCredentials(schoolId, apiKey, username);
-      if (senderId !== undefined) {
-        await db().collection('settings').doc(schoolId).set(
-          { smsSenderId: senderId || '' }, { merge: true }
-        );
-      }
+      // Persist senderId + testPhone together in one write
+      await db().collection('settings').doc(schoolId).set({
+        smsSenderId:  senderId  || '',
+        smsTestPhone: testPhone || '',
+      }, { merge: true });
+
       const badge = document.getElementById('smsStatusBadge');
       if (badge) {
         badge.textContent      = '✅ Configured';
@@ -574,51 +627,87 @@ window.CBE_SMS = (() => {
     btn.disabled = false; btn.textContent = '💾 Save SMS Settings';
   }
 
+  // FIX: no longer uses prompt() — reads from #smsTestPhone field instead
   async function _testSMS() {
     const schoolId = _schoolId();
-    const phone    = prompt('Enter your phone number to receive a test SMS:\n(Format: +254712345678)');
-    if (!phone) return;
+    if (!schoolId) {
+      _showSaveMsg('⚠️ Not signed in yet — please wait and try again.', '#dc2626');
+      return;
+    }
+
+    // Read from the inline field; only fall back to prompt if field not in DOM
+    const phoneField = document.getElementById('smsTestPhone');
+    let phone = phoneField ? phoneField.value.trim() : '';
+    if (!phone) {
+      _showSaveMsg('⚠️ Enter a test phone number in the field above first.', '#dc2626');
+      return;
+    }
 
     const creds = await loadATCredentials(schoolId);
-    if (!creds) { alert('Save your AT credentials first.'); return; }
+    if (!creds) {
+      _showSaveMsg('⚠️ Save your AT credentials first.', '#dc2626');
+      return;
+    }
 
     const senderId = document.getElementById('smsSenderId')?.value.trim() || '';
+    _showSaveMsg('⏳ Sending test SMS — this may take up to 15 s…', '#1a56db');
+
     try {
       const res = await sendSMS(
-        creds.atApiKey, creds.atUsername,
+        creds.atApiKey,
+        creds.atUsername,
         normalisePhone(phone),
         `CBE Mark Sheet test SMS ✅\nSMS integration is working correctly!\n— Your School System`,
         senderId
       );
       const status = res?.SMSMessageData?.Recipients?.[0]?.status;
       if (status === 'Success') {
-        alert(`✅ Test SMS sent to ${phone}!`);
+        _showSaveMsg(`✅ Test SMS sent to ${phone}!`, '#059669');
       } else {
-        alert(`⚠️ AT responded: ${JSON.stringify(res?.SMSMessageData)}`);
+        _showSaveMsg(
+          `⚠️ AT responded: ${res?.SMSMessageData?.Message || JSON.stringify(res?.SMSMessageData)}`,
+          '#d97706'
+        );
       }
     } catch (e) {
-      alert('❌ Failed: ' + e.message);
+      _showSaveMsg('❌ ' + e.message, '#dc2626');
     }
   }
 
   function _showSaveMsg(msg, color) {
     const el = document.getElementById('smsSaveMsg');
     if (!el) return;
-    el.textContent  = msg;
-    el.style.color  = color;
+    el.textContent   = msg;
+    el.style.color   = color;
     el.style.display = 'block';
-    setTimeout(() => { el.style.display = 'none'; }, 4000);
+    setTimeout(() => { el.style.display = 'none'; }, 6000);
   }
 
   // ══════════════════════════════════════════════════════════════
   //  UTILITIES
   // ══════════════════════════════════════════════════════════════
 
-  /** Normalise Kenyan phone numbers to +254 format */
+  /**
+   * Normalise Kenyan phone numbers to +254 format.
+   * FIX: now also handles bare 7XXXXXXXX (9 digits, no country code or leading 0).
+   *
+   * Handles:
+   *   0712345678   → +254712345678
+   *   254712345678 → +254712345678
+   *   +254712345678→ +254712345678  (already correct)
+   *   712345678    → +254712345678  ← NEW
+   */
   function normalisePhone(raw) {
     let p = (raw || '').replace(/[\s\-]/g, '');
-    if (p.startsWith('07') || p.startsWith('01')) p = '+254' + p.slice(1);
-    if (p.startsWith('254') && !p.startsWith('+'))  p = '+' + p;
+    // Already correct
+    if (p.startsWith('+254')) return p;
+    // 254XXXXXXXXX → +254XXXXXXXXX
+    if (p.startsWith('254') && p.length === 12) return '+' + p;
+    // 07XXXXXXXX or 01XXXXXXXX → +254XXXXXXXXX
+    if ((p.startsWith('07') || p.startsWith('01')) && p.length === 10) return '+254' + p.slice(1);
+    // 7XXXXXXXX (9 digits, no leading 0) → +2547XXXXXXXX
+    if (/^7\d{8}$/.test(p)) return '+254' + p;
+    // Return as-is and let AT report the error
     return p;
   }
 
@@ -639,14 +728,17 @@ window.CBE_SMS = (() => {
       .replace(/'/g, '&#39;');
   }
 
-  /** Read schoolId from wherever the host page stores it */
+  /**
+   * Read schoolId from wherever the host page stores it.
+   * settings.html must set window._schoolId = u.uid inside onAuthStateChanged.
+   */
   function _schoolId() {
     return window._schoolId
       || sessionStorage.getItem('cbe_school_id')
       || '';
   }
 
-  // ── Public API ───────────────────────────────────────────────
+  // ── Public API ────────────────────────────────────────────────
   return {
     // Core
     sendSMS,
@@ -663,12 +755,11 @@ window.CBE_SMS = (() => {
     initSettingsUI,
     // Utilities
     normalisePhone,
-    // Internals exposed for inline onclick handlers in the modal
+    // Internals exposed for inline onclick handlers
     _startSend,
     _closeModal,
     _saveSettings,
     _testSMS,
   };
-  // ── Backend SMS proxy (avoids browser CORS block on AT's API) ──
- 
-})(); // ← executes the IIFE and assigns window.CBE_SMS
+
+})();
