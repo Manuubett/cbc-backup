@@ -1,10 +1,19 @@
 /**
- * CBE Mark Sheet — Africa's Talking SMS Integration (v3)
+ * CBE Mark Sheet — Africa's Talking SMS Integration (v4)
  * ─────────────────────────────────────────────────────
  * Each school uses their OWN AT account & airtime.
  * This module never uses a central API key — zero cost to you (the SaaS owner).
  *
- * v3 FIXES:
+ * v4 CHANGES:
+ *  - NEW: _openTestModal() — fully standalone test modal with its own UI
+ *    Bypasses all settings-page DOM dependencies. Works from ANY page.
+ *    Reads credentials fresh from Firestore, calls proxy directly, shows
+ *    live status inside the modal. No dependency on #smsSaveMsg or any
+ *    other element existing in the host page.
+ *  - _testSMS() now delegates to _openTestModal() instead of inline flow
+ *  - All v3 fixes retained
+ *
+ * v3 FIXES (retained):
  *  - Bug 1: _schoolId() race condition — buttons now guard against undefined schoolId
  *  - Bug 2: Added AbortController with 15s timeout on fetch (handles Render cold starts)
  *  - Bug 3: Replaced prompt() in _testSMS() with an inline phone input field
@@ -33,6 +42,7 @@
  *  CBE_SMS.normalisePhone(raw)           → +254... string
  *  CBE_SMS.settingsHTML()                → HTML string for settings page
  *  CBE_SMS.initSettingsUI(schoolId)      → wires up the settings form
+ *  CBE_SMS._openTestModal(schoolId?)     → standalone SMS test modal (v4 NEW)
  */
 
 window.CBE_SMS = (() => {
@@ -83,8 +93,6 @@ window.CBE_SMS = (() => {
   // ══════════════════════════════════════════════════════════════
 
   async function sendSMS(apiKey, username, to, message, from = '') {
-    // FIX: AbortController gives us a hard timeout so Render cold-start
-    // hangs (20-30s) don't leave the UI frozen indefinitely.
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
 
@@ -210,15 +218,337 @@ window.CBE_SMS = (() => {
   }
 
   // ══════════════════════════════════════════════════════════════
-  //  6. SEND MODAL UI
+  //  6. STANDALONE TEST MODAL (v4 NEW)
   // ══════════════════════════════════════════════════════════════
 
   /**
-   * Open the SMS send modal.
-   * @param {Array}  recipients    — each: {studentName, parentPhone, grade, stream, subjects[]}
-   * @param {string} schoolId
-   * @param {object} schoolSettings — {name, term, year, senderId}
+   * Opens a fully self-contained SMS test modal.
+   * Has zero dependency on any host-page DOM elements.
+   * Pre-fills credentials + senderId from Firestore if schoolId is known.
+   * Calls the proxy directly and shows live status inside the modal.
+   *
+   * @param {string} [preloadSchoolId] — optional, pre-fills fields from Firestore
    */
+  function _openTestModal(preloadSchoolId) {
+    // Remove any existing instance
+    const existing = document.getElementById('_cbeTestSmsModal');
+    if (existing) existing.remove();
+
+    const resolvedId = preloadSchoolId || _schoolId();
+
+    // ── Build modal DOM ──────────────────────────────────────────
+    const overlay = document.createElement('div');
+    overlay.id = '_cbeTestSmsModal';
+    overlay.style.cssText = `
+      position:fixed;inset:0;background:rgba(0,0,0,.5);
+      backdrop-filter:blur(8px);z-index:99999;
+      display:flex;align-items:center;justify-content:center;padding:20px;
+      font-family:'Plus Jakarta Sans',ui-sans-serif,sans-serif;
+    `;
+
+    overlay.innerHTML = `
+      <div id="_cbeTestSmsBox" style="
+        background:#fff;border-radius:16px;width:100%;max-width:460px;
+        box-shadow:0 32px 80px rgba(0,0,0,.35);overflow:hidden;
+        animation:_testIn .22s cubic-bezier(.22,1,.36,1);
+      ">
+        <style>
+          @keyframes _testIn {
+            from { opacity:0; transform:scale(.94) translateY(14px) }
+            to   { opacity:1; transform:none }
+          }
+          #_cbeTestSmsBox input {
+            width:100%;box-sizing:border-box;height:38px;padding:0 11px;
+            border:1.5px solid #dce1ec;border-radius:7px;
+            font-family:inherit;font-size:13px;outline:none;
+            transition:border-color .14s;background:#fff;
+          }
+          #_cbeTestSmsBox input:focus { border-color:#1a56db; }
+          #_cbeTestSmsBox label {
+            display:block;font-size:10.5px;font-weight:700;color:#64748b;
+            text-transform:uppercase;letter-spacing:.45px;margin-bottom:5px;
+          }
+          #_cbeTestSmsBox .field { margin-bottom:12px; }
+          ._test-divider { border:none;border-top:1px solid #f1f5f9;margin:14px 0; }
+          ._test-status {
+            display:none;border-radius:8px;padding:10px 14px;
+            font-size:12.5px;line-height:1.6;margin-top:12px;
+          }
+          ._test-log {
+            font-family:monospace;font-size:11px;background:#0f172a;color:#94a3b8;
+            border-radius:7px;padding:10px 12px;margin-top:10px;
+            max-height:120px;overflow-y:auto;line-height:1.7;display:none;
+          }
+          ._test-log .ok  { color:#34d399; }
+          ._test-log .err { color:#f87171; }
+          ._test-log .inf { color:#60a5fa; }
+        </style>
+
+        <!-- Header -->
+        <div style="
+          background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 65%,#1a56db 100%);
+          padding:18px 22px;color:#fff;
+        ">
+          <div style="font-size:15px;font-weight:800;letter-spacing:-.2px;margin-bottom:2px;">
+            🧪 SMS Connection Test
+          </div>
+          <div style="font-size:11px;opacity:.65;">
+            Standalone test — works from any page, any time
+          </div>
+        </div>
+
+        <!-- Body -->
+        <div style="padding:20px 22px 4px;">
+
+          <div class="field">
+            <label>AT API Key</label>
+            <input id="_tApiKey" type="password" placeholder="Your Africa's Talking API key">
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div class="field">
+              <label>AT Username</label>
+              <input id="_tUsername" type="text" placeholder="sandbox">
+            </div>
+            <div class="field">
+              <label>Sender ID <span style="font-weight:400;text-transform:none">(optional)</span></label>
+              <input id="_tSenderId" type="text" placeholder="Leave blank for default">
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Test Phone Number</label>
+            <input id="_tPhone" type="tel" placeholder="+254712345678">
+          </div>
+
+          <!-- Info box -->
+          <div style="
+            background:#eff4ff;border:1px solid #c7d9ff;border-left:3px solid #1a56db;
+            border-radius:6px;padding:9px 13px;font-size:11.5px;color:#1e3a8a;
+            line-height:1.6;margin-bottom:4px;
+          ">
+            ℹ️ For <strong>Sandbox</strong> testing: use <code>sandbox</code> as username and
+            register your number under <em>AT Dashboard → Sandbox Simulator</em> first.
+          </div>
+
+          <!-- Status area -->
+          <div id="_tStatus" class="_test-status"></div>
+          <div id="_tLog"    class="_test-log"></div>
+
+        </div>
+
+        <!-- Footer -->
+        <div style="
+          padding:14px 22px 18px;
+          display:flex;justify-content:space-between;align-items:center;gap:8px;
+        ">
+          <button
+            onclick="document.getElementById('_cbeTestSmsModal').remove()"
+            style="
+              padding:8px 18px;border-radius:7px;border:1.5px solid #e2e8f0;
+              background:none;font-family:inherit;font-size:12.5px;font-weight:600;
+              cursor:pointer;color:#64748b;
+            ">
+            Close
+          </button>
+          <div style="display:flex;gap:8px;">
+            <button
+              id="_tProbeBtn"
+              onclick="window.CBE_SMS._probeProxy()"
+              style="
+                padding:8px 16px;border-radius:7px;
+                border:1.5px solid #c7d9ff;background:#eff4ff;
+                font-family:inherit;font-size:12.5px;font-weight:700;
+                cursor:pointer;color:#1a56db;
+              ">
+              🔌 Ping Proxy
+            </button>
+            <button
+              id="_tSendBtn"
+              onclick="window.CBE_SMS._doTestSend()"
+              style="
+                padding:8px 20px;border-radius:7px;background:#1a56db;color:#fff;
+                border:none;font-family:inherit;font-size:12.5px;font-weight:700;
+                cursor:pointer;
+              ">
+              📤 Send Test SMS
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    // Close on backdrop click
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) overlay.remove();
+    });
+
+    // Pre-fill from Firestore if we have a schoolId
+    if (resolvedId) {
+      _prefillTestModal(resolvedId);
+    }
+  }
+
+  /** Pre-fill test modal fields from Firestore */
+  async function _prefillTestModal(schoolId) {
+    try {
+      const snap = await db().collection('settings').doc(schoolId).get();
+      if (!snap.exists) return;
+      const d = snap.data();
+      const keyEl    = document.getElementById('_tApiKey');
+      const userEl   = document.getElementById('_tUsername');
+      const senderEl = document.getElementById('_tSenderId');
+      const phoneEl  = document.getElementById('_tPhone');
+      if (keyEl    && d.atApiKey)     keyEl.value    = d.atApiKey;
+      if (userEl   && d.atUsername)   userEl.value   = d.atUsername;
+      if (senderEl && d.smsSenderId)  senderEl.value = d.smsSenderId;
+      if (phoneEl  && d.smsTestPhone) phoneEl.value  = d.smsTestPhone;
+    } catch (_) { /* non-critical — user can type manually */ }
+  }
+
+  /** Show status inside the test modal */
+  function _testStatus(msg, type = 'info') {
+    const el = document.getElementById('_tStatus');
+    if (!el) return;
+    const styles = {
+      info:    'background:#eff4ff;color:#1e3a8a;border:1px solid #c7d9ff;',
+      success: 'background:#f0fdf4;color:#065f46;border:1px solid #bbf7d0;',
+      error:   'background:#fef2f2;color:#991b1b;border:1px solid #fecaca;',
+      warning: 'background:#fef3c7;color:#92400e;border:1px solid #fcd34d;',
+      loading: 'background:#f8fafc;color:#334155;border:1px solid #e2e8f0;',
+    };
+    el.style.cssText += styles[type] || styles.info;
+    el.innerHTML  = msg;
+    el.style.display = 'block';
+  }
+
+  /** Append a line to the debug log inside the test modal */
+  function _testLog(msg, cls = 'inf') {
+    const el = document.getElementById('_tLog');
+    if (!el) return;
+    el.style.display = 'block';
+    const line = document.createElement('div');
+    line.className = cls;
+    line.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    el.appendChild(line);
+    el.scrollTop = el.scrollHeight;
+  }
+
+  /**
+   * Ping the proxy without sending a real SMS.
+   * Sends an intentionally bad payload — a 401/400 from the proxy
+   * means it's alive and reachable; a network error means it's down.
+   */
+  async function _probeProxy() {
+    const btn = document.getElementById('_tProbeBtn');
+    if (btn) { btn.disabled = true; btn.textContent = '⏳ Pinging…'; }
+
+    _testStatus('⏳ Pinging proxy — please wait…', 'loading');
+    _testLog('POST ' + SMS_PROXY_ENDPOINT + ' (probe payload)');
+
+    try {
+      const controller = new AbortController();
+      setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+
+      const r = await fetch(SMS_PROXY_ENDPOINT, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ apiKey: '__probe__', username: '__probe__', to: '+2540', message: 'probe' }),
+        signal:  controller.signal,
+      });
+
+      _testLog(`HTTP ${r.status} ${r.statusText} — redirected: ${r.redirected}`, r.ok || r.status < 500 ? 'ok' : 'err');
+      _testLog(`Final URL: ${r.url}`, r.url.includes('africastalking') ? 'err' : 'ok');
+
+      if (r.redirected && r.url.includes('africastalking')) {
+        _testStatus(
+          '❌ Proxy is redirecting to AT directly — this causes CORS.<br>' +
+          'Fix: update your backend to fetch AT server-side, not redirect.',
+          'error'
+        );
+      } else if (r.status === 401 || r.status === 400) {
+        _testStatus(
+          '✅ Proxy is <strong>alive and reachable</strong>.<br>' +
+          `Responded ${r.status} (expected — probe credentials are invalid).<br>` +
+          'You can safely click <strong>Send Test SMS</strong> now.',
+          'success'
+        );
+      } else if (r.status >= 500) {
+        _testStatus(`⚠️ Proxy returned ${r.status} — server error. Check Render logs.`, 'warning');
+      } else {
+        _testStatus(`ℹ️ Proxy responded ${r.status}. Check debug log below.`, 'info');
+      }
+    } catch (e) {
+      const msg = e.name === 'AbortError'
+        ? 'Proxy timed out after 15 s — Render may be cold-starting. Wait 30 s and try again.'
+        : 'Network error: ' + e.message;
+      _testLog(msg, 'err');
+      _testStatus('❌ ' + msg, 'error');
+    }
+
+    if (btn) { btn.disabled = false; btn.textContent = '🔌 Ping Proxy'; }
+  }
+
+  /** Actually send a test SMS using values from the test modal fields */
+  async function _doTestSend() {
+    const apiKey   = document.getElementById('_tApiKey')?.value.trim();
+    const username = document.getElementById('_tUsername')?.value.trim();
+    const senderId = document.getElementById('_tSenderId')?.value.trim() || '';
+    const rawPhone = document.getElementById('_tPhone')?.value.trim();
+    const btn      = document.getElementById('_tSendBtn');
+
+    // Validate
+    if (!apiKey)   { _testStatus('⚠️ Enter your AT API Key first.', 'warning');   return; }
+    if (!username) { _testStatus('⚠️ Enter your AT Username first.', 'warning');  return; }
+    if (!rawPhone) { _testStatus('⚠️ Enter a test phone number first.', 'warning'); return; }
+
+    const phone = normalisePhone(rawPhone);
+    if (btn) { btn.disabled = true; btn.textContent = '⏳ Sending…'; }
+    _testStatus('⏳ Sending test SMS — may take up to 15 s on first request…', 'loading');
+    _testLog(`Sending to ${phone} via ${SMS_PROXY_ENDPOINT}`);
+    _testLog(`Username: ${username} | Sender: ${senderId || '(AT default)'}`);
+
+    try {
+      const data = await sendSMS(apiKey, username, phone, `CBE Mark Sheet test SMS ✅\nProxy → AT pipeline working!\n— Your School System`, senderId);
+
+      _testLog('Response: ' + JSON.stringify(data?.SMSMessageData || data), 'ok');
+
+      const recipient = data?.SMSMessageData?.Recipients?.[0];
+      const status    = recipient?.status;
+
+      if (status === 'Success') {
+        _testStatus(
+          `✅ <strong>SMS delivered!</strong><br>` +
+          `Sent to <strong>${phone}</strong> · Cost: ${recipient?.cost || '—'} · ` +
+          `Message ID: ${recipient?.messageId || '—'}`,
+          'success'
+        );
+      } else {
+        _testStatus(
+          `⚠️ AT accepted the request but delivery status: <strong>${status || 'unknown'}</strong><br>` +
+          `${data?.SMSMessageData?.Message || 'Check AT dashboard for details.'}`,
+          'warning'
+        );
+      }
+    } catch (e) {
+      _testLog('Error: ' + e.message, 'err');
+      _testStatus('❌ <strong>Failed:</strong> ' + _esc(e.message), 'error');
+    }
+
+    if (btn) { btn.disabled = false; btn.textContent = '📤 Send Test SMS'; }
+  }
+
+  // ── _testSMS now just opens the standalone modal ──────────────
+  function _testSMS() {
+    _openTestModal(_schoolId());
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  //  7. SEND MODAL UI
+  // ══════════════════════════════════════════════════════════════
+
   function openSendModal(recipients, schoolId, schoolSettings = {}) {
     _removeSendModal();
 
@@ -346,10 +676,8 @@ window.CBE_SMS = (() => {
     document.body.appendChild(modal);
     modal.addEventListener('click', e => { if (e.target === modal) _closeModal(); });
 
-    // Store recipients on the modal element (avoids JSON-in-HTML encoding issues)
     modal._smsRecipients = withPhone;
 
-    // Populate preview with first recipient's sample
     const sample = recipients[0];
     if (sample) {
       const preview = buildResultsSMS({
@@ -371,7 +699,6 @@ window.CBE_SMS = (() => {
     }
   }
 
-  // ── Internal: kick off the bulk send ──────────────────────────
   async function _startSend(schoolId, schoolName, term, year, senderId) {
     const modal      = document.getElementById('cbeSmsModal');
     const recipients = modal?._smsRecipients || [];
@@ -427,7 +754,6 @@ window.CBE_SMS = (() => {
       return;
     }
 
-    // Done
     if (progLabel) progLabel.innerHTML =
       `✅ Done — <strong style="color:#059669">${summary.sent} sent</strong>` +
       ` · <span style="color:#dc2626">${summary.failed + summary.error} failed</span>` +
@@ -436,14 +762,14 @@ window.CBE_SMS = (() => {
     if (cancelBtn) { cancelBtn.disabled = false; cancelBtn.textContent = 'Close'; }
   }
 
-  function _closeModal()     { _removeSendModal(); }
+  function _closeModal()      { _removeSendModal(); }
   function _removeSendModal() {
     const m = document.getElementById('cbeSmsModal');
     if (m) m.remove();
   }
 
   // ══════════════════════════════════════════════════════════════
-  //  7. SETTINGS UI
+  //  8. SETTINGS UI
   // ══════════════════════════════════════════════════════════════
 
   function settingsHTML() {
@@ -510,7 +836,6 @@ window.CBE_SMS = (() => {
           onblur="this.style.borderColor='#dce1ec'">
       </div>
 
-      <!-- FIX: inline test phone field replaces prompt() -->
       <div style="margin-bottom:14px">
         <label style="display:block;font-size:11px;font-weight:700;color:#64748b;
           text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">
@@ -587,18 +912,17 @@ window.CBE_SMS = (() => {
   }
 
   async function _saveSettings() {
-    // FIX: guard against schoolId not yet available (auth race)
     const schoolId = _schoolId();
     if (!schoolId) {
       _showSaveMsg('⚠️ Not signed in yet — please wait and try again.', '#dc2626');
       return;
     }
 
-    const apiKey   = document.getElementById('smsApiKey')?.value.trim();
-    const username = document.getElementById('smsUsername')?.value.trim();
-    const senderId = document.getElementById('smsSenderId')?.value.trim();
-    const testPhone= document.getElementById('smsTestPhone')?.value.trim();
-    const btn      = document.getElementById('smsSaveBtn');
+    const apiKey    = document.getElementById('smsApiKey')?.value.trim();
+    const username  = document.getElementById('smsUsername')?.value.trim();
+    const senderId  = document.getElementById('smsSenderId')?.value.trim();
+    const testPhone = document.getElementById('smsTestPhone')?.value.trim();
+    const btn       = document.getElementById('smsSaveBtn');
 
     if (!apiKey || !username) {
       _showSaveMsg('⚠️ API Key and Username are required.', '#dc2626');
@@ -608,7 +932,6 @@ window.CBE_SMS = (() => {
     btn.disabled = true; btn.textContent = 'Saving…';
     try {
       await saveATCredentials(schoolId, apiKey, username);
-      // Persist senderId + testPhone together in one write
       await db().collection('settings').doc(schoolId).set({
         smsSenderId:  senderId  || '',
         smsTestPhone: testPhone || '',
@@ -626,71 +949,6 @@ window.CBE_SMS = (() => {
     }
     btn.disabled = false; btn.textContent = '💾 Save SMS Settings';
   }
-  async function _testSMS() {
-  // ── DEBUG: log everything before any network call ──
-  const schoolId  = _schoolId();
-  const phoneField = document.getElementById('smsTestPhone');
-  const phone      = phoneField ? phoneField.value.trim() : '';
-  const creds      = await loadATCredentials(schoolId);
-
-  console.group('CBE_SMS._testSMS() debug');
-  console.log('schoolId:   ', schoolId   || '❌ EMPTY');
-  console.log('phone:      ', phone      || '❌ EMPTY');
-  console.log('creds:      ', creds      || '❌ NULL — credentials not saved');
-  console.log('phoneField in DOM:', !!phoneField);
-  console.log('normalised phone: ', phone ? normalisePhone(phone) : '(no phone to normalise)');
-  console.groupEnd();
-
-  // ── original guards below (unchanged) ──
-  if (!schoolId) { ... }
-  // rest of your existing function...
-
-  // FIX: no longer uses prompt() — reads from #smsTestPhone field instead
-  async function _testSMS() {
-    const schoolId = _schoolId();
-    if (!schoolId) {
-      _showSaveMsg('⚠️ Not signed in yet — please wait and try again.', '#dc2626');
-      return;
-    }
-
-    // Read from the inline field; only fall back to prompt if field not in DOM
-    const phoneField = document.getElementById('smsTestPhone');
-    let phone = phoneField ? phoneField.value.trim() : '';
-    if (!phone) {
-      _showSaveMsg('⚠️ Enter a test phone number in the field above first.', '#dc2626');
-      return;
-    }
-
-    const creds = await loadATCredentials(schoolId);
-    if (!creds) {
-      _showSaveMsg('⚠️ Save your AT credentials first.', '#dc2626');
-      return;
-    }
-
-    const senderId = document.getElementById('smsSenderId')?.value.trim() || '';
-    _showSaveMsg('⏳ Sending test SMS — this may take up to 15 s…', '#1a56db');
-
-    try {
-      const res = await sendSMS(
-        creds.atApiKey,
-        creds.atUsername,
-        normalisePhone(phone),
-        `CBE Mark Sheet test SMS ✅\nSMS integration is working correctly!\n— Your School System`,
-        senderId
-      );
-      const status = res?.SMSMessageData?.Recipients?.[0]?.status;
-      if (status === 'Success') {
-        _showSaveMsg(`✅ Test SMS sent to ${phone}!`, '#059669');
-      } else {
-        _showSaveMsg(
-          `⚠️ AT responded: ${res?.SMSMessageData?.Message || JSON.stringify(res?.SMSMessageData)}`,
-          '#d97706'
-        );
-      }
-    } catch (e) {
-      _showSaveMsg('❌ ' + e.message, '#dc2626');
-    }
-  }
 
   function _showSaveMsg(msg, color) {
     const el = document.getElementById('smsSaveMsg');
@@ -705,27 +963,12 @@ window.CBE_SMS = (() => {
   //  UTILITIES
   // ══════════════════════════════════════════════════════════════
 
-  /**
-   * Normalise Kenyan phone numbers to +254 format.
-   * FIX: now also handles bare 7XXXXXXXX (9 digits, no country code or leading 0).
-   *
-   * Handles:
-   *   0712345678   → +254712345678
-   *   254712345678 → +254712345678
-   *   +254712345678→ +254712345678  (already correct)
-   *   712345678    → +254712345678  ← NEW
-   */
   function normalisePhone(raw) {
     let p = (raw || '').replace(/[\s\-]/g, '');
-    // Already correct
     if (p.startsWith('+254')) return p;
-    // 254XXXXXXXXX → +254XXXXXXXXX
     if (p.startsWith('254') && p.length === 12) return '+' + p;
-    // 07XXXXXXXX or 01XXXXXXXX → +254XXXXXXXXX
     if ((p.startsWith('07') || p.startsWith('01')) && p.length === 10) return '+254' + p.slice(1);
-    // 7XXXXXXXX (9 digits, no leading 0) → +2547XXXXXXXX
     if (/^7\d{8}$/.test(p)) return '+254' + p;
-    // Return as-is and let AT report the error
     return p;
   }
 
@@ -736,7 +979,6 @@ window.CBE_SMS = (() => {
 
   function _sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-  /** Escape HTML for safe injection into innerHTML */
   function _esc(str) {
     return String(str || '')
       .replace(/&/g, '&amp;')
@@ -746,10 +988,6 @@ window.CBE_SMS = (() => {
       .replace(/'/g, '&#39;');
   }
 
-  /**
-   * Read schoolId from wherever the host page stores it.
-   * settings.html must set window._schoolId = u.uid inside onAuthStateChanged.
-   */
   function _schoolId() {
     return window._schoolId
       || sessionStorage.getItem('cbe_school_id')
@@ -766,7 +1004,7 @@ window.CBE_SMS = (() => {
     saveATCredentials,
     loadATCredentials,
     loadSenderId,
-    // Modal
+    // Modals
     openSendModal,
     // Settings UI
     settingsHTML,
@@ -778,6 +1016,10 @@ window.CBE_SMS = (() => {
     _closeModal,
     _saveSettings,
     _testSMS,
+    // v4: standalone test modal
+    _openTestModal,
+    _probeProxy,
+    _doTestSend,
   };
 
 })();
