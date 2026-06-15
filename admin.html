@@ -383,6 +383,568 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
         <div class="stat-lbl">Results Saved</div>
       </div>
     </div>
+    <!--
+  elearning-panel.html
+  ─────────────────────────────────────────────────────────────
+  Drop this block inside CBE admin's .outer div,
+  below the stats and above the teachers table.
+
+  Requires:
+    - Firebase (db, _schoolId) already initialised
+    - bett-sync.js loaded AFTER Firebase
+    - BETT_SYNC.init(db, _schoolId) called in auth callback
+
+  The panel reads from:
+    settings/{schoolId}.bettEnabled       boolean
+    settings/{schoolId}.bettSync          object (state machine)
+    approvedSchools/{schoolId}.bettExpiry Timestamp (optional)
+  ─────────────────────────────────────────────────────────────
+-->
+
+<style>
+/* ── E-learning panel styles ── */
+.el-panel{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r);box-shadow:var(--sh);
+  margin-bottom:22px;overflow:hidden;
+  animation:fadeUp .3s ease both;
+}
+.el-header{
+  padding:14px 20px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;flex-wrap:wrap;
+  background:linear-gradient(135deg,#0f1f44 0%,#1a3a7a 60%,#1a56db 100%);
+}
+.el-header-left{display:flex;align-items:center;gap:12px}
+.el-icon{
+  width:38px;height:38px;border-radius:9px;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+  display:grid;place-items:center;font-size:18px;flex-shrink:0;
+}
+.el-title{font-family:'Familjen Grotesk',sans-serif;font-size:14px;font-weight:800;color:#fff}
+.el-sub{font-size:11px;color:rgba(255,255,255,.55);margin-top:1px}
+.el-status-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 11px;border-radius:20px;font-size:11px;font-weight:700;
+  background:rgba(255,255,255,.12);color:rgba(255,255,255,.85);
+  border:1px solid rgba(255,255,255,.2);
+}
+.el-status-badge.active{background:rgba(5,150,105,.25);color:#6ee7b7;border-color:rgba(110,231,183,.3)}
+.el-status-badge.expired{background:rgba(220,38,38,.2);color:#fca5a5;border-color:rgba(252,165,165,.3)}
+.el-toggle-wrap{display:flex;align-items:center;gap:9px}
+.el-toggle-label{font-size:12px;font-weight:600;color:rgba(255,255,255,.7)}
+.el-toggle{
+  width:44px;height:24px;border-radius:12px;background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.25);cursor:pointer;position:relative;
+  transition:background .2s;flex-shrink:0;
+}
+.el-toggle::after{
+  content:'';position:absolute;width:18px;height:18px;border-radius:50%;
+  background:#fff;top:2px;left:2px;transition:transform .2s;
+  box-shadow:0 1px 3px rgba(0,0,0,.25);
+}
+.el-toggle.on{background:#059669;border-color:#059669}
+.el-toggle.on::after{transform:translateX(20px)}
+.el-toggle:disabled{opacity:.4;cursor:not-allowed}
+
+.el-body{padding:18px 20px}
+
+/* Subscription status row */
+.el-sub-row{
+  display:flex;align-items:center;gap:14px;
+  padding:12px 16px;border-radius:var(--r2);
+  background:var(--surf2);border:1px solid var(--border);
+  margin-bottom:16px;flex-wrap:wrap;
+}
+.el-sub-icon{font-size:22px}
+.el-sub-info{flex:1;min-width:0}
+.el-sub-name{font-weight:700;font-size:13px;color:var(--text)}
+.el-sub-detail{font-size:11.5px;color:var(--text3);margin-top:2px}
+.el-sub-row.active .el-sub-name{color:var(--green)}
+.el-sub-row.expired .el-sub-name{color:var(--red)}
+.el-sub-row.inactive .el-sub-name{color:var(--text2)}
+
+/* Sync section */
+.el-sync-section{
+  border:1.5px solid var(--border);border-radius:var(--r2);
+  overflow:hidden;
+}
+.el-sync-head{
+  padding:10px 16px;background:var(--surf2);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
+}
+.el-sync-title{font-size:12.5px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:6px}
+.el-sync-body{padding:14px 16px}
+
+/* State badges */
+.sync-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:2px 9px;border-radius:20px;font-size:10.5px;font-weight:700;
+}
+.sync-badge.idle{background:var(--surf2);color:var(--text3);border:1px solid var(--border)}
+.sync-badge.running{background:#eff4ff;color:var(--accent);border:1px solid #c7d9ff}
+.sync-badge.completed{background:var(--glight);color:var(--green-tx);border:1px solid #a7f3d0}
+.sync-badge.failed{background:var(--rlight);color:var(--red-tx);border:1px solid #fca5a5}
+
+/* Progress bar */
+.el-progress-wrap{
+  height:8px;background:var(--border);border-radius:4px;
+  overflow:hidden;margin:10px 0;
+}
+.el-progress-bar{
+  height:100%;border-radius:4px;background:var(--accent);
+  transition:width .4s ease;
+}
+.el-progress-bar.done{background:var(--green)}
+.el-progress-bar.failed{background:var(--red)}
+
+/* Step rows for "not activated yet" state */
+.el-steps{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.el-step{
+  display:flex;align-items:flex-start;gap:11px;
+  padding:10px 13px;border-radius:var(--r2);
+  background:var(--surf2);border:1px solid var(--border);
+}
+.el-step-num{
+  width:22px;height:22px;border-radius:50%;background:var(--alight);
+  color:var(--accent);font-size:11px;font-weight:800;
+  display:grid;place-items:center;flex-shrink:0;margin-top:1px;
+}
+.el-step-text{font-size:12.5px;font-weight:600;color:var(--text)}
+.el-step-sub{font-size:11px;color:var(--text3);margin-top:1px}
+
+.el-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+
+/* Disabled-state overlay when bett not enabled */
+.el-disabled-overlay{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:28px 20px;text-align:center;gap:8px;
+}
+.el-disabled-overlay .el-dis-icon{font-size:30px;opacity:.35}
+.el-disabled-overlay p{font-size:12.5px;color:var(--text3);line-height:1.6;max-width:340px}
+</style>
+
+<!-- ═══════════════════════════════════════════════════════
+     E-LEARNING PANEL
+═══════════════════════════════════════════════════════ -->
+<div class="el-panel" id="elPanel">
+
+  <!-- Header -->
+  <div class="el-header">
+    <div class="el-header-left">
+      <div class="el-icon">🎓</div>
+      <div>
+        <div class="el-title">BETT E-learning</div>
+        <div class="el-sub">Online lessons, exams &amp; courses for your students</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <span class="el-status-badge" id="elSubBadge">Checking…</span>
+      <div class="el-toggle-wrap">
+        <span class="el-toggle-label" id="elToggleLabel">E-learning</span>
+        <button class="el-toggle" id="elToggle" onclick="toggleBETT()" disabled title="Activate e-learning"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="el-body" id="elBody">
+
+    <!-- Subscription status row -->
+    <div class="el-sub-row inactive" id="elSubRow">
+      <div class="el-sub-icon" id="elSubIcon">⏳</div>
+      <div class="el-sub-info">
+        <div class="el-sub-name" id="elSubName">Loading subscription status…</div>
+        <div class="el-sub-detail" id="elSubDetail"></div>
+      </div>
+      <a href="https://wa.me/254704518130?text=Hello%2C+I+want+to+activate+BETT+E-learning+for+my+school."
+         target="_blank" class="btn btn-sm" id="elRenewBtn"
+         style="background:var(--accent);color:#fff;display:none;text-decoration:none">
+        💬 Contact Us
+      </a>
+    </div>
+
+    <!-- When BETT is NOT enabled: show steps + activate prompt -->
+    <div id="elNotEnabled">
+      <div class="el-steps">
+        <div class="el-step">
+          <div class="el-step-num">1</div>
+          <div>
+            <div class="el-step-text">Activate E-learning above</div>
+            <div class="el-step-sub">Toggle on to link this school to BETT LMS</div>
+          </div>
+        </div>
+        <div class="el-step">
+          <div class="el-step-num">2</div>
+          <div>
+            <div class="el-step-text">Run the one-time student migration</div>
+            <div class="el-step-sub">All existing students sync to BETT automatically</div>
+          </div>
+        </div>
+        <div class="el-step">
+          <div class="el-step-num">3</div>
+          <div>
+            <div class="el-step-text">New admissions sync automatically</div>
+            <div class="el-step-sub">Every student admitted from now on appears in BETT instantly</div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--text3);line-height:1.6;padding:10px 13px;background:#fef3c7;border:1px solid #fcd34d;border-radius:var(--r2)">
+        ⚠️ You need an active BETT E-learning subscription to enable this. Contact us on WhatsApp if you haven't subscribed yet.
+      </div>
+    </div>
+
+    <!-- When BETT IS enabled: show sync panel -->
+    <div id="elEnabled" style="display:none">
+
+      <div class="el-sync-section">
+        <div class="el-sync-head">
+          <div class="el-sync-title">
+            🔄 Student Migration
+            <span class="sync-badge idle" id="syncStateBadge">idle</span>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="refreshSyncState()">🔃 Refresh</button>
+        </div>
+        <div class="el-sync-body" id="elSyncBody">
+
+          <!-- idle state -->
+          <div id="syncIdle">
+            <p style="font-size:12.5px;color:var(--text2);margin-bottom:12px;line-height:1.6">
+              Your existing students haven't been migrated to BETT yet. Run the bulk sync once — it's safe to re-run if interrupted.
+            </p>
+            <div class="el-actions">
+              <button class="btn btn-primary btn-sm" onclick="startBulkSync()">
+                🚀 Run Student Migration
+              </button>
+            </div>
+          </div>
+
+          <!-- running state -->
+          <div id="syncRunning" style="display:none">
+            <div style="font-size:12.5px;font-weight:600;color:var(--text);margin-bottom:6px" id="syncRunningLabel">
+              Syncing students to BETT…
+            </div>
+            <div class="el-progress-wrap">
+              <div class="el-progress-bar" id="syncProgressBar" style="width:0%"></div>
+            </div>
+            <div style="font-size:11.5px;color:var(--text3)" id="syncProgressText">0 / 0 students synced</div>
+          </div>
+
+          <!-- completed state -->
+          <div id="syncCompleted" style="display:none">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+              <span style="font-size:24px">✅</span>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--green)">Migration complete</div>
+                <div style="font-size:11.5px;color:var(--text3)" id="syncCompletedDetail">All students synced to BETT</div>
+              </div>
+            </div>
+            <div id="syncFailedSection" style="display:none;margin-bottom:10px;padding:10px 13px;background:var(--rlight);border:1px solid #fca5a5;border-radius:var(--r2)">
+              <div style="font-size:12.5px;font-weight:700;color:var(--red-tx);margin-bottom:6px" id="syncFailedLabel"></div>
+              <button class="btn btn-sm" style="background:var(--red);color:#fff" onclick="retryFailedSync()">🔁 Retry Failed</button>
+            </div>
+            <div style="font-size:12px;color:var(--text3);line-height:1.6">
+              ✔ New students admitted from now on will sync to BETT automatically.
+            </div>
+            <div class="el-actions" style="margin-top:10px">
+              <button class="btn btn-outline btn-sm" onclick="resetAndResync()">↺ Re-run migration</button>
+              <a href="bett-admin.html" target="_blank" class="btn btn-sm" style="background:#1a56db;color:#fff;text-decoration:none">
+                Open BETT Admin →
+              </a>
+            </div>
+          </div>
+
+          <!-- failed state -->
+          <div id="syncFailed" style="display:none">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+              <span style="font-size:24px">❌</span>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--red)">Migration interrupted</div>
+                <div style="font-size:11.5px;color:var(--text3)">Safe to retry — it will resume from where it stopped</div>
+              </div>
+            </div>
+            <div class="el-actions">
+              <button class="btn btn-primary btn-sm" onclick="startBulkSync()">🔁 Resume Migration</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Auto-sync status -->
+      <div style="margin-top:14px;padding:10px 14px;border-radius:var(--r2);background:var(--surf2);border:1px solid var(--border);display:flex;align-items:center;gap:10px">
+        <span style="font-size:16px">⚡</span>
+        <div>
+          <div style="font-size:12.5px;font-weight:700;color:var(--text)">Auto-sync is active</div>
+          <div style="font-size:11px;color:var(--text3)">Every new student admitted will appear in BETT automatically — no extra steps needed</div>
+        </div>
+        <span class="sync-badge completed" style="margin-left:auto">Live</span>
+      </div>
+
+    </div><!-- /elEnabled -->
+
+  </div><!-- /el-body -->
+</div><!-- /el-panel -->
+
+
+<script>
+// ─────────────────────────────────────────────────────────────
+//  E-LEARNING PANEL LOGIC
+//  Depends on: db, _schoolId (from CBE admin), BETT_SYNC
+// ─────────────────────────────────────────────────────────────
+
+(function () {
+
+  // Re-use CBE admin's el() helper or define locally
+  const $ = id => document.getElementById(id);
+
+  // ── Load panel state on init ─────────────────────────────
+  window._initElearningPanel = async function () {
+    if (!window._schoolId || !window.db) return;
+
+    // Initialise the sync module
+    if (window.BETT_SYNC) {
+      BETT_SYNC.init(window.db, window._schoolId);
+    }
+
+    await Promise.all([
+      _loadSubscriptionStatus(),
+      _loadSyncState(),
+    ]);
+  };
+
+  // ── Subscription status ──────────────────────────────────
+  async function _loadSubscriptionStatus() {
+    try {
+      const snap = await db.collection('approvedSchools').doc(_schoolId).get();
+      const settSnap = await db.collection('settings').doc(_schoolId).get();
+      const settings = settSnap.exists ? settSnap.data() : {};
+      const bettEnabled = settings.bettEnabled === true;
+
+      // Update toggle
+      const toggle = $('elToggle');
+      toggle.disabled = false;
+      toggle.classList.toggle('on', bettEnabled);
+
+      // Show correct section
+      $('elNotEnabled').style.display = bettEnabled ? 'none' : '';
+      $('elEnabled').style.display    = bettEnabled ? ''     : 'none';
+
+      if (!snap.exists) {
+        _setSubRow('inactive', '📦', 'No subscription found', 'Contact us to subscribe to BETT E-learning', true);
+        _setSubBadge('No subscription', '');
+        toggle.disabled = true;
+        return;
+      }
+
+      const d   = snap.data();
+      const exp = d.bettExpiry?.toDate?.() || d.subscriptionExpiry?.toDate?.() || null;
+      const now = new Date();
+
+      if (d.status === 'suspended') {
+        _setSubRow('expired', '🚫', 'Account suspended', 'Contact support to reactivate', true);
+        _setSubBadge('Suspended', 'expired');
+        toggle.disabled = true;
+        return;
+      }
+
+      if (exp && exp > now) {
+        const daysLeft = Math.ceil((exp - now) / 86400000);
+        const expStr   = exp.toLocaleDateString('en-KE', { day: '2-digit', month: 'short', year: 'numeric' });
+        _setSubRow('active', '✅', 'BETT E-learning subscription active', `Expires ${expStr} · ${daysLeft} day${daysLeft !== 1 ? 's' : ''} remaining`, false);
+        _setSubBadge('Active', 'active');
+        toggle.disabled = false;
+      } else if (exp && exp <= now) {
+        _setSubRow('expired', '⚠️', 'Subscription expired', 'Renew to continue using BETT E-learning', true);
+        _setSubBadge('Expired', 'expired');
+        toggle.disabled = true;
+        // Force disable if expired
+        if (bettEnabled) {
+          await db.collection('settings').doc(_schoolId).set({ bettEnabled: false }, { merge: true });
+          $('elToggle').classList.remove('on');
+          $('elNotEnabled').style.display = '';
+          $('elEnabled').style.display    = 'none';
+        }
+      } else {
+        // No expiry set — assume active (manually managed)
+        _setSubRow('active', '✅', 'BETT E-learning subscription active', 'Subscription active — no expiry date set', false);
+        _setSubBadge('Active', 'active');
+        toggle.disabled = false;
+      }
+    } catch (e) {
+      console.warn('[E-learning panel] subscription load error:', e.message);
+      _setSubRow('inactive', '⚠️', 'Could not verify subscription', 'Check your connection and refresh', false);
+    }
+  }
+
+  function _setSubRow(type, icon, name, detail, showContact) {
+    const row = $('elSubRow');
+    row.className = 'el-sub-row ' + type;
+    $('elSubIcon').textContent    = icon;
+    $('elSubName').textContent    = name;
+    $('elSubDetail').textContent  = detail;
+    $('elRenewBtn').style.display = showContact ? '' : 'none';
+  }
+
+  function _setSubBadge(text, type) {
+    const badge = $('elSubBadge');
+    badge.textContent  = text;
+    badge.className    = 'el-status-badge' + (type ? ' ' + type : '');
+  }
+
+  // ── Toggle BETT on/off ───────────────────────────────────
+  window.toggleBETT = async function () {
+    const toggle     = $('elToggle');
+    const isOn       = toggle.classList.contains('on');
+    const newState   = !isOn;
+    toggle.disabled  = true;
+
+    try {
+      await db.collection('settings').doc(_schoolId).set(
+        { bettEnabled: newState },
+        { merge: true }
+      );
+
+      toggle.classList.toggle('on', newState);
+      $('elNotEnabled').style.display = newState ? 'none' : '';
+      $('elEnabled').style.display    = newState ? ''     : 'none';
+
+      if (newState) {
+        // First activation — load sync state to show correct panel
+        await _loadSyncState();
+        toast('✅ E-learning activated — run the student migration below');
+      } else {
+        toast('E-learning deactivated', 'info');
+      }
+    } catch (e) {
+      toast('Failed to update E-learning setting: ' + e.message, 'err');
+    }
+    toggle.disabled = false;
+  };
+
+  // ── Sync state display ───────────────────────────────────
+  window.refreshSyncState = async function () {
+    await _loadSyncState();
+  };
+
+  async function _loadSyncState() {
+    if (!window.BETT_SYNC) return;
+
+    const state = await BETT_SYNC.getSyncState();
+
+    if (!state) {
+      _showSyncPanel('idle', null);
+      return;
+    }
+
+    _showSyncPanel(state.state, state);
+  }
+
+  function _showSyncPanel(state, data) {
+    // Update badge
+    const badge = $('syncStateBadge');
+    badge.className   = 'sync-badge ' + state;
+    badge.textContent = state;
+
+    // Hide all sub-panels
+    ['syncIdle', 'syncRunning', 'syncCompleted', 'syncFailed'].forEach(id => {
+      $(id).style.display = 'none';
+    });
+
+    if (state === 'idle' || !state) {
+      $('syncIdle').style.display = '';
+
+    } else if (state === 'running') {
+      $('syncRunning').style.display = '';
+      const done  = data?.progress?.done  || 0;
+      const total = data?.progress?.total || 0;
+      const pct   = total > 0 ? Math.round((done / total) * 100) : 0;
+      $('syncProgressBar').style.width = pct + '%';
+      $('syncProgressText').textContent = `${done} / ${total} students synced`;
+
+    } else if (state === 'completed') {
+      $('syncCompleted').style.display = '';
+      const done   = data?.progress?.done   || 0;
+      const failed = data?.progress?.failed || [];
+      $('syncCompletedDetail').textContent = `${done} student${done !== 1 ? 's' : ''} synced to BETT`;
+      if (failed.length > 0) {
+        $('syncFailedSection').style.display  = '';
+        $('syncFailedLabel').textContent = `⚠️ ${failed.length} student${failed.length !== 1 ? 's' : ''} could not be synced`;
+      } else {
+        $('syncFailedSection').style.display = 'none';
+      }
+      $('syncProgressBar') && ($('syncProgressBar').style.width = '100%');
+      $('syncProgressBar') && $('syncProgressBar').classList.add('done');
+
+    } else if (state === 'failed') {
+      $('syncFailed').style.display = '';
+    }
+  }
+
+  // ── Start / resume bulk sync ─────────────────────────────
+  window.startBulkSync = async function () {
+    if (!window.BETT_SYNC) {
+      toast('Sync module not loaded — check bett-sync.js', 'err');
+      return;
+    }
+
+    // Show running panel immediately
+    $('syncIdle').style.display   = 'none';
+    $('syncFailed').style.display = 'none';
+    $('syncRunning').style.display = '';
+    $('syncStateBadge').className  = 'sync-badge running';
+    $('syncStateBadge').textContent = 'running';
+
+    try {
+      const result = await BETT_SYNC.runBulkSync(function (done, total, failedCount) {
+        // Progress callback — update UI in real time
+        const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+        $('syncProgressBar').style.width   = pct + '%';
+        $('syncProgressText').textContent  = `${done} / ${total} students synced${failedCount > 0 ? ' · ' + failedCount + ' failed' : ''}`;
+        $('syncRunningLabel').textContent  = pct < 100 ? 'Syncing students to BETT…' : 'Finishing up…';
+      });
+
+      // Done — reload state from Firestore for accurate display
+      await _loadSyncState();
+      toast(`✅ Migration complete — ${result.done} students synced to BETT${result.failed.length > 0 ? ' · ' + result.failed.length + ' failed (can retry)' : ''}`);
+
+    } catch (e) {
+      await _loadSyncState();
+      toast('Migration failed: ' + e.message + ' — safe to retry', 'err');
+    }
+  };
+
+  // ── Retry failed records ─────────────────────────────────
+  window.retryFailedSync = async function () {
+    if (!window.BETT_SYNC) return;
+    toast('Retrying failed records…', 'info');
+    try {
+      const result = await BETT_SYNC.retryFailed(function (done, total) {
+        $('syncFailedLabel').textContent = `Retrying… ${done} / ${total}`;
+      });
+      await _loadSyncState();
+      if (result.stillFailing.length === 0) {
+        toast('✅ All records retried successfully');
+      } else {
+        toast(`${result.retried} succeeded · ${result.stillFailing.length} still failing`, 'info');
+      }
+    } catch (e) {
+      toast('Retry failed: ' + e.message, 'err');
+    }
+  };
+
+  // ── Reset sync (re-run from scratch) ─────────────────────
+  window.resetAndResync = async function () {
+    if (!confirm('This will re-run the full migration from the beginning. Existing BETT students will be deduplicated automatically. Continue?')) return;
+    if (!window.BETT_SYNC) return;
+    await BETT_SYNC.resetSync();
+    await _loadSyncState();
+    toast('Sync reset — click "Run Student Migration" to start', 'info');
+  };
+
+})();
+</script>
 
     <!-- TABLE SECTION -->
     <div class="sec-head">
