@@ -71,23 +71,16 @@ window.CBE_SMS = (() => {
   //  2. CORE SEND FUNCTION
   // ══════════════════════════════════════════════════════════════
 
-  async function sendSMS(apiKey, username, to, message, from = '') {
-    const params = new URLSearchParams({ username, to, message });
-    if (from) params.append('from', from);
+ async function sendSMS(apiKey, username, to, message, from = '') {
+  const res = await fetch('https://instasend-backend.onrender.com/api/sms/send', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ apiKey, username, to, message, from }),
+  });
 
-    const res = await fetch(AT_ENDPOINT, {
-      method:  'POST',
-      headers: {
-        'apiKey':       apiKey,
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Accept':       'application/json',
-      },
-      body: params.toString(),
-    });
-
-    if (!res.ok) throw new Error(`AT API error: ${res.status} ${res.statusText}`);
-    return res.json();
-  }
+  if (!res.ok) throw new Error(`SMS proxy error: ${res.status} ${res.statusText}`);
+  return res.json();
+}
 
   // ══════════════════════════════════════════════════════════════
   //  3. MESSAGE BUILDER
