@@ -626,6 +626,24 @@ window.CBE_SMS = (() => {
     }
     btn.disabled = false; btn.textContent = '💾 Save SMS Settings';
   }
+  async function _testSMS() {
+  // ── DEBUG: log everything before any network call ──
+  const schoolId  = _schoolId();
+  const phoneField = document.getElementById('smsTestPhone');
+  const phone      = phoneField ? phoneField.value.trim() : '';
+  const creds      = await loadATCredentials(schoolId);
+
+  console.group('CBE_SMS._testSMS() debug');
+  console.log('schoolId:   ', schoolId   || '❌ EMPTY');
+  console.log('phone:      ', phone      || '❌ EMPTY');
+  console.log('creds:      ', creds      || '❌ NULL — credentials not saved');
+  console.log('phoneField in DOM:', !!phoneField);
+  console.log('normalised phone: ', phone ? normalisePhone(phone) : '(no phone to normalise)');
+  console.groupEnd();
+
+  // ── original guards below (unchanged) ──
+  if (!schoolId) { ... }
+  // rest of your existing function...
 
   // FIX: no longer uses prompt() — reads from #smsTestPhone field instead
   async function _testSMS() {
