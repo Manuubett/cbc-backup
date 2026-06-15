@@ -1,13 +1,22 @@
 /**
- * CBE Mark Sheet — Africa's Talking SMS Integration
+ * CBE Mark Sheet — Africa's Talking SMS Integration (v2)
  * ─────────────────────────────────────────────────
  * Each school uses their OWN AT account & airtime.
  * This module never uses a central API key — zero cost to you (the SaaS owner).
  *
+ * v2 CHANGE:
+ *  - Browser → AT direct calls are blocked by CORS (AT does not allow
+ *    cross-origin requests from the browser).
+ *  - sendSMS() now POSTs to our own backend proxy
+ *    (https://instasend-backend.onrender.com/api/sms/send), which forwards
+ *    the request to Africa's Talking server-side and returns the response.
+ *  - The school's AT API key still travels with the request (over HTTPS) and
+ *    is NOT stored on our server — it's only relayed.
+ *
  * HOW IT WORKS:
  *  1. School saves their AT API key + username in Settings → Firestore settings/{schoolId}
  *  2. When sending SMS, we fetch THEIR credentials from Firestore
- *  3. We POST to AT using their key — AT bills their account directly
+ *  3. We POST to our backend proxy, which forwards to AT using their key — AT bills their account directly
  *  4. We log delivery status in Firestore smsLogs/{schoolId}/logs/{docId}
  *
  * USAGE:
@@ -34,8 +43,8 @@ window.CBE_SMS = (() => {
   const db   = () => firebase.firestore();
   const auth = () => firebase.auth();
 
-  // ── Africa's Talking live endpoint ──
-  const AT_ENDPOINT = 'https://api.africastalking.com/version1/messaging';
+  // ── Backend SMS proxy (avoids browser CORS block on AT's API) ──
+  const SMS_PROXY_ENDPOINT = 'https://instasend-backend.onrender.com/api/sms/send';
 
   // ══════════════════════════════════════════════════════════════
   //  1. SETTINGS HELPERS
@@ -68,19 +77,29 @@ window.CBE_SMS = (() => {
   }
 
   // ══════════════════════════════════════════════════════════════
-  //  2. CORE SEND FUNCTION
+  //  2. CORE SEND FUNCTION (v2 — via backend proxy)
   // ══════════════════════════════════════════════════════════════
 
- async function sendSMS(apiKey, username, to, message, from = '') {
+  async function sendSMS(apiKey, username, to, message, from = '') {
     const res = await fetch(SMS_PROXY_ENDPOINT, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ apiKey, username, to, message, from }),
     });
 
-    if (!res.ok) throw new Error(`SMS proxy error: ${res.status} ${res.statusText}`);
-    const data = await res.json();
-    if (data.success === false) throw new Error(data.message || 'SMS send failed');
+    let data;
+    try {
+      data = await res.json();
+    } catch (_) {
+      throw new Error(`SMS proxy error: ${res.status} ${res.statusText}`);
+    }
+
+    if (!res.ok) {
+      throw new Error(data?.message || `SMS proxy error: ${res.status} ${res.statusText}`);
+    }
+    if (data?.success === false) {
+      throw new Error(data.message || 'SMS send failed');
+    }
     return data;
   }
 
@@ -441,7 +460,7 @@ window.CBE_SMS = (() => {
         <div>
           <label style="display:block;font-size:11px;font-weight:700;color:#64748b;
             text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">AT Username *</label>
-          <input id="smsUsername" type="text" placeholder="Your AT app username"
+          <input id="smsUsername" type="text" placeholder="Your AT app username (use 'sandbox' for testing)"
             style="width:100%;height:36px;padding:0 10px;border:1.5px solid #dce1ec;
               border-radius:6px;font-family:inherit;font-size:13px;outline:none;
               transition:border-color .14s"
@@ -475,8 +494,10 @@ window.CBE_SMS = (() => {
            style="color:#1a56db">africastalking.com</a> → Create a free account<br>
         2. Create an app (or use the Sandbox app for testing)<br>
         3. Copy your <strong>API Key</strong> and <strong>Username</strong>
-           from the AT dashboard<br>
-        4. Top up airtime in your AT account — ~KES 0.80 per SMS in Kenya
+           from the AT dashboard (use <code>sandbox</code> as the username while testing)<br>
+        4. Top up airtime in your AT account — ~KES 0.80 per SMS in Kenya<br>
+        5. For Sandbox testing, add your phone number under
+           Settings → Sandbox Simulator on the AT dashboard before sending a test SMS.
       </div>
 
       <div style="display:flex;gap:8px">
@@ -649,4 +670,4 @@ window.CBE_SMS = (() => {
     _testSMS,
   };
 
-})(); // ← THIS WAS MISSING — executes the IIFE and assigns window.CBE_SMS
+})(); // ← executes the IIFE and assigns window.CBE_SMS
