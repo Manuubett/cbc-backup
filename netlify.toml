@@ -381,6 +381,6 @@
     Cache-Control = "public, max-age=86400"
 
 [[headers]]
-  for = "/*.js"
-  [headers.values]
-    Cache-Control = "public, max-age=86400"
+for = "/*.js"
+[headers.values]
+Cache-Control = "no-cache"
