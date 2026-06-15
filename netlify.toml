@@ -260,6 +260,14 @@
     X-Robots-Tag = "noindex, nofollow, noarchive, nosnippet"
 
 [[headers]]
+  for = "/sms-integration.js"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+
+
+
+[[headers]]
   for = "/db-cleaner.html"
   [headers.values]
     Cache-Control = "no-store, no-cache, must-revalidate, private"
