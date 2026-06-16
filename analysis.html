@@ -1180,6 +1180,7 @@ window.sendResultsSMS = async function() {
   }
 
   // Build phone map from students
+// Build phone map from students
   const phoneMap = {};
   allStudents.forEach(s => {
     const phone = s.parentPhone || s.guardianPhone || s.motherPhone || '';
@@ -1190,50 +1191,45 @@ window.sendResultsSMS = async function() {
   const resMap = {};
   allResults.forEach(r => resMap[r.studentId] = r);
 
-  // Rank every scored student so we can attach class position to each recipient
-  const scoredForRank = allStudents
+  const ranked = allStudents
     .filter(s => resMap[s.id]?.overallAvg > 0)
     .sort((a, b) => resMap[b.id].overallAvg - resMap[a.id].overallAvg);
+
   const rankMap = {};
-  scoredForRank.forEach((s, i) => rankMap[s.id] = i + 1);
-  const totalRanked = scoredForRank.length;
+  ranked.forEach((s, i) => { rankMap[s.id] = i + 1; });
 
-  const recipients = allStudents
-    .filter(s => resMap[s.id]?.overallAvg > 0)
-    .map(s => {
-      const rec = resMap[s.id];
+  const recipients = ranked.map(s => {
+    const rec = resMap[s.id];
+    const avg = Number(rec.overallAvg).toFixed(1);
+    const lv  = getLevel(Number(avg));
 
-      // Build subjects array from SUBS config
-      const subjects = SUBS.map(sub => {
-        const sc  = getSubjectScore(rec, sub);
-        const oof = getSubjectOof(rec, sub);
-        if(sc === null) return null;
-        const pct = (sc / oof) * 100;
-        return {
-          name:  sub.label,
-          score: typeof sc === 'number' ? sc.toFixed(1) : sc,
-          grade: getLevel(pct).l,
-        };
-      }).filter(Boolean);
-
-      const overallAvg = Number(rec.overallAvg);
-      const overallLevel = getLevel(overallAvg);
-
+    // Build subjects array from SUBS config
+    const subjects = SUBS.map(sub => {
+      const sc  = getSubjectScore(rec, sub);
+      const oof = getSubjectOof(rec, sub);
+      if(sc === null) return null;
+      const pct = (sc / oof) * 100;
       return {
-        studentId:   s.id,
-        studentName: s.name,
-        grade:       rec.grade  || grade,
-        stream:      rec.stream || stream,
-        parentPhone: phoneMap[s.id] || rec.parentPhone || '',
-        subjects,
-        // Overall summary — for inclusion in the SMS body alongside subjects
-        overallAverage: overallAvg.toFixed(1),
-        overallLevel:   overallLevel.l,
-        overallPoints:  overallLevel.p,
-        position:       rankMap[s.id] || null,
-        totalStudents:  totalRanked,
+        name:  sub.label,
+        score: typeof sc === 'number' ? sc.toFixed(1) : sc,
+        grade: getLevel(pct).l,
       };
-    });
+    }).filter(Boolean);
+
+    return {
+      studentId:     s.id,
+      studentName:   s.name,
+      grade:         rec.grade  || grade,
+      stream:        rec.stream || stream,
+      parentPhone:   phoneMap[s.id] || rec.parentPhone || '',
+      subjects,
+      overallAvg:    avg,
+      level:         lv.l,
+      points:        lv.p,
+      rank:          rankMap[s.id],
+      totalStudents: ranked.length,
+    };
+  });
 
   const schoolName = s.name || schoolSettings.name || '';
   const senderId   = s.smsSenderId || '';
