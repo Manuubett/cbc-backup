@@ -209,14 +209,19 @@ async function _wakeProxy(onStatus) {
         continue;
       }
 
-      const message = buildResultsSMS({
-        studentName: r.studentName,
-        grade:       r.grade,
-        stream:      r.stream,
-        term, year, schoolName,
-        subjects:    r.subjects,
-        footer:      opts.footer,
-      });
+    const message = buildResultsSMS({
+  studentName:   r.studentName,
+  grade:         r.grade,
+  stream:        r.stream,
+  term, year, schoolName,
+  subjects:      r.subjects,
+  overallAvg:    r.overallAvg,
+  level:         r.level,
+  points:        r.points,
+  rank:          r.rank,
+  totalStudents: r.totalStudents,
+  footer:        opts.footer,
+});
 
      try {
         const phone = normalisePhone(r.parentPhone);
