@@ -136,15 +136,22 @@ window.CBE_SMS = (() => {
   //  3. MESSAGE BUILDER
   // ══════════════════════════════════════════════════════════════
 
-  function buildResultsSMS({ studentName, grade, stream, term, year, schoolName, subjects, footer }) {
-    const classStr = stream ? `${grade} ${stream}` : grade;
-    const header   = `${schoolName}\nResults: ${term} ${year}\nStudent: ${studentName} (${classStr})\n`;
-    const body     = subjects.map(s =>
-      `${s.name}: ${s.score ?? s.marks ?? '-'}${s.grade ? ` (${s.grade})` : ''}`
-    ).join('\n');
-    const foot = footer || 'For queries, contact the school office.';
-    return `${header}${body}\n${foot}`;
-  }
+function buildResultsSMS({ studentName, grade, stream, term, year, schoolName, subjects, overallAvg, level, points, rank, totalStudents }) {
+  const classStr = stream ? `${grade}${stream}` : grade;
+  const header = `${schoolName} ${term} ${year}\n${studentName} (${classStr})\n`;
+  const body = subjects
+    .map(s => `${s.name}:${_fmtScore(s.score ?? s.marks)}(${s.grade || '-'})`)
+    .join(' ');
+  const summary = (overallAvg != null)
+    ? `\nAvg:${overallAvg}% ${level} ${points}pts${rank ? ` Pos:${rank}/${totalStudents}` : ''}`
+    : '';
+  return `${header}${body}${summary}`;
+}
+
+function _fmtScore(v) {
+  const n = Number(v);
+  return Number.isInteger(n) ? String(n) : n.toFixed(1);
+}
 
   // ══════════════════════════════════════════════════════════════
   //  4. BULK SENDER
