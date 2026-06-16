@@ -1032,7 +1032,6 @@ async function _startSend(schoolId, schoolName, term, year, senderId) {
   if (cancelBtn) { cancelBtn.disabled = true; }
   if (progress)  { progress.style.display = 'block'; }
 
-  // ── Wake the server first ──
   const awake = await _wakeProxy(msg => { if (progLabel) progLabel.textContent = msg; });
   if (!awake) {
     if (progLabel) progLabel.innerHTML = '❌ Could not reach SMS server. Wait 30s and try again.';
@@ -1058,10 +1057,10 @@ async function _startSend(schoolId, schoolName, term, year, senderId) {
           summary[s] = (summary[s] || 0) + 1;
           if (_isInsufficientBalance(last)) sawInsufficientBalance = true;
 
-          const dot      = `<span class="_sms-dot ${s}"></span>`;
-          const name     = _esc(last.studentName || '—');
-          const phone    = _esc(last.phone || last.parentPhone || '—');
-          const note     = _statusNote(last);
+          const dot       = `<span class="_sms-dot ${s}"></span>`;
+          const name      = _esc(last.studentName || '—');
+          const phone     = _esc(last.phone || last.parentPhone || '—');
+          const note      = _statusNote(last);
           const noteColor = s === 'sent' ? '#059669' : s === 'skipped' ? '#d97706' : '#dc2626';
           if (logList) {
             logList.innerHTML += `
@@ -1090,11 +1089,11 @@ async function _startSend(schoolId, schoolName, term, year, senderId) {
 
   if (sawInsufficientBalance) {
     const topupHtml = `
-      <div style="background:#fef2f2;border:1px solid #fecaca;border-left:3px solid #dc2626;
+      <div id="_smsTopupBanner" style="background:#fef2f2;border:1px solid #fecaca;border-left:3px solid #dc2626;
         border-radius:7px;padding:10px 14px;font-size:12px;color:#991b1b;margin-top:10px;line-height:1.7">
         💳 <strong>Insufficient AT balance.</strong> Some messages failed because your
         Africa's Talking account is out of credit.<br>
-        <a href="https://account.africastalking.com/apps/sandbox/billing" target="_blank"
+        <a href="https://account.africastalking.com" target="_blank"
           style="color:#1a56db;font-weight:700">Top up your AT account →</a>
       </div>`;
     if (logList) logList.insertAdjacentHTML('afterend', topupHtml);
@@ -1110,6 +1109,40 @@ async function _startSend(schoolId, schoolName, term, year, senderId) {
     const m = document.getElementById('cbeSmsModal');
     if (m) m.remove();
   }
+  async function _wakeProxy(onStatus) {
+  onStatus?.('Waking up SMS server…');
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  try {
+    await fetch(SMS_PROXY_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ apiKey: '__wake__', username: '__wake__', to: '+2540', message: 'wake' }),
+      signal: controller.signal,
+    });
+    clearTimeout(timer);
+    onStatus?.('Server ready.');
+    return true;
+  } catch (e) {
+    clearTimeout(timer);
+    onStatus?.(e.name === 'AbortError' ? 'Server still waking up — retrying…' : 'Server unreachable.');
+    return false;
+  }
+}
+
+function _isInsufficientBalance(entry) {
+  const reason = (entry?.reason || entry?.atResponse?.status || '').toLowerCase();
+  return reason.includes('insufficientbalance') || reason.includes('insufficient balance') || reason.includes('user is not active');
+}
+
+function _statusNote(entry) {
+  const s = entry.status;
+  if (s === 'sent') return 'Delivered';
+  if (s === 'skipped') return 'No phone';
+  if (_isInsufficientBalance(entry)) return 'No AT balance';
+  const raw = entry.reason || entry.atResponse?.status || s;
+  return _esc(String(raw)).slice(0, 40);
+}
 
   // ══════════════════════════════════════════════════════════════
   //  8. SETTINGS UI
