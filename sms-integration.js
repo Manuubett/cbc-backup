@@ -218,14 +218,18 @@ async function _wakeProxy(onStatus) {
         footer:      opts.footer,
       });
 
-      try {
+     try {
         const phone = normalisePhone(r.parentPhone);
-const atRes = await sendSMS(creds.atApiKey, creds.atUsername, phone, message, senderId);
-const msgRes = atRes?.SMSMessageData?.Recipients?.[0];
-const status = _isSuccessStatus(msgRes?.status) ? 'sent' : 'failed';
-const entry  = { ...r, status, atResponse: msgRes, message, phone, reason: msgRes?.status || '' };
-results.push(entry);
-await _logSMS(schoolId, entry, term, year);
+        const atRes = await sendSMS(creds.atApiKey, creds.atUsername, phone, message, senderId);
+        const msgRes = atRes?.SMSMessageData?.Recipients?.[0];
+        const status = _isSuccessStatus(msgRes?.status) ? 'sent' : 'failed';
+        const entry  = { ...r, status, atResponse: msgRes, message, phone, reason: msgRes?.status || '' };
+        results.push(entry);
+        await _logSMS(schoolId, entry, term, year);
+      } catch (e) {
+        const entry = { ...r, status: 'error', reason: e.message };
+        results.push(entry);
+        await _logSMS(schoolId, entry, term, year);
       }
 
       onProgress?.(i + 1, recipients.length, results[results.length - 1]);
