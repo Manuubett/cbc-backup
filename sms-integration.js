@@ -546,6 +546,283 @@ window.CBE_SMS = (() => {
   }
 
   // ══════════════════════════════════════════════════════════════
+  //  6b. STANDALONE SETTINGS MODAL (v4 NEW)
+  // ══════════════════════════════════════════════════════════════
+
+  /**
+   * Opens a fully self-contained SMS settings modal.
+   * School pastes their AT API key + username → saved to Firestore.
+   * Has zero dependency on any host-page DOM elements.
+   * Can be triggered from ANY page via: CBE_SMS.openSettingsModal()
+   */
+  function openSettingsModal(preloadSchoolId) {
+    const existing = document.getElementById('_cbeSmsCfgModal');
+    if (existing) existing.remove();
+
+    const resolvedId = preloadSchoolId || _schoolId();
+
+    const overlay = document.createElement('div');
+    overlay.id = '_cbeSmsCfgModal';
+    overlay.style.cssText = `
+      position:fixed;inset:0;background:rgba(0,0,0,.55);
+      backdrop-filter:blur(8px);z-index:99999;
+      display:flex;align-items:center;justify-content:center;padding:20px;
+      font-family:'Plus Jakarta Sans',ui-sans-serif,sans-serif;
+    `;
+
+    overlay.innerHTML = `
+      <div id="_cbeSmsCfgBox" style="
+        background:#fff;border-radius:16px;width:100%;max-width:480px;
+        box-shadow:0 32px 80px rgba(0,0,0,.3);overflow:hidden;
+        animation:_cfgIn .22s cubic-bezier(.22,1,.36,1);
+      ">
+        <style>
+          @keyframes _cfgIn {
+            from { opacity:0;transform:scale(.94) translateY(14px) }
+            to   { opacity:1;transform:none }
+          }
+          #_cbeSmsCfgBox input {
+            width:100%;box-sizing:border-box;height:40px;padding:0 12px;
+            border:1.5px solid #dce1ec;border-radius:8px;
+            font-family:inherit;font-size:13px;outline:none;
+            transition:border-color .14s;background:#fff;color:#0f172a;
+          }
+          #_cbeSmsCfgBox input:focus { border-color:#1a56db; box-shadow:0 0 0 3px rgba(26,86,219,.1); }
+          #_cbeSmsCfgBox label {
+            display:block;font-size:10.5px;font-weight:700;color:#64748b;
+            text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;
+          }
+          #_cbeSmsCfgBox .field { margin-bottom:14px; }
+          ._cfg-status {
+            display:none;border-radius:8px;padding:10px 14px;
+            font-size:12.5px;line-height:1.6;margin-top:4px;
+          }
+          ._cfg-badge {
+            display:inline-flex;align-items:center;gap:5px;
+            font-size:10.5px;font-weight:700;padding:3px 10px;
+            border-radius:20px;background:#f1f5f9;color:#64748b;
+          }
+          ._cfg-badge.ok  { background:#d1fae5;color:#065f46; }
+          ._cfg-badge.err { background:#fee2e2;color:#991b1b; }
+        </style>
+
+        <!-- Header -->
+        <div style="
+          background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 60%,#1a56db 100%);
+          padding:20px 24px;color:#fff;
+        ">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="font-size:15px;font-weight:800;letter-spacing:-.2px;margin-bottom:2px;">
+                📱 SMS Setup
+              </div>
+              <div style="font-size:11px;opacity:.65;">
+                Connect your Africa's Talking account
+              </div>
+            </div>
+            <span id="_cfgBadge" class="_cfg-badge">Not configured</span>
+          </div>
+        </div>
+
+        <!-- Body -->
+        <div style="padding:22px 24px 8px;">
+
+          <div class="field">
+            <label>AT API Key *</label>
+            <input id="_cfgApiKey" type="password" autocomplete="new-password"
+              placeholder="Paste your Africa's Talking API key">
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="field">
+              <label>AT Username *</label>
+              <input id="_cfgUsername" type="text" autocomplete="off"
+                placeholder="e.g. bett254">
+            </div>
+            <div class="field">
+              <label>Sender ID <span style="font-weight:400;text-transform:none;">(optional)</span></label>
+              <input id="_cfgSenderId" type="text" placeholder="Leave blank for default">
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Test Phone Number</label>
+            <input id="_cfgTestPhone" type="tel" placeholder="+254712345678">
+          </div>
+
+          <!-- How to get credentials -->
+          <div style="
+            background:#eff4ff;border:1px solid #c7d9ff;border-left:3px solid #1a56db;
+            border-radius:7px;padding:10px 14px;font-size:11.5px;color:#1e3a8a;
+            line-height:1.75;margin-bottom:4px;
+          ">
+            <strong>How to get your credentials:</strong><br>
+            1. Go to <a href="https://africastalking.com" target="_blank" style="color:#1a56db;font-weight:600;">africastalking.com</a> → Login → your app<br>
+            2. Copy <strong>API Key</strong> from Settings → API Key (account level)<br>
+            3. Your <strong>Username</strong> is shown on the AT dashboard home<br>
+            4. Top up airtime — ~KES 0.80 per SMS in Kenya
+          </div>
+
+          <!-- Status -->
+          <div id="_cfgStatus" class="_cfg-status"></div>
+
+        </div>
+
+        <!-- Footer -->
+        <div style="
+          padding:16px 24px 20px;
+          display:flex;justify-content:space-between;align-items:center;gap:8px;
+        ">
+          <button
+            onclick="document.getElementById('_cbeSmsCfgModal').remove()"
+            style="
+              padding:9px 18px;border-radius:8px;border:1.5px solid #e2e8f0;
+              background:none;font-family:inherit;font-size:12.5px;font-weight:600;
+              cursor:pointer;color:#64748b;
+            ">
+            Cancel
+          </button>
+          <div style="display:flex;gap:8px;">
+            <button
+              id="_cfgTestBtn"
+              onclick="window.CBE_SMS._doSettingsTest()"
+              style="
+                padding:9px 16px;border-radius:8px;
+                border:1.5px solid #bbf7d0;background:#f0fdf4;
+                font-family:inherit;font-size:12.5px;font-weight:700;
+                cursor:pointer;color:#059669;
+              ">
+              🧪 Test SMS
+            </button>
+            <button
+              id="_cfgSaveBtn"
+              onclick="window.CBE_SMS._doSettingsSave()"
+              style="
+                padding:9px 22px;border-radius:8px;background:#1a56db;color:#fff;
+                border:none;font-family:inherit;font-size:12.5px;font-weight:700;
+                cursor:pointer;
+              ">
+              💾 Save Settings
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+    overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+
+    // Pre-fill from Firestore
+    if (resolvedId) _prefillSettingsModal(resolvedId);
+  }
+
+  async function _prefillSettingsModal(schoolId) {
+    try {
+      const snap = await db().collection('settings').doc(schoolId).get();
+      if (!snap.exists) return;
+      const d = snap.data();
+      const keyEl    = document.getElementById('_cfgApiKey');
+      const userEl   = document.getElementById('_cfgUsername');
+      const senderEl = document.getElementById('_cfgSenderId');
+      const phoneEl  = document.getElementById('_cfgTestPhone');
+      const badge    = document.getElementById('_cfgBadge');
+      if (keyEl    && d.atApiKey)     keyEl.value    = d.atApiKey;
+      if (userEl   && d.atUsername)   userEl.value   = d.atUsername;
+      if (senderEl && d.smsSenderId)  senderEl.value = d.smsSenderId;
+      if (phoneEl  && d.smsTestPhone) phoneEl.value  = d.smsTestPhone;
+      if (badge && d.atApiKey && d.atUsername) {
+        badge.textContent = '✅ Configured';
+        badge.className   = '_cfg-badge ok';
+      }
+    } catch (_) {}
+  }
+
+  function _cfgStatus(msg, type = 'info') {
+    const el = document.getElementById('_cfgStatus');
+    if (!el) return;
+    const styles = {
+      info:    'background:#eff4ff;color:#1e3a8a;border:1px solid #c7d9ff;',
+      success: 'background:#f0fdf4;color:#065f46;border:1px solid #bbf7d0;',
+      error:   'background:#fef2f2;color:#991b1b;border:1px solid #fecaca;',
+      warning: 'background:#fef3c7;color:#92400e;border:1px solid #fcd34d;',
+      loading: 'background:#f8fafc;color:#334155;border:1px solid #e2e8f0;',
+    };
+    el.style.cssText = styles[type] || styles.info;
+    el.innerHTML     = msg;
+    el.style.display = 'block';
+  }
+
+  async function _doSettingsSave() {
+    const schoolId = _schoolId();
+    if (!schoolId) { _cfgStatus('⚠️ Not signed in yet — please wait.', 'warning'); return; }
+
+    const apiKey    = document.getElementById('_cfgApiKey')?.value.trim();
+    const username  = document.getElementById('_cfgUsername')?.value.trim();
+    const senderId  = document.getElementById('_cfgSenderId')?.value.trim() || '';
+    const testPhone = document.getElementById('_cfgTestPhone')?.value.trim() || '';
+    const btn       = document.getElementById('_cfgSaveBtn');
+    const badge     = document.getElementById('_cfgBadge');
+
+    if (!apiKey)    { _cfgStatus('⚠️ API Key is required.', 'warning');  return; }
+    if (!username)  { _cfgStatus('⚠️ Username is required.', 'warning'); return; }
+
+    btn.disabled = true; btn.textContent = '⏳ Saving…';
+    try {
+      await saveATCredentials(schoolId, apiKey, username);
+      await db().collection('settings').doc(schoolId).set({
+        smsSenderId:  senderId,
+        smsTestPhone: testPhone,
+      }, { merge: true });
+
+      if (badge) { badge.textContent = '✅ Configured'; badge.className = '_cfg-badge ok'; }
+      _cfgStatus('✅ <strong>Settings saved!</strong> Your AT credentials are ready to use.', 'success');
+    } catch (e) {
+      _cfgStatus('❌ ' + _esc(e.message), 'error');
+    }
+    btn.disabled = false; btn.textContent = '💾 Save Settings';
+  }
+
+  async function _doSettingsTest() {
+    const apiKey   = document.getElementById('_cfgApiKey')?.value.trim();
+    const username = document.getElementById('_cfgUsername')?.value.trim();
+    const senderId = document.getElementById('_cfgSenderId')?.value.trim() || '';
+    const rawPhone = document.getElementById('_cfgTestPhone')?.value.trim();
+    const btn      = document.getElementById('_cfgTestBtn');
+
+    if (!apiKey)   { _cfgStatus('⚠️ Enter your API Key first.', 'warning');       return; }
+    if (!username) { _cfgStatus('⚠️ Enter your Username first.', 'warning');      return; }
+    if (!rawPhone) { _cfgStatus('⚠️ Enter a test phone number first.', 'warning'); return; }
+
+    btn.disabled = true; btn.textContent = '⏳ Sending…';
+    _cfgStatus('⏳ Sending test SMS — may take up to 15 s…', 'loading');
+
+    try {
+      const data = await sendSMS(
+        apiKey, username, normalisePhone(rawPhone),
+        `CBE Mark Sheet ✅\nSMS integration working!\n— ${username}`,
+        senderId
+      );
+      const recipient = data?.SMSMessageData?.Recipients?.[0];
+      const status    = recipient?.status;
+
+      if (status === 'Success') {
+        _cfgStatus(
+          `✅ <strong>Test SMS sent!</strong> Delivered to ${rawPhone} · Cost: ${recipient?.cost || '—'}`,
+          'success'
+        );
+      } else {
+        _cfgStatus(
+          `⚠️ AT responded: <strong>${status || 'unknown'}</strong> — ${data?.SMSMessageData?.Message || 'Check AT dashboard.'}`,
+          'warning'
+        );
+      }
+    } catch (e) {
+      _cfgStatus('❌ ' + _esc(e.message), 'error');
+    }
+    btn.disabled = false; btn.textContent = '🧪 Test SMS';
+  }
+
+  // ══════════════════════════════════════════════════════════════
   //  7. SEND MODAL UI
   // ══════════════════════════════════════════════════════════════
 
@@ -1020,6 +1297,10 @@ window.CBE_SMS = (() => {
     _openTestModal,
     _probeProxy,
     _doTestSend,
+    // v4: standalone settings modal
+    openSettingsModal,
+    _doSettingsSave,
+    _doSettingsTest,
   };
 
 })();
