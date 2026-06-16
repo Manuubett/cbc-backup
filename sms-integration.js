@@ -210,18 +210,14 @@ async function _wakeProxy(onStatus) {
       }
 
       const message = buildResultsSMS({
-  studentName:   r.studentName,
-  grade:         r.grade,
-  stream:        r.stream,
-  term, year, schoolName,
-  subjects:      r.subjects,
-  overallAvg:    r.overallAvg,
-  level:         r.level,
-  points:        r.points,
-  rank:          r.rank,
-  totalStudents: r.totalStudents,
-  footer:        opts.footer,
-});
+        studentName: r.studentName,
+        grade:       r.grade,
+        stream:      r.stream,
+        term, year, schoolName,
+        subjects:    r.subjects,
+        footer:      opts.footer,
+      });
+
      try {
         const phone = normalisePhone(r.parentPhone);
         const atRes = await sendSMS(creds.atApiKey, creds.atUsername, phone, message, senderId);
@@ -1000,17 +996,22 @@ async function _wakeProxy(onStatus) {
 
     modal._smsRecipients = withPhone;
 
-    const sample = recipients[0];
-    if (sample) {
-      const preview = buildResultsSMS({
-        studentName: sample.studentName || 'Student Name',
-        grade:       sample.grade  || 'Grade 4',
-        stream:      sample.stream || '',
-        term, year, schoolName,
-        subjects: sample.subjects?.length
-          ? sample.subjects
-          : [{ name: 'Math', score: 87 }, { name: 'English', score: 75 }, { name: 'Science', score: 90 }],
-      });
+   const sample = recipients[0];
+if (sample) {
+  const preview = buildResultsSMS({
+    studentName:   sample.studentName || 'Student Name',
+    grade:         sample.grade  || 'Grade 4',
+    stream:        sample.stream || '',
+    term, year, schoolName,
+    subjects: sample.subjects?.length
+      ? sample.subjects
+      : [{ name: 'Math', score: 87 }, { name: 'English', score: 75 }, { name: 'Science', score: 90 }],
+    overallAvg:    sample.overallAvg,
+    level:         sample.level,
+    points:        sample.points,
+    rank:          sample.rank,
+    totalStudents: sample.totalStudents,
+  });
       const previewEl = document.getElementById('_smsMsgPreview');
       if (previewEl) previewEl.textContent = preview;
       const lenEl = document.getElementById('_smsMsgLen');
