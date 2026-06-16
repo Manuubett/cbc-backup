@@ -269,7 +269,13 @@ body.dark .level-row .bar-wrap{background:#1a2030}
   <div class="sep"></div>
   <button class="btn btn-success" onclick="printClassReport()">🖨️ Class Report</button>
   <button class="btn btn-primary" id="printAllBtn" onclick="confirmPrintAll()" style="display:none">🖨️ Print All Reports</button>
+<button class="btn btn-sm" id="smsBtn" onclick="sendResultsSMS()"
+  style="color:#059669;border:1.5px solid #bbf7d0;background:#f0fdf4;display:none"
+  title="Send results to parents via SMS">
+  📱 Send Results SMS
+</button>
 </div>
+
 
 
 </div>
@@ -881,6 +887,7 @@ const c3=catResultsMap[s.id]?.['Exam 3']?.overallAvg
   el('mainContent').innerHTML=html;
   window._printData={grade,stream,classLabel,displayLabel,term,year,ranked,resMap,scored,classAvg,levelCounts,subjectStats,usesCats,currentCat:currentCat};
   const btn=el('printAllBtn'); if(btn) btn.style.display=scored.length?'inline-flex':'none';
+  const smsBtn=el('smsBtn'); if(smsBtn) smsBtn.style.display=scored.length?'inline-flex':'none';
 }
 
 window.showTab=function(name,btn){
@@ -1143,13 +1150,87 @@ window.printClassReport=async function(){
   subjectStats.forEach(({sub,avg,count})=>{ if(avg===null){ h+=`<tr><td>${sub.icon} ${sub.label}</td><td colspan="5" style="text-align:center;color:#9aaabb">No data</td></tr>`; return; } const lv=getLevel(Number(avg)),subPcts=scored.map(s=>{ const rec=resMap[s.id],sc=getSubjectScore(rec,sub); if(sc===null)return null; return(sc/getSubjectOof(rec,sub))*100; }).filter(v=>v!==null); h+=`<tr><td style="font-weight:600">${sub.icon} ${sub.label}</td><td style="text-align:center;font-weight:800;color:#1a56db">${avg}%</td><td style="text-align:center"><span class="lbadge ${lv.c}">${lv.l}</span></td><td style="text-align:center">${count}</td><td style="text-align:center;color:#059669;font-weight:700">${Math.max(...subPcts).toFixed(1)}%</td><td style="text-align:center;color:#dc2626;font-weight:700">${Math.min(...subPcts).toFixed(1)}%</td></tr>`; });
   h+=`</tbody></table></div><div style="display:flex;gap:28px;margin-top:20px"><div class="print-sig-line">Class Teacher</div><div class="print-sig-line">Head Teacher</div><div class="print-sig-line">Date</div></div><div class="print-footer"><div>${schoolSettings.name||'CBE Mark Sheet System'} · ${schoolSettings.county||'Kenya CBC'}</div><div>${schoolSettings.principal?'Principal: '+schoolSettings.principal+' · ':''}Printed: ${new Date().toLocaleString()}</div></div></div>`;
   triggerPrint(h);
+};  
+
+// ══════════════════════════════════════════════
+// SEND RESULTS SMS
+// ══════════════════════════════════════════════
+window.sendResultsSMS = async function() {
+  if(typeof window.CBE_SMS === 'undefined'){
+    toast('SMS module not loaded — check sms-integration.js','err'); return;
+  }
+
+  const grade  = el('selGrade').value;
+  const stream = el('selStream').value;
+  const term   = el('selTerm').value;
+  const year   = el('selYear').value;
+
+  if(!grade){ toast('Select a grade first','err'); return; }
+  if(!allResults.length){ toast('No results loaded — select a grade and term first','err'); return; }
+
+  const schoolId = await _getSchoolId();
+
+  // Check SMS credentials
+  const snap = await db.collection('settings').doc(schoolId).get();
+  const s    = snap.exists ? snap.data() : {};
+  if(!s.atApiKey || !s.atUsername){
+    toast('SMS not configured — go to Settings → SMS Setup','err');
+    setTimeout(() => CBE_SMS.openSettingsModal(), 800);
+    return;
+  }
+
+  // Build phone map from students
+  const phoneMap = {};
+  allStudents.forEach(s => {
+    const phone = s.parentPhone || s.guardianPhone || s.motherPhone || '';
+    if(phone) phoneMap[s.id] = phone;
+  });
+
+  // Build recipients from already-loaded allResults
+  const resMap = {};
+  allResults.forEach(r => resMap[r.studentId] = r);
+
+  const recipients = allStudents
+    .filter(s => resMap[s.id]?.overallAvg > 0)
+    .map(s => {
+      const rec = resMap[s.id];
+
+      // Build subjects array from SUBS config
+      const subjects = SUBS.map(sub => {
+        const sc  = getSubjectScore(rec, sub);
+        const oof = getSubjectOof(rec, sub);
+        if(sc === null) return null;
+        const pct = (sc / oof) * 100;
+        return {
+          name:  sub.label,
+          score: typeof sc === 'number' ? sc.toFixed(1) : sc,
+          grade: getLevel(pct).l,
+        };
+      }).filter(Boolean);
+
+      return {
+        studentId:   s.id,
+        studentName: s.name,
+        grade:       rec.grade  || grade,
+        stream:      rec.stream || stream,
+        parentPhone: phoneMap[s.id] || rec.parentPhone || '',
+        subjects,
+      };
+    });
+
+  const schoolName = s.name || schoolSettings.name || '';
+  const senderId   = s.smsSenderId || '';
+
+  CBE_SMS.openSendModal(recipients, schoolId, { name: schoolName, term, year, senderId });
 };
+
+
 
 // ── Dark mode ──
 el('themeBtn').addEventListener('click',function(){ document.body.classList.toggle('dark'); this.textContent=document.body.classList.contains('dark')?'☀️':'🌙'; localStorage.setItem('cbe_theme',document.body.classList.contains('dark')?'dark':'light'); });
 if(localStorage.getItem('cbe_theme')==='dark'){ document.body.classList.add('dark'); el('themeBtn').textContent='☀️'; }
 </script>
-
+<script src="sms-integration.js?v=4"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"9a6fdd38ee454483a9aa3baf59e5691f","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
