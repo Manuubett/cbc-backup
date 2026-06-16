@@ -1,11 +1,3 @@
-
-<!--
-  CBE Mark Sheet System
-  Copyright © 2026 Bett Emanuel — https://bett.website
-  All rights reserved. Unauthorized copying, modification or distribution
-  of this software is strictly prohibited.
-  Contact: wa.me/254704518130
--->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,349 +9,510 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#1a56db">
-<title>CBE Mark Sheet | Junior School</title>
+<title>Student Admission | Junior School CBE</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Familjen+Grotesk:wght@700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#e8ecf4;--surface:#fff;--surf2:#f3f5fa;--border:#dce1ec;
-  --text:#131c2e;--text2:#4f6080;--text3:#9aaabb;
+  --bg:#eef1f7;--surface:#fff;--surf2:#f5f7fb;--border:#e1e6ef;
+  --text:#141b2d;--text2:#526079;--text3:#9eabbe;
   --accent:#1a56db;--ah:#1447c0;--alight:#eff4ff;
-  --ee1-bg:#c6f6d5;--ee1-tx:#166534;--ee2-bg:#bbf7d0;--ee2-tx:#15803d;
-  --me1-bg:#fef9c3;--me1-tx:#854d0e;--me2-bg:#fef3c7;--me2-tx:#92400e;
-  --ae1-bg:#ffedd5;--ae1-tx:#9a3412;--ae2-bg:#fed7aa;--ae2-tx:#9a3412;
-  --be1-bg:#fecaca;--be1-tx:#991b1b;--be2-bg:#fca5a5;--be2-tx:#7f1d1d;
-  --sh:0 1px 3px rgba(0,0,0,.05);--sh2:0 8px 24px rgba(0,0,0,.1);
-  --r:10px;--r2:6px;
+  --green:#059669;--glight:#d1fae5;
+  --red:#dc2626;--rlight:#fee2e2;
+  --amber:#d97706;--amlight:#fef3c7;
+  --sh:0 1px 3px rgba(0,0,0,.05);--sh2:0 4px 20px rgba(0,0,0,.08);
+  --r:10px;--r2:6px
 }
-body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);font-size:13px;min-height:100vh}
-header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:var(--sh)}
-.logo{display:flex;align-items:center;gap:9px}
-.lm{width:30px;height:30px;background:var(--accent);border-radius:7px;display:grid;place-items:center;color:#fff;font-size:15px}
-.lt{font-family:'Familjen Grotesk',sans-serif;font-size:14px;font-weight:800;letter-spacing:-.3px}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);font-size:13.5px;min-height:100vh}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:var(--sh)}
+.logo{display:flex;align-items:center;gap:10px}
+.lm{width:32px;height:32px;background:var(--accent);border-radius:8px;display:grid;place-items:center;color:#fff;font-size:16px}
+.lt{font-family:'Familjen Grotesk',sans-serif;font-size:15px;font-weight:800;letter-spacing:-.3px}
 .ls{font-size:10px;color:var(--text3)}
-.hdr-r{display:flex;align-items:center;gap:7px}
-.toolbar{background:var(--surface);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:52px;z-index:190;box-shadow:var(--sh)}
-.fsel{padding:5px 9px;border:1.5px solid var(--border);border-radius:var(--r2);font-family:inherit;font-size:12.5px;color:var(--text);background:var(--surface);cursor:pointer;outline:none;height:32px}
-.fsel:focus{border-color:var(--accent)}
-.btn{display:inline-flex;align-items:center;gap:5px;padding:5px 13px;border-radius:var(--r2);font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;border:none;transition:all .14s;white-space:nowrap;height:32px}
-.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:var(--ah)}
-.btn-success{background:#059669;color:#fff}.btn-success:hover{background:#047857}
+.hdr-r{display:flex;align-items:center;gap:8px}
+.wrap{max-width:1100px;margin:0 auto;padding:22px 24px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--r2);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s;white-space:nowrap}
+.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:var(--ah);box-shadow:0 4px 10px rgba(26,86,219,.25)}
 .btn-outline{background:none;border:1.5px solid var(--border);color:var(--text2)}.btn-outline:hover{background:var(--bg);color:var(--text)}
-.btn-sm{padding:3px 9px;font-size:11.5px;height:26px}
-.sep{width:1px;height:20px;background:var(--border)}
-.tb-lbl{font-size:11px;color:var(--text3);font-weight:600}
-.cat-tab{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;border:1.5px solid var(--border);background:var(--surface);color:var(--text2);transition:all .14s}
-.cat-tab.active-1{background:#eff6ff;border-color:#93c5fd;color:#1d4ed8}
-.cat-tab.active-2{background:#f0fdf4;border-color:#86efac;color:#166534}
-.cat-tab.active-3{background:#fdf4ff;border-color:#d8b4fe;color:#7e22ce}
-.cat-tab:hover:not([class*="active"]){background:var(--bg)}
-.cat-tabs-wrap{display:flex;gap:4px;align-items:center}
-.legend{padding:5px 20px;background:var(--surf2);border-bottom:1px solid var(--border);display:flex;gap:5px;align-items:center;flex-wrap:wrap;font-size:10.5px}
-.legend strong{color:var(--text2);font-weight:700;margin-right:3px}
-.lbadge{padding:1px 6px;border-radius:5px;font-size:10px;font-weight:700}
-.ee1{background:var(--ee1-bg);color:var(--ee1-tx)}.ee2{background:var(--ee2-bg);color:var(--ee2-tx)}
-.me1{background:var(--me1-bg);color:var(--me1-tx)}.me2{background:var(--me2-bg);color:var(--me2-tx)}
-.ae1{background:var(--ae1-bg);color:var(--ae1-tx)}.ae2{background:var(--ae2-bg);color:var(--ae2-tx)}
-.be1{background:var(--be1-bg);color:var(--be1-tx)}.be2{background:var(--be2-bg);color:var(--be2-tx)}
-.outer{padding:14px 20px}
-.info-strip{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px}
-.sheet-title{font-family:'Familjen Grotesk',sans-serif;font-size:16px;font-weight:800}
-.pills{display:flex;gap:6px;flex-wrap:wrap}
-.pill{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:4px}
-.pill .pv{color:var(--text);font-weight:700}
-.sheet-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
-.tbl-scroll{overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 220px)}
-table{border-collapse:collapse;width:max-content;min-width:100%}
-thead th,tbody td,tfoot td{border:1px solid var(--border)}
-thead th{background:#1e2d4d;color:#c8d8f8;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:0 5px;white-space:nowrap;text-align:center;position:sticky;top:0;z-index:10;border-color:#2d3e61;height:30px}
-thead tr:nth-child(2) th{background:#243360;font-size:9.5px;height:24px}
-thead tr.out-of-row th{background:#0f1e38;height:28px;padding:0;position:sticky;top:54px;z-index:9}
-.oof{width:100%;height:27px;border:none;outline:none;text-align:center;font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:700;color:#fbbf24;background:transparent;cursor:cell;padding:0}
-.oof:focus{background:#1a2e50 !important;outline:2px solid #fbbf24;outline-offset:-2px;position:relative;z-index:2}
-.oof-label{font-size:9px;color:#6080b0;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
-thead th.cn {position:sticky;left:0;z-index:15;background:#111827;width:34px;min-width:34px}
-thead th.cna{position:sticky;left:34px;z-index:15;background:#111827;min-width:155px}
-thead th.cad{position:sticky;left:189px;z-index:15;background:#111827;min-width:80px}
-thead tr.out-of-row th.cn,thead tr.out-of-row th.cna,thead tr.out-of-row th.cad{z-index:16}
-tbody td{padding:0;text-align:center;vertical-align:middle;font-size:12.5px;height:32px}
-tbody td.tl{text-align:left;padding:0 7px}
-tbody td.cn,tbody td.cna,tbody td.cad{position:sticky;z-index:5;background:var(--surf2)}
-tbody td.cn {left:0;width:34px}
-tbody td.cna{left:34px}
-tbody td.cad{left:189px}
-tbody tr:nth-child(even) td{background:#fafbff}
-tbody tr:nth-child(even) td.cn,tbody tr:nth-child(even) td.cna,tbody tr:nth-child(even) td.cad{background:#f0f3fa !important}
-tbody tr:hover td{background:#e8f0ff !important}
-tbody tr.saved td{background:#f0fdf6 !important}
-tbody tr.saved td.cn,tbody tr.saved td.cna,tbody tr.saved td.cad{background:#dcfce8 !important}
-.no-c{font-size:10.5px;color:var(--text3);font-weight:700}
-.sname{font-weight:600;font-size:12.5px;white-space:nowrap}
-.g-eng {background:#1d3461 !important}.g-kis {background:#1d4461 !important}
-.g-math{background:#1a3d3d !important}.g-sci {background:#1d3d1d !important}
-.g-soc {background:#3d1d1d !important}.g-re  {background:#3d1d3d !important}
-.g-arts{background:#3d2e1d !important}.g-pret{background:#1d2e3d !important}
-.g-agri{background:#1d3d2e !important}.g-ovr {background:#0d1525 !important}
-thead tr:nth-child(2) .s-eng {background:#22437a !important}
-thead tr:nth-child(2) .s-kis {background:#225a7a !important}
-thead tr:nth-child(2) .s-math{background:#1f4a4a !important}
-thead tr:nth-child(2) .s-sci {background:#1f4a1f !important}
-thead tr:nth-child(2) .s-soc {background:#4a1f1f !important}
-thead tr:nth-child(2) .s-re  {background:#4a1f4a !important}
-thead tr:nth-child(2) .s-arts{background:#4a3a1f !important}
-thead tr:nth-child(2) .s-pret{background:#1f3a4a !important}
-thead tr:nth-child(2) .s-agri{background:#1f4a3a !important}
-thead tr:nth-child(2) .s-ovr {background:#111a2e !important}
-.si{width:100%;height:31px;border:none;outline:none;text-align:center;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;color:var(--text);background:transparent;cursor:cell;padding:0}
-.si:focus{background:#fff9c4 !important;outline:2px solid var(--accent);outline-offset:-2px;position:relative;z-index:2}
-.tot-c{font-weight:800;font-size:12px;color:var(--accent);background:#f0f5ff}
-.pct-c{font-size:10.5px;color:var(--text3);background:#fafbff}
-.avg-c{font-family:'Familjen Grotesk',sans-serif;font-size:15px;font-weight:800}
-.lbg{display:inline-block;padding:2px 7px;border-radius:5px;font-size:10.5px;font-weight:800;white-space:nowrap}
-.pts-c{font-weight:800;font-size:13px}
-.sv-btn{padding:3px 9px;border-radius:4px;font-size:10.5px;font-weight:700;cursor:pointer;border:none;background:#059669;color:#fff;transition:all .12s}
-.sv-btn:hover{background:#047857}
-.sv-done{font-size:11px;font-weight:700;color:#059669}
-tfoot td{background:#1e2d4d !important;color:#93c5fd;font-weight:700;font-size:11px;height:28px;text-align:center;border-color:#2d3e61;padding:0 4px}
-tfoot td.lbl{color:#c8d8f8;font-size:10.5px;font-weight:800;text-align:left;padding:0 8px}
-tfoot td.ov-c{color:#34d399 !important;font-family:'Familjen Grotesk',sans-serif;font-size:14px;font-weight:800}
-tfoot td.cn,tfoot td.cna,tfoot td.cad{position:sticky;z-index:5;background:#1e2d4d !important}
-tfoot td.cn {left:0}
-tfoot td.cna{left:34px}
-tfoot td.cad{left:189px}
-.empty-msg{text-align:center;padding:60px 20px;color:var(--text3)}
-.empty-msg .ei{font-size:36px;margin-bottom:10px}
-.spin{width:17px;height:17px;border:2.5px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:sp .65s linear infinite}
-@keyframes sp{to{transform:rotate(360deg)}}
-#tc{position:fixed;top:62px;right:16px;z-index:999;display:flex;flex-direction:column;gap:6px}
-.t{display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:var(--r2);font-size:12.5px;font-weight:500;box-shadow:var(--sh2);animation:tin .25s ease;min-width:210px}
-.t.ok{background:#064e3b;color:#ecfdf5;border-left:3px solid #10b981}
-.t.err{background:#7f1d1d;color:#fef2f2;border-left:3px solid #ef4444}
+.btn-success{background:var(--green);color:#fff}.btn-success:hover{background:#047857}
+.btn-danger{background:var(--red);color:#fff}.btn-danger:hover{background:#b91c1c}
+.btn-amber{background:var(--amber);color:#fff}.btn-amber:hover{background:#b45309}
+.btn-purple{background:#7c3aed;color:#fff}.btn-purple:hover{background:#6d28d9}
+.btn-sm{padding:5px 11px;font-size:12px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;margin-bottom:20px}
+.card-head{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--surf2)}
+.card-head h3{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+.card-body{padding:20px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-group.full{grid-column:1/-1}
+label.fl{font-size:12px;font-weight:600;color:var(--text2)}
+label.fl .req{color:var(--red);margin-left:2px}
+input.fi,select.fi{padding:8px 11px;border:1.5px solid var(--border);border-radius:var(--r2);font-family:inherit;font-size:13px;color:var(--text);background:var(--surface);outline:none;transition:border-color .15s,box-shadow .15s}
+input.fi:focus,select.fi:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(26,86,219,.08)}
+input.fi.err,select.fi.err{border-color:var(--red);box-shadow:0 0 0 3px rgba(220,38,38,.08)}
+input.fi.ok{border-color:var(--green)}
+.field-hint{font-size:11px;color:var(--text3);margin-top:2px}
+.field-err{font-size:11px;color:var(--red);margin-top:2px;display:none}
+.field-err.show{display:block}
+.stream-wrap{position:relative}
+.stream-suggestions{position:absolute;top:calc(100% + 2px);left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);box-shadow:var(--sh2);z-index:50;overflow:hidden;display:none}
+.stream-suggestions.open{display:block}
+.ss-item{padding:8px 12px;cursor:pointer;font-size:13px;font-weight:500;transition:background .1s}
+.ss-item:hover{background:var(--alight);color:var(--accent)}
+.ss-item .ss-sub{font-size:10.5px;color:var(--text3)}
+.form-actions{display:flex;gap:10px;margin-top:6px;padding-top:14px;border-top:1px solid var(--border)}
+
+/* ── SUBJECT PICKER ── */
+.subj-picker-wrap{
+  border:1.5px solid var(--border);border-radius:var(--r2);padding:14px 16px;
+  background:var(--surf2);
+}
+.subj-picker-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.subj-picker-header strong{font-size:13px;color:var(--text)}
+.subj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;max-height:280px;overflow-y:auto;padding-right:4px}
+.subj-group-label{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:5px}
+.subj-check-label{display:flex;align-items:center;gap:6px;font-size:12.5px;cursor:pointer;padding:2px 0;color:var(--text)}
+.subj-check-label input[type=checkbox]{width:13px;height:13px;accent-color:var(--accent);cursor:pointer}
+.subj-count-badge{display:inline-flex;align-items:center;gap:4px;background:var(--alight);color:var(--accent);border:1px solid #c7d9ff;border-radius:20px;padding:2px 9px;font-size:11px;font-weight:700}
+.senior-notice{background:#ede9fe;border:1.5px solid #c4b5fd;border-radius:var(--r2);padding:10px 14px;font-size:12px;color:#5b21b6;display:flex;align-items:flex-start;gap:8px;margin-bottom:12px}
+
+.stats-row{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.stat-pill{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:5px 13px;font-size:12px;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:5px}
+.stat-pill .sv{font-weight:700;color:var(--text);font-size:13px}
+.toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--surf2)}
+.search{display:flex;align-items:center;gap:7px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r2);padding:6px 11px;min-width:230px;transition:border-color .15s}
+.search:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(26,86,219,.08)}
+.search input{border:none;background:none;outline:none;font-family:inherit;font-size:13px;color:var(--text);width:100%}
+.search input::placeholder{color:var(--text3)}
+.si-ico{color:var(--text3);font-size:14px;flex-shrink:0}
+.fsel{padding:6px 10px;border:1.5px solid var(--border);border-radius:var(--r2);font-family:inherit;font-size:12.5px;color:var(--text);background:var(--surface);cursor:pointer;outline:none;height:34px}
+.fsel:focus{border-color:var(--accent)}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+thead th{padding:9px 12px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);border-bottom:1.5px solid var(--border);background:var(--surf2);white-space:nowrap}
+thead th.tc{text-align:center}
+tbody td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:middle;font-size:13px}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:#f8faff}
+.av{width:28px;height:28px;border-radius:7px;background:var(--alight);color:var(--accent);font-size:10px;font-weight:800;display:grid;place-items:center;flex-shrink:0}
+.av.f{background:#fce7f3;color:#be185d}
+.sc{display:flex;align-items:center;gap:8px}
+.sn{font-weight:600}
+.sa{font-size:10.5px;color:var(--text3)}
+.tag{display:inline-block;padding:2px 7px;border-radius:8px;font-size:10.5px;font-weight:700}
+.tag-grade{background:var(--alight);color:var(--accent)}
+.tag-stream{background:#e0f2fe;color:#0369a1}
+.tag-m{background:#ede9fe;color:#7c3aed}
+.tag-f{background:#fce7f3;color:#be185d}
+.tag-senior{background:#f5f3ff;color:#7c3aed;border:1px solid #ddd6fe}
+.empty{text-align:center;padding:50px 20px;color:var(--text3)}
+.empty .ei{font-size:34px;margin-bottom:8px}
+#tc{position:fixed;top:68px;right:18px;z-index:999;display:flex;flex-direction:column;gap:7px}
+.t{display:flex;align-items:center;gap:9px;padding:10px 15px;border-radius:var(--r2);font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.15);animation:tin .28s ease;min-width:230px}
+.t.ok{background:#064e3b;color:#ecfdf5;border-left:3px solid var(--green)}
+.t.err{background:#7f1d1d;color:#fef2f2;border-left:3px solid var(--red)}
 .t.info{background:#1e3a5f;color:#dbeafe;border-left:3px solid var(--accent)}
 @keyframes tin{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
 @keyframes tout{to{transform:translateX(110%);opacity:0}}
-body.dark{--bg:#0c0f18;--surface:#141924;--surf2:#1a2030;--border:#252d42;--text:#e0e8f8;--text2:#7a90b8;--text3:#3d4f72;--alight:#172050}
-body.dark thead th{background:#0e1829;border-color:#1a2640;color:#7090c0}
-body.dark thead tr:nth-child(2) th{background:#111f38}
-body.dark thead tr.out-of-row th{background:#080f1e}
-body.dark tbody td.cn,body.dark tbody td.cna,body.dark tbody td.cad{background:#1a2030 !important}
-body.dark tbody tr:nth-child(even) td{background:#161d2e}
-body.dark tbody tr:hover td{background:#1a2848 !important}
-body.dark .si:focus{background:#2a2000 !important}
-body.dark .tot-c{background:#1a2848}
-body.dark .pct-c{background:#161d2e}
-#netBar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:998;padding:8px 16px;font-size:12.5px;font-weight:700;text-align:center;transition:all .3s}
-#netBar.offline{display:block;background:#7f1d1d;color:#fef2f2}
-#netBar.saving{display:block;background:#1e3a5f;color:#dbeafe}
-#netBar.saved{display:block;background:#064e3b;color:#ecfdf5}
-.as-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:middle}
-.as-dot.idle{background:#9aaabb}
-.as-dot.saving{background:#f59e0b;animation:asp .8s infinite}
-.as-dot.saved{background:#10b981}
-.as-dot.err{background:#ef4444}
-@keyframes asp{0%,100%{opacity:1}50%{opacity:.3}}
-.si.over-limit{background:#fef2f2 !important;outline:2px solid #ef4444 !important;color:#dc2626 !important}
-body.dark .si.over-limit{background:#450a0a !important}
-#draftBadge{display:none;background:#fef3c7;border:1px solid #fcd34d;color:#92400e;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;cursor:pointer}
-@media(max-width:768px){
-  .outer{padding:8px 8px}.toolbar{padding:6px 10px;gap:6px}
-  .si{height:38px !important;font-size:15px !important;min-width:44px}
-  .oof{height:34px !important;font-size:13px !important}
-  .sv-btn{padding:6px 12px !important;font-size:12px !important;min-height:34px}
-  .tbl-scroll{max-height:calc(100vh - 160px)}
-  #netBar{padding:10px 16px;font-size:13px}
-}
-@media print{header,.toolbar,.legend,#tc{display:none}.outer{padding:0}.tbl-scroll{max-height:none;overflow:visible}.sheet-card{box-shadow:none;border:none}}
+
+/* MODALS */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:200;display:none;place-items:center;backdrop-filter:blur(2px)}
+.modal-bg.open{display:grid;animation:fadeIn .2s}
+.modal{background:var(--surface);border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.18);width:480px;max-width:95vw;overflow:hidden;animation:popIn .22s cubic-bezier(.34,1.56,.64,1)}
+.modal-wide{width:720px}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes popIn{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-head h3{font-size:15px;font-weight:700}
+.modal-body{padding:20px}
+.modal-foot{padding:12px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:9px}
+.close-btn{padding:5px;border-radius:6px;background:none;border:none;cursor:pointer;color:var(--text3);font-size:16px;transition:all .15s}
+.close-btn:hover{background:var(--bg);color:var(--text)}
+
+/* PROMOTION */
+.promo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+.promo-grade-card{border:1.5px solid var(--border);border-radius:var(--r2);padding:12px 14px;cursor:pointer;transition:all .15s;position:relative}
+.promo-grade-card:hover{border-color:var(--accent);background:var(--alight)}
+.promo-grade-card.selected{border-color:var(--accent);background:var(--alight);box-shadow:0 0 0 3px rgba(26,86,219,.1)}
+.promo-grade-card .pgc-label{font-size:12px;font-weight:700;color:var(--text2)}
+.promo-grade-card .pgc-count{font-size:20px;font-weight:800;color:var(--text);margin:2px 0}
+.promo-grade-card .pgc-sub{font-size:10.5px;color:var(--text3)}
+.promo-badge{position:absolute;top:8px;right:8px;width:18px;height:18px;background:var(--accent);color:#fff;border-radius:50%;font-size:10px;display:grid;place-items:center}
+.promo-student-list{max-height:320px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--r2)}
+.promo-student-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--border);transition:background .1s}
+.promo-student-row:last-child{border-bottom:none}
+.promo-student-row:hover{background:var(--surf2)}
+.promo-student-row input[type=checkbox]{width:15px;height:15px;cursor:pointer;accent-color:var(--accent)}
+.psr-info{flex:1;min-width:0}
+.psr-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.psr-meta{font-size:11px;color:var(--text3)}
+.psr-action{display:flex;align-items:center;gap:6px}
+.psr-action select{padding:3px 7px;border:1.5px solid var(--border);border-radius:4px;font-size:11.5px;font-family:inherit;color:var(--text);background:var(--surface);cursor:pointer;outline:none}
+.psr-action select:focus{border-color:var(--accent)}
+.promo-summary{background:var(--surf2);border:1px solid var(--border);border-radius:var(--r2);padding:12px 16px;margin-top:12px;font-size:12.5px}
+.promo-summary .ps-row{display:flex;justify-content:space-between;padding:3px 0}
+.promo-summary .ps-row .ps-val{font-weight:700}
+.promo-summary .ps-row.ps-promoted .ps-val{color:var(--green)}
+.promo-summary .ps-row.ps-retained .ps-val{color:var(--amber)}
+.promo-summary .ps-row.ps-graduated .ps-val{color:var(--accent)}
+.promo-progress{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin:10px 0}
+.promo-progress-bar{height:100%;background:var(--accent);border-radius:3px;transition:width .3s}
+.cache-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border-radius:12px;background:var(--surf2);color:var(--text2);font-size:11px;font-weight:500;border:1px solid var(--border);margin-left:8px}
+.cache-badge.refresh{cursor:pointer;transition:all .15s}
+.cache-badge.refresh:hover{background:var(--alight);color:var(--accent);border-color:var(--accent)}
+body.dark{--bg:#0d1017;--surface:#161a24;--surf2:#1c2030;--border:#272d3e;--text:#e2e8f5;--text2:#7a8aa8;--text3:#434f65;--alight:#172050;--glight:#052e1c}
+.spin{width:16px;height:16px;border:2.5px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:sp .65s linear infinite;display:inline-block}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media(max-width:640px){.wrap{padding:12px}.form-grid{grid-template-columns:1fr}.promo-grid{grid-template-columns:repeat(2,1fr)}.subj-grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
 <div id="tc"></div>
-<div id="netBar"></div>
 
+<!-- DELETE MODAL -->
+<div class="modal-bg" id="delModal">
+  <div class="modal">
+    <div class="modal-head"><h3>⚠️ Delete Student</h3><button class="close-btn" onclick="closeDelModal()">✕</button></div>
+    <div class="modal-body">
+      <p style="color:var(--text2);line-height:1.7">Are you sure you want to delete <strong id="delName"></strong>?<br>
+      This will <strong>not</strong> delete their existing results. This action cannot be undone.</p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeDelModal()">Cancel</button>
+      <button class="btn btn-danger" id="confirmDelBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-bg" id="editModal">
+  <div class="modal modal-wide">
+    <div class="modal-head"><h3>✏️ Edit Student</h3><button class="close-btn" onclick="closeEditModal()">✕</button></div>
+    <div class="modal-body" style="max-height:80vh;overflow-y:auto">
+      <div class="form-grid" style="gap:12px">
+        <div class="form-group">
+          <label class="fl">Full Name <span class="req">*</span></label>
+          <input class="fi" id="editName" type="text">
+        </div>
+        <div class="form-group">
+          <label class="fl">Admission Number <span class="req">*</span></label>
+          <input class="fi" id="editAdm" type="text">
+        </div>
+        <div class="form-group">
+          <label class="fl">Gender</label>
+          <select class="fi" id="editGender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="fl">Grade <span class="req">*</span></label>
+          <select class="fi" id="editGrade" onchange="onEditGradeChange()">
+            <option value="Grade 1">Grade 1</option><option value="Grade 2">Grade 2</option>
+            <option value="Grade 3">Grade 3</option><option value="Grade 4">Grade 4</option>
+            <option value="Grade 5">Grade 5</option><option value="Grade 6">Grade 6</option>
+            <option value="Grade 7">Grade 7</option><option value="Grade 8">Grade 8</option>
+            <option value="Grade 9">Grade 9</option><option value="Grade 10">Grade 10</option>
+            <option value="Grade 11">Grade 11</option><option value="Grade 12">Grade 12</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="fl">Stream <span style="font-size:10.5px;color:var(--text3);font-weight:400">(optional)</span></label>
+          <input class="fi" id="editStream" type="text" placeholder="Leave blank if no streams">
+        </div>
+        <div class="form-group">
+          <label class="fl">Academic Year <span class="req">*</span></label>
+          <input class="fi" id="editYear" type="number" min="2020" max="2040">
+        </div>
+        <div class="form-group">
+          <label class="fl">Parent/Guardian Name</label>
+          <input class="fi" id="editParentName" type="text" placeholder="Optional">
+        </div>
+        <div class="form-group">
+          <label class="fl">Parent/Guardian Phone
+            <span style="font-size:10px;color:var(--text3);font-weight:400"> — for SMS results</span>
+          </label>
+          <input class="fi" id="editParentPhone" type="tel" placeholder="e.g. 0712345678">
+        </div>
+      </div>
+      <!-- Senior subject picker shown when grade is 10-12 -->
+      <div id="editSubjectSection" style="display:none;margin-top:16px">
+        <div class="senior-notice">
+          <span>📚</span>
+          <div><strong>Senior School</strong> — tick the subjects this student will take. These determine which columns appear in their marksheet.</div>
+        </div>
+        <div class="subj-picker-wrap">
+          <div class="subj-picker-header">
+            <strong>Subject Selection</strong>
+            <span class="subj-count-badge" id="editSubjCount">0 selected</span>
+          </div>
+          <div class="subj-grid" id="editSubjGrid"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeEditModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEdit()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROMOTION MODAL -->
+<div class="modal-bg" id="promoModal">
+  <div class="modal modal-wide">
+    <div class="modal-head"><h3>🎓 End-of-Year Promotion</h3><button class="close-btn" onclick="closePromoModal()">✕</button></div>
+    <div class="modal-body" style="padding:16px 20px">
+      <div id="promoStep1">
+        <p style="color:var(--text2);font-size:12.5px;margin-bottom:14px;line-height:1.6">Select a grade to promote. Each student can be individually marked as <strong>Promoted</strong>, <strong>Retained</strong>, or <strong>Graduated</strong> (Grade 12 only).</p>
+        <div class="promo-grid" id="promoGradeGrid"></div>
+        <div style="padding:10px 14px;background:var(--amlight);border-radius:var(--r2);font-size:12px;color:#92400e;border:1px solid #fcd34d">
+          ⚠️ Promotion updates each student's Grade and Year in the database. This action can be undone by editing students individually.
+        </div>
+      </div>
+      <div id="promoStep2" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div><strong id="promoGradeLabel" style="font-size:14px"></strong><span id="promoCountLabel" style="font-size:12px;color:var(--text3);margin-left:8px"></span></div>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-outline btn-sm" onclick="promoSelectAll()">Select All</button>
+            <button class="btn btn-outline btn-sm" onclick="promoDeselectAll()">Deselect All</button>
+          </div>
+        </div>
+        <div class="search" style="margin-bottom:10px;min-width:0"><span class="si-ico">🔍</span><input type="text" id="promoSearch" placeholder="Filter students…" oninput="renderPromoList()"></div>
+        <div class="promo-student-list" id="promoStudentList"></div>
+        <div class="promo-summary" id="promoSummary">
+          <div class="ps-row ps-promoted"><span>✅ Promote to next grade</span><span class="ps-val" id="psSumPromoted">0</span></div>
+          <div class="ps-row ps-retained"><span>🔁 Retain (repeat same grade)</span><span class="ps-val" id="psSumRetained">0</span></div>
+          <div class="ps-row ps-graduated"><span>🎓 Graduate (leave school)</span><span class="ps-val" id="psSumGraduated">0</span></div>
+          <div class="ps-row" style="border-top:1px solid var(--border);margin-top:6px;padding-top:6px">
+            <span style="color:var(--text3)">Target year</span>
+            <input type="number" id="promoTargetYear" class="fi" style="width:80px;padding:4px 8px;font-size:12px" min="2020" max="2040">
+          </div>
+        </div>
+      </div>
+      <div id="promoStep3" style="display:none;text-align:center;padding:20px 0">
+        <div class="spin" style="width:32px;height:32px;border-width:3px;margin:0 auto 14px"></div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:6px">Applying promotions…</div>
+        <div class="promo-progress"><div class="promo-progress-bar" id="promoProgressBar" style="width:0%"></div></div>
+        <div style="font-size:12px;color:var(--text3)" id="promoProgressLabel">0 / 0 students updated</div>
+      </div>
+    </div>
+    <div class="modal-foot" id="promoFooter">
+      <button class="btn btn-outline" onclick="closePromoModal()">Cancel</button>
+      <button class="btn btn-outline" id="promoBackBtn" onclick="goPromoStep1()" style="display:none">← Back</button>
+      <button class="btn btn-primary" id="promoNextBtn" onclick="goPromoStep2()" disabled>Next: Review →</button>
+      <button class="btn btn-success" id="promoConfirmBtn" onclick="applyPromotions()" style="display:none">🎓 Apply Promotions</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROMOTION LOG MODAL -->
+<div class="modal-bg" id="historyModal">
+  <div class="modal modal-wide">
+    <div class="modal-head"><h3>📋 Promotion History</h3><button class="close-btn" onclick="el('historyModal').classList.remove('open')">✕</button></div>
+    <div class="modal-body" style="max-height:60vh;overflow-y:auto" id="historyBody"><div class="empty"><div class="ei">📋</div><p>No promotion records yet</p></div></div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="el('historyModal').classList.remove('open')">Close</button></div>
+  </div>
+</div>
+
+<!-- HEADER -->
 <header>
   <div class="logo">
-    <div class="lm" id="hdrLogo">📊</div>
+    <div class="lm" id="hdrLogo">🎓</div>
     <div>
-      <div class="lt" id="hdrSchoolName">CBE Mark Sheet</div>
+      <div class="lt" id="hdrSchoolName">Student Admission</div>
       <div class="ls" id="hdrSchoolSub">Junior School · Kenya CBC</div>
     </div>
   </div>
   <div class="hdr-r">
-    <div id="hdrUserInfo" style="display:none;align-items:center;gap:6px">
-      <span id="hdrUserName" style="font-size:11.5px;color:var(--text2);font-weight:700"></span>
-      <span id="hdrUserClass" style="font-size:10.5px;background:var(--alight);color:var(--accent);border:1px solid #c7d9ff;padding:2px 8px;border-radius:20px;font-weight:700"></span>
-    </div>
-    <span id="draftBadge" onclick="restoreDraft()">📋 Draft</span>
+    <button class="btn btn-outline btn-sm" id="nemisBtn" onclick="goToNemis()" style="border-color:#1a56db;color:#1a56db">🇰🇪 NEMIS Data</button>
+    <span class="cache-badge refresh" id="cacheIndicator" onclick="refreshData()">
+      <span id="cacheIcon">📦</span><span id="cacheTime">Cached</span>
+    </span>
     <button class="btn btn-outline btn-sm" id="themeBtn">🌙</button>
-    <a href="analysis" class="btn btn-outline btn-sm">📈 Analysis</a>
-    <button class="btn btn-outline btn-sm" onclick="doLogout()" style="color:#f87171;border-color:rgba(248,113,113,.3)">🚪 Sign Out</button>
+    <button class="btn btn-outline btn-sm" onclick="exportCSV()">📥 Export CSV</button>
   </div>
 </header>
 
-<!-- ADMIN TOOLBAR -->
-<div class="toolbar" id="toolbarAdmin">
-  <span class="tb-lbl">Grade</span>
-  <select class="fsel" id="selGrade" onchange="onGradeChange()">
-    <option value="">-- Grade --</option>
-    <option>Grade 1</option><option>Grade 2</option><option>Grade 3</option>
-    <option>Grade 4</option><option>Grade 5</option><option>Grade 6</option>
-    <option>Grade 7</option><option>Grade 8</option><option>Grade 9</option>
-    <option>Grade 10</option><option>Grade 11</option><option>Grade 12</option>
-  </select>
-  <span class="tb-lbl" id="streamLabel">Stream</span>
-  <select class="fsel" id="selStream" disabled onchange="loadStudents()">
-    <option value="">-- Stream --</option>
-  </select>
-  <span class="tb-lbl">Term</span>
-  <select class="fsel" id="selTerm" onchange="onTermChange()">
-    <option>Term 1</option><option>Term 2</option><option>Term 3</option>
-  </select>
-  <span class="tb-lbl" id="catSelectorLabel" style="display:none">Exam</span>
-  <div class="cat-tabs-wrap" id="catTabsWrap" style="display:none">
-    <button class="cat-tab" id="catBtn_Exam 1" onclick="selectCat('Exam 1')">Exam 1</button>
-    <button class="cat-tab" id="catBtn_Exam 2" onclick="selectCat('Exam 2')">Exam 2</button>
-    <button class="cat-tab" id="catBtn_Exam 3" onclick="selectCat('Exam 3')">Exam 3</button>
-  </div>
-  <span class="tb-lbl">Year</span>
-  <input type="number" class="fsel" id="selYear" value="2026" min="2020" max="2040" style="width:68px" onchange="loadStudents()">
-  <div class="sep"></div>
-  <button class="btn btn-success" onclick="saveAll()">💾 Save All</button>
-  <span style="margin-left:auto;font-size:10.5px;color:var(--text3)">
-    ✏️ Edit <span style="color:#fbbf24;font-weight:700">Out Of</span> row to set max marks &nbsp;|&nbsp; ⌨️ Tab · Enter · Arrows
-  </span>
-</div>
+<div class="wrap">
 
-<!-- TEACHER TOOLBAR -->
-<div class="toolbar" id="toolbarTeacher" style="display:none">
-  <div style="display:flex;align-items:center;gap:8px;background:var(--alight);border:1px solid #c7d9ff;border-radius:var(--r2);padding:5px 12px">
-    <span style="font-size:13px">🔒</span>
-    <span style="font-size:12px;font-weight:700;color:var(--accent)" id="teacherClassBadge">—</span>
-  </div>
-  <input type="hidden" id="selGradeT" value="">
-  <input type="hidden" id="selStreamT" value="">
-  <span class="tb-lbl">Term</span>
-  <select class="fsel" id="selTermT" onchange="onTermChange()">
-    <option>Term 1</option><option>Term 2</option><option>Term 3</option>
-  </select>
-  <span class="tb-lbl" id="catSelectorLabelT" style="display:none">Exam</span>
-  <div class="cat-tabs-wrap" id="catTabsWrapT" style="display:none">
-    <button class="cat-tab" id="catBtnT_Exam 1" onclick="selectCat('Exam 1')">Exam 1</button>
-    <button class="cat-tab" id="catBtnT_Exam 2" onclick="selectCat('Exam 2')">Exam 2</button>
-    <button class="cat-tab" id="catBtnT_Exam 3" onclick="selectCat('Exam 3')">Exam 3</button>
-  </div>
-  <span class="tb-lbl">Year</span>
-  <input type="number" class="fsel" id="selYearT" value="2026" min="2020" max="2040" style="width:68px" onchange="loadStudents()">
-  <div class="sep"></div>
-  <button class="btn btn-success" onclick="saveAll()">💾 Save All</button>
-  <span style="margin-left:auto;font-size:10.5px;color:var(--text3)">
-    ✏️ Edit <span style="color:#fbbf24;font-weight:700">Out Of</span> row to set max marks &nbsp;|&nbsp; ⌨️ Tab · Enter · Arrows
-  </span>
-</div>
+  <!-- REGISTRATION FORM -->
+  <div class="card">
+    <div class="card-head">
+      <h3>➕ Register New Student</h3>
+      <span style="font-size:11.5px;color:var(--text3)">Fields marked <span style="color:var(--red)">*</span> are required</span>
+    </div>
+    <div class="card-body">
+      <form id="admForm" novalidate autocomplete="off">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="fl" for="fName">Full Name <span class="req">*</span></label>
+            <input class="fi" id="fName" type="text" placeholder="e.g. Jane Akinyi Mwangi" autocomplete="off">
+            <span class="field-err" id="err-name">Please enter the student's full name</span>
+          </div>
+          <div class="form-group">
+            <label class="fl" for="fAdm">Admission Number <span class="req">*</span></label>
+            <input class="fi" id="fAdm" type="text" placeholder="e.g. JR-2026-001" autocomplete="off">
+            <span class="field-hint">Must be unique. Used to link student to results.</span>
+            <span class="field-err" id="err-adm">Admission number required or already exists</span>
+          </div>
+          <div class="form-group">
+            <label class="fl" for="fGender">Gender <span class="req">*</span></label>
+            <select class="fi" id="fGender">
+              <option value="">-- Select --</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+            <span class="field-err" id="err-gender">Please select gender</span>
+          </div>
+          <div class="form-group">
+            <label class="fl" for="fGrade">Grade <span class="req">*</span></label>
+            <select class="fi" id="fGrade" onchange="onFormGradeChange()">
+              <option value="">-- Select Grade --</option>
+              <option value="Grade 1">Grade 1</option><option value="Grade 2">Grade 2</option>
+              <option value="Grade 3">Grade 3</option><option value="Grade 4">Grade 4</option>
+              <option value="Grade 5">Grade 5</option><option value="Grade 6">Grade 6</option>
+              <option value="Grade 7">Grade 7</option><option value="Grade 8">Grade 8</option>
+              <option value="Grade 9">Grade 9</option><option value="Grade 10">Grade 10</option>
+              <option value="Grade 11">Grade 11</option><option value="Grade 12">Grade 12</option>
+            </select>
+            <span class="field-err" id="err-grade">Please select a grade</span>
+          </div>
+          <div class="form-group">
+            <label class="fl" for="fStream">Stream <span style="font-size:10.5px;color:var(--text3);font-weight:400">(optional)</span></label>
+            <div class="stream-wrap">
+              <input class="fi" id="fStream" type="text" placeholder="Leave blank if no streams"
+                autocomplete="off" oninput="onStreamInput()" onfocus="onStreamFocus()" onblur="closeStreamSuggestions()">
+              <div class="stream-suggestions" id="streamSuggestions"></div>
+            </div>
+            <span class="field-hint">Leave blank for schools without streams.</span>
+            <span class="field-err" id="err-stream">Please enter a stream name</span>
+          </div>
+          <div class="form-group">
+            <label class="fl" for="fYear">Academic Year <span class="req">*</span></label>
+            <input class="fi" id="fYear" type="number" placeholder="2026" min="2020" max="2040" value="2026">
+            <span class="field-err" id="err-year">Please enter the academic year</span>
+          </div>
+          <div class="form-group">
+            <label class="fl" for="fParent">Parent/Guardian Name</label>
+            <input class="fi" id="fParent" type="text" placeholder="Optional">
+          </div>
+          <div class="form-group">
+            <label class="fl" for="fPhone">Parent/Guardian Phone</label>
+            <input class="fi" id="fPhone" type="tel" placeholder="e.g. 0712345678">
+          </div>
+        </div>
 
-<div class="legend">
-  <strong>CBC Scale (% normalised):</strong>
-  <span class="lbadge ee1">EE1(8) 90-100%</span>
-  <span class="lbadge ee2">EE2(7) 75-89%</span>
-  <span class="lbadge me1">ME1(6) 58-74%</span>
-  <span class="lbadge me2">ME2(5) 41-57%</span>
-  <span class="lbadge ae1">AE1(4) 31-40%</span>
-  <span class="lbadge ae2">AE2(3) 21-30%</span>
-  <span class="lbadge be1">BE1(2) 11-20%</span>
-  <span class="lbadge be2">BE2(1) 0-10%</span>
-</div>
+        <!-- ── SENIOR SUBJECT PICKER (shown only for Grades 10-12) ── -->
+        <div id="subjectSection" style="display:none;margin-top:18px">
+          <div class="senior-notice">
+            <span>📚</span>
+            <div><strong>Senior School detected</strong> — select the subjects this student will take. This determines which mark sheet columns appear for them. You can change it later by editing the student.</div>
+          </div>
+          <div class="subj-picker-wrap">
+            <div class="subj-picker-header">
+              <strong>Subject Selection <span class="req">*</span></strong>
+              <div style="display:flex;gap:8px;align-items:center">
+                <span class="subj-count-badge" id="subjCount">0 selected</span>
+                <button type="button" class="btn btn-outline btn-sm" onclick="selectAllSubjects('formSubjGrid','subjCount')">Select All</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="clearAllSubjects('formSubjGrid','subjCount')">Clear</button>
+              </div>
+            </div>
+            <div class="subj-grid" id="formSubjGrid"></div>
+          </div>
+          <span class="field-err" id="err-subjects" style="margin-top:6px">Please select at least one subject for senior students</span>
+        </div>
 
-<div class="outer">
-  <div class="info-strip">
-    <div class="sheet-title" id="sheetTitle">Select Grade to begin</div>
-    <div class="pills">
-      <div class="pill">👥 <span class="pv" id="pilS">0</span> students</div>
-      <div class="pill">✅ <span class="pv" id="pilSv">0</span> saved</div>
-      <div class="pill" id="catPill" style="display:none">📝 <span class="pv" id="catPillTxt">Exam 1</span></div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="submitBtn">✅ Register Student</button>
+          <button type="button" class="btn btn-outline" onclick="resetForm()">🔄 Clear Form</button>
+        </div>
+      </form>
     </div>
   </div>
-  <div class="sheet-card">
-    <div class="tbl-scroll" id="tblWrap">
-      <div class="empty-msg"><div class="ei">📋</div><p>Select <strong>Grade</strong> to begin</p></div>
+
+  <!-- PROMOTION PANEL -->
+  <div class="card">
+    <div class="card-head">
+      <h3>🎓 End-of-Year Promotion</h3>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn btn-outline btn-sm" onclick="openHistoryModal()">📋 History</button>
+        <button class="btn btn-amber btn-sm" onclick="openPromoModal()">🎓 Promote Students</button>
+      </div>
+    </div>
+    <div class="card-body" style="padding:14px 20px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px" id="promoQuickStats"></div>
+      <p style="font-size:12px;color:var(--text3);margin-top:12px;line-height:1.6">Use <strong>Promote Students</strong> at end of year to move students to next grade, retain those repeating, or graduate Grade 12 completers.</p>
+    </div>
+  </div>
+
+  <!-- STUDENT LIST -->
+  <div class="card">
+    <div class="toolbar">
+      <div class="search"><span class="si-ico">🔍</span><input type="text" id="searchQ" placeholder="Search name or admission number…" oninput="filterTable()"></div>
+      <select class="fsel" id="filterGrade" onchange="filterTable()">
+        <option value="">All Grades</option>
+        <option>Grade 1</option><option>Grade 2</option><option>Grade 3</option>
+        <option>Grade 4</option><option>Grade 5</option><option>Grade 6</option>
+        <option>Grade 7</option><option>Grade 8</option><option>Grade 9</option>
+        <option>Grade 10</option><option>Grade 11</option><option>Grade 12</option>
+      </select>
+      <select class="fsel" id="filterStream" onchange="filterTable()"><option value="">All Streams</option></select>
+      <select class="fsel" id="filterGender" onchange="filterTable()">
+        <option value="">All Genders</option><option>Male</option><option>Female</option>
+      </select>
+      <span style="margin-left:auto;font-size:11.5px;color:var(--text3)" id="countLabel"></span>
+    </div>
+    <div style="padding:10px 16px;border-bottom:1px solid var(--border)">
+      <div class="stats-row" id="statsRow">
+        <div class="stat-pill">👥 Total <span class="sv" id="stTotal">0</span></div>
+        <div class="stat-pill">♂️ Boys <span class="sv" id="stMale">0</span></div>
+        <div class="stat-pill">♀️ Girls <span class="sv" id="stFemale">0</span></div>
+        <div class="stat-pill">📚 G1 <span class="sv" id="stG1">0</span></div>
+        <div class="stat-pill">📚 G2 <span class="sv" id="stG2">0</span></div>
+        <div class="stat-pill">📚 G3 <span class="sv" id="stG3">0</span></div>
+        <div class="stat-pill">📚 G4 <span class="sv" id="stG4">0</span></div>
+        <div class="stat-pill">📚 G5 <span class="sv" id="stG5">0</span></div>
+        <div class="stat-pill">📚 G6 <span class="sv" id="stG6">0</span></div>
+        <div class="stat-pill">📚 G7 <span class="sv" id="stG7">0</span></div>
+        <div class="stat-pill">📚 G8 <span class="sv" id="stG8">0</span></div>
+        <div class="stat-pill">📚 G9 <span class="sv" id="stG9">0</span></div>
+        <div class="stat-pill">📚 G10 <span class="sv" id="stG10">0</span></div>
+        <div class="stat-pill">📚 G11 <span class="sv" id="stG11">0</span></div>
+        <div class="stat-pill">📚 G12 <span class="sv" id="stG12">0</span></div>
+      </div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:36px">#</th>
+            <th>Student</th>
+            <th>Adm No.</th>
+            <th>Gender</th>
+            <th>Grade</th>
+            <th>Stream</th>
+            <th>Year</th>
+            <th>Subjects</th>
+            <th>Parent/Guardian</th>
+            <th class="tc">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="studentTable">
+          <tr><td colspan="10"><div class="empty"><div class="ei">⏳</div><p>Loading…</p></div></td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
 
+<!-- subjects.js MUST load first -->
 <script src="subjects.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-<script src="school-settings.js"></script>
 <script>
-// ── Single el() definition — DO NOT duplicate ──
-const el = id => document.getElementById(id);
-
-// ══════════════════════════════════════════════
-// INLINE FALLBACKS — in case subjects.js fails to load
-// ══════════════════════════════════════════════
-if(typeof isSeniorGrade==='undefined'){
-  window.isSeniorGrade=function(g){const n=parseInt((g||'').replace(/\D/g,''),10)||0;return n>=10&&n<=12;};
-}
-if(typeof gradeUsesCats==='undefined'){
-  window.gradeUsesCats=function(g){const n=parseInt((g||'').replace(/\D/g,''),10)||0;return n>=1;};
-}
-if(typeof getLevel==='undefined'){
-  window.getLevel=function(pct){
-    if(pct>=90)return{l:'EE1',p:8,c:'ee1'};if(pct>=75)return{l:'EE2',p:7,c:'ee2'};
-    if(pct>=58)return{l:'ME1',p:6,c:'me1'};if(pct>=41)return{l:'ME2',p:5,c:'me2'};
-    if(pct>=31)return{l:'AE1',p:4,c:'ae1'};if(pct>=21)return{l:'AE2',p:3,c:'ae2'};
-    if(pct>=11)return{l:'BE1',p:2,c:'be1'};return{l:'BE2',p:1,c:'be2'};
-  };
-}
-if(typeof getSubs==='undefined'){
-  const SL=[{id:'math',label:'Mathematical Activities',icon:'🔢',gc:'g-math',sc:'s-math'},{id:'eng',label:'English',icon:'📖',gc:'g-eng',sc:'s-eng'},{id:'kis',label:'Kiswahili',icon:'🗣️',gc:'g-kis',sc:'s-kis'},{id:'int',label:'Integrated Activities',icon:'🌈',gc:'g-sci',sc:'s-sci'},{id:'crt',label:'Creative Activities',icon:'🎨',gc:'g-arts',sc:'s-arts'}];
-  const SU=[{id:'math',label:'Mathematics',icon:'🔢',gc:'g-math',sc:'s-math'},{id:'eng',label:'English',icon:'📖',gc:'g-eng',sc:'s-eng',parts:[{id:'lang',label:'Language'},{id:'comp',label:'Composition'}]},{id:'kis',label:'Kiswahili',icon:'🗣️',gc:'g-kis',sc:'s-kis',parts:[{id:'lugha',label:'Lugha'},{id:'insha',label:'Insha'}]},{id:'sci',label:'Science and Technology',icon:'🔬',gc:'g-sci',sc:'s-sci'},{id:'re',label:'CRE',icon:'✝️',gc:'g-re',sc:'s-re'},{id:'soc',label:'Social Studies',icon:'🌍',gc:'g-soc',sc:'s-soc'},{id:'arts',label:'Creative Art and Sport',icon:'🎨',gc:'g-arts',sc:'s-arts'},{id:'agri',label:'Agriculture and Nutrition',icon:'🌱',gc:'g-agri',sc:'s-agri'}];
-  const SJ=[{id:'eng',label:'English',icon:'📖',gc:'g-eng',sc:'s-eng',parts:[{id:'lang',label:'Language'},{id:'comp',label:'Composition'}]},{id:'kis',label:'Kiswahili/KSL',icon:'🗣️',gc:'g-kis',sc:'s-kis',parts:[{id:'lugha',label:'Lugha'},{id:'insha',label:'Insha'}]},{id:'math',label:'Mathematics',icon:'🔢',gc:'g-math',sc:'s-math'},{id:'sci',label:'Integrated Science',icon:'🔬',gc:'g-sci',sc:'s-sci'},{id:'soc',label:'Social Studies',icon:'🌍',gc:'g-soc',sc:'s-soc'},{id:'re',label:'Religious Ed.',icon:'✝️',gc:'g-re',sc:'s-re'},{id:'arts',label:'Creative Arts & Sports',icon:'🎨',gc:'g-arts',sc:'s-arts'},{id:'pret',label:'Pre-Technical',icon:'🔧',gc:'g-pret',sc:'s-pret'},{id:'agri',label:'Agriculture & Nutrition',icon:'🌱',gc:'g-agri',sc:'s-agri'}];
-  const SS=[{id:'eng',label:'English',icon:'📖',gc:'g-eng',sc:'s-eng',parts:[{id:'lang',label:'Language'},{id:'comp',label:'Composition'}]},{id:'kis',label:'Kiswahili/KSL',icon:'🗣️',gc:'g-kis',sc:'s-kis',parts:[{id:'lugha',label:'Lugha'},{id:'insha',label:'Insha'}]},{id:'math',label:'Mathematics',icon:'🔢',gc:'g-math',sc:'s-math'},{id:'bio',label:'Biology',icon:'🧬',gc:'g-sci',sc:'s-sci'},{id:'chem',label:'Chemistry',icon:'🧪',gc:'g-sci',sc:'s-sci'},{id:'phy',label:'Physics',icon:'⚛️',gc:'g-sci',sc:'s-sci'},{id:'hist',label:'History & Citizenship',icon:'🏛️',gc:'g-soc',sc:'s-soc'},{id:'geo',label:'Geography',icon:'🌍',gc:'g-soc',sc:'s-soc'},{id:'biz',label:'Business Studies',icon:'💼',gc:'g-soc',sc:'s-soc'}];
-  window.getSubs=function(g){const n=parseInt((g||'').replace(/\D/g,''),10)||0;if(n>=1&&n<=3)return SL;if(n>=4&&n<=6)return SU;if(n>=7&&n<=9)return SJ;if(n>=10&&n<=12)return SS;return SJ;};
-}
-if(typeof getAllSeniorSubs==='undefined'){
-  window.getAllSeniorSubs=function(){
-    return[
-      {id:'eng',label:'English',icon:'📖',gc:'g-eng',sc:'s-eng',parts:[{id:'lang',label:'Language'},{id:'comp',label:'Composition'}]},
-      {id:'kis',label:'Kiswahili/KSL',icon:'🗣️',gc:'g-kis',sc:'s-kis',parts:[{id:'lugha',label:'Lugha'},{id:'insha',label:'Insha'}]},
-      {id:'math',label:'Mathematics',icon:'🔢',gc:'g-math',sc:'s-math'},
-      {id:'phy',label:'Physics',icon:'⚛️',gc:'g-sci',sc:'s-sci'},
-      {id:'chem',label:'Chemistry',icon:'🧪',gc:'g-sci',sc:'s-sci'},
-      {id:'bio',label:'Biology',icon:'🧬',gc:'g-sci',sc:'s-sci'},
-      {id:'hist',label:'History & Citizenship',icon:'🏛️',gc:'g-soc',sc:'s-soc'},
-      {id:'geo',label:'Geography',icon:'🌍',gc:'g-soc',sc:'s-soc'},
-      {id:'biz',label:'Business Studies',icon:'💼',gc:'g-soc',sc:'s-soc'},
-      {id:'cre',label:'CRE',icon:'✝️',gc:'g-re',sc:'s-re'},
-      {id:'ire',label:'IRE',icon:'☪️',gc:'g-re',sc:'s-re'},
-      {id:'music',label:'Music and Dance',icon:'🎵',gc:'g-arts',sc:'s-arts'},
-      {id:'farts',label:'Fine Arts',icon:'🎨',gc:'g-arts',sc:'s-arts'},
-      {id:'comp',label:'Computer Studies',icon:'🖥️',gc:'g-pret',sc:'s-pret'},
-      {id:'agri',label:'Agriculture',icon:'🌱',gc:'g-agri',sc:'s-agri'},
-      {id:'home',label:'Home Science',icon:'🏠',gc:'g-agri',sc:'s-agri'},
-      {id:'elec',label:'Electricity',icon:'⚡',gc:'g-pret',sc:'s-pret'},
-      {id:'bldg',label:'Building & Construction',icon:'🏗️',gc:'g-pret',sc:'s-pret'},
-      {id:'draw',label:'Drawing & Design',icon:'📏',gc:'g-pret',sc:'s-pret'},
-    ];
-  };
-}
-if(typeof getSeniorClassSubs==='undefined'){
-  window.getSeniorClassSubs=function(arr){
-    const seen=new Set();arr.forEach(s=>(s.subjects||[]).forEach(id=>seen.add(id)));
-    if(!seen.size)return getSubs('Grade 10');
-    return getAllSeniorSubs().filter(s=>seen.has(s.id));
-  };
-}
-if(typeof getStudentSubs==='undefined'){
-  window.getStudentSubs=function(ids){
-    if(!Array.isArray(ids)||!ids.length)return getSubs('Grade 10');
-    return getAllSeniorSubs().filter(s=>ids.includes(s.id));
-  };
-}
-
-// ══════════════════════════════════════════════
-// FIREBASE INIT
-// ══════════════════════════════════════════════
 firebase.initializeApp({
   apiKey:"AIzaSyBdabXqlBQ-6yVNJKdu8Zhb9Cm_-59_u24",
   authDomain:"bett-294a2.firebaseapp.com",
@@ -368,793 +521,248 @@ firebase.initializeApp({
   messagingSenderId:"1055511650032",
   appId:"1:1055511650032:web:7e0f9c28e58515f549ac35"
 });
-const db   = firebase.firestore();
-const auth = firebase.auth();
-auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).catch(()=>{});
+const db=firebase.firestore(), auth=firebase.auth();
+let allStudents=[], visStudents=[], allStreams=[], pendingDelId=null, editId=null, streamsEnabled=true;
+let promoSelectedGrade=null, promoDecisions={}, promoGradeStudents=[];
+let _schoolId=null, _authUser=null;
+let _authResolve=null;
+const _authPromise=new Promise(res=>{_authResolve=res;});
 
-const DEFAULT_OOF = 100;
-let students=[], savedMap={}, savedCount=0, allInputs=[], loadLock=false;
-let currentUser=null, streamsEnabled=true, gradeHasStreams=false;
-let _settingsReady=false, _settingsResolve=null;
-const _settingsPromise=new Promise(res=>{_settingsResolve=res;});
-
-// ══════════════════════════════════════════════
-// CAT MODE
-// ══════════════════════════════════════════════
-let currentCat='Exam 1';
-
-function applyCatUI(gradeStr){
-  const usesCats=gradeUsesCats(gradeStr);
-  const lbl=el('catSelectorLabel'),wrap=el('catTabsWrap');
-  if(lbl)lbl.style.display=usesCats?'':'none';
-  if(wrap)wrap.style.display=usesCats?'flex':'none';
-  const lblT=el('catSelectorLabelT'),wrapT=el('catTabsWrapT');
-  if(lblT)lblT.style.display=usesCats?'':'none';
-  if(wrapT)wrapT.style.display=usesCats?'flex':'none';
-  const pill=el('catPill');if(pill)pill.style.display=usesCats?'flex':'none';
-  if(usesCats)updateCatTabUI();
+const el=id=>document.getElementById(id);
+const val=id=>(el(id)?.value||'').trim();
+const CACHE_DURATION=0;
+// ── Inline fallback — defined here so admission.html never depends
+//    on subjects.js loading successfully ──
+function isSeniorGrade(gradeStr) {
+  const n = parseInt((gradeStr || '').replace(/\D/g, ''), 10) || 0;
+  return n >= 10 && n <= 12;
 }
 
-function updateCatTabUI(){
-  ['Exam 1','Exam 2','Exam 3'].forEach((c,i)=>{
-    const cls=['active-1','active-2','active-3'][i];
-    [el(`catBtn_${c}`),el(`catBtnT_${c}`)].forEach(btn=>{
-      if(!btn)return;btn.className='cat-tab';
-      if(currentCat===c)btn.classList.add(cls);
-    });
-  });
-  const txt=el('catPillTxt');if(txt)txt.textContent=currentCat;
+function getAllSeniorSubs() {
+  return [
+    { id:'eng',    label:'English',                   icon:'📖', gc:'g-eng'  },
+    { id:'kis',    label:'Kiswahili / KSL',           icon:'🗣️', gc:'g-kis'  },
+    { id:'math',   label:'Mathematics',               icon:'🔢', gc:'g-math' },
+    { id:'pe',     label:'Physical Education',        icon:'🏃', gc:'g-arts' },
+    { id:'csl',    label:'Community Service Learning',icon:'🤝', gc:'g-soc'  },
+    { id:'hist',   label:'History & Citizenship',     icon:'🏛️', gc:'g-soc'  },
+    { id:'geo',    label:'Geography',                 icon:'🌍', gc:'g-soc'  },
+    { id:'cre',    label:'CRE',                       icon:'✝️', gc:'g-re'   },
+    { id:'ire',    label:'IRE',                       icon:'☪️', gc:'g-re'   },
+    { id:'hre',    label:'HRE',                       icon:'🕉️', gc:'g-re'   },
+    { id:'biz',    label:'Business Studies',          icon:'💼', gc:'g-soc'  },
+    { id:'liteng', label:'Literature in English',     icon:'📚', gc:'g-eng'  },
+    { id:'kip',    label:'Kiswahili Kipevu',          icon:'📜', gc:'g-kis'  },
+    { id:'fasih',  label:'Fasihi ya Kiswahili',       icon:'📜', gc:'g-kis'  },
+    { id:'aeng',   label:'Advanced English',          icon:'📖', gc:'g-eng'  },
+    { id:'arabic', label:'Arabic',                    icon:'🕌', gc:'g-kis'  },
+    { id:'french', label:'French',                    icon:'🇫🇷', gc:'g-eng'  },
+    { id:'german', label:'German',                    icon:'🇩🇪', gc:'g-eng'  },
+    { id:'mandarin',label:'Chinese (Mandarin)',        icon:'🇨🇳', gc:'g-eng'  },
+    { id:'indig',  label:'Indigenous Languages',      icon:'🌿', gc:'g-eng'  },
+    { id:'signl',  label:'Sign Language',             icon:'🤟', gc:'g-eng'  },
+    { id:'ksl',    label:'Kenyan Sign Language',      icon:'🤟', gc:'g-eng'  },
+    { id:'phy',    label:'Physics',                   icon:'⚛️', gc:'g-sci'  },
+    { id:'chem',   label:'Chemistry',                 icon:'🧪', gc:'g-sci'  },
+    { id:'bio',    label:'Biology',                   icon:'🧬', gc:'g-sci'  },
+    { id:'gsci',   label:'General Science',           icon:'🔬', gc:'g-sci'  },
+    { id:'admath', label:'Advanced Mathematics',      icon:'📐', gc:'g-math' },
+    { id:'music',  label:'Music and Dance',           icon:'🎵', gc:'g-arts' },
+    { id:'theatre',label:'Theatre and Film',          icon:'🎭', gc:'g-arts' },
+    { id:'farts',  label:'Fine Arts',                 icon:'🎨', gc:'g-arts' },
+    { id:'sport',  label:'Sports and Recreation',     icon:'⚽', gc:'g-arts' },
+    { id:'media',  label:'Media Technology',          icon:'📷', gc:'g-pret' },
+    { id:'aviation',label:'Aviation',                 icon:'✈️', gc:'g-pret' },
+    { id:'bldg',   label:'Building & Construction',   icon:'🏗️', gc:'g-pret' },
+    { id:'elec',   label:'Electricity',               icon:'⚡', gc:'g-pret' },
+    { id:'draw',   label:'Drawing & Design',          icon:'📏', gc:'g-pret' },
+    { id:'marine', label:'Marine & Fisheries',        icon:'🐟', gc:'g-agri' },
+    { id:'tech',   label:'Technology',                icon:'💻', gc:'g-pret' },
+    { id:'metal',  label:'Metalwork',                 icon:'⚙️', gc:'g-pret' },
+    { id:'powmech',label:'Power Mechanics',           icon:'🔩', gc:'g-pret' },
+    { id:'agri',   label:'Agriculture',               icon:'🌱', gc:'g-agri' },
+    { id:'comp',   label:'Computer Studies',          icon:'🖥️', gc:'g-pret' },
+    { id:'home',   label:'Home Science',              icon:'🏠', gc:'g-agri' },
+  ];
 }
-
-window.selectCat=function(cat){currentCat=cat;updateCatTabUI();loadStudents();};
-window.onTermChange=function(){loadStudents();};
-
-function autoSelectCat(){
-  const month=new Date().getMonth()+1;
-  const mInTerm=month<=4?month:month<=8?month-4:month-8;
-  currentCat=mInTerm<=1?'Exam 1':mInTerm<=2?'Exam 2':'Exam 3';
-  updateCatTabUI();
-}
-
-// ══════════════════════════════════════════════
-// SETTINGS
-// ══════════════════════════════════════════════
-async function loadStreamsEnabledSetting(schoolId){
-  try{
-    const cached=localStorage.getItem('cbe_streams_enabled');
-    if(cached!==null){streamsEnabled=cached==='true';applyStreamMode();}
-    const snap=await db.collection('settings').doc(schoolId).get();
-    if(snap.exists&&snap.data().streamsEnabled!==undefined){
-      streamsEnabled=snap.data().streamsEnabled;
-      localStorage.setItem('cbe_streams_enabled',streamsEnabled?'true':'false');
-      applyStreamMode();
-    }
-  }catch(e){console.warn('[Marksheet] streams setting error:',e.message);}
-  finally{if(!_settingsReady){_settingsReady=true;_settingsResolve();}}
-}
-
-function applyStreamMode(){
-  const streamLabel=el('streamLabel'),ss=el('selStream');
-  if(!streamsEnabled){
-    if(streamLabel)streamLabel.style.display='none';
-    if(ss){ss.style.display='none';ss.value='';ss.disabled=true;}
-  }else{
-    if(streamLabel)streamLabel.style.display='';
-    if(ss){ss.style.display='';ss.disabled=false;}
-  }
-}
-
 // ══════════════════════════════════════════════
 // AUTH
 // ══════════════════════════════════════════════
-async function initUser(fbUser){
-  if(!fbUser){window.location.href='login';return;}
+auth.onAuthStateChanged(user=>{
+  if(!user){window.location.href='admin.html';return;}
+  _authUser=user;
+  const stored=sessionStorage.getItem('cbe_school_id');
+  _schoolId=stored||user.uid;
+  window._schoolId=_schoolId;
+  sessionStorage.setItem('cbe_school_id',_schoolId);
+  loadStreamsSetting();
+  db.collection('approvedSchools').doc(_schoolId).get()
+    .then(snap=>{
+      if(snap.exists){const d=snap.data();if(d.status==='suspended'){window.location.href='admin.html';return;}}
+      _authResolve(user); loadSchoolInfo(); loadStudents();
+    })
+    .catch(()=>{_authResolve(user);loadSchoolInfo();loadStudents();});
+});
+
+async function loadStreamsSetting(){
   try{
-    const snap=await db.collection('users').doc(fbUser.uid).get();
-    if(!snap.exists){await auth.signOut();window.location.href='login';return;}
-    currentUser=snap.data();currentUser.uid=fbUser.uid;
-    if(currentUser.status==='suspended'){await auth.signOut();window.location.href='login?reason=suspended';return;}
-    if(currentUser.status==='pending'){await auth.signOut();window.location.href='login?reason=pending';return;}
-    if(currentUser.schoolId){sessionStorage.setItem('cbe_school_id',currentUser.schoolId);window._schoolId=currentUser.schoolId;}
-    if(currentUser.schoolId){loadSchoolBranding(currentUser.schoolId).catch(()=>{});}
-    if(currentUser.schoolId){
-      try{await loadStreamsEnabledSetting(currentUser.schoolId);}
-      catch(_){_settingsReady=true;_settingsResolve();}
-    }else{_settingsReady=true;_settingsResolve();}
-    const infoEl=el('hdrUserInfo');if(infoEl)infoEl.style.display='flex';
-    const nameEl=el('hdrUserName');if(nameEl)nameEl.textContent='👤 '+(currentUser.fullName||'Teacher');
-    const classEl=el('hdrUserClass');
-    if(currentUser.role==='teacher'){
-      if(classEl)classEl.textContent=(currentUser.grade||'No grade')+(currentUser.stream?' · '+currentUser.stream:'');
-      lockTeacherSelectors();
-      loadStudents();
-    }else{
-      if(classEl)classEl.textContent=(currentUser.role||'admin').toUpperCase();
-      applyStreamMode();
+    const snap=await db.collection('settings').doc(_schoolId).get();
+    if(snap.exists&&snap.data().streamsEnabled!==undefined){
+      streamsEnabled=snap.data().streamsEnabled;
+      localStorage.setItem('cbe_streams_enabled',streamsEnabled?'true':'false');
+      updateStreamsUI();
     }
-  }catch(e){toast(`Auth error: ${e.message}`,'err');}
+  }catch(e){console.warn('[Admission] streams setting error:',e.message);}
 }
 
-async function loadSchoolBranding(schoolId){
-  try{
-    const snap=await db.collection('settings').doc(schoolId).get();
-    if(!snap.exists)return;
-    const s=snap.data();
-    if(s.name)document.title=s.name+' | CBC Mark Sheet';
-    const nameEl=el('hdrSchoolName');if(nameEl&&s.name)nameEl.textContent=s.name;
-    const subEl=el('hdrSchoolSub');if(subEl){const parts=[s.motto,s.county,'Kenya CBC'].filter(Boolean);subEl.textContent=parts.join(' · ');}
-    if(s.logoUrl){const lm=el('hdrLogo');if(lm)lm.innerHTML=`<img src="${s.logoUrl}" style="width:100%;height:100%;object-fit:contain;border-radius:inherit" onerror="this.parentElement.textContent='📊'">`;}
-    if(s.primaryColor){document.documentElement.style.setProperty('--accent',s.primaryColor);document.documentElement.style.setProperty('--ah',s.primaryColor);}
-    window.schoolSettings=s;
-  }catch(e){console.warn('[Marksheet] School branding failed:',e.message);}
-}
-
-function lockTeacherSelectors(){
-  const grade=currentUser.grade||'',stream=currentUser.stream||'';
-  const adminBar=el('toolbarAdmin'),teacherBar=el('toolbarTeacher');
-  if(adminBar)adminBar.style.display='none';
-  if(teacherBar)teacherBar.style.display='';
-  const hGrade=el('selGradeT'),hStream=el('selStreamT');
-  if(hGrade)hGrade.value=grade;
-  if(hStream)hStream.value=stream;
-  gradeHasStreams=Boolean(stream);
-  const badge=el('teacherClassBadge');
-  if(badge)badge.textContent=grade?(stream?`${grade} · ${stream}`:grade):'No class assigned';
-  const now=new Date(),month=now.getMonth()+1;
-  const autoTerm=month<=4?'Term 1':month<=8?'Term 2':'Term 3';
-  const termSel=el('selTermT'),yearInp=el('selYearT');
-  if(termSel)termSel.value=autoTerm;
-  if(yearInp)yearInp.value=now.getFullYear();
-  applyCatUI(grade);
-  if(gradeUsesCats(grade))autoSelectCat();
-}
-
-function _getClassSelectors(){
-  if(currentUser?.role==='teacher'){
-    return{
-      grade:currentUser.grade||'',
-      stream:currentUser.stream||'',
-      term:el('selTermT')?.value||'Term 1',
-      year:el('selYearT')?.value||'2026'
-    };
-  }
-  return{
-    grade:el('selGrade')?.value||'',
-    stream:el('selStream')?.value||'',
-    term:el('selTerm')?.value||'Term 1',
-    year:el('selYear')?.value||'2026'
-  };
-}
-
-auth.onAuthStateChanged(initUser);
-
-// ══════════════════════════════════════════════
-// GRADE CHANGE
-// ══════════════════════════════════════════════
-window.onGradeChange=async function(){
-  if(currentUser?.role==='teacher')return;
-  const grade=el('selGrade').value;
-  applyCatUI(grade);
-  if(gradeUsesCats(grade))autoSelectCat();
+function updateStreamsUI(){
+  const si=el('fStream'),sf=el('filterStream');
   if(!streamsEnabled){
-    gradeHasStreams=false;
-    if(!grade){el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">📋</div><p>Select a <strong>Grade</strong></p></div>`;return;}
-    loadStudents();return;
+    if(si){si.disabled=true;si.placeholder='Streams disabled';si.value='';}
+    if(sf){sf.disabled=true;sf.innerHTML='<option value="">Streams Disabled</option>';}
+  }else{
+    if(si){si.disabled=false;si.placeholder='Leave blank if no streams';}
+    if(sf)sf.disabled=false;
   }
-  const ss=el('selStream');
-  ss.disabled=true;ss.innerHTML='<option value="">Loading…</option>';
-  el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">📋</div><p>Loading streams…</p></div>`;
-  if(!grade){ss.innerHTML='<option value="">-- Stream --</option>';ss.disabled=false;return;}
-  let arr=[];
-  try{const raw=localStorage.getItem('cbe_streams'),ts=localStorage.getItem('cbe_streams_ts');if(raw&&ts&&(Date.now()-parseInt(ts))<86400000){const map=JSON.parse(raw);if(map[grade]?.length)arr=map[grade];}}catch(_){}
+}
+
+function _waitAuth(){return _authPromise;}
+function _getSchoolId(){if(_schoolId)return Promise.resolve(_schoolId);return _authPromise.then(()=>_schoolId);}
+function _cacheKey(){return'cbe_students_'+(_schoolId||'shared');}
+
+async function loadSchoolInfo(){
   try{
-    const _sid=currentUser?.schoolId||sessionStorage.getItem('cbe_school_id');
-    if(!_sid){ss.innerHTML='<option value="">Not authenticated</option>';return;}
-    const snap=await db.collection('students').where('grade','==',grade).where('schoolId','==',_sid).get();
-    const set=new Set(arr);snap.forEach(d=>{const s=d.data();if(s.stream?.trim())set.add(s.stream.trim());});
-    arr=[...set].sort();
-    const raw=localStorage.getItem('cbe_streams'),map=raw?JSON.parse(raw):{};map[grade]=arr;
-    localStorage.setItem('cbe_streams',JSON.stringify(map));localStorage.setItem('cbe_streams_ts',Date.now().toString());
-  }catch(e){if(!arr.length){ss.innerHTML='<option value="">-- Error --</option>';ss.disabled=false;return;}}
-  if(!arr.length){
-    gradeHasStreams=false;ss.style.display='none';ss.value='';ss.disabled=true;
-    const lbl=el('streamLabel');if(lbl)lbl.style.display='none';
-    loadStudents();return;
+    const sid=await _getSchoolId();if(!sid)return;
+    const snap=await db.collection('settings').doc(sid).get();if(!snap.exists)return;
+    const s=snap.data();
+    if(s.name){document.title=s.name+' · Admission';el('hdrSchoolName').textContent=s.name;}
+    if(s.motto||s.county){const parts=[s.motto,s.county,'Kenya CBC'].filter(Boolean);el('hdrSchoolSub').textContent=parts.join(' · ');}
+    if(s.logoUrl){el('hdrLogo').innerHTML=`<img src="${s.logoUrl}" style="width:100%;height:100%;object-fit:contain;border-radius:inherit" onerror="this.parentElement.textContent='🎓'">`;}
+    if(s.primaryColor)document.documentElement.style.setProperty('--accent',s.primaryColor);
+  }catch(e){console.warn('School info load failed:',e.message);}
+}
+
+// ══════════════════════════════════════════════
+// SUBJECT PICKER HELPERS (registration form)
+// ══════════════════════════════════════════════
+const GROUP_LABELS={
+  'g-eng':'Languages','g-kis':'Kiswahili','g-math':'Mathematics',
+  'g-sci':'Sciences','g-soc':'Humanities & Social','g-re':'Religious Education',
+  'g-arts':'Creative & Performing Arts','g-pret':'Technical & Applied',
+  'g-agri':'Agriculture & Home Science'
+};
+
+function buildSubjectPickerGrid(gridId, countId, selectedIds=[]){
+  const grid=el(gridId); if(!grid) return;
+  const all=getAllSeniorSubs();
+  const groups={};
+  all.forEach(s=>{const g=s.gc||'other';if(!groups[g])groups[g]=[];groups[g].push(s);});
+  let html='';
+  Object.entries(groups).forEach(([gc,subs])=>{
+    html+=`<div><div class="subj-group-label">${GROUP_LABELS[gc]||gc}</div>`;
+    subs.forEach(s=>{
+      const chk=selectedIds.includes(s.id)?'checked':'';
+      html+=`<label class="subj-check-label">
+        <input type="checkbox" value="${s.id}" ${chk} onchange="updateSubjCount('${gridId}','${countId}')">
+        <span>${s.icon} ${s.label}</span>
+      </label>`;
+    });
+    html+=`</div>`;
+  });
+  grid.innerHTML=html;
+  updateSubjCount(gridId, countId);
+}
+
+window.updateSubjCount=function(gridId, countId){
+  const n=document.querySelectorAll(`#${gridId} input:checked`).length;
+  const badge=el(countId); if(badge)badge.textContent=n+' selected';
+};
+
+window.selectAllSubjects=function(gridId, countId){
+  document.querySelectorAll(`#${gridId} input[type=checkbox]`).forEach(cb=>cb.checked=true);
+  updateSubjCount(gridId, countId);
+};
+
+window.clearAllSubjects=function(gridId, countId){
+  document.querySelectorAll(`#${gridId} input[type=checkbox]`).forEach(cb=>cb.checked=false);
+  updateSubjCount(gridId, countId);
+};
+
+function getSelectedSubjects(gridId){
+  return [...document.querySelectorAll(`#${gridId} input[type=checkbox]:checked`)].map(cb=>cb.value);
+}
+
+// Show/hide subject picker based on grade selection
+window.onFormGradeChange=function(){
+  const grade=val('fGrade');
+  const section=el('subjectSection');
+  if(isSeniorGrade(grade)){
+    section.style.display='';
+    // Only build grid if not already built
+    if(!el('formSubjGrid').children.length) buildSubjectPickerGrid('formSubjGrid','subjCount',[]);
+  }else{
+    section.style.display='none';
   }
-  gradeHasStreams=true;ss.style.display='';
-  const lbl2=el('streamLabel');if(lbl2)lbl2.style.display='';
-  ss.innerHTML='<option value="">-- Stream --</option>'+arr.map(s=>`<option>${s}</option>`).join('');ss.disabled=false;
-  if(arr.length===1){ss.value=arr[0];loadStudents();}
-  else{el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">📋</div><p>Select a <strong>Stream</strong></p></div>`;}
+  // Stream suggestions
+  if(!streamsEnabled)return;
+  const matches=grade?[...new Set(allStudents.filter(s=>s.grade===grade).map(s=>s.stream).filter(Boolean))].sort():allStreams;
+  if(matches.length)showStreamSuggestions(matches);
+};
+
+// Edit modal grade change
+window.onEditGradeChange=function(){
+  const grade=el('editGrade').value;
+  const section=el('editSubjectSection');
+  if(isSeniorGrade(grade)){
+    section.style.display='';
+    // Preserve previously checked if same student
+    const current=getSelectedSubjects('editSubjGrid');
+    buildSubjectPickerGrid('editSubjGrid','editSubjCount', current.length?current:[]);
+  }else{
+    section.style.display='none';
+  }
 };
 
 // ══════════════════════════════════════════════
 // CACHE
 // ══════════════════════════════════════════════
-const _cache={};
-const _CACHE_TTL=5*60*1000;
-function _cacheKey(grade,stream,term,year,cat,sid){return`${sid}|${grade}|${stream}|${term}|${year}|${cat}`;}
-function _cacheGet(key){const c=_cache[key];if(!c)return null;if(Date.now()-c.ts>_CACHE_TTL){delete _cache[key];return null;}return c;}
-function _cacheSet(key,sts,sm,sc){_cache[key]={ts:Date.now(),students:sts,savedMap:{...sm},savedCount:sc};}
-function _cacheUpdateSave(cacheKey,studentId,record){const c=_cache[cacheKey];if(!c)return;c.savedMap[studentId]={...(c.savedMap[studentId]||{}),...record};c.ts=Date.now();}
-function _cacheInvalidate(){Object.keys(_cache).forEach(k=>delete _cache[k]);}
-
-// ══════════════════════════════════════════════
-// LOAD STUDENTS
-// ══════════════════════════════════════════════
-window.loadStudents=async function(){
-  const{grade,stream:classStream,term,year}=_getClassSelectors();
-  if(!_settingsReady)await _settingsPromise;
-  const stream=currentUser?.role==='teacher'?(currentUser.stream||''):classStream;
-  if(!grade)return;
-  if(currentUser?.role!=='teacher'&&gradeHasStreams&&!stream)return;
-  if(loadLock)return;
-  loadLock=true;
-  const _sid=currentUser?.schoolId||sessionStorage.getItem('cbe_school_id');
-  if(!_sid){el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">🔒</div><p>Not authenticated</p></div>`;loadLock=false;return;}
-  const catKey=gradeUsesCats(grade)?currentCat:'';
-  const ck=_cacheKey(grade,stream,term,year,catKey,_sid);
-  const cached=_cacheGet(ck);
-  if(cached){
-    students=cached.students;savedMap={...cached.savedMap};savedCount=cached.savedCount;
-    el('pilS').textContent=students.length;el('pilSv').textContent=savedCount;
-    _setSheetTitle(grade,stream,term,year);
-    if(!students.length){el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">👥</div><p>No students in <strong>${stream?grade+' '+stream:grade}</strong>.</p></div>`;loadLock=false;return;}
-    renderTable();loadLock=false;toast('Loaded from cache','info');return;
-  }
-  el('tblWrap').innerHTML=`<div class="empty-msg"><div style="display:inline-flex;align-items:center;gap:9px;color:var(--text3)"><div class="spin"></div>Loading ${grade}${stream?' '+stream:''}${gradeUsesCats(grade)?' · '+currentCat:''}…</div></div>`;
-  try{
-    let studQuery=db.collection('students').where('grade','==',grade).where('schoolId','==',_sid);
-    if(stream)studQuery=studQuery.where('stream','==',stream);
-    const snap=await studQuery.get();
-    students=[];snap.forEach(d=>students.push({id:d.id,...d.data()}));
-    students.sort((a,b)=>(a.name||'').localeCompare(b.name||''));
-    savedMap={};savedCount=0;
-    let rsQuery=db.collection('results').where('grade','==',grade).where('term','==',term).where('year','==',year).where('schoolId','==',_sid);
-    if(stream)rsQuery=rsQuery.where('stream','==',stream);
-    if(gradeUsesCats(grade))rsQuery=rsQuery.where('exam','==',currentCat);
-    const rs=await rsQuery.get();
-    rs.forEach(d=>{savedMap[d.data().studentId]={id:d.id,...d.data()};savedCount++;});
-    _cacheSet(ck,students,savedMap,savedCount);
-    el('pilS').textContent=students.length;el('pilSv').textContent=savedCount;
-    _setSheetTitle(grade,stream,term,year);
-    if(!students.length){const loc=stream?`${grade} ${stream}`:grade;el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">👥</div><p>No students in <strong>${loc}</strong>. Admit them first.</p></div>`;loadLock=false;return;}
-    renderTable();
-  }catch(e){el('tblWrap').innerHTML=`<div class="empty-msg"><div class="ei">❌</div><p>${e.message}</p></div>`;}
-  loadLock=false;
-};
-
-function _setSheetTitle(grade,stream,term,year){
-  const examLabel=gradeUsesCats(grade)?` · ${currentCat}`:'';
-  el('sheetTitle').textContent=stream?`${grade} ${stream} — ${term}${examLabel} ${year}`:`${grade} — ${term}${examLabel} ${year}`;
+function saveToCache(data){
+  try{const k=_cacheKey();localStorage.setItem(k,JSON.stringify(data));localStorage.setItem(k+'_ts',Date.now().toString());updateCacheIndicator();}catch(e){}
+}
+function loadFromCache(){
+  try{const k=_cacheKey(),raw=localStorage.getItem(k),ts=localStorage.getItem(k+'_ts');if(raw&&ts&&(Date.now()-parseInt(ts))<CACHE_DURATION)return JSON.parse(raw);}catch(e){}
+  return null;
+}
+function isCacheValid(){const ts=localStorage.getItem(_cacheKey()+'_ts');return ts&&(Date.now()-parseInt(ts))<CACHE_DURATION;}
+function updateCacheIndicator(){
+  const icon=el('cacheIcon'),timeEl=el('cacheTime');
+  if(isCacheValid()){const ago=Math.floor((Date.now()-parseInt(localStorage.getItem(_cacheKey()+'_ts')))/60000);icon.textContent='📦';timeEl.textContent=ago===0?'Just now':`${ago}m ago`;}
+  else{icon.textContent='🔄';timeEl.textContent='Refresh';}
 }
 
 // ══════════════════════════════════════════════
-// RENDER TABLE
+// STREAMS
 // ══════════════════════════════════════════════
-function renderTable(){
-  const{grade:currentGrade}=_getClassSelectors();
-  const isSenior=isSeniorGrade(currentGrade);
-  const CLASS_SUBS=isSenior?getSeniorClassSubs(students):getSubs(currentGrade);
-  window._currentSubs=CLASS_SUBS;
-  window._isSenior=isSenior;
-  const anyRec=Object.values(savedMap)[0];
-  const unassigned=isSenior?students.filter(s=>!s.subjects?.length):[];
-  let topHtml='';
-  if(isSenior){
-    topHtml=`<div style="padding:10px 14px;background:#fef3c7;border-bottom:1.5px solid #fcd34d;font-size:12px;color:#92400e;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-      <span>📚 <strong>Senior School</strong> — columns show the union of all subjects in this class. Click <strong>📚 Assign</strong> per student to configure.${unassigned.length?` <span style="background:#dc2626;color:#fff;border-radius:4px;padding:1px 7px;font-size:10.5px;font-weight:800">${unassigned.length} unassigned</span>`:''}</span>
-    </div>`;
-  }
-  let h=`<table id="mkT"><colgroup>
-    <col style="width:34px"><col style="width:155px"><col style="width:80px">`;
-  CLASS_SUBS.forEach(s=>{
-    if(s.parts)h+=s.parts.map(()=>`<col style="width:52px">`).join('')+`<col style="width:56px">`;
-    else h+=`<col style="width:56px">`;
-  });
-  h+=`<col style="width:60px"><col style="width:82px"><col style="width:36px"><col style="width:${isSenior?'110':'58'}px"></colgroup>`;
-  // Header row 1
-  h+=`<thead><tr>
-    <th class="cn" rowspan="3">#</th>
-    <th class="cna" rowspan="3" style="text-align:left;padding:0 8px">Student</th>
-    <th class="cad" rowspan="3" style="text-align:left;padding:0 6px">Adm No.</th>`;
-  CLASS_SUBS.forEach(s=>{
-    const span=s.parts?s.parts.length+1:1;
-    h+=`<th colspan="${span}" class="${s.gc}">${s.icon} ${s.label}</th>`;
-  });
-  h+=`<th colspan="3" class="g-ovr">Overall</th>
-      <th class="g-ovr" rowspan="3" style="font-size:9px">${isSenior?'Subjects / Save':'Save'}</th></tr>`;
-  // Header row 2
-  h+=`<tr>`;
-  CLASS_SUBS.forEach(s=>{
-    if(s.parts){s.parts.forEach(p=>h+=`<th class="${s.sc}">${p.label}</th>`);h+=`<th class="${s.sc}">Total</th>`;}
-    else h+=`<th class="${s.sc}">Score</th>`;
-  });
-  h+=`<th class="s-ovr">Avg%</th><th class="s-ovr">Level</th><th class="s-ovr">Pts</th></tr>`;
-  // Header row 3: Out Of
-  h+=`<tr class="out-of-row">`;
-  CLASS_SUBS.forEach(s=>{
-    if(s.parts){
-      s.parts.forEach(p=>{
-        const key=`${s.id}_${p.id}`,saved_oof=anyRec?.[`oof_${key}`]||DEFAULT_OOF;
-        h+=`<th><input class="oof" type="number" min="1" inputmode="numeric" id="oof_${key}" value="${saved_oof}" title="Out of — ${s.label} ${p.label}" oninput="recalcAll()" onkeydown="navOof(event,this)"></th>`;
-      });
-      h+=`<th id="oof_${s.id}_tot_cell" style="font-size:10px;color:#fbbf24;font-weight:800;text-align:center">—</th>`;
-    }else{
-      const saved_oof=anyRec?.[`oof_${s.id}`]||DEFAULT_OOF;
-      h+=`<th><input class="oof" type="number" min="1" inputmode="numeric" id="oof_${s.id}" value="${saved_oof}" title="Out of — ${s.label}" oninput="recalcAll()" onkeydown="navOof(event,this)"></th>`;
-    }
-  });
-  h+=`<th colspan="3" class="oof-label">Out Of ↑</th></tr></thead>`;
-  // Body
-  h+=`<tbody>`;
-  students.forEach((s,i)=>{
-    const rec=savedMap[s.id],yes=!!rec;
-  const stuSubs=isSenior?getStudentSubs(s.subjects||getSubs(currentGrade).map(x=>x.id)):null;
-const stuSubIds=stuSubs?new Set(stuSubs.map(x=>x.id)):null;
-    h+=`<tr id="tr-${s.id}"${yes?' class="saved"':''}>`;
-    h+=`<td class="cn no-c">${i+1}</td>`;
-    h+=`<td class="cna tl"><span class="sname">${s.name}</span></td>`;
-    h+=`<td class="cad tl"><code style="font-size:10px;color:var(--text2)">${s.admissionNumber||''}</code></td>`;
-    CLASS_SUBS.forEach(sub=>{
-      if(isSenior&&stuSubIds&&!stuSubIds.has(sub.id)){
-        const span=sub.parts?sub.parts.length+1:1;
-        h+=`<td colspan="${span}" style="background:#f3f5fa;color:#c8d0e0;font-size:12px;font-weight:700;text-align:center;border:1px solid var(--border)">—</td>`;
-        return;
-      }
-      if(sub.parts){
-        sub.parts.forEach(p=>{
-          const fid=`${sub.id}_${p.id}_${s.id}`,v=rec?(rec[`${sub.id}_${p.id}`]??''):'';
-          h+=`<td><input class="si" type="number" min="0" inputmode="numeric" id="${fid}" value="${v}" placeholder="–"
-            oninput="validateScore(this,'${sub.id}_${p.id}',true);calcRow('${s.id}');draftSave('${s.id}');autoSaveRow('${s.id}')" onkeydown="nav(event,this)"></td>`;
-        });
-        const totVal=rec?(rec[`${sub.id}_tot`]??''):'';
-        h+=`<td class="tot-c" id="${sub.id}_tot_${s.id}">${totVal}</td>`;
-      }else{
-        const fid=`${sub.id}_s_${s.id}`,v=rec?(rec[`${sub.id}_score`]??''):'';
-        h+=`<td><input class="si" type="number" min="0" inputmode="numeric" id="${fid}" value="${v}" placeholder="–"
-          oninput="validateScore(this,'${sub.id}',false);calcRow('${s.id}');draftSave('${s.id}');autoSaveRow('${s.id}')" onkeydown="nav(event,this)"></td>`;
-      }
-    });
-    const oa=rec?.overallAvg??'',ol=oa!==''?getLevel(Number(oa)):null;
-    h+=`<td class="avg-c" id="oa_${s.id}">${oa!==''?Number(oa).toFixed(1):''}</td>`;
-    h+=`<td id="ol_${s.id}">${ol?`<span class="lbg ${ol.c}">${ol.l}</span>`:''}</td>`;
-    h+=`<td class="pts-c" id="op_${s.id}">${ol?ol.p:''}</td>`;
-    if(isSenior){
-      const subCount=s.subjects?.length||0;
-      h+=`<td id="act_${s.id}" style="white-space:nowrap;padding:0 4px">
-        <button class="sv-btn" style="background:#7c3aed;margin-bottom:2px;width:100%;font-size:10px" onclick="openAssignModal('${s.id}')">📚 ${subCount?subCount+' subs':'Assign'}</button>
-        ${yes?`<span class="sv-done" style="display:block;text-align:center">✓ saved</span>`:`<span class="sv-done" style="display:block;text-align:center;color:var(--text3)">–</span>`}
-      </td>`;
-    }else{
-      h+=`<td id="act_${s.id}">${yes?`<span class="sv-done">✓</span>`:`<span class="sv-done" style="color:var(--text3)">–</span>`}</td>`;
-    }
-    h+=`</tr>`;
-  });
-  h+=`</tbody>`;
-  // Footer
-  h+=`<tfoot><tr><td colspan="3" class="lbl cn cna" style="left:0;min-width:269px">CLASS AVG</td>`;
-  CLASS_SUBS.forEach(sub=>{
-    if(sub.parts){sub.parts.forEach(p=>h+=`<td id="ca_${sub.id}_${p.id}"></td>`);h+=`<td id="ca_${sub.id}_tot"></td>`;}
-    else h+=`<td id="ca_${sub.id}"></td>`;
-  });
-  h+=`<td class="ov-c" id="ca_ovr"></td><td></td><td></td><td></td></tr></tfoot></table>`;
-  el('tblWrap').innerHTML=topHtml+h;
-  allInputs=Array.from(document.querySelectorAll('#mkT tbody input.si'));
-  updateOofTotals();updateClassAvg();
-  _draftKey=null;
-  setTimeout(loadDraft,50);
+function buildStreamList(){
+  const set=new Set(allStudents.map(s=>s.stream).filter(Boolean));
+  allStreams=[...set].sort();
+  const sf=el('filterStream');
+  if(sf&&!sf.disabled){const cur=sf.value;sf.innerHTML='<option value="">All Streams</option>'+allStreams.map(s=>`<option>${s}</option>`).join('');if(cur)sf.value=cur;}
+  const gradeStreamMap={};
+  allStudents.forEach(s=>{if(!s.grade||!s.stream)return;if(!gradeStreamMap[s.grade])gradeStreamMap[s.grade]=new Set();gradeStreamMap[s.grade].add(s.stream);});
+  const ser={};Object.keys(gradeStreamMap).forEach(g=>{ser[g]=[...gradeStreamMap[g]].sort();});
+  localStorage.setItem('cbe_streams',JSON.stringify(ser));localStorage.setItem('cbe_streams_ts',Date.now().toString());
 }
-
-// ══════════════════════════════════════════════
-// SENIOR: ASSIGN SUBJECTS MODAL
-// ══════════════════════════════════════════════
-window.openAssignModal=function(sid){
-  const s=students.find(x=>x.id===sid);if(!s)return;
-  const current=Array.isArray(s.subjects)?s.subjects:[];
-  const groupLabels={'g-eng':'Languages','g-kis':'Kiswahili','g-math':'Mathematics',
-    'g-sci':'Sciences','g-soc':'Humanities & Social','g-re':'Religious Education',
-    'g-arts':'Creative & Performing Arts','g-pret':'Technical & Applied','g-agri':'Agriculture & Home Science'};
-  const groups={};
-  getAllSeniorSubs().forEach(sub=>{const g=sub.gc||'other';if(!groups[g])groups[g]=[];groups[g].push(sub);});
-  let body=`<div style="max-height:60vh;overflow-y:auto;padding-right:4px">
-    <p style="font-size:11.5px;color:var(--text2);margin-bottom:12px">Select subjects for <strong>${s.name}</strong>.</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px" id="subPickGrid">`;
-  Object.entries(groups).forEach(([gc,subs])=>{
-    body+=`<div><div style="font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:5px">${groupLabels[gc]||gc}</div>`;
-    subs.forEach(sub=>{
-      const chk=current.includes(sub.id)?'checked':'';
-      body+=`<label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;padding:2px 0;color:var(--text)">
-        <input type="checkbox" value="${sub.id}" ${chk} style="width:13px;height:13px;accent-color:var(--accent)">
-        <span>${sub.icon} ${sub.label}</span></label>`;
-    });
-    body+=`</div>`;
-  });
-  body+=`</div></div>
-  <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
-    <span style="font-size:11px;color:var(--text3)" id="subPickCount">${current.length} selected</span>
-    <div style="display:flex;gap:8px">
-      <button onclick="closeAssignModal()" style="padding:6px 14px;border-radius:6px;border:1.5px solid var(--border);background:none;color:var(--text2);font-weight:600;cursor:pointer;font-size:12.5px">Cancel</button>
-      <button onclick="saveStudentSubs('${sid}')" style="padding:6px 18px;border-radius:6px;border:none;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;font-size:12.5px">✅ Save Subjects</button>
-    </div>
-  </div>`;
-  let modal=document.getElementById('_assignModal');
-  if(!modal){
-    modal=document.createElement('div');modal.id='_assignModal';
-    modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:center;justify-content:center;padding:16px';
-    modal.innerHTML=`<div style="background:var(--surface);border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.3);width:100%;max-width:680px;max-height:90vh;overflow:auto">
-      <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--surface);z-index:2">
-        <div style="font-family:'Familjen Grotesk',sans-serif;font-size:16px;font-weight:800">📚 Assign Subjects</div>
-        <button onclick="closeAssignModal()" style="background:none;border:none;font-size:18px;cursor:pointer;color:var(--text3);padding:2px 6px;border-radius:4px">✕</button>
-      </div>
-      <div style="padding:16px" id="_assignModalBody"></div>
-    </div>`;
-    document.body.appendChild(modal);
-  }
-  document.getElementById('_assignModalBody').innerHTML=body;
-  modal.style.display='flex';
-  modal.querySelectorAll('input[type=checkbox]').forEach(cb=>{
-    cb.addEventListener('change',()=>{
-      const n=modal.querySelectorAll('input[type=checkbox]:checked').length;
-      const cnt=document.getElementById('subPickCount');if(cnt)cnt.textContent=n+' selected';
-    });
-  });
-};
-window.closeAssignModal=function(){const m=document.getElementById('_assignModal');if(m)m.style.display='none';};
-window.saveStudentSubs=async function(sid){
-  const m=document.getElementById('_assignModal');
-  const ids=[...m.querySelectorAll('input[type=checkbox]:checked')].map(cb=>cb.value);
-  if(!ids.length){toast('Select at least one subject','err');return;}
-  const s=students.find(x=>x.id===sid);if(!s)return;
-  try{
-    await db.collection('students').doc(sid).update({ subjects: ids });
-    s.subjects=ids;
-    toast(`Subjects saved for ${s.name} (${ids.length} subjects)`);
-    closeAssignModal();_cacheInvalidate();renderTable();
-  }catch(e){toast('Error saving subjects: '+e.message,'err');}
-};
-
-// ══════════════════════════════════════════════
-// CALCULATIONS
-// ══════════════════════════════════════════════
-function updateOofTotals(){
-  const SUBS=window._currentSubs||[];
-  SUBS.forEach(sub=>{
-    if(sub.parts){
-      const tot=sub.parts.reduce((a,p)=>a+(Number(el(`oof_${sub.id}_${p.id}`)?.value)||DEFAULT_OOF),0);
-      const c=el(`oof_${sub.id}_tot_cell`);if(c)c.textContent=tot;
-    }
-  });
+window.onStreamInput=function(){if(!streamsEnabled)return;const q=val('fStream').toLowerCase();showStreamSuggestions(allStreams.filter(s=>s.toLowerCase().includes(q)));};
+window.onStreamFocus=function(){if(!streamsEnabled)return;if(allStreams.length)showStreamSuggestions(allStreams);};
+function showStreamSuggestions(list){
+  const box=el('streamSuggestions');
+  if(!list.length){box.classList.remove('open');return;}
+  box.innerHTML=list.map(s=>`<div class="ss-item" onmousedown="pickStream('${s}')">${s} <span class="ss-sub">${allStudents.filter(x=>x.stream===s).length} students</span></div>`).join('');
+  box.classList.add('open');
 }
-
-window.recalcAll=function(){updateOofTotals();students.forEach(s=>calcRow(s.id));};
-
-window.calcRow=function(sid){
-  const CLASS_SUBS=window._currentSubs||[];
-  const isSenior=window._isSenior||false;
-  const s=students.find(x=>x.id===sid);
-  const activeSubs=isSenior?getStudentSubs(s?.subjects):CLASS_SUBS;
-  let pcts=[];
-  activeSubs.forEach(sub=>{
-    if(sub.parts){
-      const rawScores=sub.parts.map(p=>{
-        const inp=el(`${sub.id}_${p.id}_${sid}`);if(!inp)return 0;
-        const oofV=Number(el(`oof_${sub.id}_${p.id}`)?.value)||DEFAULT_OOF,raw=Number(inp.value)||0;
-        inp.classList.toggle('over-limit',raw>oofV&&raw>0);
-        return Math.min(raw,oofV);
-      });
-      const rawTotal=rawScores.reduce((a,b)=>a+b,0);
-      const oofTotal=sub.parts.reduce((a,p)=>a+(Number(el(`oof_${sub.id}_${p.id}`)?.value)||DEFAULT_OOF),0);
-      if(rawScores.some(v=>v>0)){
-        const totEl=el(`${sub.id}_tot_${sid}`);if(totEl)totEl.textContent=rawTotal;
-        pcts.push((rawTotal/oofTotal)*100);
-      }else{const totEl=el(`${sub.id}_tot_${sid}`);if(totEl)totEl.textContent='';}
-    }else{
-      const inp=el(`${sub.id}_s_${sid}`);if(!inp)return;
-      const raw=Number(inp.value)||0,oofVal=Number(el(`oof_${sub.id}`)?.value)||DEFAULT_OOF;
-      inp.classList.toggle('over-limit',raw>oofVal&&raw>0);
-      if(raw>0)pcts.push((Math.min(raw,oofVal)/oofVal)*100);
-    }
-  });
-  if(pcts.length){
-    const avgPct=pcts.reduce((a,b)=>a+b,0)/pcts.length,lv=getLevel(avgPct);
-    el(`oa_${sid}`).textContent=avgPct.toFixed(1);
-    el(`ol_${sid}`).innerHTML=`<span class="lbg ${lv.c}">${lv.l}</span>`;
-    el(`op_${sid}`).textContent=lv.p;
-  }else{el(`oa_${sid}`).textContent='';el(`ol_${sid}`).innerHTML='';el(`op_${sid}`).textContent='';}
-  updateClassAvg();
-};
-
-function updateClassAvg(){
-  const CLASS_SUBS=window._currentSubs||[];
-  CLASS_SUBS.forEach(sub=>{
-    if(sub.parts){
-      sub.parts.forEach(p=>{
-        const vals=students.map(s=>Number(el(`${sub.id}_${p.id}_${s.id}`)?.value)||0).filter(v=>v>0);
-        const c=el(`ca_${sub.id}_${p.id}`);if(c)c.textContent=vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1):'';
-      });
-      const tots=students.map(s=>{const t=el(`${sub.id}_tot_${s.id}`);return t?Number(t.textContent)||0:0;}).filter(v=>v>0);
-      const ct=el(`ca_${sub.id}_tot`);if(ct)ct.textContent=tots.length?(tots.reduce((a,b)=>a+b,0)/tots.length).toFixed(1):'';
-    }else{
-      const vals=students.map(s=>Number(el(`${sub.id}_s_${s.id}`)?.value)||0).filter(v=>v>0);
-      const c=el(`ca_${sub.id}`);if(c)c.textContent=vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1):'';
-    }
-  });
-  const oavgs=students.map(s=>{const t=el(`oa_${s.id}`);return t?Number(t.textContent)||0:0;}).filter(v=>v>0);
-  const co=el('ca_ovr');if(co)co.textContent=oavgs.length?(oavgs.reduce((a,b)=>a+b,0)/oavgs.length).toFixed(1):'';
-}
-
-// ══════════════════════════════════════════════
-// KEYBOARD NAV
-// ══════════════════════════════════════════════
-window.nav=function(e,inp){
-  const idx=allInputs.indexOf(inp);
-  const firstTr=allInputs[0]?.closest('tr');
-  const perRow=firstTr?allInputs.filter(x=>x.closest('tr')===firstTr).length:1;
-  const map={Tab:1,Enter:1,ArrowRight:1,ArrowLeft:-1,ArrowDown:perRow,ArrowUp:-perRow};
-  const d=e.shiftKey&&e.key==='Tab'?-1:map[e.key];
-  if(d!==undefined){const nx=allInputs[idx+d];if(nx){e.preventDefault();nx.focus();nx.select();}}
-};
-window.navOof=function(e,inp){
-  if(e.key==='Enter'||e.key==='Tab'){
-    e.preventDefault();
-    const oofs=Array.from(document.querySelectorAll('#mkT .oof'));
-    const i=oofs.indexOf(inp),nx=oofs[e.shiftKey?i-1:i+1];
-    if(nx){nx.focus();nx.select();}
-    else if(allInputs[0]){allInputs[0].focus();allInputs[0].select();}
-  }
-};
-
-// ══════════════════════════════════════════════
-// SCORE VALIDATION
-// ══════════════════════════════════════════════
-window.validateScore=function(inp,subKey,isPart){
-  const val=Number(inp.value);if(isNaN(val)||inp.value==='')return;
-  const oofId=isPart?`oof_${subKey}`:`oof_${subKey}`;
-  const oofVal=Number(el(oofId)?.value)||DEFAULT_OOF;
-  if(val>oofVal){
-    inp.classList.add('over-limit');inp.title=`⚠ Score ${val} exceeds maximum ${oofVal}`;
-    showNetBar(`⚠ Score ${val} exceeds max ${oofVal} — please correct`,'offline');
-  }else{
-    inp.classList.remove('over-limit');inp.title='';
-    const nb=document.getElementById('netBar');
-    if(nb&&nb.classList.contains('offline')&&nb.textContent.includes('exceeds'))hideNetBar();
-  }
-};
-function hasValidationErrors(){return document.querySelectorAll('.si.over-limit').length>0;}
-
-// ══════════════════════════════════════════════
-// NET BAR
-// ══════════════════════════════════════════════
-let _netBarTimer=null;
-function showNetBar(msg,type='saving'){
-  const bar=el('netBar');bar.className=type;bar.textContent=msg;
-  clearTimeout(_netBarTimer);
-  if(type==='saved')_netBarTimer=setTimeout(hideNetBar,2500);
-}
-function hideNetBar(){
-  const bar=el('netBar');bar.className='';
-  setTimeout(()=>{bar.style.display='none';bar.className='';},300);
-}
-window.addEventListener('offline',()=>{showNetBar('📡 No internet — marks saved locally and will sync when back online','offline');setDot('err');});
-window.addEventListener('online',()=>{showNetBar('✅ Back online — syncing…','saving');setDot('saving');setTimeout(syncPendingRows,1000);});
-function setDot(state){const dot=el('autoSaveDot');if(dot)dot.className='as-dot '+state;}
-
-// ══════════════════════════════════════════════
-// DRAFT — localStorage backup
-// ══════════════════════════════════════════════
-let _draftKey=null;
-function getDraftKey(){
-  if(_draftKey)return _draftKey;
-  const sid=currentUser?.schoolId||sessionStorage.getItem('cbe_school_id')||'x';
-  const{grade,stream,term,year}=_getClassSelectors();
-  _draftKey=`cbe_draft_${sid}_${grade}_${stream}_${term}_${year}_${currentCat}`.replace(/\s/g,'_');
-  return _draftKey;
-}
-function draftSave(sid){
-  try{
-    const key=getDraftKey();let draft={};
-    try{draft=JSON.parse(localStorage.getItem(key)||'{}');}catch(_){}
-    const d=collectRow(sid);d._savedAt=Date.now();draft[sid]=d;
-    localStorage.setItem(key,JSON.stringify(draft));
-    const unsaved=Object.keys(draft).filter(id=>!savedMap[id]?.updatedAt);
-    const badge=el('draftBadge');
-    if(badge&&unsaved.length>0){badge.style.display='inline-block';badge.textContent=`📋 Draft (${unsaved.length})`;}
-  }catch(_){}
-}
-function loadDraft(){
-  try{
-    _draftKey=null;
-    const key=getDraftKey(),raw=localStorage.getItem(key);if(!raw)return;
-    const draft=JSON.parse(raw);let restored=0;
-    const SUBS=window._currentSubs||[];
-    students.forEach(s=>{
-      if(draft[s.id]&&!savedMap[s.id]){
-        const d=draft[s.id];
-        SUBS.forEach(sub=>{
-          if(sub.parts){
-            sub.parts.forEach(p=>{const oi=el(`oof_${sub.id}_${p.id}`);if(oi&&d[`oof_${sub.id}_${p.id}`])oi.value=d[`oof_${sub.id}_${p.id}`];});
-          }else{const oi=el(`oof_${sub.id}`);if(oi&&d[`oof_${sub.id}`])oi.value=d[`oof_${sub.id}`];}
-        });
-        SUBS.forEach(sub=>{
-          if(sub.parts){
-            sub.parts.forEach(p=>{const inp=el(`${sub.id}_${p.id}_${s.id}`);if(inp&&d[`${sub.id}_${p.id}`]!==undefined&&d[`${sub.id}_${p.id}`]!==0)inp.value=d[`${sub.id}_${p.id}`];});
-          }else{const inp=el(`${sub.id}_s_${s.id}`);if(inp&&d[`${sub.id}_score`]!==undefined&&d[`${sub.id}_score`]!==0)inp.value=d[`${sub.id}_score`];}
-        });
-        calcRow(s.id);restored++;
-      }
-    });
-    updateOofTotals();
-    if(restored>0){
-      const badge=el('draftBadge');
-      if(badge){badge.style.display='inline-block';badge.textContent=`📋 Draft (${restored})`;}
-      toast(`📋 ${restored} unsaved draft${restored>1?'s':''} restored`,'info');
-    }
-  }catch(e){console.warn('Draft restore failed:',e.message);}
-}
-function restoreDraft(){toast('Drafts already restored — save to Firestore using Save All','info');}
-function clearDraft(sid){
-  try{
-    const key=getDraftKey(),raw=localStorage.getItem(key);if(!raw)return;
-    const draft=JSON.parse(raw);delete draft[sid];
-    if(Object.keys(draft).length===0){localStorage.removeItem(key);const badge=el('draftBadge');if(badge)badge.style.display='none';}
-    else{localStorage.setItem(key,JSON.stringify(draft));const badge=el('draftBadge');if(badge)badge.textContent=`📋 Draft (${Object.keys(draft).length})`;}
-  }catch(_){}
-}
-
-// ══════════════════════════════════════════════
-// COLLECT ROW DATA
-// ══════════════════════════════════════════════
-function collectRow(sid){
-  const d={};
-  const isSenior=window._isSenior||false;
-  const s=students.find(x=>x.id===sid);
-  const SUBS=isSenior?getStudentSubs(s?.subjects):(window._currentSubs||[]);
-  SUBS.forEach(sub=>{
-    if(sub.parts){
-      sub.parts.forEach(p=>{
-        d[`${sub.id}_${p.id}`]=Number(el(`${sub.id}_${p.id}_${sid}`)?.value)||0;
-        d[`oof_${sub.id}_${p.id}`]=Number(el(`oof_${sub.id}_${p.id}`)?.value)||DEFAULT_OOF;
-      });
-      d[`${sub.id}_tot`]=Number(el(`${sub.id}_tot_${sid}`)?.textContent)||0;
-    }else{
-      d[`${sub.id}_score`]=Number(el(`${sub.id}_s_${sid}`)?.value)||0;
-      d[`oof_${sub.id}`]=Number(el(`oof_${sub.id}`)?.value)||DEFAULT_OOF;
-    }
-  });
-  d.overallAvg=Number(el(`oa_${sid}`)?.textContent)||0;
-  d.overallLevel=el(`ol_${sid}`)?.querySelector('.lbg')?.textContent||'';
-  d.overallPts=Number(el(`op_${sid}`)?.textContent)||0;
-  return d;
-}
-
-// ══════════════════════════════════════════════
-// AUTOSAVE
-// ══════════════════════════════════════════════
-const _autoSaveTimers={};
-const _pendingSync=new Set();
-
-window.autoSaveRow=function(sid){
-  if(hasValidationErrors())return;
-  clearTimeout(_autoSaveTimers[sid]);
-  _autoSaveTimers[sid]=setTimeout(()=>{
-    const d=collectRow(sid);if(!d.overallAvg)return;
-    _doAutoSave(sid);
-  },800);
-};
-
-async function _doAutoSave(sid){
-  setDot('saving');showNetBar('💾 Autosaving…','saving');
-  try{await _saveRowSilent(sid);setDot('saved');showNetBar('✅ Autosaved','saved');}
-  catch(e){setDot('err');showNetBar('📡 Offline — draft saved locally','offline');console.warn('Autosave failed:',e.message);}
-}
-
-async function _saveRowSilent(sid){
-  const s=students.find(x=>x.id===sid);if(!s)return;
-  const d=collectRow(sid);if(!d.overallAvg)return;
-  if(!navigator.onLine){_pendingSync.add(sid);draftSave(sid);throw new Error('offline');}
-  const{grade,stream,term,year}=_getClassSelectors();
-  const catKey=gradeUsesCats(grade)?currentCat:'';
-  const _sid=currentUser?.schoolId||sessionStorage.getItem('cbe_school_id')||'';
-  const payload={
-    studentId:sid,studentName:s.name,admissionNumber:s.admissionNumber||'',
-    grade,
-    stream:currentUser?.role==='teacher'?(currentUser.stream||''):(streamsEnabled&&gradeHasStreams?(el('selStream')?.value||''):''),
-    term,year,exam:catKey,schoolId:_sid,
-    teacherId:currentUser?.uid||'',teacherName:currentUser?.fullName||'',
-    ...d,updatedAt:firebase.firestore.FieldValue.serverTimestamp()
-  };
-  const ex=savedMap[sid];
-  if(ex){
-    await db.collection('results').doc(ex.id).update(payload);
-    savedMap[sid]={...ex,...payload};
-  }else{
-    payload.createdAt=firebase.firestore.FieldValue.serverTimestamp();
-    const ref=await db.collection('results').add(payload);
-    savedMap[sid]={id:ref.id,...payload};
-    el('pilSv').textContent=++savedCount;
-  }
-  const ck=_cacheKey(grade,el('selStream')?.value||currentUser?.stream||'',term,year,catKey,_sid);
-  _cacheUpdateSave(ck,sid,savedMap[sid]);
-  el(`tr-${sid}`)?.classList.add('saved');
-  const actEl=el(`act_${sid}`);
-  if(actEl&&!window._isSenior){
-    actEl.innerHTML=`<span class="sv-done">✓</span>`;
-  }else if(actEl&&window._isSenior){
-    const dot=actEl.querySelector('span:last-child');
-    if(dot)dot.outerHTML=`<span class="sv-done" style="display:block;text-align:center">✓ saved</span>`;
-  }
-  clearDraft(sid);_pendingSync.delete(sid);
-}
-async function syncPendingRows(){
-  if(!_pendingSync.size)return;
-  const ids=[..._pendingSync];
-  toast(`Syncing ${ids.length} pending rows…`,'info');setDot('saving');
-  let done=0;
-  for(const sid of ids){try{await _saveRowSilent(sid);done++;}catch(_){}}
-  if(done>0){setDot('saved');showNetBar(`✅ Synced ${done} row${done>1?'s':''}}`,'saved');toast(`✅ Synced ${done} rows`);}
-}
-
-// ══════════════════════════════════════════════
-// SAVE ROW (manual)
-// ══════════════════════════════════════════════
-window.saveRow=async function(sid){
-  const s=students.find(x=>x.id===sid);if(!s)return;
-  if(hasValidationErrors()){toast('Fix scores exceeding maximum before saving','err');return;}
-  const d=collectRow(sid);if(!d.overallAvg){toast('Enter at least one score','err');return;}
-  const btn=el(`act_${sid}`)?.querySelector('.sv-btn');
-  if(btn){btn.disabled=true;btn.textContent='…';}
-  const{grade,stream,term,year}=_getClassSelectors();
-  const catKey=gradeUsesCats(grade)?currentCat:'';
-  const _sid=currentUser?.schoolId||sessionStorage.getItem('cbe_school_id')||'';
-  const payload={
-    studentId:sid,studentName:s.name,admissionNumber:s.admissionNumber||'',
-    grade,
-    stream:currentUser?.role==='teacher'?(currentUser.stream||''):(streamsEnabled&&gradeHasStreams?(el('selStream')?.value||''):''),
-    term,year,exam:catKey,schoolId:_sid,
-    teacherId:currentUser?.uid||'',teacherName:currentUser?.fullName||'',
-    ...d,updatedAt:firebase.firestore.FieldValue.serverTimestamp()
-  };
-  try{
-    const ex=savedMap[sid];
-    if(ex){
-      await db.collection('results').doc(ex.id).update(payload);
-      savedMap[sid]={...ex,...payload};
-    }else{
-      payload.createdAt=firebase.firestore.FieldValue.serverTimestamp();
-      const ref=await db.collection('results').add(payload);
-      savedMap[sid]={id:ref.id,...payload};
-      el('pilSv').textContent=++savedCount;
-    }
-    const ck=_cacheKey(grade,el('selStream')?.value||currentUser?.stream||'',term,year,catKey,_sid);
-    _cacheUpdateSave(ck,sid,savedMap[sid]);
-    el(`tr-${sid}`)?.classList.add('saved');
-    const actEl=el(`act_${sid}`);
-    if(actEl&&!window._isSenior)actEl.innerHTML=`<span class="sv-done">✓</span>`;
-    else if(actEl&&window._isSenior){
-      const saveBtn=actEl.querySelector('.sv-btn:last-child');
-      if(saveBtn)saveBtn.outerHTML=`<span class="sv-done" style="display:block;text-align:center">✓ saved</span>`;
-    }
-    clearDraft(sid);_pendingSync.delete(sid);
-    toast(`Saved: ${s.name}`);
-  }catch(e){
-    toast(`Error: ${e.message}`,'err');
-    if(btn){btn.disabled=false;btn.textContent='Save';}
-  }
-};
-
-// ══════════════════════════════════════════════
-// SAVE ALL
-// ══════════════════════════════════════════════
-window.saveAll=async function(){
-  if(!students.length){toast('Load students first','err');return;}
-  let done=0,skip=0;
-  for(const s of students){
-    const d=collectRow(s.id);
-    if(d.overallAvg>0){await saveRow(s.id);done++;}else skip++;
-  }
-  toast(`${done} saved${skip?` · ${skip} skipped`:''}`);
-};
+function closeStreamSuggestions(){setTimeout(()=>el('streamSuggestions').classList.remove('open'),150);}
+window.pickStream=function(s){el('fStream').value=s;el('streamSuggestions').classList.remove('open');};
 
 // ══════════════════════════════════════════════
 // TOAST
@@ -1163,50 +771,419 @@ function toast(msg,type='ok'){
   const t=document.createElement('div');t.className=`t ${type}`;
   t.innerHTML=`<span>${type==='ok'?'✅':type==='err'?'❌':'ℹ️'}</span>${msg}`;
   el('tc').appendChild(t);
-  setTimeout(()=>{t.style.animation='tout .25s ease forwards';setTimeout(()=>t.remove(),280);},2600);
+  setTimeout(()=>{t.style.animation='tout .28s ease forwards';setTimeout(()=>t.remove(),300);},2800);
+}
+function initials(n){return(n||'?').split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase();}
+
+// ══════════════════════════════════════════════
+// FORM VALIDATION & SUBMIT
+// ══════════════════════════════════════════════
+function validate(){
+  let ok=true;
+  const rules=[
+    {id:'fName',   errId:'err-name',   check:()=>val('fName').length>1},
+    {id:'fAdm',    errId:'err-adm',    check:()=>val('fAdm').length>0},
+    {id:'fGender', errId:'err-gender', check:()=>val('fGender')!==''},
+    {id:'fGrade',  errId:'err-grade',  check:()=>val('fGrade')!==''},
+    {id:'fYear',   errId:'err-year',   check:()=>Number(val('fYear'))>=2020},
+  ];
+  rules.forEach(r=>{const pass=r.check();el(r.id).classList.toggle('err',!pass);el(r.errId)?.classList.toggle('show',!pass);if(!pass)ok=false;});
+  // Senior subject validation
+  const grade=val('fGrade');
+  if(isSeniorGrade(grade)){
+    const selected=getSelectedSubjects('formSubjGrid');
+    const subjErr=el('err-subjects');
+    if(!selected.length){subjErr.classList.add('show');ok=false;}
+    else subjErr.classList.remove('show');
+  }
+  return ok;
+}
+
+el('admForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  if(!validate())return;
+  const admNo=val('fAdm').toUpperCase();
+  const dup=allStudents.find(s=>s.admissionNumber.toUpperCase()===admNo);
+  if(dup){el('fAdm').classList.add('err');el('err-adm').textContent=`Adm no. ${admNo} already assigned to ${dup.name}`;el('err-adm').classList.add('show');toast(`Duplicate admission number: ${admNo}`,'err');return;}
+  const btn=el('submitBtn');btn.innerHTML='<div class="spin"></div> Saving…';btn.disabled=true;
+  const grade=val('fGrade');
+  const streamNorm=streamsEnabled?val('fStream').trim().replace(/^\w/,c=>c.toUpperCase()):'';
+  // Collect senior subjects
+  const subjects=isSeniorGrade(grade)?getSelectedSubjects('formSubjGrid'):[];
+  await _waitAuth();
+  const schoolId=_schoolId;
+  if(!schoolId){toast('Not authenticated','err');btn.innerHTML='✅ Register Student';btn.disabled=false;return;}
+  const data={
+    name:val('fName').trim().replace(/\s+/g,' '),
+    admissionNumber:admNo,gender:val('fGender'),grade,
+    stream:streamNorm||null,year:val('fYear'),
+    parentName:val('fParent'),parentPhone:val('fPhone'),
+    schoolId,
+    // Store subjects array for senior students; empty array for others
+    subjects,
+    createdAt:firebase.firestore.FieldValue.serverTimestamp(),
+    updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
+  };
+  try{
+    await db.collection('students').add(data);
+    toast(`${data.name} registered${subjects.length?' with '+subjects.length+' subjects':''}`);
+    resetForm();
+    await loadStudents(true);
+  }catch(err){toast('Error saving: '+err.message,'err');}
+  btn.innerHTML='✅ Register Student';btn.disabled=false;
+});
+
+window.resetForm=function(){
+  el('admForm').reset();el('fYear').value='2026';
+  el('subjectSection').style.display='none';
+  el('formSubjGrid').innerHTML='';
+  if(!streamsEnabled){el('fStream').disabled=true;el('fStream').value='';}
+  document.querySelectorAll('.fi.err').forEach(x=>x.classList.remove('err','ok'));
+  document.querySelectorAll('.field-err.show').forEach(x=>x.classList.remove('show'));
+};
+
+// ══════════════════════════════════════════════
+// LOAD STUDENTS
+// ══════════════════════════════════════════════
+async function loadStudents(forceRefresh=false){
+  const schoolId=await _getSchoolId();
+  if(!schoolId){el('studentTable').innerHTML=`<tr><td colspan="10"><div class="empty"><div class="ei">🔒</div><p>Not logged in</p></div></td></tr>`;return;}
+  if(!forceRefresh){const cached=loadFromCache();if(cached){allStudents=cached;buildStreamList();updateStats();filterTable();updatePromoQuickStats();updateCacheIndicator();return;}}
+  el('studentTable').innerHTML=`<tr><td colspan="10"><div class="empty"><div class="ei">⏳</div><p>Loading…</p></div></td></tr>`;
+  try{
+    const snap=await db.collection('students').where('schoolId','==',schoolId).get();
+    allStudents=[];snap.forEach(d=>allStudents.push({id:d.id,...d.data()}));
+    allStudents.sort((a,b)=>(b.createdAt?.toDate?.()?.getTime()||0)-(a.createdAt?.toDate?.()?.getTime()||0));
+    saveToCache(allStudents);buildStreamList();updateStats();filterTable();updatePromoQuickStats();updateCacheIndicator();
+  }catch(e){
+    el('studentTable').innerHTML=`<tr><td colspan="10"><div class="empty"><div class="ei">❌</div><p>${e.message}</p></div></td></tr>`;
+    toast('Failed to load students: '+e.message,'err');
+  }
+}
+window.refreshData=function(){loadStudents(true);toast('Refreshing data…','info');};
+
+// ══════════════════════════════════════════════
+// STATS & TABLE
+// ══════════════════════════════════════════════
+function updateStats(){
+  el('stTotal').textContent=allStudents.length;
+  el('stMale').textContent=allStudents.filter(s=>s.gender==='Male').length;
+  el('stFemale').textContent=allStudents.filter(s=>s.gender==='Female').length;
+  [1,2,3,4,5,6,7,8,9,10,11,12].forEach(n=>{const e=el('stG'+n);if(e)e.textContent=allStudents.filter(s=>s.grade==='Grade '+n).length;});
+}
+
+window.filterTable=function(){
+  const q=el('searchQ').value.toLowerCase(),grade=el('filterGrade').value,stream=el('filterStream').value,gender=el('filterGender').value;
+  visStudents=allStudents.filter(s=>(!q||s.name.toLowerCase().includes(q)||(s.admissionNumber||'').toLowerCase().includes(q))&&(!grade||s.grade===grade)&&(!stream||s.stream===stream)&&(!gender||s.gender===gender));
+  el('countLabel').textContent=`${visStudents.length} of ${allStudents.length} students`;
+  renderTable();
+};
+
+function renderTable(){
+  const tbody=el('studentTable');
+  if(!visStudents.length){tbody.innerHTML=`<tr><td colspan="10"><div class="empty"><div class="ei">👥</div><p>No students found</p></div></td></tr>`;return;}
+  tbody.innerHTML=visStudents.map((s,i)=>{
+    const isSenior=isSeniorGrade(s.grade);
+    const subjCount=Array.isArray(s.subjects)?s.subjects.length:0;
+    const subjCell=isSenior
+      ?`<span class="tag tag-senior" title="${(s.subjects||[]).join(', ') || 'None assigned'}" style="cursor:help">📚 ${subjCount} subj${subjCount!==1?'s':''}</span>`
+      :`<span style="color:var(--text3);font-size:11px">—</span>`;
+    return`<tr id="row-${s.id}">
+      <td style="color:var(--text3);font-size:11px;font-weight:700">${i+1}</td>
+      <td><div class="sc"><div class="av${s.gender==='Female'?' f':''}">${initials(s.name)}</div><div><div class="sn">${s.name}</div></div></div></td>
+      <td><code style="background:var(--surf2);padding:2px 7px;border-radius:4px;font-size:11px">${s.admissionNumber}</code></td>
+      <td><span class="tag ${s.gender==='Female'?'tag-f':'tag-m'}">${s.gender}</span></td>
+      <td><span class="tag tag-grade">${s.grade}</span></td>
+      <td><span class="tag tag-stream">${s.stream||'—'}</span></td>
+      <td>${s.year||'—'}</td>
+      <td>${subjCell}</td>
+      <td style="font-size:12px;color:var(--text2)">${s.parentName||'<span style="color:var(--text3)">—</span>'}${s.parentPhone?`<br><code style="font-size:10.5px">${s.parentPhone}</code>`:''}</td>
+      <td style="text-align:center;white-space:nowrap">
+        <button class="btn btn-outline btn-sm" onclick="openEdit('${s.id}')" title="Edit">✏️</button>
+        <button class="btn btn-danger btn-sm" onclick="openDel('${s.id}','${s.name.replace(/'/g,"\\'")}') " title="Delete" style="margin-left:4px">🗑️</button>
+      </td>
+    </tr>`;
+  }).join('');
 }
 
 // ══════════════════════════════════════════════
-// DARK MODE & LOGOUT
+// DELETE
 // ══════════════════════════════════════════════
-document.getElementById('themeBtn').addEventListener('click',function(){
-  document.body.classList.toggle('dark');
-  this.textContent=document.body.classList.contains('dark')?'☀️':'🌙';
+window.openDel=function(id,name){pendingDelId=id;el('delName').textContent=name;el('delModal').classList.add('open');};
+window.closeDelModal=function(){el('delModal').classList.remove('open');pendingDelId=null;};
+el('confirmDelBtn').addEventListener('click',async()=>{
+  if(!pendingDelId)return;
+  try{
+    await db.collection('students').doc(pendingDelId).delete();
+    allStudents=allStudents.filter(s=>s.id!==pendingDelId);
+    saveToCache(allStudents);buildStreamList();updateStats();filterTable();updatePromoQuickStats();
+    toast('Student deleted');
+  }catch(e){toast('Error: '+e.message,'err');}
+  closeDelModal();
+});
+
+// ══════════════════════════════════════════════
+// EDIT
+// ══════════════════════════════════════════════
+window.openEdit=function(id){
+  const s=allStudents.find(x=>x.id===id);if(!s)return;
+  editId=id;
+  el('editName').value=s.name;el('editAdm').value=s.admissionNumber;el('editGender').value=s.gender;
+  el('editGrade').value=s.grade;el('editStream').value=s.stream||'';el('editYear').value=s.year||'2026';
+  el('editParentName').value  = s.parentName  || '';
+  el('editParentPhone').value = s.parentPhone || '';
+  // Senior subject picker
+  const section=el('editSubjectSection');
+  if(isSeniorGrade(s.grade)){
+    section.style.display='';
+    buildSubjectPickerGrid('editSubjGrid','editSubjCount', Array.isArray(s.subjects)?s.subjects:[]);
+  }else{
+    section.style.display='none';
+    el('editSubjGrid').innerHTML='';
+  }
+  el('editModal').classList.add('open');
+};
+
+window.closeEditModal=function(){el('editModal').classList.remove('open');editId=null;};
+
+window.saveEdit=async function(){
+  if(!editId)return;
+  const name=el('editName').value.trim(),admNo=el('editAdm').value.trim().toUpperCase();
+  const gender=el('editGender').value,grade=el('editGrade').value;
+  let stream=el('editStream').value.trim();const year=el('editYear').value;
+  if(!name||!admNo||!grade){toast('Fill all required fields','err');return;}
+  if(streamsEnabled)stream=stream.replace(/^\w/,c=>c.toUpperCase());else stream=null;
+  const dup=allStudents.find(s=>s.id!==editId&&s.admissionNumber.toUpperCase()===admNo);
+  if(dup){toast(`Adm no. ${admNo} belongs to ${dup.name}`,'err');return;}
+  // Collect senior subjects
+  const subjects=isSeniorGrade(grade)?getSelectedSubjects('editSubjGrid'):[];
+  if(isSeniorGrade(grade)&&!subjects.length){toast('Please select at least one subject for senior students','err');return;}
+  try{
+    await _waitAuth();
+    await db.collection('students').doc(editId).update({
+      ...(_schoolId?{schoolId:_schoolId}:{}),
+      name,admissionNumber:admNo,gender,grade,stream,year,subjects,
+      parentName:  el('editParentName').value.trim()  || null,
+      parentPhone: el('editParentPhone').value.trim() || null,
+      updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+    });
+    const idx=allStudents.findIndex(s=>s.id===editId);
+    if(idx>-1)allStudents[idx]={
+      ...allStudents[idx],
+      name,admissionNumber:admNo,gender,grade,stream,year,subjects,
+      parentName:  el('editParentName').value.trim()  || null,
+      parentPhone: el('editParentPhone').value.trim() || null,
+    };
+    saveToCache(allStudents);buildStreamList();updateStats();filterTable();updatePromoQuickStats();
+    toast(`${name} updated${subjects.length?' · '+subjects.length+' subjects':''}`);
+    closeEditModal();
+  }catch(e){toast('Error: '+e.message,'err');}
+};
+
+// ══════════════════════════════════════════════
+// EXPORT CSV
+// ══════════════════════════════════════════════
+window.exportCSV=function(){
+  if(!allStudents.length){toast('No students to export','err');return;}
+  const rows=[['#','Name','Admission No','Gender','Grade','Stream','Year','Subjects','Parent Name','Parent Phone']];
+  allStudents.forEach((s,i)=>rows.push([i+1,s.name,s.admissionNumber,s.gender,s.grade,s.stream||'',s.year||'',(s.subjects||[]).join(';'),s.parentName||'',s.parentPhone||'']));
+  const csv=rows.map(r=>r.map(v=>`"${v}"`).join(',')).join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download=`Students_${new Date().toISOString().slice(0,10)}.csv`;a.click();toast('CSV exported');
+};
+
+// ══════════════════════════════════════════════
+// NEMIS
+// ══════════════════════════════════════════════
+window.goToNemis=async function(){
+  const btn=el('nemisBtn');const orig=btn.innerHTML;btn.innerHTML='<div class="spin"></div>';btn.disabled=true;
+  try{
+    if(!_schoolId){window.location.href='nemis-gate.html';return;}
+    const snap=await db.collection('settings').doc(_schoolId).get();const data=snap.data()||{};
+    const exp=data.subscriptionExpiry?.toDate?.();
+    window.location.href=(data.subscriptionActive===true&&exp&&new Date()<exp)?'nemis.html':'nemis-gate.html';
+  }catch(e){window.location.href='nemis-gate.html';}
+  btn.innerHTML=orig;btn.disabled=false;
+};
+
+// ══════════════════════════════════════════════
+// DARK MODE
+// ══════════════════════════════════════════════
+el('themeBtn').addEventListener('click',function(){
+  document.body.classList.toggle('dark');this.textContent=document.body.classList.contains('dark')?'☀️':'🌙';
   localStorage.setItem('cbe_theme',document.body.classList.contains('dark')?'dark':'light');
 });
 if(localStorage.getItem('cbe_theme')==='dark'){document.body.classList.add('dark');el('themeBtn').textContent='☀️';}
 
-async function doLogout(){
-  try{['cbe_streams','cbe_streams_ts'].forEach(k=>localStorage.removeItem(k));await auth.signOut();window.location.href='login';}
-  catch(e){toast('Sign out failed: '+e.message,'err');}
+// ══════════════════════════════════════════════
+// PROMOTION FEATURE
+// ══════════════════════════════════════════════
+const GRADES=['Grade 1','Grade 2','Grade 3','Grade 4','Grade 5','Grade 6','Grade 7','Grade 8','Grade 9','Grade 10','Grade 11','Grade 12'];
+const NEXT_GRADE={'Grade 1':'Grade 2','Grade 2':'Grade 3','Grade 3':'Grade 4','Grade 4':'Grade 5','Grade 5':'Grade 6','Grade 6':'Grade 7','Grade 7':'Grade 8','Grade 8':'Grade 9','Grade 9':'Grade 10','Grade 10':'Grade 11','Grade 11':'Grade 12','Grade 12':null};
+
+function updatePromoQuickStats(){
+  const container=el('promoQuickStats');if(!container)return;
+  container.innerHTML=GRADES.map(g=>{
+    const count=allStudents.filter(s=>s.grade===g).length,next=NEXT_GRADE[g],color=count===0?'var(--text3)':'var(--text)';
+    return`<div style="border:1.5px solid var(--border);border-radius:var(--r2);padding:10px 12px;cursor:pointer;transition:all .15s"
+      onmouseover="this.style.borderColor='var(--accent)';this.style.background='var(--alight)'"
+      onmouseout="this.style.borderColor='var(--border)';this.style.background=''"
+      onclick="openPromoModal('${g}')">
+      <div style="font-size:11px;font-weight:700;color:var(--text2)">${g}</div>
+      <div style="font-size:22px;font-weight:800;color:${color};margin:2px 0">${count}</div>
+      <div style="font-size:10.5px;color:var(--text3)">${next?'→ '+next:'→ Graduate'}</div>
+    </div>`;
+  }).join('');
 }
 
-window.addEventListener('beforeprint',function(e){if(currentUser?.role==='teacher'){e.preventDefault();toast('Printing restricted to admin/secretary','err');}});
+window.openPromoModal=function(preselect){
+  promoSelectedGrade=preselect||null;promoDecisions={};
+  goPromoStep1();el('promoModal').classList.add('open');
+};
+window.closePromoModal=function(){el('promoModal').classList.remove('open');promoSelectedGrade=null;promoDecisions={};};
 
-// ══════════════════════════════════════════════
-// SESSION TIMEOUT
-// ══════════════════════════════════════════════
-const SESSION_TIMEOUT_MS=30*60*1000,SESSION_WARNING_MS=2*60*1000;
-let _idleTimer=null,_warnTimer=null,_warnEl=null;
-function createWarnBanner(){
-  if(document.getElementById('_sessionWarn'))return;
-  const d=document.createElement('div');d.id='_sessionWarn';
-  d.style.cssText='display:none;position:fixed;top:0;left:0;right:0;z-index:9999;background:#7f1d1d;color:#fef2f2;font-family:inherit;padding:10px 20px;font-size:13px;font-weight:600;align-items:center;justify-content:space-between;gap:12px;border-bottom:2px solid #ef4444';
-  d.innerHTML=`<span>⚠️ Session expires in <span id="_sessionCountdown">2:00</span> — inactivity.</span><div style="display:flex;gap:8px"><button onclick="_keepAlive()" style="padding:4px 12px;background:#059669;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:700;font-size:12px">Stay Logged In</button><button onclick="doLogout()" style="padding:4px 12px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:4px;cursor:pointer;font-size:12px">Sign Out Now</button></div>`;
-  document.body.prepend(d);_warnEl=d;
+function goPromoStep1(){
+  el('promoStep1').style.display='';el('promoStep2').style.display='none';el('promoStep3').style.display='none';
+  el('promoNextBtn').style.display='';el('promoConfirmBtn').style.display='none';el('promoBackBtn').style.display='none';
+  el('promoGradeGrid').innerHTML=GRADES.map(g=>{
+    const cnt=allStudents.filter(s=>s.grade===g).length,next=NEXT_GRADE[g],isSel=g===promoSelectedGrade;
+    return`<div class="promo-grade-card${isSel?' selected':''}" onclick="selectPromoGrade('${g}')">
+      ${isSel?'<div class="promo-badge">✓</div>':''}
+      <div class="pgc-label">${g}</div><div class="pgc-count">${cnt}</div>
+      <div class="pgc-sub">${g==='Grade 12'?'Graduate / Retain':'→ '+(next||'')}</div>
+    </div>`;
+  }).join('');
+  el('promoNextBtn').disabled=!promoSelectedGrade;
 }
-function _resetIdleTimer(){
-  clearTimeout(_idleTimer);clearTimeout(_warnTimer);if(_warnEl)_warnEl.style.display='none';
-  _warnTimer=setTimeout(()=>{
-    createWarnBanner();_warnEl.style.display='flex';
-    let secs=SESSION_WARNING_MS/1000;
-    const tick=setInterval(()=>{secs--;const e=document.getElementById('_sessionCountdown');if(e)e.textContent=Math.floor(secs/60)+':'+(secs%60).toString().padStart(2,'0');if(secs<=0)clearInterval(tick);},1000);
-  },SESSION_TIMEOUT_MS-SESSION_WARNING_MS);
-  _idleTimer=setTimeout(doLogout,SESSION_TIMEOUT_MS);
+
+window.selectPromoGrade=function(grade){
+  promoSelectedGrade=grade;
+  document.querySelectorAll('.promo-grade-card').forEach((card,i)=>{
+    const g=GRADES[i];card.classList.toggle('selected',g===grade);
+    let badge=card.querySelector('.promo-badge');
+    if(g===grade&&!badge){badge=document.createElement('div');badge.className='promo-badge';badge.textContent='✓';card.prepend(badge);}
+    else if(g!==grade&&badge)badge.remove();
+  });
+  el('promoNextBtn').disabled=false;
+};
+
+function goPromoStep2(){
+  if(!promoSelectedGrade)return;
+  promoGradeStudents=allStudents.filter(s=>s.grade===promoSelectedGrade);
+  promoDecisions={};
+  const isG12=promoSelectedGrade==='Grade 12';
+  promoGradeStudents.forEach(s=>{promoDecisions[s.id]=isG12?'graduate':'promote';});
+  el('promoStep1').style.display='none';el('promoStep2').style.display='';el('promoStep3').style.display='none';
+  el('promoNextBtn').style.display='none';el('promoConfirmBtn').style.display='';el('promoBackBtn').style.display='';
+  el('promoGradeLabel').textContent=promoSelectedGrade+(NEXT_GRADE[promoSelectedGrade]?' → '+NEXT_GRADE[promoSelectedGrade]:' → Graduate');
+  el('promoCountLabel').textContent=promoGradeStudents.length+' students';
+  el('promoTargetYear').value=new Date().getFullYear();
+  el('promoSearch').value='';
+  renderPromoList();updatePromoSummary();
 }
-window._keepAlive=function(){_resetIdleTimer();};
-['mousemove','keydown','click','touchstart','scroll'].forEach(evt=>document.addEventListener(evt,_resetIdleTimer,{passive:true}));
-_resetIdleTimer();
+
+window.renderPromoList=function(){
+  const q=(el('promoSearch')?.value||'').toLowerCase();
+  const filtered=promoGradeStudents.filter(s=>!q||s.name.toLowerCase().includes(q)||(s.admissionNumber||'').toLowerCase().includes(q));
+  const isG12=promoSelectedGrade==='Grade 12',next=NEXT_GRADE[promoSelectedGrade];
+  el('promoStudentList').innerHTML=filtered.length?filtered.map(s=>{
+    const decision=promoDecisions[s.id]||(isG12?'graduate':'promote'),checked=decision!=='skip';
+    return`<div class="promo-student-row">
+      <input type="checkbox" ${checked?'checked':''} onchange="togglePromoStudent('${s.id}',this.checked)">
+      <div class="psr-info"><div class="psr-name">${s.name}</div><div class="psr-meta">${s.admissionNumber} · ${s.stream||'No stream'}</div></div>
+      <div class="psr-action">
+        <select onchange="setPromoDecision('${s.id}',this.value)" ${!checked?'disabled':''}>
+          ${!isG12?`<option value="promote" ${decision==='promote'?'selected':''}>✅ Promote to ${next}</option>`:''}
+          <option value="retain" ${decision==='retain'?'selected':''}>🔁 Retain (repeat)</option>
+          ${isG12?`<option value="graduate" ${decision==='graduate'?'selected':''}>🎓 Graduate</option>`:''}
+        </select>
+      </div>
+    </div>`;
+  }).join(''):`<div style="padding:20px;text-align:center;color:var(--text3);font-size:13px">No students match your search</div>`;
+};
+
+window.togglePromoStudent=function(id,checked){
+  if(!checked){promoDecisions[id]='skip';}
+  else{promoDecisions[id]=promoSelectedGrade==='Grade 12'?'graduate':'promote';}
+  const row=document.querySelector(`input[onchange*="${id}"]`)?.closest('.promo-student-row');
+  if(row){const sel=row.querySelector('select');if(sel){sel.disabled=!checked;sel.value=promoDecisions[id]||'promote';}}
+  updatePromoSummary();
+};
+window.setPromoDecision=function(id,decision){promoDecisions[id]=decision;updatePromoSummary();};
+window.promoSelectAll=function(){const isG12=promoSelectedGrade==='Grade 12';promoGradeStudents.forEach(s=>{promoDecisions[s.id]=isG12?'graduate':'promote';});renderPromoList();updatePromoSummary();};
+window.promoDeselectAll=function(){promoGradeStudents.forEach(s=>{promoDecisions[s.id]='skip';});renderPromoList();updatePromoSummary();};
+
+function updatePromoSummary(){
+  const promoted=promoGradeStudents.filter(s=>promoDecisions[s.id]==='promote').length;
+  const retained=promoGradeStudents.filter(s=>promoDecisions[s.id]==='retain').length;
+  const graduated=promoGradeStudents.filter(s=>promoDecisions[s.id]==='graduate').length;
+  el('psSumPromoted').textContent=promoted;el('psSumRetained').textContent=retained;el('psSumGraduated').textContent=graduated;
+  el('promoConfirmBtn').disabled=(promoted+retained+graduated)===0;
+}
+
+window.applyPromotions=async function(){
+  const targetYear=el('promoTargetYear').value;
+  if(!targetYear||Number(targetYear)<2020){toast('Please enter a valid target year','err');return;}
+  const toProcess=promoGradeStudents.filter(s=>promoDecisions[s.id]&&promoDecisions[s.id]!=='skip');
+  if(!toProcess.length){toast('No students selected','err');return;}
+  el('promoStep2').style.display='none';el('promoStep3').style.display='';
+  el('promoBackBtn').style.display='none';el('promoConfirmBtn').style.display='none';
+  el('promoFooter').querySelector('.btn-outline').disabled=true;
+  let done=0;const logEntries=[],nextGrade=NEXT_GRADE[promoSelectedGrade],batch=db.batch();
+  for(const s of toProcess){
+    const decision=promoDecisions[s.id];
+    if(decision==='promote'){batch.update(db.collection('students').doc(s.id),{grade:nextGrade,year:targetYear,retained:false,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});logEntries.push({name:s.name,adm:s.admissionNumber,action:'promote',from:s.grade,to:nextGrade,year:targetYear});}
+    else if(decision==='retain'){batch.update(db.collection('students').doc(s.id),{grade:s.grade,year:targetYear,retained:true,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});logEntries.push({name:s.name,adm:s.admissionNumber,action:'retain',from:s.grade,to:s.grade,year:targetYear});}
+    else if(decision==='graduate'){batch.update(db.collection('students').doc(s.id),{grade:s.grade,year:targetYear,graduated:true,graduatedAt:firebase.firestore.FieldValue.serverTimestamp(),updatedAt:firebase.firestore.FieldValue.serverTimestamp()});logEntries.push({name:s.name,adm:s.admissionNumber,action:'graduate',from:s.grade,to:'(Graduated)',year:targetYear});}
+    done++;
+    el('promoProgressBar').style.width=Math.round((done/toProcess.length)*100)+'%';
+    el('promoProgressLabel').textContent=`${done} / ${toProcess.length} students updated`;
+  }
+  try{
+    await batch.commit();
+    await db.collection('promotionLogs').add({schoolId:_schoolId,grade:promoSelectedGrade,targetYear,timestamp:firebase.firestore.FieldValue.serverTimestamp(),entries:logEntries,promotedCount:logEntries.filter(e=>e.action==='promote').length,retainedCount:logEntries.filter(e=>e.action==='retain').length,graduatedCount:logEntries.filter(e=>e.action==='graduate').length});
+    toProcess.forEach(s=>{const decision=promoDecisions[s.id],idx=allStudents.findIndex(x=>x.id===s.id);if(idx>-1){if(decision==='promote')allStudents[idx]={...allStudents[idx],grade:nextGrade,year:targetYear,retained:false};else if(decision==='retain')allStudents[idx]={...allStudents[idx],year:targetYear,retained:true};else if(decision==='graduate')allStudents[idx]={...allStudents[idx],year:targetYear,graduated:true};}});
+    saveToCache(allStudents);buildStreamList();updateStats();filterTable();updatePromoQuickStats();
+    const p=logEntries.filter(e=>e.action==='promote').length,r=logEntries.filter(e=>e.action==='retain').length,g=logEntries.filter(e=>e.action==='graduate').length;
+    toast(`Done! ${p} promoted, ${r} retained, ${g} graduated`);
+    closePromoModal();
+  }catch(e){
+    toast('Error applying promotions: '+e.message,'err');
+    el('promoStep3').style.display='none';el('promoStep2').style.display='';
+    el('promoConfirmBtn').style.display='';el('promoBackBtn').style.display='';
+    el('promoFooter').querySelector('.btn-outline').disabled=false;
+  }
+};
+
+window.openHistoryModal=async function(){
+  el('historyModal').classList.add('open');
+  el('historyBody').innerHTML='<div style="text-align:center;padding:30px"><div class="spin" style="margin:0 auto"></div></div>';
+  try{
+    const snap=await db.collection('promotionLogs').where('schoolId','==',_schoolId).orderBy('timestamp','desc').limit(50).get();
+    if(snap.empty){el('historyBody').innerHTML='<div class="empty"><div class="ei">📋</div><p>No promotion records yet</p></div>';return;}
+    let html='';
+    snap.forEach(d=>{
+      const log=d.data(),ts=log.timestamp?.toDate?.(),dateStr=ts?ts.toLocaleDateString('en-KE',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):'Unknown date';
+      html+=`<div style="padding:12px 0;border-bottom:1px solid var(--border)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div><strong style="font-size:13px">${log.grade}</strong><span style="font-size:11px;color:var(--text3);margin-left:8px">Year ${log.targetYear}</span></div>
+          <span style="font-size:11px;color:var(--text3)">${dateStr}</span>
+        </div>
+        <div style="display:flex;gap:12px;margin-top:6px;font-size:12px">
+          <span style="color:var(--green)">✅ ${log.promotedCount||0} promoted</span>
+          <span style="color:var(--amber)">🔁 ${log.retainedCount||0} retained</span>
+          <span style="color:var(--accent)">🎓 ${log.graduatedCount||0} graduated</span>
+        </div>
+        <details style="margin-top:8px"><summary style="font-size:11.5px;color:var(--text3);cursor:pointer">View details (${(log.entries||[]).length} students)</summary>
+        <div style="margin-top:8px;font-size:11.5px;color:var(--text2);line-height:1.9">
+          ${(log.entries||[]).map(e=>`<div style="display:flex;gap:6px;align-items:center"><span>${e.action==='promote'?'✅':e.action==='retain'?'🔁':'🎓'}</span><span>${e.name}</span><span style="color:var(--text3)">${e.adm}</span><span style="color:var(--text3)">→ ${e.to}</span></div>`).join('')}
+        </div></details>
+      </div>`;
+    });
+    el('historyBody').innerHTML=html;
+  }catch(e){el('historyBody').innerHTML=`<div class="empty"><div class="ei">❌</div><p>${e.message}</p></div>`;}
+};
 </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"9a6fdd38ee454483a9aa3baf59e5691f","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
