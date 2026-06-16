@@ -181,7 +181,7 @@ window.CBE_SMS = (() => {
         const phone = normalisePhone(r.parentPhone);
         const atRes = await sendSMS(creds.atApiKey, creds.atUsername, phone, message, senderId);
         const msgRes = atRes?.SMSMessageData?.Recipients?.[0];
-        const status = msgRes?.status === 'Success' ? 'sent' : 'failed';
+        const status = _isSuccessStatus(msgRes?.status) ? 'sent' : 'failed';
         const entry  = { ...r, status, atResponse: msgRes, message, phone };
         results.push(entry);
         await _logSMS(schoolId, entry, term, year);
@@ -1239,7 +1239,11 @@ window.CBE_SMS = (() => {
   // ══════════════════════════════════════════════════════════════
   //  UTILITIES
   // ══════════════════════════════════════════════════════════════
-
+  function _isSuccessStatus(status) {
+  if (!status) return false;
+  const s = String(status).toLowerCase();
+  return s.includes('success') || s.includes('sent') || s.includes('submitted') || s.includes('queued');
+  }
   function normalisePhone(raw) {
     let p = (raw || '').replace(/[\s\-]/g, '');
     if (p.startsWith('+254')) return p;
