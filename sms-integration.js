@@ -156,7 +156,41 @@ function _fmtScore(v) {
   // ══════════════════════════════════════════════════════════════
   //  4. BULK SENDER
   // ══════════════════════════════════════════════════════════════
+// Add near other utilities
+function _isInsufficientBalance(entry) {
+  const reason = (entry?.reason || entry?.atResponse?.status || '').toLowerCase();
+  return reason.includes('insufficientbalance') || reason.includes('insufficient balance') || reason.includes('user is not active');
+}
 
+function _statusNote(entry) {
+  const s = entry.status;
+  if (s === 'sent') return 'Delivered';
+  if (s === 'skipped') return 'No phone';
+  const raw = entry.reason || entry.atResponse?.status || s;
+  if (_isInsufficientBalance(entry)) return 'No AT balance';
+  return _esc(String(raw)).slice(0, 40); // keep log row readable
+}
+async function _wakeProxy(onStatus) {
+  onStatus?.('Waking up SMS server…');
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  try {
+    const r = await fetch(SMS_PROXY_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ apiKey: '__wake__', username: '__wake__', to: '+2540', message: 'wake' }),
+      signal: controller.signal,
+    });
+    clearTimeout(timer);
+    // Any response (even 400/401) means the server is awake and reachable
+    onStatus?.('Server ready.');
+    return true;
+  } catch (e) {
+    clearTimeout(timer);
+    onStatus?.(e.name === 'AbortError' ? 'Server still waking up — retrying…' : 'Server unreachable.');
+    return false;
+  }
+}
   async function sendBulkResults(schoolId, recipients, opts = {}) {
     const creds = await loadATCredentials(schoolId);
     if (!creds)            throw new Error('SMS not configured — go to Settings → SMS Setup');
@@ -186,16 +220,12 @@ function _fmtScore(v) {
 
       try {
         const phone = normalisePhone(r.parentPhone);
-        const atRes = await sendSMS(creds.atApiKey, creds.atUsername, phone, message, senderId);
-        const msgRes = atRes?.SMSMessageData?.Recipients?.[0];
-        const status = _isSuccessStatus(msgRes?.status) ? 'sent' : 'failed';
-        const entry  = { ...r, status, atResponse: msgRes, message, phone };
-        results.push(entry);
-        await _logSMS(schoolId, entry, term, year);
-      } catch (e) {
-        const entry = { ...r, status: 'error', reason: e.message };
-        results.push(entry);
-        await _logSMS(schoolId, entry, term, year);
+const atRes = await sendSMS(creds.atApiKey, creds.atUsername, phone, message, senderId);
+const msgRes = atRes?.SMSMessageData?.Recipients?.[0];
+const status = _isSuccessStatus(msgRes?.status) ? 'sent' : 'failed';
+const entry  = { ...r, status, atResponse: msgRes, message, phone, reason: msgRes?.status || '' };
+results.push(entry);
+await _logSMS(schoolId, entry, term, year);
       }
 
       onProgress?.(i + 1, recipients.length, results[results.length - 1]);
@@ -983,68 +1013,93 @@ function _fmtScore(v) {
     }
   }
 
-  async function _startSend(schoolId, schoolName, term, year, senderId) {
-    const modal      = document.getElementById('cbeSmsModal');
-    const recipients = modal?._smsRecipients || [];
+async function _startSend(schoolId, schoolName, term, year, senderId) {
+  const modal      = document.getElementById('cbeSmsModal');
+  const recipients = modal?._smsRecipients || [];
 
-    const sendBtn   = document.getElementById('_smsSendBtn');
-    const cancelBtn = document.getElementById('_smsCancelBtn');
-    const progress  = document.getElementById('_smsProgress');
-    const progFill  = document.getElementById('_smsProgFill');
-    const progLabel = document.getElementById('_smsProgLabel');
-    const logList   = document.getElementById('_smsLogList');
+  const sendBtn   = document.getElementById('_smsSendBtn');
+  const cancelBtn = document.getElementById('_smsCancelBtn');
+  const progress  = document.getElementById('_smsProgress');
+  const progFill  = document.getElementById('_smsProgFill');
+  const progLabel = document.getElementById('_smsProgLabel');
+  const logList   = document.getElementById('_smsLogList');
 
-    if (sendBtn)   { sendBtn.disabled = true; sendBtn.textContent = '⏳ Sending…'; }
-    if (cancelBtn) { cancelBtn.disabled = true; }
-    if (progress)  { progress.style.display = 'block'; }
+  if (sendBtn)   { sendBtn.disabled = true; sendBtn.textContent = '⏳ Connecting…'; }
+  if (cancelBtn) { cancelBtn.disabled = true; }
+  if (progress)  { progress.style.display = 'block'; }
 
-    const summary = { sent: 0, failed: 0, skipped: 0, error: 0 };
-
-    try {
-      await sendBulkResults(schoolId, recipients, {
-        term, year, schoolName, senderId,
-        onProgress(done, total, last) {
-          const pct = Math.round((done / total) * 100);
-          if (progFill)  progFill.style.width  = pct + '%';
-          if (progLabel) progLabel.textContent  = `Sending ${done} of ${total}…`;
-
-          if (last) {
-            const s = last.status;
-            summary[s] = (summary[s] || 0) + 1;
-            const dot      = `<span class="_sms-dot ${s}"></span>`;
-            const name     = _esc(last.studentName || '—');
-            const phone    = _esc(last.phone || last.parentPhone || '—');
-            const note     = s === 'sent' ? 'Delivered'
-              : s === 'skipped' ? 'No phone'
-              : _esc(last.reason || s);
-            const noteColor = s === 'sent' ? '#059669' : s === 'skipped' ? '#d97706' : '#dc2626';
-            if (logList) {
-              logList.innerHTML += `
-                <div class="_sms-row">
-                  ${dot}
-                  <span style="flex:1;font-weight:600">${name}</span>
-                  <span style="color:#94a3b8">${phone}</span>
-                  <span style="color:${noteColor};font-weight:600">${note}</span>
-                </div>`;
-              logList.scrollTop = logList.scrollHeight;
-            }
-          }
-        },
-      });
-    } catch (e) {
-      if (progLabel) progLabel.textContent = '❌ ' + e.message;
-      if (sendBtn)   { sendBtn.disabled = false; sendBtn.textContent = '🔄 Retry'; }
-      if (cancelBtn) { cancelBtn.disabled = false; }
-      return;
-    }
-
-    if (progLabel) progLabel.innerHTML =
-      `✅ Done — <strong style="color:#059669">${summary.sent} sent</strong>` +
-      ` · <span style="color:#dc2626">${summary.failed + summary.error} failed</span>` +
-      ` · <span style="color:#d97706">${summary.skipped} skipped</span>`;
-    if (sendBtn)   { sendBtn.textContent = '✓ Done'; sendBtn.style.background = '#059669'; }
-    if (cancelBtn) { cancelBtn.disabled = false; cancelBtn.textContent = 'Close'; }
+  // ── Wake the server first ──
+  const awake = await _wakeProxy(msg => { if (progLabel) progLabel.textContent = msg; });
+  if (!awake) {
+    if (progLabel) progLabel.innerHTML = '❌ Could not reach SMS server. Wait 30s and try again.';
+    if (sendBtn)   { sendBtn.disabled = false; sendBtn.textContent = '🔄 Retry'; }
+    if (cancelBtn) { cancelBtn.disabled = false; }
+    return;
   }
+
+  if (sendBtn) sendBtn.textContent = '⏳ Sending…';
+  const summary = { sent: 0, failed: 0, skipped: 0, error: 0 };
+  let sawInsufficientBalance = false;
+
+  try {
+    await sendBulkResults(schoolId, recipients, {
+      term, year, schoolName, senderId,
+      onProgress(done, total, last) {
+        const pct = Math.round((done / total) * 100);
+        if (progFill)  progFill.style.width  = pct + '%';
+        if (progLabel) progLabel.textContent  = `Sending ${done} of ${total}…`;
+
+        if (last) {
+          const s = last.status;
+          summary[s] = (summary[s] || 0) + 1;
+          if (_isInsufficientBalance(last)) sawInsufficientBalance = true;
+
+          const dot      = `<span class="_sms-dot ${s}"></span>`;
+          const name     = _esc(last.studentName || '—');
+          const phone    = _esc(last.phone || last.parentPhone || '—');
+          const note     = _statusNote(last);
+          const noteColor = s === 'sent' ? '#059669' : s === 'skipped' ? '#d97706' : '#dc2626';
+          if (logList) {
+            logList.innerHTML += `
+              <div class="_sms-row">
+                ${dot}
+                <span style="flex:1;font-weight:600">${name}</span>
+                <span style="color:#94a3b8">${phone}</span>
+                <span style="color:${noteColor};font-weight:600">${note}</span>
+              </div>`;
+            logList.scrollTop = logList.scrollHeight;
+          }
+        }
+      },
+    });
+  } catch (e) {
+    if (progLabel) progLabel.textContent = '❌ ' + e.message;
+    if (sendBtn)   { sendBtn.disabled = false; sendBtn.textContent = '🔄 Retry'; }
+    if (cancelBtn) { cancelBtn.disabled = false; }
+    return;
+  }
+
+  if (progLabel) progLabel.innerHTML =
+    `✅ Done — <strong style="color:#059669">${summary.sent} sent</strong>` +
+    ` · <span style="color:#dc2626">${summary.failed + summary.error} failed</span>` +
+    ` · <span style="color:#d97706">${summary.skipped} skipped</span>`;
+
+  if (sawInsufficientBalance) {
+    const topupHtml = `
+      <div style="background:#fef2f2;border:1px solid #fecaca;border-left:3px solid #dc2626;
+        border-radius:7px;padding:10px 14px;font-size:12px;color:#991b1b;margin-top:10px;line-height:1.7">
+        💳 <strong>Insufficient AT balance.</strong> Some messages failed because your
+        Africa's Talking account is out of credit.<br>
+        <a href="https://account.africastalking.com/apps/sandbox/billing" target="_blank"
+          style="color:#1a56db;font-weight:700">Top up your AT account →</a>
+      </div>`;
+    if (logList) logList.insertAdjacentHTML('afterend', topupHtml);
+  }
+
+  if (sendBtn)   { sendBtn.textContent = '✓ Done'; sendBtn.style.background = '#059669'; }
+  if (cancelBtn) { cancelBtn.disabled = false; cancelBtn.textContent = 'Close'; }
+}
+  
 
   function _closeModal()      { _removeSendModal(); }
   function _removeSendModal() {
