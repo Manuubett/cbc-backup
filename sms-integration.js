@@ -1,28 +1,35 @@
-/**
- * CBE Mark Sheet — SMS Integration (v5 — Central Wallet)
+* CBE Mark Sheet — SMS Integration (v6 — Central Wallet + Announcements)
  * ───────────────────────────────────────────────────────
- * v5 CHANGES:
- *  - NEW: Wallet system — schools top up via M-Pesa, SMS deducted at KES 1/msg
- *  - NEW: openWalletModal(schoolId) — top-up UI with STK push + live balance
- *  - NEW: sendSchoolSMS() — sends via YOUR central AT key (no school AT creds needed)
- *  - NEW: sendBulkResults() now uses central wallet endpoint /api/sms/send-bulk-school
- *  - NEW: Balance check shown in openSendModal before sending
- *  - NEW: Low-balance banner + top-up shortcut inside send modal
- *  - Removed: per-school AT API key requirement for sending (still kept for legacy test modal)
- *  - All v4 features retained (standalone test modal, settings modal, etc.)
+ * v6 CHANGES:
+ *  - NEW: Announcements — send a custom, freeform SMS to any grade/stream,
+ *    independent of results (e.g. "school closes early Friday" to Grade 10).
+ *    Supports optional {studentName}/{grade}/{schoolName} placeholders.
+ *  - NEW: openAnnouncementModal(students, schoolId, {name, senderId}) — grade
+ *    + stream filters, live recipient count, live cost estimate, live
+ *    preview, same low-balance guard as the results modal.
+ *  - NEW: sendBulkAnnouncement() / buildAnnouncementSMS() — reuse the central
+ *    wallet endpoint, tagged type:'announcement' so they're distinguishable
+ *    from result sends in Firestore smsLogs (paired server-side change).
+ *  - All v5 features retained unchanged (wallet top-up, central bulk results
+ *    send, legacy test/settings modals).
  *
  * BACKEND ENDPOINTS USED:
- *  POST /api/sms/send-bulk-school  — central send (uses server AT_API_KEY)
+ *  POST /api/sms/send-bulk-school  — central send (uses server AT_API_KEY).
+ *                                    Accepts optional `type` field
+ *                                    ('results' | 'announcement') for logging.
  *  POST /api/wallet/topup          — STK push to top up wallet
  *  GET  /api/wallet/balance/:id    — read balance
  *  GET  /api/wallet/topup-status/:txRef — poll until confirmed
  *
  * PUBLIC API:
  *  CBE_SMS.openSendModal(recipients, schoolId, {name, term, year, senderId})
+ *  CBE_SMS.openAnnouncementModal(students, schoolId, {name, senderId})
  *  CBE_SMS.openWalletModal(schoolId)        → top-up + balance modal
  *  CBE_SMS.getWalletBalance(schoolId)       → { balance, totalTopups, totalSpent }
  *  CBE_SMS.sendBulkResults(schoolId, recipients, opts)
+ *  CBE_SMS.sendBulkAnnouncement(schoolId, recipients, opts)
  *  CBE_SMS.buildResultsSMS({...})
+ *  CBE_SMS.buildAnnouncementSMS(template, {studentName, grade, stream, schoolName})
  *  CBE_SMS.normalisePhone(raw)
  *  CBE_SMS.settingsHTML()
  *  CBE_SMS.initSettingsUI(schoolId)
@@ -171,7 +178,7 @@ window.CBE_SMS = (() => {
   }
 
   // ════════════════════════════════════════════════════════════
-  //  4. MESSAGE BUILDER
+  //  4. MESSAGE BUILDER — results
   // ════════════════════════════════════════════════════════════
 
   function buildResultsSMS({ studentName, grade, stream, term, year, schoolName, subjects, overallAvg, level, points, rank, totalStudents }) {
@@ -190,7 +197,7 @@ window.CBE_SMS = (() => {
   }
 
   // ════════════════════════════════════════════════════════════
-  //  5. BULK SENDER — v5: uses central wallet endpoint
+  //  5. BULK SENDER — results — v5: uses central wallet endpoint
   // ════════════════════════════════════════════════════════════
 
   async function sendBulkResults(schoolId, recipients, opts = {}) {
@@ -232,7 +239,7 @@ window.CBE_SMS = (() => {
     const r = await fetch(SMS_SEND_SCHOOL, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ schoolId, recipients: payload }),
+      body:    JSON.stringify({ schoolId, recipients: payload, type: 'results' }),
       signal:  controller.signal,
     });
 
@@ -280,7 +287,7 @@ window.CBE_SMS = (() => {
   }
 
   // ════════════════════════════════════════════════════════════
-  //  7. WALLET MODAL (v5 NEW)
+  //  7. WALLET MODAL (v5)
   // ════════════════════════════════════════════════════════════
 
   function openWalletModal(preloadSchoolId) {
@@ -487,7 +494,7 @@ window.CBE_SMS = (() => {
   }
 
   // ════════════════════════════════════════════════════════════
-  //  8. SEND MODAL — v5: shows balance, warns if low
+  //  8. SEND MODAL — results — v5: shows balance, warns if low
   // ════════════════════════════════════════════════════════════
 
   function openSendModal(recipients, schoolId, schoolSettings = {}) {
@@ -799,7 +806,447 @@ window.CBE_SMS = (() => {
   function _removeSendModal() { document.getElementById('cbeSmsModal')?.remove(); }
 
   // ════════════════════════════════════════════════════════════
-  //  9. STANDALONE TEST MODAL (v4 — unchanged, uses legacy endpoint)
+  //  9. ANNOUNCEMENTS — custom message to any grade/stream (v6 NEW)
+  // ════════════════════════════════════════════════════════════
+
+  /**
+   * Replace {placeholders} in an announcement template with per-recipient
+   * values. Supported tags: {studentName} {grade} {stream} {schoolName}.
+   * If the template has none of these, every recipient just gets the same
+   * literal text — i.e. a plain broadcast.
+   */
+  function buildAnnouncementSMS(template, { studentName, grade, stream, schoolName } = {}) {
+    return String(template || '')
+      .replace(/\{studentName\}/gi, studentName || '')
+      .replace(/\{schoolName\}/gi, schoolName || '')
+      .replace(/\{grade\}/gi, grade || '')
+      .replace(/\{stream\}/gi, stream || '');
+  }
+
+  function _uniqueGrades(students) {
+    const set = new Set();
+    (students || []).forEach(s => { if (s.grade) set.add(s.grade); });
+    return Array.from(set).sort();
+  }
+
+  function _uniqueStreams(students, grade) {
+    const set = new Set();
+    (students || []).forEach(s => {
+      if ((!grade || s.grade === grade) && s.stream) set.add(s.stream);
+    });
+    return Array.from(set).sort();
+  }
+
+  function _filterRoster(students, grade, stream) {
+    return (students || []).filter(s =>
+      (!grade  || grade  === '__all__' || s.grade  === grade) &&
+      (!stream || stream === '__all__' || s.stream === stream) &&
+      s.parentPhone
+    );
+  }
+
+  /**
+   * Send a custom announcement to a filtered set of parents.
+   * Reuses the central wallet endpoint, tagged type:'announcement'
+   * so it shows up distinctly from result sends in Firestore smsLogs.
+   */
+  async function sendBulkAnnouncement(schoolId, recipients, opts = {}) {
+    const { template, schoolName = '', senderId = '', onProgress } = opts;
+
+    const payload = recipients
+      .filter(r => r.parentPhone)
+      .map(r => ({
+        to:      normalisePhone(r.parentPhone),
+        from:    senderId || '',
+        message: buildAnnouncementSMS(template, {
+          studentName: r.studentName, grade: r.grade, stream: r.stream, schoolName,
+        }),
+        meta: { studentName: r.studentName, grade: r.grade, stream: r.stream,
+                parentPhone: r.parentPhone },
+      }));
+
+    const results = [];
+    let idx = 0;
+    for (const r of recipients) {
+      if (!r.parentPhone) {
+        const entry = { ...r, status: 'skipped', reason: 'No phone number' };
+        results.push(entry);
+        onProgress?.(++idx, recipients.length, entry);
+      }
+    }
+
+    if (payload.length === 0) return results;
+
+    const controller = new AbortController();
+    setTimeout(() => controller.abort(), 120_000);
+
+    const r = await fetch(SMS_SEND_SCHOOL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ schoolId, recipients: payload, type: 'announcement' }),
+      signal:  controller.signal,
+    });
+
+    const data = await r.json().catch(() => { throw new Error(`Server error ${r.status}`); });
+
+    if (r.status === 402) {
+      throw Object.assign(
+        new Error(data.message || 'Wallet empty — top up to send the announcement'),
+        { code: 'INSUFFICIENT_BALANCE', balance: data.balance }
+      );
+    }
+    if (!r.ok) throw new Error(data.error || `Server error ${r.status}`);
+
+    const serverResults = data.results || [];
+    for (let i = 0; i < serverResults.length; i++) {
+      const sr    = serverResults[i];
+      const orig  = recipients.find(r => r.parentPhone && normalisePhone(r.parentPhone) === sr.to) || {};
+      const entry = { ...orig, status: sr.status, reason: sr.reason || sr.atStatus || '', phone: sr.to };
+      results.push(entry);
+      onProgress?.(++idx, recipients.length, entry);
+    }
+
+    return results;
+  }
+
+  /**
+   * Open the "Send Announcement" modal.
+   * `students` should be the same roster shape used for openSendModal
+   * (studentName, grade, stream, parentPhone, …) — any of those fields
+   * not relevant to an announcement (subjects/scores/etc.) are ignored.
+   */
+  function openAnnouncementModal(students, schoolId, schoolSettings = {}) {
+    _removeAnnouncementModal();
+
+    const { name: schoolName = '', senderId = '' } = schoolSettings;
+    const roster = (students || []).filter(s => s.parentPhone);
+    const grades = _uniqueGrades(roster);
+
+    const modal = document.createElement('div');
+    modal.id    = 'cbeAnnModal';
+    modal.style.cssText = `
+      position:fixed;inset:0;background:rgba(0,0,0,.45);
+      backdrop-filter:blur(6px);z-index:9999;
+      display:flex;align-items:center;justify-content:center;padding:20px;
+      font-family:'Plus Jakarta Sans',sans-serif;
+    `;
+
+    modal.innerHTML = `
+      <div style="background:#fff;border-radius:14px;width:100%;max-width:560px;
+        box-shadow:0 24px 60px rgba(0,0,0,.3);overflow:hidden;
+        max-height:92vh;display:flex;flex-direction:column;
+        animation:_annIn .2s cubic-bezier(.22,1,.36,1)">
+        <style>
+          @keyframes _annIn{from{opacity:0;transform:scale(.95) translateY(12px)}to{opacity:1;transform:none}}
+          #cbeAnnModal select, #cbeAnnModal textarea {
+            width:100%;box-sizing:border-box;padding:8px 11px;
+            border:1.5px solid #dce1ec;border-radius:8px;font-family:inherit;
+            font-size:13px;outline:none;transition:border-color .14s;background:#fff;color:#0f172a;
+          }
+          #cbeAnnModal select:focus, #cbeAnnModal textarea:focus{border-color:#1a56db;box-shadow:0 0 0 3px rgba(26,86,219,.1);}
+          #cbeAnnModal label{display:block;font-size:10.5px;font-weight:700;color:#64748b;
+            text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+          #cbeAnnModal .afield{margin-bottom:14px;}
+          ._ann-tag{display:inline-block;background:#eff4ff;border:1px solid #c7d9ff;color:#1a56db;
+            font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:5px;margin:0 4px 4px 0;
+            cursor:pointer;font-family:monospace;}
+          ._ann-tag:hover{background:#1a56db;color:#fff;}
+          ._ann-prog-bar{height:4px;background:#e2e8f0;border-radius:2px;overflow:hidden;margin:10px 0}
+          ._ann-prog-fill{height:100%;background:#7c3aed;border-radius:2px;transition:width .3s;width:0}
+          ._ann-row{display:flex;align-items:center;gap:10px;padding:6px 0;
+            border-bottom:1px solid #f1f5f9;font-size:12.5px}
+          ._ann-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+          ._ann-dot.sent{background:#059669} ._ann-dot.failed,._ann-dot.error{background:#dc2626}
+          ._ann-dot.skipped{background:#d97706}
+        </style>
+
+        <div style="background:linear-gradient(135deg,#1e1b4b,#4c1d95 60%,#7c3aed);
+          padding:18px 22px;color:#fff;flex-shrink:0;">
+          <div style="font-size:16px;font-weight:800;margin-bottom:2px;">📢 Send Announcement</div>
+          <div style="font-size:11.5px;opacity:.75;">${_esc(schoolName)} · Custom message to any grade or stream</div>
+        </div>
+
+        <div style="padding:18px 22px;overflow-y:auto;flex:1;">
+
+          <div id="_annWalletBar" style="
+            display:flex;align-items:center;justify-content:space-between;
+            background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:8px;
+            padding:9px 14px;margin-bottom:14px;">
+            <div style="font-size:12px;color:#64748b;font-weight:600;">
+              💳 SMS Wallet: <span id="_annWalletBal" style="color:#0f172a;font-weight:800;">Loading…</span>
+            </div>
+            <button onclick="window.CBE_SMS.openWalletModal('${_esc(schoolId)}')"
+              style="padding:4px 12px;border-radius:6px;border:1.5px solid #c7d9ff;
+                background:#eff4ff;color:#1a56db;font-family:inherit;font-size:11px;
+                font-weight:700;cursor:pointer;">+ Top Up</button>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+            <div class="afield" style="margin-bottom:0;">
+              <label>Grade</label>
+              <select id="_annGrade" onchange="window.CBE_SMS._annRefresh()">
+                <option value="__all__">All Grades</option>
+                ${grades.map(g => `<option value="${_esc(g)}">${_esc(g)}</option>`).join('')}
+              </select>
+            </div>
+            <div class="afield" style="margin-bottom:0;">
+              <label>Stream</label>
+              <select id="_annStream" onchange="window.CBE_SMS._annRefresh()">
+                <option value="__all__">All Streams</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="_annCountBar" style="
+            background:#f5f3ff;border:1px solid #ddd6fe;border-radius:7px;
+            padding:8px 13px;font-size:12px;color:#5b21b6;margin-bottom:14px;font-weight:600;">
+            👥 <span id="_annCount">0</span> parent(s) will receive this · 💰 Estimated cost: KES <span id="_annCost">0</span>
+          </div>
+
+          <div class="afield">
+            <label>Message</label>
+            <textarea id="_annMessage" rows="4" placeholder="e.g. Dear parent, school closes early this Friday for staff training…" oninput="window.CBE_SMS._annRefresh()"></textarea>
+            <div style="margin-top:6px;">
+              <span class="_ann-tag" onclick="window.CBE_SMS._annInsertTag('{studentName}')">{studentName}</span>
+              <span class="_ann-tag" onclick="window.CBE_SMS._annInsertTag('{grade}')">{grade}</span>
+              <span class="_ann-tag" onclick="window.CBE_SMS._annInsertTag('{schoolName}')">{schoolName}</span>
+            </div>
+          </div>
+
+          <div style="margin-bottom:14px;">
+            <div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;
+              letter-spacing:.4px;margin-bottom:6px;">Preview</div>
+            <div id="_annPreview" style="background:#f8fafc;border:1.5px solid #e2e8f0;
+              border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.8;color:#334155;
+              font-family:monospace;white-space:pre-wrap;min-height:40px;">Type a message above to preview…</div>
+          </div>
+
+          <div id="_annLowBalWarn" style="display:none;
+            background:#fef2f2;border:1px solid #fecaca;border-left:3px solid #dc2626;
+            border-radius:7px;padding:9px 13px;font-size:12px;color:#991b1b;margin-bottom:14px;">
+            ⚠️ <strong>Insufficient wallet balance.</strong> <span id="_annLowBalMsg"></span>
+            <a href="#" onclick="window.CBE_SMS.openWalletModal('${_esc(schoolId)}');return false;"
+              style="color:#1a56db;font-weight:700;display:block;margin-top:4px;">📲 Top up now →</a>
+          </div>
+
+          <div id="_annProgress" style="display:none;">
+            <div class="_ann-prog-bar"><div class="_ann-prog-fill" id="_annProgFill"></div></div>
+            <div style="font-size:11.5px;color:#64748b;margin-bottom:8px;" id="_annProgLabel">Preparing…</div>
+            <div id="_annLogList" style="max-height:150px;overflow-y:auto;"></div>
+          </div>
+        </div>
+
+        <div style="padding:12px 22px;border-top:1px solid #f1f5f9;flex-shrink:0;
+          display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <button id="_annCancelBtn" onclick="window.CBE_SMS._closeAnnouncementModal()"
+            style="padding:7px 16px;border-radius:6px;border:1.5px solid #e2e8f0;
+              background:none;font-family:inherit;font-size:12.5px;font-weight:600;
+              cursor:pointer;color:#64748b;">Cancel</button>
+          <button id="_annSendBtn"
+            onclick="window.CBE_SMS._startAnnouncementSend('${_esc(schoolId)}','${_esc(schoolName)}','${_esc(senderId)}')"
+            style="padding:7px 20px;border-radius:6px;background:#7c3aed;color:#fff;
+              border:none;font-family:inherit;font-size:12.5px;font-weight:700;
+              cursor:pointer;">📤 Send Announcement</button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+    modal.addEventListener('click', e => { if (e.target === modal) _closeAnnouncementModal(); });
+    modal.dataset.schoolId   = schoolId;
+    modal.dataset.schoolName = schoolName;
+    modal._annRoster = roster;
+
+    _annRefresh(); // also triggers the initial balance check
+  }
+
+  function _closeAnnouncementModal()  { _removeAnnouncementModal(); }
+  function _removeAnnouncementModal() { document.getElementById('cbeAnnModal')?.remove(); }
+
+  function _annInsertTag(tag) {
+    const ta = document.getElementById('_annMessage');
+    if (!ta) return;
+    const start = ta.selectionStart ?? ta.value.length;
+    const end   = ta.selectionEnd ?? ta.value.length;
+    ta.value = ta.value.slice(0, start) + tag + ta.value.slice(end);
+    ta.focus();
+    ta.selectionStart = ta.selectionEnd = start + tag.length;
+    _annRefresh();
+  }
+
+  function _annRefresh() {
+    const modal = document.getElementById('cbeAnnModal');
+    if (!modal) return;
+
+    const roster    = modal._annRoster || [];
+    const gradeSel  = document.getElementById('_annGrade');
+    const streamSel = document.getElementById('_annStream');
+    const grade     = gradeSel?.value || '__all__';
+
+    // Repopulate streams whenever the grade changes, keeping the previous
+    // selection if it's still valid for the new grade.
+    if (streamSel) {
+      const streams     = _uniqueStreams(roster, grade === '__all__' ? null : grade);
+      const prevStream  = streamSel.value;
+      streamSel.innerHTML = `<option value="__all__">All Streams</option>` +
+        streams.map(s => `<option value="${_esc(s)}">${_esc(s)}</option>`).join('');
+      if (streams.includes(prevStream)) streamSel.value = prevStream;
+    }
+    const stream = streamSel?.value || '__all__';
+
+    const filtered = _filterRoster(roster, grade, stream);
+    modal._annFiltered = filtered;
+
+    const cntEl  = document.getElementById('_annCount');
+    const costEl = document.getElementById('_annCost');
+    if (cntEl)  cntEl.textContent  = filtered.length;
+    if (costEl) costEl.textContent = filtered.length * SMS_COST;
+
+    const template  = document.getElementById('_annMessage')?.value || '';
+    const previewEl = document.getElementById('_annPreview');
+    if (previewEl) {
+      if (!template.trim()) {
+        previewEl.textContent = 'Type a message above to preview…';
+      } else {
+        const sample = filtered[0] || roster[0] || {
+          studentName: 'Student Name',
+          grade: grade !== '__all__' ? grade : 'Grade X',
+          stream: '',
+        };
+        previewEl.textContent = buildAnnouncementSMS(template, {
+          studentName: sample.studentName, grade: sample.grade, stream: sample.stream,
+          schoolName: modal.dataset.schoolName || '',
+        });
+      }
+    }
+
+    _checkAnnouncementBalance(modal.dataset.schoolId, filtered.length);
+  }
+
+  async function _checkAnnouncementBalance(schoolId, needed = 0) {
+    try {
+      const w       = await getWalletBalance(schoolId);
+      const balEl   = document.getElementById('_annWalletBal');
+      const warnEl  = document.getElementById('_annLowBalWarn');
+      const msgEl   = document.getElementById('_annLowBalMsg');
+      const sendBtn = document.getElementById('_annSendBtn');
+
+      const cost   = needed * SMS_COST;
+      const enough = w.balance >= cost;
+
+      if (balEl) {
+        balEl.textContent = `KES ${w.balance.toFixed(2)} (${Math.floor(w.balance / SMS_COST)} SMS)`;
+        balEl.style.color = enough ? '#059669' : '#dc2626';
+      }
+      if (warnEl) warnEl.style.display = (!enough && needed > 0) ? 'block' : 'none';
+      if (!enough && msgEl) {
+        msgEl.textContent = ` Need KES ${cost}, have KES ${w.balance.toFixed(2)}. Short by KES ${(cost - w.balance).toFixed(2)}.`;
+      }
+      if (sendBtn) {
+        const disable = !enough || needed === 0;
+        sendBtn.disabled        = disable;
+        sendBtn.style.background = disable ? '#94a3b8' : '#7c3aed';
+        sendBtn.title             = needed === 0 ? 'No parents match this grade/stream filter' : '';
+      }
+    } catch (_) {
+      const balEl = document.getElementById('_annWalletBal');
+      if (balEl) balEl.textContent = 'Could not load';
+    }
+  }
+
+  async function _startAnnouncementSend(schoolId, schoolName, senderId) {
+    const modal      = document.getElementById('cbeAnnModal');
+    const recipients = modal?._annFiltered || [];
+    const template    = document.getElementById('_annMessage')?.value.trim();
+
+    if (!template)            { alert('Write a message first.'); return; }
+    if (recipients.length === 0) { alert('No parents match this grade/stream filter.'); return; }
+
+    const sendBtn   = document.getElementById('_annSendBtn');
+    const cancelBtn = document.getElementById('_annCancelBtn');
+    const progress  = document.getElementById('_annProgress');
+    const progFill  = document.getElementById('_annProgFill');
+    const progLabel = document.getElementById('_annProgLabel');
+    const logList   = document.getElementById('_annLogList');
+
+    if (sendBtn)   { sendBtn.disabled = true; sendBtn.textContent = '⏳ Connecting…'; }
+    if (cancelBtn) { cancelBtn.disabled = true; }
+    if (progress)  { progress.style.display = 'block'; }
+
+    const awake = await _wakeProxy(msg => { if (progLabel) progLabel.textContent = msg; });
+    if (!awake) {
+      if (progLabel) progLabel.innerHTML = '❌ Could not reach SMS server. Wait 30s and try again.';
+      if (sendBtn)   { sendBtn.disabled = false; sendBtn.textContent = '🔄 Retry'; }
+      if (cancelBtn) { cancelBtn.disabled = false; }
+      return;
+    }
+
+    if (sendBtn) sendBtn.textContent = '⏳ Sending…';
+    const summary = { sent: 0, failed: 0, skipped: 0, error: 0 };
+
+    try {
+      await sendBulkAnnouncement(schoolId, recipients, {
+        template, schoolName, senderId,
+        onProgress(done, total, last) {
+          const pct = Math.round((done / total) * 100);
+          if (progFill)  progFill.style.width = pct + '%';
+          if (progLabel) progLabel.textContent = `Sending ${done} of ${total}…`;
+          if (last) {
+            const s = last.status;
+            summary[s] = (summary[s] || 0) + 1;
+            const dot   = `<span class="_ann-dot ${s}"></span>`;
+            const name  = _esc(last.studentName || '—');
+            const phone = _esc(last.phone || last.parentPhone || '—');
+            const note  = s === 'sent' ? 'Delivered'
+                        : s === 'skipped' ? 'No phone'
+                        : _esc(String(last.reason || s)).slice(0, 40);
+            const color = s === 'sent' ? '#059669' : s === 'skipped' ? '#d97706' : '#dc2626';
+            if (logList) {
+              logList.innerHTML += `
+                <div class="_ann-row">
+                  ${dot}
+                  <span style="flex:1;font-weight:600;">${name}</span>
+                  <span style="color:#94a3b8;">${phone}</span>
+                  <span style="color:${color};font-weight:600;">${note}</span>
+                </div>`;
+              logList.scrollTop = logList.scrollHeight;
+            }
+          }
+        },
+      });
+
+      const w = await getWalletBalance(schoolId).catch(() => null);
+      const balAfter = w ? `KES ${w.balance.toFixed(2)} remaining` : '';
+      if (progLabel) progLabel.innerHTML =
+        `✅ Done — <strong style="color:#059669;">${summary.sent||0} sent</strong>` +
+        ` · <span style="color:#dc2626;">${(summary.failed||0)+(summary.error||0)} failed</span>` +
+        ` · <span style="color:#d97706;">${summary.skipped||0} skipped</span>` +
+        (balAfter ? ` · <span style="color:#64748b;font-size:11px;">${balAfter}</span>` : '');
+
+    } catch (e) {
+      if (e.code === 'INSUFFICIENT_BALANCE') {
+        if (progLabel) progLabel.textContent = '';
+        if (logList) logList.insertAdjacentHTML('afterend', `
+          <div style="background:#fef2f2;border:1px solid #fecaca;border-left:3px solid #dc2626;
+            border-radius:7px;padding:10px 14px;font-size:12px;color:#991b1b;margin-top:10px;line-height:1.7;">
+            💳 <strong>Wallet ran out of credit.</strong> ${_esc(e.message)}<br>
+            <a href="#" onclick="window.CBE_SMS.openWalletModal('${_esc(schoolId)}');return false;"
+              style="color:#1a56db;font-weight:700;">📲 Top up your wallet →</a>
+          </div>`);
+      } else {
+        if (progLabel) progLabel.textContent = '❌ ' + e.message;
+      }
+      if (sendBtn)   { sendBtn.disabled = false; sendBtn.textContent = '🔄 Retry'; }
+      if (cancelBtn) { cancelBtn.disabled = false; }
+      return;
+    }
+
+    if (sendBtn)   { sendBtn.textContent = '✓ Done'; sendBtn.style.background = '#059669'; }
+    if (cancelBtn) { cancelBtn.disabled = false; cancelBtn.textContent = 'Close'; }
+  }
+
+  // ════════════════════════════════════════════════════════════
+  //  10. STANDALONE TEST MODAL (v4 — unchanged, uses legacy endpoint)
   // ════════════════════════════════════════════════════════════
 
   function _openTestModal(preloadSchoolId) {
@@ -967,7 +1414,7 @@ window.CBE_SMS = (() => {
   function _testSMS() { _openTestModal(_schoolId()); }
 
   // ════════════════════════════════════════════════════════════
-  //  10. STANDALONE SETTINGS MODAL (v4 — unchanged)
+  //  11. STANDALONE SETTINGS MODAL (v4 — unchanged)
   // ════════════════════════════════════════════════════════════
 
   function openSettingsModal(preloadSchoolId) {
@@ -1119,7 +1566,7 @@ window.CBE_SMS = (() => {
   }
 
   // ════════════════════════════════════════════════════════════
-  //  11. SETTINGS PAGE HTML (v5: shows wallet balance + top-up)
+  //  12. SETTINGS PAGE HTML (v5: shows wallet balance + top-up)
   // ════════════════════════════════════════════════════════════
 
   function settingsHTML() {
@@ -1307,8 +1754,16 @@ window.CBE_SMS = (() => {
     // Core send
     sendSMS,           // legacy per-school (test modal only)
     sendSchoolSMS,     // central wallet single send
-    sendBulkResults,   // central wallet bulk send
+    sendBulkResults,   // central wallet bulk send — results
     buildResultsSMS,
+    // Announcements
+    sendBulkAnnouncement,
+    buildAnnouncementSMS,
+    openAnnouncementModal,
+    _annRefresh,
+    _annInsertTag,
+    _startAnnouncementSend,
+    _closeAnnouncementModal,
     // Wallet
     getWalletBalance,
     openWalletModal,
@@ -1317,7 +1772,7 @@ window.CBE_SMS = (() => {
     saveATCredentials,
     loadATCredentials,
     loadSenderId,
-    // Send modal
+    // Send modal — results
     openSendModal,
     _startSend,
     _closeModal,
