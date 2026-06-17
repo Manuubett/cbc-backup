@@ -1,4 +1,5 @@
-* CBE Mark Sheet — SMS Integration (v6 — Central Wallet + Announcements)
+/**
+ * CBE Mark Sheet — SMS Integration (v6 — Central Wallet + Announcements)
  * ───────────────────────────────────────────────────────
  * v6 CHANGES:
  *  - NEW: Announcements — send a custom, freeform SMS to any grade/stream,
