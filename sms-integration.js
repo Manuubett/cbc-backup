@@ -52,7 +52,7 @@ window.CBE_SMS = (() => {
   const WALLET_STATUS    = (ref) => `${BACKEND}/api/wallet/topup-status/${ref}`;
 
   const FETCH_TIMEOUT_MS = 15000;
-  const SMS_COST         = 1; // KES per SMS (matches server)
+const SMS_COST = 1.20; // KES per SMS (matches server)
 
   // ════════════════════════════════════════════════════════════
   //  1. WALLET HELPERS
