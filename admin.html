@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CBE Admin | Teacher Management</title>
+<title>CBE Admin | Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -25,6 +25,7 @@
   --green:#059669;--green-bg:#d1fae5;--green-tx:#065f46;
   --amber:#d97706;--amber-bg:#fef3c7;--amber-tx:#92400e;
   --red:#dc2626;--red-bg:#fee2e2;--red-tx:#991b1b;
+  --purple:#7c3aed;--purple-bg:#ede9fe;--purple-tx:#5b21b6;
   --sh:0 1px 3px rgba(0,0,0,.06);
   --sh2:0 8px 32px rgba(0,0,0,.14);
   --r:12px;--r2:7px;
@@ -42,15 +43,21 @@ body{
   position:fixed;top:0;left:0;z-index:300;overflow:hidden;
 }
 .sb-logo{
-  padding:20px 18px 16px;border-bottom:1px solid var(--sidebar-border);
+  padding:18px 18px 14px;border-bottom:1px solid var(--sidebar-border);
   display:flex;align-items:center;gap:10px;flex-shrink:0;
 }
 .sb-logo-icon{
   width:34px;height:34px;background:#2563eb;border-radius:9px;
-  display:grid;place-items:center;font-size:16px;flex-shrink:0;
+  display:grid;place-items:center;font-size:16px;flex-shrink:0;overflow:hidden;
 }
-.sb-logo-text{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:800;color:#fff;letter-spacing:-.2px}
-.sb-logo-sub{font-size:10px;color:rgba(255,255,255,.38);margin-top:1px}
+.sb-logo-icon img{width:100%;height:100%;object-fit:cover}
+.sb-logo-text-wrap{min-width:0;flex:1}
+.sb-logo-text{
+  font-family:'Space Grotesk',sans-serif;font-size:14.5px;font-weight:800;color:#fff;
+  letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  max-width:160px;
+}
+.sb-logo-sub{font-size:10px;color:rgba(255,255,255,.38);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 .sb-admin-row{
   padding:12px 18px;border-bottom:1px solid var(--sidebar-border);
@@ -111,11 +118,16 @@ body{
   height:52px;display:flex;align-items:center;padding:0 24px;gap:12px;
   position:sticky;top:0;z-index:200;box-shadow:var(--sh);flex-shrink:0;
 }
-.topbar-title{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:800;flex:1;color:var(--text)}
-.topbar-actions{display:flex;align-items:center;gap:8px}
+.topbar-title-wrap{flex:1;min-width:0;display:flex;align-items:baseline;gap:9px;overflow:hidden}
+.topbar-title{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:800;color:var(--text);white-space:nowrap}
+.topbar-school{font-size:11.5px;color:var(--text3);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar-school::before{content:'·';margin-right:9px;color:var(--border)}
+.topbar-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
 
 /* ── CONTENT ── */
 .outer{padding:20px 24px;flex:1}
+.page-view{display:none}
+.page-view.active{display:block}
 
 /* ── SCREEN STATES ── */
 #screenLoad{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;z-index:900}
@@ -135,6 +147,7 @@ body{
 .stat-card:nth-child(2){animation-delay:.05s}
 .stat-card:nth-child(3){animation-delay:.1s}
 .stat-card:nth-child(4){animation-delay:.15s}
+.stat-card:nth-child(5){animation-delay:.2s}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .stat-icon{font-size:20px;margin-bottom:2px}
 .stat-val{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:800;line-height:1}
@@ -143,6 +156,7 @@ body{
 .s-pending .stat-val{color:var(--amber)}
 .s-suspended .stat-val{color:var(--red)}
 .s-results .stat-val{color:var(--accent)}
+.s-students .stat-val{color:var(--purple)}
 
 /* ── BTN ── */
 .btn{display:inline-flex;align-items:center;gap:5px;padding:5px 13px;border-radius:var(--r2);font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;border:none;transition:all .14s;white-space:nowrap;height:32px}
@@ -150,6 +164,51 @@ body{
 .btn-outline{background:none;border:1.5px solid var(--border);color:var(--text2)}.btn-outline:hover{background:var(--bg);color:var(--text)}
 .btn-sm{padding:3px 9px;font-size:11.5px;height:26px}
 .btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* ── DASHBOARD GRID ── */
+.dash-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;margin-bottom:16px}
+@media (max-width:980px){.dash-grid{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;animation:fadeUp .3s ease both}
+.panel-head{padding:13px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.panel-title{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:7px}
+.panel-body{padding:16px 18px}
+.panel-link{font-size:11.5px;color:var(--accent);text-decoration:none;font-weight:700}
+.panel-link:hover{text-decoration:underline}
+
+/* quick actions grid */
+.qa-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.qa-btn{
+  display:flex;flex-direction:column;align-items:flex-start;gap:6px;
+  padding:13px 14px;border-radius:var(--r2);border:1.5px solid var(--border);
+  background:var(--surf2);cursor:pointer;text-decoration:none;color:var(--text);
+  transition:all .14s;font-family:inherit;
+}
+.qa-btn:hover{border-color:var(--accent);background:var(--alight);transform:translateY(-1px)}
+.qa-icon{font-size:19px}
+.qa-label{font-size:12px;font-weight:700;color:var(--text)}
+.qa-sub{font-size:10.5px;color:var(--text3);font-weight:500}
+
+/* recent admissions list */
+.ra-list{display:flex;flex-direction:column;gap:2px}
+.ra-row{display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid var(--border)}
+.ra-row:last-child{border-bottom:none}
+.ra-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--alight),#c7d9ff);display:grid;place-items:center;font-size:14px;flex-shrink:0;border:1px solid #c7d9ff}
+.ra-info{flex:1;min-width:0}
+.ra-name{font-weight:700;font-size:12.5px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ra-meta{font-size:11px;color:var(--text3)}
+.ra-time{font-size:10.5px;color:var(--text3);white-space:nowrap;flex-shrink:0}
+.ra-empty{text-align:center;padding:24px;color:var(--text3);font-size:12px}
+
+/* chart panel */
+.chart-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px}
+.chart-legend-item{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text2);font-weight:600}
+.chart-legend-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.bar-row:last-child{margin-bottom:0}
+.bar-label{font-size:11.5px;color:var(--text2);font-weight:600;width:64px;flex-shrink:0}
+.bar-track{flex:1;height:18px;background:var(--surf2);border-radius:5px;overflow:hidden;position:relative}
+.bar-fill{height:100%;border-radius:5px;transition:width .5s ease}
+.bar-count{font-size:11.5px;font-weight:700;color:var(--text);width:24px;text-align:right;flex-shrink:0}
 
 /* ── TABLE ── */
 .sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:10px}
@@ -228,50 +287,6 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
 .pb-approve{padding:5px 13px;border-radius:5px;font-family:inherit;font-size:11.5px;font-weight:700;cursor:pointer;border:none;background:var(--green-bg);color:var(--green-tx);transition:all .12s}.pb-approve:hover{background:#a7f3d0}
 .pb-reject{padding:5px 10px;border-radius:5px;font-family:inherit;font-size:11.5px;font-weight:700;cursor:pointer;background:var(--red-bg);color:var(--red-tx);border:none;transition:all .12s}.pb-reject:hover{background:#fecaca}
 
-/* ── E-LEARNING PANEL ── */
-.el-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:22px;overflow:hidden;animation:fadeUp .3s ease both}
-.el-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:linear-gradient(135deg,#0f1f44 0%,#1a3a7a 60%,#2563eb 100%)}
-.el-header-left{display:flex;align-items:center;gap:12px}
-.el-icon{width:38px;height:38px;border-radius:9px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);display:grid;place-items:center;font-size:18px;flex-shrink:0}
-.el-title{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:800;color:#fff}
-.el-sub{font-size:11px;color:rgba(255,255,255,.55);margin-top:1px}
-.el-status-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 11px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.2)}
-.el-status-badge.active{background:rgba(5,150,105,.25);color:#6ee7b7;border-color:rgba(110,231,183,.3)}
-.el-status-badge.expired{background:rgba(220,38,38,.2);color:#fca5a5;border-color:rgba(252,165,165,.3)}
-.el-toggle-wrap{display:flex;align-items:center;gap:9px}
-.el-toggle-label{font-size:12px;font-weight:600;color:rgba(255,255,255,.7)}
-.el-toggle{width:44px;height:24px;border-radius:12px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25);cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
-.el-toggle::after{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;top:2px;left:2px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
-.el-toggle.on{background:#059669;border-color:#059669}
-.el-toggle.on::after{transform:translateX(20px)}
-.el-toggle:disabled{opacity:.4;cursor:not-allowed}
-.el-body{padding:18px 20px}
-.el-sub-row{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:var(--r2);background:var(--surf2);border:1px solid var(--border);margin-bottom:16px;flex-wrap:wrap}
-.el-sub-icon{font-size:22px}
-.el-sub-info{flex:1;min-width:0}
-.el-sub-name{font-weight:700;font-size:13px;color:var(--text)}
-.el-sub-detail{font-size:11.5px;color:var(--text3);margin-top:2px}
-.el-sub-row.active .el-sub-name{color:var(--green)}
-.el-sub-row.expired .el-sub-name{color:var(--red)}
-.el-sync-section{border:1.5px solid var(--border);border-radius:var(--r2);overflow:hidden}
-.el-sync-head{padding:10px 16px;background:var(--surf2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.el-sync-title{font-size:12.5px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:6px}
-.el-sync-body{padding:14px 16px}
-.sync-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:20px;font-size:10.5px;font-weight:700}
-.sync-badge.idle{background:var(--surf2);color:var(--text3);border:1px solid var(--border)}
-.sync-badge.running{background:#eff6ff;color:var(--accent);border:1px solid #bfdbfe}
-.sync-badge.completed{background:var(--green-bg);color:var(--green-tx);border:1px solid #a7f3d0}
-.sync-badge.failed{background:var(--red-bg);color:var(--red-tx);border:1px solid #fca5a5}
-.el-progress-wrap{height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin:10px 0}
-.el-progress-bar{height:100%;border-radius:4px;background:var(--accent);transition:width .4s ease}
-.el-progress-bar.done{background:var(--green)}
-.el-steps{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
-.el-step{display:flex;align-items:flex-start;gap:11px;padding:10px 13px;border-radius:var(--r2);background:var(--surf2);border:1px solid var(--border)}
-.el-step-num{width:22px;height:22px;border-radius:50%;background:var(--alight);color:var(--accent);font-size:11px;font-weight:800;display:grid;place-items:center;flex-shrink:0;margin-top:1px}
-.el-step-text{font-size:12.5px;font-weight:600;color:var(--text)}
-.el-step-sub{font-size:11px;color:var(--text3);margin-top:1px}
-.el-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
-
 /* ── COMING SOON MODAL ── */
 .cs-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(6px);z-index:600;align-items:center;justify-content:center;padding:20px}
 .cs-overlay.open{display:flex}
@@ -306,13 +321,13 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
 .pov-actions{padding:0 20px 18px;display:flex;gap:8px}
 .pov-wa-btn{flex:1;padding:9px;border-radius:8px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;border:none;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;transition:all .14s}.pov-wa-btn:hover{background:#15803d}
 .pov-logout-btn{padding:9px 14px;border-radius:8px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;background:none;border:1.5px solid #e2e8f0;color:#94a3b8;transition:all .14s}.pov-logout-btn:hover{border-color:#cbd5e1;color:#64748b}
-#expiryCountdown{display:none;background:#0f172a;border-top:1px solid rgba(255,255,255,.08);padding:10px 20px;text-align:center;font-size:12px;color:rgba(255,255,255,.6)}.#expiryCountdown.show{display:block}
+#expiryCountdown{display:none;background:#0f172a;border-top:1px solid rgba(255,255,255,.08);padding:10px 20px;text-align:center;font-size:12px;color:rgba(255,255,255,.6)}#expiryCountdown.show{display:block}
 
 /* ── SUBSCRIPTION STATUS BAR ── */
 #subStatusBar{display:none;position:fixed;bottom:0;left:var(--sidebar-w);right:0;z-index:300;background:#7c2d12;border-top:2px solid #f97316;padding:8px 20px;font-size:12px;color:#fed7aa;font-weight:600;align-items:center;justify-content:space-between;gap:12px}
 #subStatusBar.show{display:flex}
 #subStatusBar .sub-timer{color:#fbbf24;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:800}
-#subStatusBar .sub-renew{padding:4px 14px;background:#f97316;color:#fff;border:none;border-radius:5px;cursor:pointer;font-family:inherit;font-size:11.5px;font-weight:700}.#subStatusBar .sub-renew:hover{background:#ea580c}
+#subStatusBar .sub-renew{padding:4px 14px;background:#f97316;color:#fff;border:none;border-radius:5px;cursor:pointer;font-family:inherit;font-size:11.5px;font-weight:700}#subStatusBar .sub-renew:hover{background:#ea580c}
 
 /* ── TOASTS ── */
 #renewalDetectedBanner{display:none;position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#064e3b;color:#ecfdf5;border:1.5px solid #10b981;border-radius:10px;padding:12px 24px;font-size:13px;font-weight:700;z-index:900;box-shadow:0 8px 24px rgba(0,0,0,.3);animation:slideDown .3s ease}
@@ -347,10 +362,10 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
   <!-- ══ SIDEBAR ══ -->
   <aside id="sidebar">
     <div class="sb-logo">
-      <div class="sb-logo-icon">⚙️</div>
-      <div>
-        <div class="sb-logo-text">CBE Admin</div>
-        <div class="sb-logo-sub">Junior School</div>
+      <div class="sb-logo-icon" id="sbLogoIcon">⚙️</div>
+      <div class="sb-logo-text-wrap">
+        <div class="sb-logo-text" id="sbSchoolName">CBE Admin</div>
+        <div class="sb-logo-sub" id="sbSchoolSub">Teacher Management</div>
       </div>
     </div>
 
@@ -361,8 +376,14 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
     </div>
 
     <nav class="sb-nav">
+      <div class="sb-section-label">Overview</div>
+      <button class="sb-item active" onclick="sbNav('dashboard')" data-page="dashboard">
+        <span class="sb-item-icon">🏠</span>
+        <span class="sb-item-label">Dashboard</span>
+      </button>
+
       <div class="sb-section-label">Management</div>
-      <button class="sb-item active" onclick="sbNav('teachers')">
+      <button class="sb-item" onclick="sbNav('teachers')" data-page="teachers">
         <span class="sb-item-icon">👥</span>
         <span class="sb-item-label">Teachers</span>
         <span class="sb-badge pending" id="sbPendingBadge" style="display:none">0</span>
@@ -414,8 +435,11 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
 
     <!-- TOPBAR -->
     <div id="topbar">
-      <div class="topbar-title" id="topbarTitle">Teachers</div>
-      <div class="topbar-actions">
+      <div class="topbar-title-wrap">
+        <span class="topbar-title" id="topbarTitle">Dashboard</span>
+        <span class="topbar-school" id="topbarSchool"></span>
+      </div>
+      <div class="topbar-actions" id="topbarActionsTeachers" style="display:none">
         <button class="btn btn-outline btn-sm" onclick="loadTeachers()">🔄 Refresh</button>
         <button class="btn btn-outline btn-sm" onclick="copyRegLink()">🔗 Reg Link</button>
         <button class="btn btn-primary btn-sm" onclick="openAddTeacher()">➕ Add Teacher</button>
@@ -678,60 +702,156 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
     <!-- ══ OUTER CONTENT ══ -->
     <div class="outer">
 
-      <!-- STATS -->
-      <div class="stats">
-        <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-val" id="statTotal">—</div><div class="stat-lbl">Total Teachers</div></div>
-        <div class="stat-card s-active"><div class="stat-icon">✅</div><div class="stat-val" id="statActive">—</div><div class="stat-lbl">Active</div></div>
-        <div class="stat-card s-pending"><div class="stat-icon">⏳</div><div class="stat-val" id="statPending">—</div><div class="stat-lbl">Pending Approval</div></div>
-        <div class="stat-card s-suspended"><div class="stat-icon">🚫</div><div class="stat-val" id="statSuspended">—</div><div class="stat-lbl">Suspended</div></div>
-        <div class="stat-card s-results"><div class="stat-icon">📈</div><div class="stat-val" id="statResults">—</div><div class="stat-lbl">Results Saved</div></div>
-      </div>
+      <!-- ════════════════ DASHBOARD PAGE ════════════════ -->
+      <div class="page-view active" id="pageDashboard">
 
-      <!-- PENDING BANNER -->
-      <div class="pending-banner" id="pendingBanner" style="display:none">
-        <div class="pb-head">
-          <div class="pb-title">🔔 Pending Teacher Approvals <span class="pb-count" id="pendingCount">0</span></div>
-          <span style="font-size:11.5px;color:var(--amber-tx);font-weight:600">Review and approve before teachers can login</span>
+        <!-- STATS -->
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-val" id="statTotal">—</div><div class="stat-lbl">Total Teachers</div></div>
+          <div class="stat-card s-active"><div class="stat-icon">✅</div><div class="stat-val" id="statActive">—</div><div class="stat-lbl">Active</div></div>
+          <div class="stat-card s-pending"><div class="stat-icon">⏳</div><div class="stat-val" id="statPending">—</div><div class="stat-lbl">Pending Approval</div></div>
+          <div class="stat-card s-suspended"><div class="stat-icon">🚫</div><div class="stat-val" id="statSuspended">—</div><div class="stat-lbl">Suspended</div></div>
+          <div class="stat-card s-students"><div class="stat-icon">🎓</div><div class="stat-val" id="statStudents">—</div><div class="stat-lbl">Total Students</div></div>
+          <div class="stat-card s-results"><div class="stat-icon">📈</div><div class="stat-val" id="statResults">—</div><div class="stat-lbl">Results Saved</div></div>
         </div>
-        <div class="pb-body" id="pendingCards"></div>
-      </div>
 
-      <!-- TABLE SECTION -->
-      <div class="sec-head">
-        <div class="sec-title">All Teachers</div>
-        <div class="sec-tools">
-          <div class="search-wrap"><input type="text" id="searchInp" placeholder="Search name, email, class…" oninput="renderTable()"></div>
-          <select class="fsel" id="filterStatus" onchange="renderTable()">
-            <option value="">All Status</option>
-            <option value="active">Active</option>
-            <option value="pending">Pending</option>
-            <option value="suspended">Suspended</option>
-          </select>
-          <select class="fsel" id="filterGrade" onchange="renderTable()">
-            <option value="">All Grades</option>
-            <option>Grade 1</option><option>Grade 2</option><option>Grade 3</option>
-            <option>Grade 4</option><option>Grade 5</option><option>Grade 6</option>
-            <option>Grade 7</option><option>Grade 8</option><option>Grade 9</option>
-            <option>Grade 10</option><option>Grade 11</option><option>Grade 12</option>
-          </select>
+        <!-- PENDING BANNER (lives on dashboard) -->
+        <div class="pending-banner" id="pendingBanner" style="display:none">
+          <div class="pb-head">
+            <div class="pb-title">🔔 Pending Teacher Approvals <span class="pb-count" id="pendingCount">0</span></div>
+            <span style="font-size:11.5px;color:var(--amber-tx);font-weight:600">Review and approve before teachers can login</span>
+          </div>
+          <div class="pb-body" id="pendingCards"></div>
         </div>
-      </div>
 
-      <div class="table-card">
-        <div class="tbl-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>#</th><th>Teacher</th><th>TSC No.</th><th>Class</th>
-                <th>Parent Phone</th><th class="tc">Status</th><th>Registered</th><th class="tc">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="teacherTbody">
-              <tr class="empty-row"><td colspan="8"><div style="font-size:30px;margin-bottom:8px">⏳</div><div>Loading…</div></td></tr>
-            </tbody>
-          </table>
+        <!-- GRID: Quick actions + Teacher status chart -->
+        <div class="dash-grid">
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-title">⚡ Quick Actions</div>
+            </div>
+            <div class="panel-body">
+              <div class="qa-grid">
+                <button class="qa-btn" onclick="sbNav('teachers');openAddTeacher()">
+                  <span class="qa-icon">➕</span>
+                  <span class="qa-label">Add Teacher</span>
+                  <span class="qa-sub">Create a new teacher account</span>
+                </button>
+                <a class="qa-btn" href="admission">
+                  <span class="qa-icon">🎓</span>
+                  <span class="qa-label">Admit Student</span>
+                  <span class="qa-sub">Register a new student</span>
+                </a>
+                <button class="qa-btn" onclick="sendResultsSMS()">
+                  <span class="qa-icon">📱</span>
+                  <span class="qa-label">Send Results SMS</span>
+                  <span class="qa-sub">Notify parents of marks</span>
+                </button>
+                <button class="qa-btn" onclick="sendAnnouncementSMS()">
+                  <span class="qa-icon">📢</span>
+                  <span class="qa-label">Send Announcement</span>
+                  <span class="qa-sub">Message all parents</span>
+                </button>
+                <button class="qa-btn" onclick="copyRegLink()">
+                  <span class="qa-icon">🔗</span>
+                  <span class="qa-label">Teacher Reg Link</span>
+                  <span class="qa-sub">Share self-registration link</span>
+                </button>
+                <a class="qa-btn" href="/settings">
+                  <span class="qa-icon">⚙️</span>
+                  <span class="qa-label">School Settings</span>
+                  <span class="qa-sub">Name, logo, streams, SMS</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-title">👥 Teacher Status</div>
+            </div>
+            <div class="panel-body" id="teacherStatusChart">
+              <div style="text-align:center;color:var(--text3);font-size:12px;padding:18px 0">Loading…</div>
+            </div>
+          </div>
         </div>
-      </div>
+
+        <!-- GRID: Recent admissions + class distribution -->
+        <div class="dash-grid">
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-title">🎓 Recent Admissions</div>
+              <a class="panel-link" href="admission">View all →</a>
+            </div>
+            <div class="panel-body">
+              <div class="ra-list" id="recentAdmissionsList">
+                <div class="ra-empty">Loading…</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-title">📊 Students by Grade</div>
+            </div>
+            <div class="panel-body" id="gradeDistChart">
+              <div style="text-align:center;color:var(--text3);font-size:12px;padding:18px 0">Loading…</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /pageDashboard -->
+
+      <!-- ════════════════ TEACHERS PAGE ════════════════ -->
+      <div class="page-view" id="pageTeachers">
+
+        <!-- STATS (also shown here for quick reference when deep-linked) -->
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-val" id="statTotal2">—</div><div class="stat-lbl">Total Teachers</div></div>
+          <div class="stat-card s-active"><div class="stat-icon">✅</div><div class="stat-val" id="statActive2">—</div><div class="stat-lbl">Active</div></div>
+          <div class="stat-card s-pending"><div class="stat-icon">⏳</div><div class="stat-val" id="statPending2">—</div><div class="stat-lbl">Pending Approval</div></div>
+          <div class="stat-card s-suspended"><div class="stat-icon">🚫</div><div class="stat-val" id="statSuspended2">—</div><div class="stat-lbl">Suspended</div></div>
+          <div class="stat-card s-results"><div class="stat-icon">📈</div><div class="stat-val" id="statResults2">—</div><div class="stat-lbl">Results Saved</div></div>
+        </div>
+
+        <!-- TABLE SECTION -->
+        <div class="sec-head">
+          <div class="sec-title">All Teachers</div>
+          <div class="sec-tools">
+            <div class="search-wrap"><input type="text" id="searchInp" placeholder="Search name, email, class…" oninput="renderTable()"></div>
+            <select class="fsel" id="filterStatus" onchange="renderTable()">
+              <option value="">All Status</option>
+              <option value="active">Active</option>
+              <option value="pending">Pending</option>
+              <option value="suspended">Suspended</option>
+            </select>
+            <select class="fsel" id="filterGrade" onchange="renderTable()">
+              <option value="">All Grades</option>
+              <option>Grade 1</option><option>Grade 2</option><option>Grade 3</option>
+              <option>Grade 4</option><option>Grade 5</option><option>Grade 6</option>
+              <option>Grade 7</option><option>Grade 8</option><option>Grade 9</option>
+              <option>Grade 10</option><option>Grade 11</option><option>Grade 12</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="tbl-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th><th>Teacher</th><th>TSC No.</th><th>Class</th>
+                  <th>Parent Phone</th><th class="tc">Status</th><th>Registered</th><th class="tc">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="teacherTbody">
+                <tr class="empty-row"><td colspan="8"><div style="font-size:30px;margin-bottom:8px">⏳</div><div>Loading…</div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div><!-- /pageTeachers -->
 
     </div><!-- /outer -->
   </div><!-- /main -->
@@ -763,7 +883,46 @@ window._getLogs=()=>_logs.map(l=>`[${l.ts}] ${l.level.toUpperCase()}: ${l.msg}${
 
 let _schoolId=null,_schoolName='',_ownerMsgUnsub=null,_sessionId=null,_redirecting=false;
 let _lastKnownExpiry=null,_renewalShown=false,_expiryCheckTimer=null,_expiryPollTimer=null,_liveCountdownTimer=null;
+let _currentPage='dashboard';
 const WARN_DAYS=7;
+
+// ══════════════════════════════════════════════════════════════════
+//  SCHOOL NAME — single source of truth, applied everywhere
+// ══════════════════════════════════════════════════════════════════
+function _applySchoolName(name, logoUrl){
+  const clean = (name||'').trim();
+  _schoolName = clean || _schoolName;
+  const display = clean || 'CBE Admin';
+
+  const nameEl = el('sbSchoolName');
+  if(nameEl) nameEl.textContent = display;
+
+  const subEl = el('sbSchoolSub');
+  if(subEl) subEl.textContent = clean ? 'Teacher Management' : 'Set up your school in Settings';
+
+  const topbarSchoolEl = el('topbarSchool');
+  if(topbarSchoolEl) topbarSchoolEl.textContent = clean ? clean : '';
+
+  if(logoUrl){
+    const iconEl = el('sbLogoIcon');
+    if(iconEl) iconEl.innerHTML = `<img src="${logoUrl}" alt="logo" onerror="this.parentElement.innerHTML='⚙️'">`;
+  }
+
+  document.title = clean ? `${clean} | CBE Admin` : 'CBE Admin | Dashboard';
+}
+
+async function _loadSchoolNameFallback(schoolId){
+  // Always try settings/{schoolId} directly so the name shows even if
+  // applySchoolSettings() (from school-settings.js) targets different elements
+  // or hasn't finished yet.
+  try{
+    const snap = await db.collection('settings').doc(schoolId).get();
+    if(snap.exists){
+      const d = snap.data();
+      _applySchoolName(d.name||'', d.logoUrl||d.logo||'');
+    }
+  }catch(e){ log('warn','School name fallback load failed',e.message); }
+}
 
 // ── COMING SOON MODAL ──
 function openComingSoon(title,glyph,sub,desc){
@@ -781,11 +940,20 @@ function openComingSoon(title,glyph,sub,desc){
 }
 el('csOverlay').addEventListener('click',e=>{if(e.target===el('csOverlay'))el('csOverlay').classList.remove('open');});
 
-// ── SIDEBAR NAV ──
+// ══ SIDEBAR NAV / PAGE SWITCHING ══
 function sbNav(page){
-  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
-  event?.currentTarget?.classList.add('active');
-  el('topbarTitle').textContent=page.charAt(0).toUpperCase()+page.slice(1);
+  _currentPage = page;
+  document.querySelectorAll('.sb-item[data-page]').forEach(i=>i.classList.toggle('active', i.dataset.page===page));
+  document.querySelectorAll('.page-view').forEach(p=>p.classList.remove('active'));
+  const target = el('page'+page.charAt(0).toUpperCase()+page.slice(1));
+  if(target) target.classList.add('active');
+
+  const titles = {dashboard:'Dashboard', teachers:'Teachers'};
+  el('topbarTitle').textContent = titles[page] || page;
+
+  el('topbarActionsTeachers').style.display = (page==='teachers') ? 'flex' : 'none';
+
+  if(page==='dashboard') refreshDashboard();
 }
 
 function show(screen){
@@ -822,10 +990,15 @@ auth.onAuthStateChanged(async u=>{
     checkSchoolSetup();
     loadTeachers();
     loadResultsCount();
-    applySchoolSettings(db).catch(()=>{});
+    _loadSchoolNameFallback(_schoolId);
+    applySchoolSettings(db).then(()=>{
+      // school-settings.js may populate window.schoolSettings — sync name from there too
+      if(window.schoolSettings?.name) _applySchoolName(window.schoolSettings.name, window.schoolSettings.logoUrl||window.schoolSettings.logo);
+    }).catch(()=>{});
     _patchTeachersSchoolId(_schoolId).catch(()=>{});
     _listenPayment(_schoolId);
     _trackSession(u,profile).catch(()=>{});
+    refreshDashboard();
     log('info','Dashboard loaded',{uid:u.uid,role:profile.role});
   }catch(e){
     log('error','Auth error',e.message);
@@ -981,8 +1154,111 @@ _resetIdleTimer();
 
 // ══ RESULTS COUNT ══
 async function loadResultsCount(){
-  try{const snap=await db.collection('results').where('schoolId','==',_schoolId).get();el('statResults').textContent=snap.size;}
-  catch(e){el('statResults').textContent='?';}
+  try{const snap=await db.collection('results').where('schoolId','==',_schoolId).get();
+    el('statResults').textContent=snap.size;
+    const r2=el('statResults2');if(r2)r2.textContent=snap.size;
+  }catch(e){
+    el('statResults').textContent='?';
+    const r2=el('statResults2');if(r2)r2.textContent='?';
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  DASHBOARD: students, charts, recent admissions
+// ══════════════════════════════════════════════════════════════════
+let _studentsCache=null, _studentsCacheTs=0;
+const STUDENTS_CACHE_MS=60000;
+
+async function _getStudents(force=false){
+  if(!_schoolId) return [];
+  if(!force && _studentsCache && (Date.now()-_studentsCacheTs)<STUDENTS_CACHE_MS) return _studentsCache;
+  try{
+    const snap=await db.collection('students').where('schoolId','==',_schoolId).get();
+    const list=[];
+    snap.forEach(d=>list.push({id:d.id,...d.data()}));
+    _studentsCache=list; _studentsCacheTs=Date.now();
+    return list;
+  }catch(e){ log('warn','Load students failed',e.message); return _studentsCache||[]; }
+}
+
+async function refreshDashboard(){
+  if(!_schoolId) return;
+  renderTeacherStatusChart();
+  const students = await _getStudents();
+  el('statStudents') && (el('statStudents').textContent = students.length);
+  renderGradeDistChart(students);
+  renderRecentAdmissions(students);
+}
+
+function renderTeacherStatusChart(){
+  const box=el('teacherStatusChart'); if(!box) return;
+  const active=allTeachers.filter(t=>t.status==='active').length;
+  const pending=allTeachers.filter(t=>t.status==='pending').length;
+  const suspended=allTeachers.filter(t=>t.status==='suspended').length;
+  const total=Math.max(active+pending+suspended,1);
+  const rows=[
+    {label:'Active',count:active,color:'var(--green)'},
+    {label:'Pending',count:pending,color:'var(--amber)'},
+    {label:'Suspended',count:suspended,color:'var(--red)'},
+  ];
+  if(active+pending+suspended===0){
+    box.innerHTML='<div style="text-align:center;color:var(--text3);font-size:12px;padding:18px 0">No teachers yet</div>';
+    return;
+  }
+  box.innerHTML = rows.map(r=>`
+    <div class="bar-row">
+      <div class="bar-label">${r.label}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round((r.count/total)*100)}%;background:${r.color}"></div></div>
+      <div class="bar-count">${r.count}</div>
+    </div>
+  `).join('') + `
+    <div class="chart-legend">
+      <span class="chart-legend-item"><span class="chart-legend-dot" style="background:var(--green)"></span>Active</span>
+      <span class="chart-legend-item"><span class="chart-legend-dot" style="background:var(--amber)"></span>Pending</span>
+      <span class="chart-legend-item"><span class="chart-legend-dot" style="background:var(--red)"></span>Suspended</span>
+    </div>
+  `;
+}
+
+function renderGradeDistChart(students){
+  const box=el('gradeDistChart'); if(!box) return;
+  if(!students.length){
+    box.innerHTML='<div style="text-align:center;color:var(--text3);font-size:12px;padding:18px 0">No students admitted yet</div>';
+    return;
+  }
+  const counts={};
+  students.forEach(s=>{ const g=s.grade||'Unassigned'; counts[g]=(counts[g]||0)+1; });
+  const gradeOrder=['Grade 1','Grade 2','Grade 3','Grade 4','Grade 5','Grade 6','Grade 7','Grade 8','Grade 9','Grade 10','Grade 11','Grade 12','Unassigned'];
+  const entries=Object.entries(counts).sort((a,b)=>gradeOrder.indexOf(a[0])-gradeOrder.indexOf(b[0]));
+  const max=Math.max(...entries.map(e=>e[1]),1);
+  box.innerHTML = entries.map(([grade,count])=>`
+    <div class="bar-row">
+      <div class="bar-label">${grade.replace('Grade ','G')}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round((count/max)*100)}%;background:var(--accent)"></div></div>
+      <div class="bar-count">${count}</div>
+    </div>
+  `).join('');
+}
+
+function renderRecentAdmissions(students){
+  const box=el('recentAdmissionsList'); if(!box) return;
+  if(!students.length){
+    box.innerHTML='<div class="ra-empty">No students admitted yet</div>';
+    return;
+  }
+  const sorted=[...students].sort((a,b)=>(b.createdAt?.toMillis?.()??0)-(a.createdAt?.toMillis?.()??0)).slice(0,6);
+  box.innerHTML = sorted.map(s=>{
+    const when = s.createdAt?.toDate ? s.createdAt.toDate().toLocaleDateString('en-KE',{day:'2-digit',month:'short'}) : '—';
+    const name = s.name||s.fullName||'—';
+    return `<div class="ra-row">
+      <div class="ra-avatar">🎓</div>
+      <div class="ra-info">
+        <div class="ra-name">${name}</div>
+        <div class="ra-meta">${s.grade||'—'}${s.stream?(' · '+s.stream):''}</div>
+      </div>
+      <div class="ra-time">${when}</div>
+    </div>`;
+  }).join('');
 }
 
 // ══ ANALYSIS SHORTCUT ══
@@ -1016,14 +1292,14 @@ async function quickApprove(uid){
     await db.collection('users').doc(uid).update({status:'active',schoolId:_schoolId,schoolName,approvedAt:firebase.firestore.FieldValue.serverTimestamp()});
     db.collection('teacherRequests').doc(uid).update({status:'approved',approvedAt:firebase.firestore.FieldValue.serverTimestamp()}).catch(()=>{});
     t.status='active';t.schoolId=_schoolId;
-    updateStats();renderTable();renderPendingBanner();
+    updateStats();renderTable();renderPendingBanner();renderTeacherStatusChart();
     toast(`✅ ${t.fullName} approved`);
   }catch(e){toast(`Failed: ${e.message}`,'err');if(btn){btn.disabled=false;btn.textContent='✅ Approve';}}
 }
 async function quickReject(uid){
   const t=allTeachers.find(x=>x.uid===uid);if(!t)return;
   if(!confirm('Reject and suspend '+t.fullName+'?'))return;
-  try{await db.collection('users').doc(uid).update({status:'suspended'});t.status='suspended';updateStats();renderTable();renderPendingBanner();toast(`${t.fullName} rejected`,'info');}
+  try{await db.collection('users').doc(uid).update({status:'suspended'});t.status='suspended';updateStats();renderTable();renderPendingBanner();renderTeacherStatusChart();toast(`${t.fullName} rejected`,'info');}
   catch(e){toast('Failed: '+e.message,'err');}
 }
 
@@ -1059,7 +1335,7 @@ async function saveReassign(){
   try{
     const upd={status};if(grade){upd.grade=grade;upd.stream=stream||null;}else{upd.grade=null;upd.stream=null;}
     await db.collection('users').doc(_reassignUid).update(upd);
-    Object.assign(t,upd);updateStats();renderTable();renderPendingBanner();closeReassign();
+    Object.assign(t,upd);updateStats();renderTable();renderPendingBanner();renderTeacherStatusChart();closeReassign();
     toast(`${t.fullName} — ${grade?grade+' '+stream:'no class'} · ${status==='active'?'activated ✅':status==='suspended'?'suspended 🚫':'set to pending'}`);
   }catch(e){toast('Save failed: '+e.message,'err');}
   btn.disabled=false;btn.textContent='💾 Save Changes';
@@ -1086,9 +1362,9 @@ function _onTeachersSnap(snap){
   allTeachers=[];
   snap.forEach(d=>{const data=d.data();if(data.role==='teacher'||!data.role)allTeachers.push({uid:d.id,...data});});
   allTeachers.sort((a,b)=>(b.createdAt?.toMillis?.()??0)-(a.createdAt?.toMillis?.()??0));
-  updateStats();renderTable();
+  updateStats();renderTable();renderTeacherStatusChart();
   const pending=allTeachers.filter(t=>t.status==='pending').length;
-  document.title=pending>0?`(${pending}) Admin — CBE`:'Admin — CBE Mark Sheet';
+  document.title=pending>0?`(${pending}) ${_schoolName||'CBE Admin'}`:(_schoolName?`${_schoolName} | CBE Admin`:'CBE Admin | Dashboard');
 }
 function loadTeachers(){
   if(!_schoolId)return;
@@ -1101,10 +1377,16 @@ function loadTeachers(){
 
 // ══ STATS ══
 function updateStats(){
-  el('statTotal').textContent=allTeachers.length;
-  el('statActive').textContent=allTeachers.filter(t=>t.status==='active').length;
-  el('statPending').textContent=allTeachers.filter(t=>t.status==='pending').length;
-  el('statSuspended').textContent=allTeachers.filter(t=>t.status==='suspended').length;
+  const total=allTeachers.length;
+  const active=allTeachers.filter(t=>t.status==='active').length;
+  const pending=allTeachers.filter(t=>t.status==='pending').length;
+  const suspended=allTeachers.filter(t=>t.status==='suspended').length;
+  el('statTotal').textContent=total; el('statActive').textContent=active;
+  el('statPending').textContent=pending; el('statSuspended').textContent=suspended;
+  if(el('statTotal2')) el('statTotal2').textContent=total;
+  if(el('statActive2')) el('statActive2').textContent=active;
+  if(el('statPending2')) el('statPending2').textContent=pending;
+  if(el('statSuspended2')) el('statSuspended2').textContent=suspended;
   renderPendingBanner();
 }
 
@@ -1150,7 +1432,7 @@ async function setStatus(uid,newStatus){
     const upd={status:newStatus};if(newStatus==='active')upd.schoolId=_schoolId;
     await db.collection('users').doc(uid).update(upd);
     t.status=newStatus;if(newStatus==='active')t.schoolId=_schoolId;
-    updateStats();renderTable();renderPendingBanner();
+    updateStats();renderTable();renderPendingBanner();renderTeacherStatusChart();
     const labels={active:'activated ✅',suspended:'suspended 🚫',pending:'set to pending'};
     toast(`${t.fullName} ${labels[newStatus]||newStatus}`);
   }catch(e){toast(`Update failed: ${e.message}`,'err');}
@@ -1200,7 +1482,7 @@ async function saveEdit(){
     const upd={firstName:first,lastName:last,fullName:`${first} ${last}`,grade,stream,status,tscNumber:tsc||null,parentPhone:parentPhone||null};
     await db.collection('users').doc(editingUid).update(upd);
     Object.assign(allTeachers.find(x=>x.uid===editingUid),upd);
-    updateStats();renderTable();closeEdit();toast(`${first} ${last} updated`);
+    updateStats();renderTable();closeEdit();renderTeacherStatusChart();toast(`${first} ${last} updated`);
   }catch(e){toast('Save failed: '+e.message,'err');}
   btn.disabled=false;btn.textContent='Save Changes';
 }
@@ -1214,7 +1496,7 @@ async function confirmDelete(){
   try{
     await db.collection('users').doc(deletingUid).delete();
     allTeachers=allTeachers.filter(x=>x.uid!==deletingUid);
-    updateStats();renderTable();closeDel();toast('Teacher profile deleted');
+    updateStats();renderTable();closeDel();renderTeacherStatusChart();toast('Teacher profile deleted');
   }catch(e){toast('Delete failed: '+e.message,'err');}
   btn.disabled=false;btn.textContent='Delete Profile';
 }
@@ -1303,7 +1585,7 @@ async function _trackSession(user,profile){
   function go(u){return /Windows/.test(u)?'Windows':/Mac/.test(u)?'macOS':/Linux/.test(u)?'Linux':/Android/.test(u)?'Android':'Unknown';}
   const ref=await db.collection('adminSessions').add({
     schoolId:user.uid,adminId:user.uid,adminName:profile.fullName||profile.email||'',adminEmail:user.email||'',
-    schoolName:window.schoolSettings?.name||'',role:profile.role||'admin',
+    schoolName:window.schoolSettings?.name||_schoolName||'',role:profile.role||'admin',
     ip,device:gd(ua),os:go(ua),active:true,forcedLogout:false,
     loginAt:firebase.firestore.FieldValue.serverTimestamp()
   });
