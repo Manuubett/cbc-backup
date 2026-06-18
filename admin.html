@@ -124,6 +124,15 @@ body{
 .topbar-school::before{content:'·';margin-right:9px;color:var(--border)}
 .topbar-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
 
+/* ── THEME TOGGLE ── */
+.theme-toggle{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:32px;height:32px;border-radius:var(--r2);border:1.5px solid var(--border);
+  background:var(--surf2);color:var(--text2);cursor:pointer;font-size:15px;
+  transition:all .14s;flex-shrink:0;
+}
+.theme-toggle:hover{background:var(--bg);color:var(--text);border-color:var(--accent)}
+
 /* ── CONTENT ── */
 .outer{padding:20px 24px;flex:1}
 .page-view{display:none}
@@ -339,6 +348,33 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
 .t.info{background:#1e3a5f;color:#dbeafe;border-left:3px solid var(--accent)}
 @keyframes tin{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
 @keyframes tout{to{transform:translateX(110%);opacity:0}}
+
+/* ── DARK THEME ── */
+[data-theme="dark"]{
+  --bg:#0b1120;
+  --sidebar-bg:#070b16;
+  --sidebar-border:rgba(255,255,255,.06);
+  --surface:#131b2e;
+  --surf2:#1a2438;
+  --border:#232f48;
+  --text:#e5e9f3;
+  --text2:#9aa6c4;
+  --text3:#5e6b8a;
+  --accent:#3b82f6;
+  --ah:#60a5fa;
+  --alight:#152038;
+  --green:#34d399;--green-bg:#0f2e23;--green-tx:#6ee7b7;
+  --amber:#fbbf24;--amber-bg:#3a2a0c;--amber-tx:#fcd34d;
+  --red:#f87171;--red-bg:#3a1414;--red-tx:#fca5a5;
+  --purple:#a78bfa;--purple-bg:#241a3d;--purple-tx:#c4b5fd;
+  --sh:0 1px 3px rgba(0,0,0,.4);
+  --sh2:0 8px 32px rgba(0,0,0,.55);
+}
+[data-theme="dark"] thead th{background:#0d1526;color:#9fb4dd;border-bottom:1px solid #1f2c47}
+[data-theme="dark"] .pov-card{background:#131b2e}
+[data-theme="dark"] .pov-exp-msg{color:#9aa6c4}
+[data-theme="dark"] .cs-card{background:#131b2e}
+[data-theme="dark"] select.minp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%235e6b8a'/%3E%3C/svg%3E")}
 </style>
 </head>
 <body>
@@ -403,10 +439,10 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
 
       <div class="sb-divider"></div>
       <div class="sb-section-label">Communication</div>
-      <button class="sb-item" onclick="sendResultsSMS()">
+      <a class="sb-item" href="analysis" title="Send results via the Analysis page">
         <span class="sb-item-icon">📱</span>
         <span class="sb-item-label">Results SMS</span>
-      </button>
+      </a>
       <button class="sb-item" onclick="sendAnnouncementSMS()">
         <span class="sb-item-icon">📢</span>
         <span class="sb-item-label">Announcement</span>
@@ -439,6 +475,7 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
         <span class="topbar-title" id="topbarTitle">Dashboard</span>
         <span class="topbar-school" id="topbarSchool"></span>
       </div>
+      <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle dark mode">🌙</button>
       <div class="topbar-actions" id="topbarActionsTeachers" style="display:none">
         <button class="btn btn-outline btn-sm" onclick="loadTeachers()">🔄 Refresh</button>
         <button class="btn btn-outline btn-sm" onclick="copyRegLink()">🔗 Reg Link</button>
@@ -638,10 +675,10 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
           <div class="mfield">
             <label>Temporary Password *</label>
             <div style="position:relative">
-              <input class="minp" id="atPass" type="text" value="" readonly style="padding-right:90px;font-family:monospace;letter-spacing:.5px">
-              <button onclick="generatePassword()" style="position:absolute;right:6px;top:50%;transform:translateY(-50%);padding:3px 8px;border-radius:4px;font-size:11px;cursor:pointer;background:var(--surf2);border:1px solid var(--border);color:var(--text2)">🔄 Regenerate</button>
+              <input class="minp" id="atPass" type="text" value="Teacher@2026" style="padding-right:90px">
+              <button onclick="generatePassword()" style="position:absolute;right:6px;top:50%;transform:translateY(-50%);padding:3px 8px;border-radius:4px;font-size:11px;cursor:pointer;background:var(--surf2);border:1px solid var(--border);color:var(--text2)">🔄 Generate</button>
             </div>
-            <div style="font-size:11px;color:var(--text3);margin-top:3px">Auto-generated per teacher — share it with them securely (WhatsApp/SMS, not email in plain text).</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:3px">Teacher uses this to sign in. Share it with them securely.</div>
           </div>
         </div>
         <div class="modal-foot">
@@ -742,10 +779,10 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
                   <span class="qa-label">Admit Student</span>
                   <span class="qa-sub">Register a new student</span>
                 </a>
-                <a class="qa-btn" href="analysis?action=sms">
+                <a class="qa-btn" href="analysis">
                   <span class="qa-icon">📱</span>
                   <span class="qa-label">Send Results SMS</span>
-                  <span class="qa-sub">Notify parents of marks</span>
+                  <span class="qa-sub">Go to Analysis to notify parents</span>
                 </a>
                 <button class="qa-btn" onclick="sendAnnouncementSMS()">
                   <span class="qa-icon">📢</span>
@@ -864,6 +901,26 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
 <script src="sms-integration.js"></script>
 <script src="bett-sync.js"></script>
 <script>
+// ══ THEME (DARK MODE) ══
+function _applyTheme(mode){
+  if(mode==='dark'){document.documentElement.setAttribute('data-theme','dark');}
+  else{document.documentElement.removeAttribute('data-theme');}
+  const btn=document.getElementById('themeToggleBtn');
+  if(btn)btn.textContent=mode==='dark'?'☀️':'🌙';
+}
+function toggleTheme(){
+  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+  const next=isDark?'light':'dark';
+  _applyTheme(next);
+  try{localStorage.setItem('cbe_theme',next);}catch(_){}
+}
+(function _initTheme(){
+  let saved=null;
+  try{saved=localStorage.getItem('cbe_theme');}catch(_){}
+  if(!saved&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)saved='dark';
+  _applyTheme(saved==='dark'?'dark':'light');
+})();
+
 if(!firebase.apps.length){
   firebase.initializeApp({
     apiKey:"AIzaSyBdabXqlBQ-6yVNJKdu8Zhb9Cm_-59_u24",
@@ -1513,7 +1570,7 @@ function openAddTeacher(){
   el('addTeacherErr').classList.remove('show');
   ['atFirst','atLast','atEmail','atTSC','atParentPhone'].forEach(id=>{const e=el(id);if(e)e.value='';});
   el('atGrade').value='';el('atStream').innerHTML='<option value="">-- Select Grade --</option>';
-  generatePassword();
+  el('atPass').value='Teacher@2026';
   el('addTeacherOverlay').classList.add('open');
 }
 function closeAddTeacher(){el('addTeacherOverlay').classList.remove('open');}
@@ -1556,7 +1613,6 @@ async function saveAddTeacher(){
       role:'teacher',status:'active',schoolId:_schoolId,
       schoolName:_schoolName||window.schoolSettings?.name||'',
       addedByAdmin:true,
-      mustChangePassword:true,
       createdAt:firebase.firestore.FieldValue.serverTimestamp()
     });
     toast(`✅ ${first} ${last} added — ${grade} ${stream} · Share password: ${pass}`);
