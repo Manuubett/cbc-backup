@@ -638,10 +638,10 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
           <div class="mfield">
             <label>Temporary Password *</label>
             <div style="position:relative">
-              <input class="minp" id="atPass" type="text" value="Teacher@2026" style="padding-right:90px">
-              <button onclick="generatePassword()" style="position:absolute;right:6px;top:50%;transform:translateY(-50%);padding:3px 8px;border-radius:4px;font-size:11px;cursor:pointer;background:var(--surf2);border:1px solid var(--border);color:var(--text2)">🔄 Generate</button>
+              <input class="minp" id="atPass" type="text" value="" readonly style="padding-right:90px;font-family:monospace;letter-spacing:.5px">
+              <button onclick="generatePassword()" style="position:absolute;right:6px;top:50%;transform:translateY(-50%);padding:3px 8px;border-radius:4px;font-size:11px;cursor:pointer;background:var(--surf2);border:1px solid var(--border);color:var(--text2)">🔄 Regenerate</button>
             </div>
-            <div style="font-size:11px;color:var(--text3);margin-top:3px">Teacher uses this to sign in. Share it with them securely.</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:3px">Auto-generated per teacher — share it with them securely (WhatsApp/SMS, not email in plain text).</div>
           </div>
         </div>
         <div class="modal-foot">
@@ -742,11 +742,11 @@ select.minp{cursor:pointer;appearance:none;background-image:url("data:image/svg+
                   <span class="qa-label">Admit Student</span>
                   <span class="qa-sub">Register a new student</span>
                 </a>
-                <button class="qa-btn" onclick="sendResultsSMS()">
+                <a class="qa-btn" href="analysis?action=sms">
                   <span class="qa-icon">📱</span>
                   <span class="qa-label">Send Results SMS</span>
                   <span class="qa-sub">Notify parents of marks</span>
-                </button>
+                </a>
                 <button class="qa-btn" onclick="sendAnnouncementSMS()">
                   <span class="qa-icon">📢</span>
                   <span class="qa-label">Send Announcement</span>
@@ -1513,7 +1513,7 @@ function openAddTeacher(){
   el('addTeacherErr').classList.remove('show');
   ['atFirst','atLast','atEmail','atTSC','atParentPhone'].forEach(id=>{const e=el(id);if(e)e.value='';});
   el('atGrade').value='';el('atStream').innerHTML='<option value="">-- Select Grade --</option>';
-  el('atPass').value='Teacher@2026';
+  generatePassword();
   el('addTeacherOverlay').classList.add('open');
 }
 function closeAddTeacher(){el('addTeacherOverlay').classList.remove('open');}
@@ -1556,6 +1556,7 @@ async function saveAddTeacher(){
       role:'teacher',status:'active',schoolId:_schoolId,
       schoolName:_schoolName||window.schoolSettings?.name||'',
       addedByAdmin:true,
+      mustChangePassword:true,
       createdAt:firebase.firestore.FieldValue.serverTimestamp()
     });
     toast(`✅ ${first} ${last} added — ${grade} ${stream} · Share password: ${pass}`);
@@ -1599,39 +1600,6 @@ function _listenSessionControl(){
   db.collection('adminSessions').doc(_sessionId).onSnapshot(doc=>{if(!doc.exists)return;const d=doc.data();if(d&&d.forcedLogout){toast('⚠️ Session ended — another login detected','err');setTimeout(()=>doLogout(),2000);}});
 }
 async function _endSession(){if(!_sessionId)return;await db.collection('adminSessions').doc(_sessionId).update({active:false,logoutAt:firebase.firestore.FieldValue.serverTimestamp()}).catch(()=>{});_sessionId=null;}
-
-// ══════════════════════════════════════════════════════════════════
-//  SEND RESULTS SMS
-// ══════════════════════════════════════════════════════════════════
-async function sendResultsSMS(){
-  if(!_schoolId){toast('Not authenticated — please refresh','err');return;}
-  if(typeof window.CBE_SMS==='undefined'){toast('SMS module not loaded — check sms-integration.js is in the same folder','err');return;}
-  let settingsData={};
-  try{const settingsSnap=await db.collection('settings').doc(_schoolId).get();if(settingsSnap.exists)settingsData=settingsSnap.data();}
-  catch(e){toast('Could not read school settings: '+e.message,'err');return;}
-  const atApiKey=settingsData.atApiKey||'',atUsername=settingsData.atUsername||'';
-  if(!atApiKey||!atUsername){toast('SMS not configured — go to Settings → SMS Setup','err');setTimeout(()=>window.open('settings','_blank'),1400);return;}
-  const month=new Date().getMonth();
-  const term=month<4?'Term 1':month<8?'Term 2':'Term 3';
-  const year=String(new Date().getFullYear());
-  try{
-    const resultsSnap=await db.collection('results').where('schoolId','==',_schoolId).where('term','==',term).where('year','==',year).get();
-    if(resultsSnap.empty){toast(`No results saved for ${term} ${year} yet.`,'info');return;}
-    const studentsSnap=await db.collection('students').where('schoolId','==',_schoolId).get();
-    const phoneMap={};
-    studentsSnap.forEach(d=>{const s=d.data();const phone=s.parentPhone||s.guardianPhone||s.motherPhone||'';if(phone)phoneMap[d.id]=phone;});
-    const recipients=[];
-    resultsSnap.forEach(d=>{
-      const r=d.data();let subjects=[];
-      if(Array.isArray(r.subjects)){subjects=r.subjects;}
-      else if(r.marks&&typeof r.marks==='object'){subjects=Object.entries(r.marks).map(([name,val])=>typeof val==='object'?{name,score:val.score??val.marks??val.total??'—',grade:val.grade||''}:{name,score:val});}
-      recipients.push({studentId:d.id,studentName:r.studentName||r.fullName||'—',grade:r.grade||'',stream:r.stream||'',parentPhone:phoneMap[d.id]||r.parentPhone||'',subjects});
-    });
-    const senderId=settingsData.smsSenderId||'';
-    const schoolName=settingsData.name||window.schoolSettings?.name||_schoolName||'';
-    CBE_SMS.openSendModal(recipients,_schoolId,{name:schoolName,term,year,senderId});
-  }catch(e){toast('Failed to load results: '+e.message,'err');}
-}
 
 // ══════════════════════════════════════════════════════════════════
 //  SEND ANNOUNCEMENT SMS
