@@ -1,0 +1,909 @@
+<!--
+  CBE Mark Sheet System — Redesigned
+  Copyright © 2026 Bett Emanuel — https://bett.website
+  KEY CHANGES vs original:
+  - Light, clean table headers (no dark navy)
+  - Subtle colour accent strips per subject group
+  - Full mobile CARD VIEW for phone mark entry
+  - Large touch-friendly inputs on cards (44px+)
+  - Auto-switches to card view on screens ≤768px
+  - Table/Card toggle button on desktop too
+  - OOF editor panel on mobile (tap to edit max marks)
+  - Per-student Save button on each card
+  - All original Firebase/auth/autosave/draft logic preserved
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#1a56db">
+<title>CBE Mark Sheet | Junior School</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Familjen+Grotesk:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f2f8;
+  --surface:#fff;
+  --surf2:#f6f7fb;
+  --border:#e3e7f0;
+  --border2:#cdd4e8;
+  --text:#1a2236;
+  --text2:#566484;
+  --text3:#9aaabb;
+  --accent:#1a56db;
+  --ah:#1447c0;
+  --alight:#eff4ff;
+  --aborder:#c5d8ff;
+  --success:#059669;
+  --warn:#d97706;
+  --danger:#dc2626;
+  --ee1-bg:#d1fae5;--ee1-tx:#065f46;
+  --ee2-bg:#bbf7d0;--ee2-tx:#166534;
+  --me1-bg:#fef9c3;--me1-tx:#92400e;
+  --me2-bg:#fef3c7;--me2-tx:#92400e;
+  --ae1-bg:#ffedd5;--ae1-tx:#9a3412;
+  --ae2-bg:#fed7aa;--ae2-tx:#9a3412;
+  --be1-bg:#fee2e2;--be1-tx:#991b1b;
+  --be2-bg:#fecaca;--be2-tx:#7f1d1d;
+  --r:10px;--r2:8px;--r3:5px;
+  --sh:0 1px 3px rgba(0,0,0,.06);
+  --sh2:0 4px 20px rgba(0,0,0,.12);
+  --hh:54px;--th:50px;
+}
+
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);font-size:14px;min-height:100vh}
+
+/* ─── HEADER ─────────────────────── */
+header{
+  background:var(--surface);border-bottom:1.5px solid var(--border);
+  padding:0 18px;height:var(--hh);
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:300;box-shadow:var(--sh);
+}
+.logo{display:flex;align-items:center;gap:10px}
+.lm{width:34px;height:34px;border-radius:9px;background:var(--accent);display:grid;place-items:center;color:#fff;font-size:17px;flex-shrink:0;overflow:hidden}
+.lm img{width:100%;height:100%;object-fit:contain;border-radius:inherit}
+.lt{font-family:'Familjen Grotesk',sans-serif;font-size:15px;font-weight:800;letter-spacing:-.3px}
+.ls{font-size:10.5px;color:var(--text3);margin-top:1px}
+.hdr-r{display:flex;align-items:center;gap:7px}
+
+/* ─── BUTTONS ────────────────────── */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:0 13px;border-radius:var(--r2);font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;border:none;transition:all .13s;white-space:nowrap;height:34px}
+.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:var(--ah)}
+.btn-success{background:var(--success);color:#fff}.btn-success:hover{background:#047857}
+.btn-outline{background:var(--surface);border:1.5px solid var(--border2);color:var(--text2)}.btn-outline:hover{background:var(--surf2);color:var(--text)}
+.btn-sm{padding:0 10px;font-size:12px;height:30px}
+
+/* ─── TOOLBAR ─────────────────────── */
+.toolbar{
+  background:var(--surface);border-bottom:1.5px solid var(--border);
+  padding:0 18px;height:var(--th);
+  display:flex;align-items:center;gap:8px;
+  position:sticky;top:var(--hh);z-index:200;box-shadow:var(--sh);
+  overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.toolbar::-webkit-scrollbar{display:none}
+.fsel{padding:0 10px;border:1.5px solid var(--border2);border-radius:var(--r2);font-family:inherit;font-size:12.5px;color:var(--text);background:var(--surface);cursor:pointer;outline:none;height:34px;flex-shrink:0}
+.fsel:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(26,86,219,.12)}
+.tb-lbl{font-size:11px;color:var(--text3);font-weight:600;white-space:nowrap;flex-shrink:0}
+.tb-sep{width:1px;height:20px;background:var(--border);flex-shrink:0;margin:0 2px}
+.cat-tab{display:inline-flex;align-items:center;gap:4px;padding:0 11px;border-radius:var(--r2);font-size:11.5px;font-weight:700;cursor:pointer;border:1.5px solid var(--border2);background:var(--surface);color:var(--text2);transition:all .13s;height:30px;white-space:nowrap;flex-shrink:0}
+.cat-tab.active-1{background:#eff6ff;border-color:#93c5fd;color:#1d4ed8}
+.cat-tab.active-2{background:#f0fdf4;border-color:#86efac;color:#166534}
+.cat-tab.active-3{background:#fdf4ff;border-color:#d8b4fe;color:#7e22ce}
+.cat-tab:hover:not([class*="active"]){background:var(--surf2)}
+.cat-tabs-wrap{display:flex;gap:4px;align-items:center;flex-shrink:0}
+
+/* ─── LEGEND ──────────────────────── */
+.legend{padding:6px 18px;background:var(--surf2);border-bottom:1px solid var(--border);display:flex;gap:5px;align-items:center;flex-wrap:wrap;font-size:10.5px}
+.lbadge{padding:2px 8px;border-radius:20px;font-size:10.5px;font-weight:700;white-space:nowrap;display:inline-block}
+.ee1{background:var(--ee1-bg);color:var(--ee1-tx)}.ee2{background:var(--ee2-bg);color:var(--ee2-tx)}
+.me1{background:var(--me1-bg);color:var(--me1-tx)}.me2{background:var(--me2-bg);color:var(--me2-tx)}
+.ae1{background:var(--ae1-bg);color:var(--ae1-tx)}.ae2{background:var(--ae2-bg);color:var(--ae2-tx)}
+.be1{background:var(--be1-bg);color:var(--be1-tx)}.be2{background:var(--be2-bg);color:var(--be2-tx)}
+
+/* ─── OUTER ───────────────────────── */
+.outer{padding:16px 18px}
+.info-strip{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.sheet-title{font-family:'Familjen Grotesk',sans-serif;font-size:17px;font-weight:800}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.pill{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:3px 11px;font-size:11.5px;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:4px}
+.pill .pv{color:var(--text);font-weight:700}
+
+/* ─── VIEW TOGGLE ─────────────────── */
+.view-toggle{display:flex;gap:3px;background:var(--surf2);border:1.5px solid var(--border);border-radius:var(--r2);padding:2px}
+.vt-btn{padding:3px 10px;border-radius:6px;border:none;font-family:inherit;font-size:11.5px;font-weight:600;cursor:pointer;background:none;color:var(--text3);transition:all .13s}
+.vt-btn.active{background:var(--surface);color:var(--accent);box-shadow:var(--sh)}
+
+/* ═══════════════════════════════════
+   DESKTOP TABLE
+   ═══════════════════════════════════ */
+.sheet-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+.tbl-scroll{overflow-x:auto;overflow-y:auto;max-height:calc(100vh - var(--hh) - var(--th) - 40px - 100px)}
+.tbl-scroll::-webkit-scrollbar{width:5px;height:5px}
+.tbl-scroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+table{border-collapse:collapse;width:max-content;min-width:100%}
+thead th,tbody td,tfoot td{border:1px solid var(--border)}
+
+/* Clean light headers — no dark navy */
+thead th{
+  background:#f5f6fa;color:var(--text2);
+  font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;
+  padding:0 7px;white-space:nowrap;text-align:center;
+  position:sticky;top:0;z-index:10;border-color:var(--border2);height:32px;
+}
+thead tr:nth-child(2) th{background:#eef0f8;font-size:9.5px;height:26px}
+thead tr.out-of-row th{background:#fffbeb;height:30px;padding:0;position:sticky;top:58px;z-index:9}
+
+/* Coloured top border per subject group — subtle accent */
+thead .g-eng  {border-top:3px solid #3b82f6!important}
+thead .g-kis  {border-top:3px solid #06b6d4!important}
+thead .g-math {border-top:3px solid #8b5cf6!important}
+thead .g-sci  {border-top:3px solid #10b981!important}
+thead .g-soc  {border-top:3px solid #f59e0b!important}
+thead .g-re   {border-top:3px solid #ec4899!important}
+thead .g-arts {border-top:3px solid #f97316!important}
+thead .g-pret {border-top:3px solid #6366f1!important}
+thead .g-agri {border-top:3px solid #22c55e!important}
+thead .g-ovr  {border-top:3px solid #1a56db!important}
+
+.oof{width:100%;height:29px;border:none;outline:none;text-align:center;font-family:inherit;font-size:11px;font-weight:700;color:var(--warn);background:transparent;cursor:cell;padding:0}
+.oof:focus{background:#fffbeb;outline:2px solid var(--warn);outline-offset:-2px;position:relative;z-index:2}
+.oof::-webkit-inner-spin-button,.oof::-webkit-outer-spin-button{-webkit-appearance:none}
+.oof-label{font-size:9px;color:var(--text3);font-weight:700;text-transform:uppercase}
+
+/* Sticky name cols */
+thead th.cn {position:sticky;left:0;z-index:15;background:#f5f6fa!important;width:34px;min-width:34px}
+thead th.cna{position:sticky;left:34px;z-index:15;background:#f5f6fa!important;min-width:150px}
+thead th.cad{position:sticky;left:184px;z-index:15;background:#f5f6fa!important;min-width:80px}
+thead tr:nth-child(2) th.cn,thead tr:nth-child(2) th.cna,thead tr:nth-child(2) th.cad{background:#eef0f8!important}
+thead tr.out-of-row th.cn,thead tr.out-of-row th.cna,thead tr.out-of-row th.cad{z-index:16;background:#fffbeb!important}
+
+tbody td{padding:0;text-align:center;vertical-align:middle;font-size:13px;height:38px;background:var(--surface)}
+tbody td.tl{text-align:left;padding:0 8px}
+tbody td.cn,tbody td.cna,tbody td.cad{position:sticky;z-index:5;background:var(--surface)}
+tbody td.cn{left:0;width:34px}
+tbody td.cna{left:34px}
+tbody td.cad{left:184px}
+tbody tr:nth-child(even) td{background:#fafbfe}
+tbody tr:nth-child(even) td.cn,tbody tr:nth-child(even) td.cna,tbody tr:nth-child(even) td.cad{background:#fafbfe}
+tbody tr:hover td{background:#f0f4ff!important}
+tbody tr.saved td{background:#f0fdf6!important}
+tbody tr.saved td.cn,tbody tr.saved td.cna,tbody tr.saved td.cad{background:#ecfdf5!important}
+
+.no-c{font-size:11px;color:var(--text3);font-weight:700}
+.sname{font-weight:600;font-size:13px;white-space:nowrap}
+
+.si{width:100%;height:37px;border:none;outline:none;text-align:center;font-family:inherit;font-size:13.5px;font-weight:700;color:var(--text);background:transparent;cursor:cell;padding:0}
+.si:focus{background:#eff6ff!important;outline:2px solid var(--accent);outline-offset:-2px;position:relative;z-index:2}
+.si.over-limit{background:#fef2f2!important;outline:2px solid var(--danger)!important;color:var(--danger)!important}
+.si::-webkit-inner-spin-button,.si::-webkit-outer-spin-button{-webkit-appearance:none}
+
+.tot-c{font-weight:800;font-size:12.5px;color:var(--accent);background:#f0f5ff!important}
+.avg-c{font-family:'Familjen Grotesk',sans-serif;font-size:16px;font-weight:800;color:var(--accent)}
+.pts-c{font-weight:800;font-size:13px}
+.sv-done{font-size:11px;font-weight:700;color:var(--success)}
+
+tfoot td{background:#f5f6fa!important;color:var(--accent);font-weight:700;font-size:11.5px;height:30px;text-align:center;border-color:var(--border2);padding:0 5px}
+tfoot td.lbl{color:var(--text2);font-size:10.5px;font-weight:800;text-align:left;padding:0 8px}
+tfoot td.ov-c{color:var(--success)!important;font-family:'Familjen Grotesk',sans-serif;font-size:15px;font-weight:800}
+tfoot td.cn,tfoot td.cna,tfoot td.cad{position:sticky;z-index:5;background:#f5f6fa!important}
+tfoot td.cn{left:0}tfoot td.cna{left:34px}tfoot td.cad{left:184px}
+
+/* ═══════════════════════════════════
+   MOBILE CARD VIEW
+   ═══════════════════════════════════ */
+#cardView{display:none}
+
+/* OOF editor */
+.oof-panel{background:#fffbeb;border:1.5px solid #fcd34d;border-radius:var(--r);padding:14px;margin-bottom:12px}
+.oof-panel-title{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--warn);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.oof-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.oof-item label{font-size:11px;color:var(--text2);font-weight:600;margin-bottom:4px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.oof-inp{width:100%;height:40px;border:1.5px solid #fcd34d;border-radius:var(--r2);font-family:inherit;font-size:15px;font-weight:700;text-align:center;color:var(--warn);background:#fff;outline:none;padding:0;-webkit-appearance:none;appearance:none}
+.oof-inp:focus{border-color:var(--warn);box-shadow:0 0 0 3px rgba(217,119,6,.15)}
+.oof-inp::-webkit-inner-spin-button,.oof-inp::-webkit-outer-spin-button{-webkit-appearance:none}
+
+/* Student card */
+.stu-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:12px;overflow:hidden}
+.stu-card.saved{border-color:#6ee7b7;border-width:2px}
+
+.sc-header{padding:12px 14px;background:var(--surf2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.sc-num{width:28px;height:28px;border-radius:50%;background:var(--alight);border:1.5px solid var(--aborder);display:grid;place-items:center;font-size:11.5px;font-weight:800;color:var(--accent);flex-shrink:0}
+.sc-info{flex:1;min-width:0}
+.sc-name{font-weight:700;font-size:14.5px;line-height:1.2}
+.sc-adm{font-size:11px;color:var(--text3);margin-top:1px}
+.sc-result{text-align:right;flex-shrink:0}
+.sc-avg{font-family:'Familjen Grotesk',sans-serif;font-size:22px;font-weight:800;color:var(--accent);line-height:1}
+
+.sc-body{padding:8px 14px}
+.sub-row{display:flex;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);gap:10px}
+.sub-row:last-child{border-bottom:none}
+.sub-icon{font-size:18px;width:24px;text-align:center;flex-shrink:0}
+.sub-label{flex:1;min-width:0}
+.sub-name{font-size:13.5px;font-weight:600;line-height:1.2}
+.sub-oof{font-size:11px;color:var(--text3);margin-top:1px}
+.sub-inputs{display:flex;gap:6px;align-items:flex-end;flex-shrink:0}
+.mi-wrap{display:flex;flex-direction:column;align-items:center;gap:3px}
+.mi{
+  width:62px;height:46px;
+  border:1.5px solid var(--border2);border-radius:var(--r2);
+  font-family:inherit;font-size:16px;font-weight:700;text-align:center;
+  color:var(--text);background:var(--surface);
+  -webkit-appearance:none;appearance:none;outline:none;padding:0;
+}
+.mi:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(26,86,219,.15);background:#eff6ff}
+.mi.over-limit{border-color:var(--danger);background:#fef2f2;color:var(--danger)}
+.mi::-webkit-inner-spin-button,.mi::-webkit-outer-spin-button{-webkit-appearance:none}
+.mi-lbl{font-size:9.5px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.3px}
+.mi-tot{
+  width:56px;height:46px;
+  background:var(--alight);border:1.5px solid var(--aborder);
+  border-radius:var(--r2);display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:800;color:var(--accent);
+}
+
+.sc-footer{
+  padding:10px 14px;background:var(--surf2);border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+}
+.sc-save-status{font-size:12px;font-weight:600}
+
+/* ─── MISC ────────────────────────── */
+.empty-msg{text-align:center;padding:60px 20px;color:var(--text3)}
+.empty-msg .ei{font-size:40px;margin-bottom:12px}
+.spin{width:18px;height:18px;border:2.5px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:sp .65s linear infinite;display:inline-block}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* ─── TOAST ────────────────────────── */
+#tc{position:fixed;top:66px;right:16px;z-index:9999;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+.t{display:flex;align-items:center;gap:8px;padding:10px 15px;border-radius:var(--r2);font-size:12.5px;font-weight:600;box-shadow:var(--sh2);animation:tin .25s ease;min-width:200px;pointer-events:all}
+.t.ok{background:#064e3b;color:#ecfdf5;border-left:3px solid #10b981}
+.t.err{background:#7f1d1d;color:#fef2f2;border-left:3px solid #ef4444}
+.t.info{background:#1e3a5f;color:#dbeafe;border-left:3px solid var(--accent)}
+@keyframes tin{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes tout{to{transform:translateX(110%);opacity:0}}
+
+/* ─── NET BAR ──────────────────────── */
+#netBar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:998;padding:9px 16px;font-size:12.5px;font-weight:700;text-align:center}
+#netBar.offline{display:block;background:#7f1d1d;color:#fef2f2}
+#netBar.saving{display:block;background:#1e3a5f;color:#dbeafe}
+#netBar.saved{display:block;background:#064e3b;color:#ecfdf5}
+
+/* ─── DRAFT BADGE ──────────────────── */
+#draftBadge{display:none;background:#fef3c7;border:1.5px solid #fcd34d;color:#92400e;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;cursor:pointer;white-space:nowrap}
+
+/* ─── DARK MODE ────────────────────── */
+body.dark{
+  --bg:#0c0f18;--surface:#141924;--surf2:#1a2030;
+  --border:#252d42;--border2:#303d58;
+  --text:#e0e8f8;--text2:#7a90b8;--text3:#3d4f72;
+  --alight:#172050;--aborder:#253570;
+}
+body.dark thead th{background:#1a2030!important;color:#7090c0!important;border-color:#252d42!important}
+body.dark thead tr:nth-child(2) th{background:#111828!important}
+body.dark thead tr.out-of-row th{background:#1a1500!important}
+body.dark thead th.cn,body.dark thead th.cna,body.dark thead th.cad{background:#1a2030!important}
+body.dark thead tr:nth-child(2) th.cn,body.dark thead tr:nth-child(2) th.cna,body.dark thead tr:nth-child(2) th.cad{background:#111828!important}
+body.dark thead tr.out-of-row th.cn,body.dark thead tr.out-of-row th.cna,body.dark thead tr.out-of-row th.cad{background:#1a1500!important}
+body.dark tbody td{background:#141924}
+body.dark tbody tr:nth-child(even) td{background:#161d2e}
+body.dark tbody tr:nth-child(even) td.cn,body.dark tbody tr:nth-child(even) td.cna,body.dark tbody tr:nth-child(even) td.cad{background:#161d2e!important}
+body.dark tbody td.cn,body.dark tbody td.cna,body.dark tbody td.cad{background:#141924!important}
+body.dark tbody tr:hover td{background:#1a2848!important}
+body.dark tbody tr.saved td{background:#062018!important}
+body.dark tbody tr.saved td.cn,body.dark tbody tr.saved td.cna,body.dark tbody tr.saved td.cad{background:#062018!important}
+body.dark tfoot td{background:#111828!important}
+body.dark tfoot td.cn,body.dark tfoot td.cna,body.dark tfoot td.cad{background:#111828!important}
+body.dark .si:focus{background:#1a2848!important}
+body.dark .tot-c{background:#162050!important}
+body.dark .stu-card{background:#141924;border-color:#252d42}
+body.dark .stu-card.saved{border-color:#065f46}
+body.dark .sc-header,body.dark .sc-footer{background:#111828}
+body.dark .mi{background:#1a2030;border-color:#303d58;color:#e0e8f8}
+body.dark .mi:focus{background:#172050}
+body.dark .mi-tot{background:#172050;border-color:#253570}
+body.dark .oof-panel{background:#1a1500;border-color:#854d0e}
+body.dark .oof-inp{background:#1a1500;border-color:#854d0e;color:#fbbf24}
+
+/* ─── PAYMENT GATE ─────────────────── */
+#_payOverlay{display:none;position:fixed;inset:0;z-index:99999;background:rgba(6,12,28,.82);backdrop-filter:blur(20px) saturate(.3);align-items:center;justify-content:center;padding:20px;font-family:inherit}
+#_payOverlay.show{display:flex}
+._pov-card{background:#fff;border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.55);width:100%;max-width:400px;overflow:hidden;animation:_povin .32s cubic-bezier(.22,1,.36,1) both}
+@keyframes _povin{from{opacity:0;transform:scale(.94) translateY(18px)}to{opacity:1;transform:none}}
+._pov-top{background:linear-gradient(135deg,#0f172a,#1e3a8a 68%,#1a56db);padding:22px 22px 16px;text-align:center;color:#fff}
+._pov-lock{width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 10px}
+._pov-title{font-family:'Familjen Grotesk',sans-serif;font-size:18px;font-weight:800;margin-bottom:5px}
+._pov-school{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);padding:2px 14px;border-radius:20px;font-size:11px;color:rgba(255,255,255,.82)}
+._pov-body{padding:20px 20px 4px}
+._pov-msg{font-size:13px;color:#4a5578;line-height:1.75;margin-bottom:16px;text-align:center}
+._pov-renew{width:100%;height:44px;background:linear-gradient(135deg,#1a56db,#1447c0);color:#fff;border:none;border-radius:8px;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;margin-bottom:10px}
+._pov-actions{padding:12px 20px 18px;display:flex;gap:8px}
+._pov-wa{flex:1;padding:9px;border-radius:8px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;border:none;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none}
+._pov-out{padding:9px 14px;border-radius:8px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;background:none;border:1.5px solid #e2e8f0;color:#94a3b8}
+#_subBar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:99998;padding:9px 20px;font-size:12px;font-weight:600;align-items:center;justify-content:space-between;gap:12px;font-family:inherit}
+._subbar-show{display:flex!important}
+._subbar-warn{background:#7c2d12;border-top:2px solid #f97316;color:#fed7aa}
+._subbar-urgent{background:#7f1d1d;border-top:2px solid #ef4444;color:#fef2f2}
+#_subBarTimer{font-family:'Familjen Grotesk',sans-serif;font-size:15px;font-weight:800}
+._subbar-warn #_subBarTimer{color:#fbbf24}._subbar-urgent #_subBarTimer{color:#fca5a5}
+._subbar-renew{padding:5px 14px;border-radius:5px;font-family:inherit;font-size:11.5px;font-weight:700;cursor:pointer;border:none;white-space:nowrap;text-decoration:none;display:inline-block}
+._subbar-warn ._subbar-renew{background:#f97316;color:#fff}._subbar-urgent ._subbar-renew{background:#ef4444;color:#fff}
+
+/* ─── RESPONSIVE ───────────────────── */
+@media(max-width:768px){
+  :root{--hh:50px;--th:46px}
+  .outer{padding:10px 12px}
+  .legend{display:none}
+  #tableView{display:none!important}
+  #cardView{display:block!important}
+  .hide-mobile{display:none!important}
+}
+@media(min-width:769px){.mobile-only{display:none!important}}
+@media print{
+  header,.toolbar,.legend,#tc,#netBar,#cardView,.view-toggle{display:none!important}
+  .outer{padding:0}
+  #tableView{display:block!important}
+  .tbl-scroll{max-height:none;overflow:visible}
+  .sheet-card{box-shadow:none;border:none}
+}
+</style>
+</head>
+<body>
+<div id="tc"></div>
+<div id="netBar"></div>
+
+<header>
+  <div class="logo">
+    <div class="lm" id="hdrLogo">📊</div>
+    <div>
+      <div class="lt" id="hdrSchoolName">CBE Mark Sheet</div>
+      <div class="ls" id="hdrSchoolSub">Junior School · Kenya CBC</div>
+    </div>
+  </div>
+  <div class="hdr-r">
+    <div id="hdrUserInfo" style="display:none;align-items:center;gap:6px">
+      <span id="hdrUserName" style="font-size:11.5px;color:var(--text2);font-weight:700"></span>
+      <span id="hdrUserClass" style="font-size:10.5px;background:var(--alight);color:var(--accent);border:1px solid var(--aborder);padding:2px 8px;border-radius:20px;font-weight:700"></span>
+    </div>
+    <span id="draftBadge" onclick="restoreDraft()">📋 Draft</span>
+    <button class="btn btn-outline btn-sm hide-mobile" id="themeBtn">🌙</button>
+    <a href="analysis" class="btn btn-outline btn-sm hide-mobile">📈 Analysis</a>
+    <button class="btn btn-outline btn-sm" onclick="doLogout()" style="color:#f87171;border-color:rgba(248,113,113,.3)" title="Sign Out">🚪</button>
+  </div>
+</header>
+
+<!-- ADMIN TOOLBAR -->
+<div class="toolbar" id="toolbarAdmin">
+  <span class="tb-lbl">Grade</span>
+  <select class="fsel" id="selGrade" onchange="onGradeChange()">
+    <option value="">-- Grade --</option>
+    <option>Grade 1</option><option>Grade 2</option><option>Grade 3</option>
+    <option>Grade 4</option><option>Grade 5</option><option>Grade 6</option>
+    <option>Grade 7</option><option>Grade 8</option><option>Grade 9</option>
+    <option>Grade 10</option><option>Grade 11</option><option>Grade 12</option>
+  </select>
+  <span class="tb-lbl" id="streamLabel">Stream</span>
+  <select class="fsel" id="selStream" disabled onchange="loadStudents()"><option value="">-- Stream --</option></select>
+  <span class="tb-lbl">Term</span>
+  <select class="fsel" id="selTerm" onchange="onTermChange()">
+    <option>Term 1</option><option>Term 2</option><option>Term 3</option>
+  </select>
+  <span class="tb-lbl" id="catSelectorLabel" style="display:none">Exam</span>
+  <div class="cat-tabs-wrap" id="catTabsWrap" style="display:none">
+    <button class="cat-tab" id="catBtn_Exam 1" onclick="selectCat('Exam 1')">Exam 1</button>
+    <button class="cat-tab" id="catBtn_Exam 2" onclick="selectCat('Exam 2')">Exam 2</button>
+    <button class="cat-tab" id="catBtn_Exam 3" onclick="selectCat('Exam 3')">Exam 3</button>
+  </div>
+  <span class="tb-lbl">Year</span>
+  <input type="number" class="fsel" id="selYear" value="2026" min="2020" max="2040" style="width:70px" onchange="loadStudents()">
+  <div class="tb-sep"></div>
+  <button class="btn btn-success" onclick="saveAll()">💾 Save All</button>
+</div>
+
+<!-- TEACHER TOOLBAR -->
+<div class="toolbar" id="toolbarTeacher" style="display:none">
+  <div style="display:flex;align-items:center;gap:6px;background:var(--alight);border:1.5px solid var(--aborder);border-radius:var(--r2);padding:0 10px;height:30px;flex-shrink:0">
+    <span style="font-size:12px">🔒</span>
+    <span style="font-size:12px;font-weight:700;color:var(--accent)" id="teacherClassBadge">—</span>
+  </div>
+  <input type="hidden" id="selGradeT"><input type="hidden" id="selStreamT">
+  <span class="tb-lbl">Term</span>
+  <select class="fsel" id="selTermT" onchange="onTermChange()">
+    <option>Term 1</option><option>Term 2</option><option>Term 3</option>
+  </select>
+  <span class="tb-lbl" id="catSelectorLabelT" style="display:none">Exam</span>
+  <div class="cat-tabs-wrap" id="catTabsWrapT" style="display:none">
+    <button class="cat-tab" id="catBtnT_Exam 1" onclick="selectCat('Exam 1')">Exam 1</button>
+    <button class="cat-tab" id="catBtnT_Exam 2" onclick="selectCat('Exam 2')">Exam 2</button>
+    <button class="cat-tab" id="catBtnT_Exam 3" onclick="selectCat('Exam 3')">Exam 3</button>
+  </div>
+  <span class="tb-lbl">Year</span>
+  <input type="number" class="fsel" id="selYearT" value="2026" min="2020" max="2040" style="width:70px" onchange="loadStudents()">
+  <div class="tb-sep"></div>
+  <button class="btn btn-success" onclick="saveAll()">💾 Save All</button>
+</div>
+
+<div class="legend">
+  <strong style="color:var(--text2);margin-right:3px;font-weight:700">CBC Scale:</strong>
+  <span class="lbadge ee1">EE1 90–100%</span>
+  <span class="lbadge ee2">EE2 75–89%</span>
+  <span class="lbadge me1">ME1 58–74%</span>
+  <span class="lbadge me2">ME2 41–57%</span>
+  <span class="lbadge ae1">AE1 31–40%</span>
+  <span class="lbadge ae2">AE2 21–30%</span>
+  <span class="lbadge be1">BE1 11–20%</span>
+  <span class="lbadge be2">BE2 0–10%</span>
+</div>
+
+<div class="outer">
+  <div class="info-strip">
+    <div class="sheet-title" id="sheetTitle">Select Grade to begin</div>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <div class="pills">
+        <div class="pill">👥 <span class="pv" id="pilS">0</span> students</div>
+        <div class="pill">✅ <span class="pv" id="pilSv">0</span> saved</div>
+        <div class="pill" id="catPill" style="display:none">📝 <span class="pv" id="catPillTxt">Exam 1</span></div>
+      </div>
+      <div class="view-toggle" id="viewToggle" style="display:none">
+        <button class="vt-btn active" id="vt-table" onclick="setView('table')">📋 Table</button>
+        <button class="vt-btn" id="vt-card" onclick="setView('card')">📱 Cards</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="tableView">
+    <div class="sheet-card">
+      <div class="tbl-scroll" id="tblWrap">
+        <div class="empty-msg"><div class="ei">📋</div><p>Select <strong>Grade</strong> to begin</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="cardView">
+    <div id="cardWrap">
+      <div class="empty-msg"><div class="ei">📋</div><p>Select <strong>Grade</strong> to begin</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- Payment gate -->
+<div id="_payOverlay">
+  <div class="_pov-card">
+    <div class="_pov-top">
+      <div class="_pov-lock">🔒</div>
+      <div class="_pov-title">Subscription Required</div>
+      <div class="_pov-school" id="_povSchoolName">Your School</div>
+    </div>
+    <div class="_pov-body">
+      <p class="_pov-msg" id="_povMsg">Your subscription has expired. Renew now to continue — your data is safe.</p>
+      <a class="_pov-renew" href="/renew?from=marksheet">🔄 Renew Subscription Now →</a>
+    </div>
+    <div class="_pov-actions">
+      <a class="_pov-wa" href="https://wa.me/254704518130" target="_blank" rel="noopener">💬 WhatsApp</a>
+      <button class="_pov-out" onclick="doLogout()">← Sign out</button>
+    </div>
+  </div>
+</div>
+<div id="_subBar">
+  <div style="display:flex;align-items:center;gap:8px;flex:1">
+    <span id="_subBarTimer">—</span>
+    <span style="font-size:11.5px;opacity:.85">until subscription expires</span>
+  </div>
+  <a class="_subbar-renew" href="/renew?from=marksheet-bar">🔄 Renew</a>
+</div>
+
+<script src="subjects.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="school-settings.js"></script>
+<script>
+const el=id=>document.getElementById(id);
+
+/* FALLBACKS */
+if(typeof isSeniorGrade==='undefined'){window.isSeniorGrade=function(g){const n=parseInt((g||'').replace(/\D/g,''),10)||0;return n>=10&&n<=12;};}
+if(typeof gradeUsesCats==='undefined'){window.gradeUsesCats=function(g){const n=parseInt((g||'').replace(/\D/g,''),10)||0;return n>=1;};}
+if(typeof getLevel==='undefined'){window.getLevel=function(pct){if(pct>=90)return{l:'EE1',p:8,c:'ee1'};if(pct>=75)return{l:'EE2',p:7,c:'ee2'};if(pct>=58)return{l:'ME1',p:6,c:'me1'};if(pct>=41)return{l:'ME2',p:5,c:'me2'};if(pct>=31)return{l:'AE1',p:4,c:'ae1'};if(pct>=21)return{l:'AE2',p:3,c:'ae2'};if(pct>=11)return{l:'BE1',p:2,c:'be1'};return{l:'BE2',p:1,c:'be2'};};}
+if(typeof getSubs==='undefined'){
+  const SL=[{id:'math',label:'Mathematical Activities',icon:'🔢',gc:'g-math',sc:'s-math'},{id:'eng',label:'English',icon:'📖',gc:'g-eng',sc:'s-eng'},{id:'kis',label:'Kiswahili',icon:'🗣️',gc:'g-kis',sc:'s-kis'},{id:'int',label:'Integrated Activities',icon:'🌈',gc:'g-sci',sc:'s-sci'},{id:'crt',label:'Creative Activities',icon:'🎨',gc:'g-arts',sc:'s-arts'},{id:'cre',label:'CRE',icon:'✝️',gc:'g-re',sc:'s-re'}];
+  const SU=[{id:'math',label:'Mathematics',icon:'🔢',gc:'g-math',sc:'s-math'},{id:'eng',label:'English',icon:'📖',gc:'g-eng',sc:'s-eng',parts:[{id:'lang',label:'Language'},{id:'comp',label:'Composition'}]},{id:'kis',label:'Kiswahili',icon:'🗣️',gc:'g-kis',sc:'s-kis',parts:[{id:'lugha',label:'Lugha'},{id:'insha',label:'Insha'}]},{id:'sci',label:'Science and Technology',icon:'🔬',gc:'g-sci',sc:'s-sci'},{id:'re',label:'CRE',icon:'✝️',gc:'g-re',sc:'s-re'},{id:'soc',label:'Social Studies',icon:'🌍',gc:'g-soc',sc:'s-soc'},{id:'arts',label:'Creative Art and Sport',icon:'🎨',gc:'g-arts',sc:'s-arts'},{id:'agri',label:'Agriculture and Nutrition',icon:'🌱',gc:'g-agri',sc:'s-agri'}];
+  const SJ=[{id:'eng',label:'English',icon:'📖',gc:'g-eng',sc:'s-eng',parts:[{id:'lang',label:'Language'},{id:'comp',label:'Composition'}]},{id:'kis',label:'Kiswahili/KSL',icon:'🗣️',gc:'g-kis',sc:'s-kis',parts:[{id:'lugha',label:'Lugha'},{id:'insha',label:'Insha'}]},{id:'math',label:'Mathematics',icon:'🔢',gc:'g-math',sc:'s-math'},{id:'sci',label:'Integrated Science',icon:'🔬',gc:'g-sci',sc:'s-sci'},{id:'soc',label:'Social Studies',icon:'🌍',gc:'g-soc',sc:'s-soc'},{id:'re',label:'Religious Ed.',icon:'✝️',gc:'g-re',sc:'s-re'},{id:'arts',label:'Creative Arts & Sports',icon:'🎨',gc:'g-arts',sc:'s-arts'},{id:'pret',label:'Pre-Technical',icon:'🔧',gc:'g-pret',sc:'s-pret'},{id:'agri',label:'Agriculture & Nutrition',icon:'🌱',gc:'g-agri',sc:'s-agri'}];
+  const SS=[{id:'eng',label:'English',icon:'📖',gc:'g-eng',sc:'s-eng',parts:[{id:'lang',label:'Language'},{id:'comp',label:'Composition'}]},{id:'kis',label:'Kiswahili/KSL',icon:'🗣️',gc:'g-kis',sc:'s-kis',parts:[{id:'lugha',label:'Lugha'},{id:'insha',label:'Insha'}]},{id:'math',label:'Mathematics',icon:'🔢',gc:'g-math',sc:'s-math'},{id:'bio',label:'Biology',icon:'🧬',gc:'g-sci',sc:'s-sci'},{id:'chem',label:'Chemistry',icon:'🧪',gc:'g-sci',sc:'s-sci'},{id:'phy',label:'Physics',icon:'⚛️',gc:'g-sci',sc:'s-sci'},{id:'hist',label:'History & Citizenship',icon:'🏛️',gc:'g-soc',sc:'s-soc'},{id:'geo',label:'Geography',icon:'🌍',gc:'g-soc',sc:'s-soc'},{id:'biz',label:'Business Studies',icon:'💼',gc:'g-soc',sc:'s-soc'}];
+  window.getSubs=function(g){const n=parseInt((g||'').replace(/\D/g,''),10)||0;if(n>=1&&n<=3)return SL;if(n>=4&&n<=6)return SU;if(n>=7&&n<=9)return SJ;if(n>=10&&n<=12)return SS;return SJ;};
+}
+if(typeof getAllSeniorSubs==='undefined'){window.getAllSeniorSubs=function(){return[{id:'eng',label:'English',icon:'📖',gc:'g-eng',sc:'s-eng',parts:[{id:'lang',label:'Language'},{id:'comp',label:'Composition'}]},{id:'kis',label:'Kiswahili/KSL',icon:'🗣️',gc:'g-kis',sc:'s-kis',parts:[{id:'lugha',label:'Lugha'},{id:'insha',label:'Insha'}]},{id:'math',label:'Mathematics',icon:'🔢',gc:'g-math',sc:'s-math'},{id:'phy',label:'Physics',icon:'⚛️',gc:'g-sci',sc:'s-sci'},{id:'chem',label:'Chemistry',icon:'🧪',gc:'g-sci',sc:'s-sci'},{id:'bio',label:'Biology',icon:'🧬',gc:'g-sci',sc:'s-sci'},{id:'hist',label:'History & Citizenship',icon:'🏛️',gc:'g-soc',sc:'s-soc'},{id:'geo',label:'Geography',icon:'🌍',gc:'g-soc',sc:'s-soc'},{id:'biz',label:'Business Studies',icon:'💼',gc:'g-soc',sc:'s-soc'},{id:'cre',label:'CRE',icon:'✝️',gc:'g-re',sc:'s-re'},{id:'ire',label:'IRE',icon:'☪️',gc:'g-re',sc:'s-re'},{id:'music',label:'Music and Dance',icon:'🎵',gc:'g-arts',sc:'s-arts'},{id:'farts',label:'Fine Arts',icon:'🎨',gc:'g-arts',sc:'s-arts'},{id:'comp',label:'Computer Studies',icon:'🖥️',gc:'g-pret',sc:'s-pret'},{id:'agri',label:'Agriculture',icon:'🌱',gc:'g-agri',sc:'s-agri'},{id:'home',label:'Home Science',icon:'🏠',gc:'g-agri',sc:'s-agri'},{id:'elec',label:'Electricity',icon:'⚡',gc:'g-pret',sc:'s-pret'},{id:'bldg',label:'Building & Construction',icon:'🏗️',gc:'g-pret',sc:'s-pret'},{id:'draw',label:'Drawing & Design',icon:'📏',gc:'g-pret',sc:'s-pret'}];};}
+if(typeof getSeniorClassSubs==='undefined'){window.getSeniorClassSubs=function(arr){const seen=new Set();arr.forEach(s=>(s.subjects||[]).forEach(id=>seen.add(id)));if(!seen.size)return getSubs('Grade 10');return getAllSeniorSubs().filter(s=>seen.has(s.id));};}
+if(typeof getStudentSubs==='undefined'){window.getStudentSubs=function(ids){if(!Array.isArray(ids)||!ids.length)return getSubs('Grade 10');return getAllSeniorSubs().filter(s=>ids.includes(s.id));};}
+
+/* FIREBASE */
+firebase.initializeApp({apiKey:"AIzaSyBdabXqlBQ-6yVNJKdu8Zhb9Cm_-59_u24",authDomain:"bett-294a2.firebaseapp.com",projectId:"bett-294a2",storageBucket:"bett-294a2.appspot.com",messagingSenderId:"1055511650032",appId:"1:1055511650032:web:7e0f9c28e58515f549ac35"});
+const db=firebase.firestore(),auth=firebase.auth();
+auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).catch(()=>{});
+
+const DEFAULT_OOF=100;
+let students=[],savedMap={},savedCount=0,allInputs=[],loadLock=false;
+let currentUser=null,streamsEnabled=true,gradeHasStreams=false;
+let _settingsReady=false,_settingsResolve=null;
+const _settingsPromise=new Promise(res=>{_settingsResolve=res;});
+let _currentView='table';
+window._cardOofsMap={};
+
+/* VIEW TOGGLE */
+window.setView=function(v){
+  _currentView=v;
+  el('tableView').style.display=v==='table'?'':'none';
+  el('cardView').style.display=v==='card'?'':'none';
+  el('vt-table').classList.toggle('active',v==='table');
+  el('vt-card').classList.toggle('active',v==='card');
+  if(v==='card'&&students.length)renderCards();
+};
+function _autoView(){if(window.innerWidth<=768)_currentView='card';}
+window.addEventListener('resize',()=>{_autoView();if(students.length&&_currentView==='card')renderCards();});
+
+/* CAT */
+let currentCat='Exam 1';
+function applyCatUI(g){
+  const u=gradeUsesCats(g);
+  el('catSelectorLabel').style.display=u?'':'none';
+  el('catTabsWrap').style.display=u?'flex':'none';
+  if(el('catSelectorLabelT'))el('catSelectorLabelT').style.display=u?'':'none';
+  if(el('catTabsWrapT'))el('catTabsWrapT').style.display=u?'flex':'none';
+  const p=el('catPill');if(p)p.style.display=u?'flex':'none';
+  if(u)updateCatTabUI();
+}
+function updateCatTabUI(){
+  ['Exam 1','Exam 2','Exam 3'].forEach((c,i)=>{
+    const cls=['active-1','active-2','active-3'][i];
+    [el(`catBtn_${c}`),el(`catBtnT_${c}`)].forEach(btn=>{if(!btn)return;btn.className='cat-tab';if(currentCat===c)btn.classList.add(cls);});
+  });
+  const t=el('catPillTxt');if(t)t.textContent=currentCat;
+}
+window.selectCat=function(cat){currentCat=cat;updateCatTabUI();loadStudents();};
+window.onTermChange=function(){loadStudents();};
+function autoSelectCat(){const m=new Date().getMonth()+1,mit=m<=4?m:m<=8?m-4:m-8;currentCat=mit<=1?'Exam 1':mit<=2?'Exam 2':'Exam 3';updateCatTabUI();}
+
+/* SETTINGS */
+async function loadStreamsEnabledSetting(sid){
+  try{const c=localStorage.getItem('cbe_streams_enabled');if(c!==null){streamsEnabled=c==='true';applyStreamMode();}const snap=await db.collection('settings').doc(sid).get();if(snap.exists&&snap.data().streamsEnabled!==undefined){streamsEnabled=snap.data().streamsEnabled;localStorage.setItem('cbe_streams_enabled',streamsEnabled?'true':'false');applyStreamMode();}}catch(_){}
+  finally{if(!_settingsReady){_settingsReady=true;_settingsResolve();}}
+}
+function applyStreamMode(){const l=el('streamLabel'),s=el('selStream');if(!streamsEnabled){if(l)l.style.display='none';if(s){s.style.display='none';s.value='';s.disabled=true;}}else{if(l)l.style.display='';if(s){s.style.display='';s.disabled=false;}}}
+
+/* AUTH */
+async function initUser(u){
+  if(!u){window.location.href='login';return;}
+  try{
+    const snap=await db.collection('users').doc(u.uid).get();
+    if(!snap.exists){await auth.signOut();window.location.href='login';return;}
+    currentUser=snap.data();currentUser.uid=u.uid;
+    if(currentUser.status==='suspended'){await auth.signOut();window.location.href='login?reason=suspended';return;}
+    if(currentUser.status==='pending'){await auth.signOut();window.location.href='login?reason=pending';return;}
+    if(currentUser.schoolId){sessionStorage.setItem('cbe_school_id',currentUser.schoolId);window._schoolId=currentUser.schoolId;}
+    if(currentUser.schoolId)loadSchoolBranding(currentUser.schoolId).catch(()=>{});
+    if(currentUser.schoolId){try{await loadStreamsEnabledSetting(currentUser.schoolId);}catch(_){_settingsReady=true;_settingsResolve();}}else{_settingsReady=true;_settingsResolve();}
+    const ie=el('hdrUserInfo');if(ie)ie.style.display='flex';
+    const ne=el('hdrUserName');if(ne)ne.textContent='👤 '+(currentUser.fullName||'Teacher');
+    const ce=el('hdrUserClass');
+    if(currentUser.role==='teacher'){if(ce)ce.textContent=(currentUser.grade||'No grade')+(currentUser.stream?' · '+currentUser.stream:'');lockTeacherSelectors();loadStudents();}
+    else{if(ce)ce.textContent=(currentUser.role||'admin').toUpperCase();applyStreamMode();}
+  }catch(e){toast('Auth error: '+e.message,'err');}
+}
+async function loadSchoolBranding(sid){
+  try{const snap=await db.collection('settings').doc(sid).get();if(!snap.exists)return;const s=snap.data();if(s.name)document.title=s.name+' | CBC Mark Sheet';const n=el('hdrSchoolName');if(n&&s.name)n.textContent=s.name;const sub=el('hdrSchoolSub');if(sub)sub.textContent=[s.motto,s.county,'Kenya CBC'].filter(Boolean).join(' · ');if(s.logoUrl){const lm=el('hdrLogo');if(lm)lm.innerHTML=`<img src="${s.logoUrl}" style="width:100%;height:100%;object-fit:contain;border-radius:inherit" onerror="this.parentElement.textContent='📊'">`;}if(s.primaryColor){document.documentElement.style.setProperty('--accent',s.primaryColor);document.documentElement.style.setProperty('--ah',s.primaryColor);}window.schoolSettings=s;}catch(_){}
+}
+function lockTeacherSelectors(){
+  const grade=currentUser.grade||'',stream=currentUser.stream||'';
+  el('toolbarAdmin').style.display='none';el('toolbarTeacher').style.display='';
+  el('selGradeT').value=grade;el('selStreamT').value=stream;gradeHasStreams=Boolean(stream);
+  const b=el('teacherClassBadge');if(b)b.textContent=grade?(stream?`${grade} · ${stream}`:grade):'No class assigned';
+  const now=new Date(),m=now.getMonth()+1,at=m<=4?'Term 1':m<=8?'Term 2':'Term 3';
+  const ts=el('selTermT'),yi=el('selYearT');if(ts)ts.value=at;if(yi)yi.value=now.getFullYear();
+  applyCatUI(grade);if(gradeUsesCats(grade))autoSelectCat();
+}
+function _getCS(){
+  if(currentUser?.role==='teacher')return{grade:currentUser.grade||'',stream:currentUser.stream||'',term:el('selTermT')?.value||'Term 1',year:el('selYearT')?.value||'2026'};
+  return{grade:el('selGrade')?.value||'',stream:el('selStream')?.value||'',term:el('selTerm')?.value||'Term 1',year:el('selYear')?.value||'2026'};
+}
+auth.onAuthStateChanged(initUser);
+
+/* GRADE CHANGE */
+window.onGradeChange=async function(){
+  if(currentUser?.role==='teacher')return;
+  const grade=el('selGrade').value;applyCatUI(grade);if(gradeUsesCats(grade))autoSelectCat();
+  if(!streamsEnabled){gradeHasStreams=false;if(!grade)return;loadStudents();return;}
+  const ss=el('selStream');ss.disabled=true;ss.innerHTML='<option value="">Loading…</option>';
+  if(!grade){ss.innerHTML='<option value="">-- Stream --</option>';ss.disabled=false;return;}
+  let arr=[];try{const r=localStorage.getItem('cbe_streams'),t=localStorage.getItem('cbe_streams_ts');if(r&&t&&(Date.now()-parseInt(t))<86400000){const m=JSON.parse(r);if(m[grade]?.length)arr=m[grade];}}catch(_){}
+  try{const sid=currentUser?.schoolId||sessionStorage.getItem('cbe_school_id');if(!sid)return;const snap=await db.collection('students').where('grade','==',grade).where('schoolId','==',sid).get();const set=new Set(arr);snap.forEach(d=>{const s=d.data();if(s.stream?.trim())set.add(s.stream.trim());});arr=[...set].sort();const r=localStorage.getItem('cbe_streams'),m=r?JSON.parse(r):{};m[grade]=arr;localStorage.setItem('cbe_streams',JSON.stringify(m));localStorage.setItem('cbe_streams_ts',Date.now().toString());}catch(_){}
+  if(!arr.length){gradeHasStreams=false;ss.style.display='none';ss.value='';ss.disabled=true;el('streamLabel').style.display='none';loadStudents();return;}
+  gradeHasStreams=true;ss.style.display='';el('streamLabel').style.display='';
+  ss.innerHTML='<option value="">-- Stream --</option>'+arr.map(s=>`<option>${s}</option>`).join('');ss.disabled=false;
+  if(arr.length===1){ss.value=arr[0];loadStudents();}
+};
+
+/* CACHE */
+const _cache={};const _TTL=5*60*1000;
+function _ck(g,s,t,y,c,sid){return`${sid}|${g}|${s}|${t}|${y}|${c}`;}
+function _cGet(k){const c=_cache[k];if(!c)return null;if(Date.now()-c.ts>_TTL){delete _cache[k];return null;}return c;}
+function _cSet(k,sts,sm,sc){_cache[k]={ts:Date.now(),students:sts,savedMap:{...sm},savedCount:sc};}
+function _cUp(ck,sid,rec){const c=_cache[ck];if(!c)return;c.savedMap[sid]={...(c.savedMap[sid]||{}),...rec};c.ts=Date.now();}
+
+/* LOAD STUDENTS */
+window.loadStudents=async function(){
+  const{grade,stream:cs,term,year}=_getCS();
+  if(!_settingsReady)await _settingsPromise;
+  const stream=currentUser?.role==='teacher'?(currentUser.stream||''):cs;
+  if(!grade)return;
+  if(currentUser?.role!=='teacher'&&gradeHasStreams&&!stream)return;
+  if(loadLock)return;loadLock=true;_autoView();
+  const sid=currentUser?.schoolId||sessionStorage.getItem('cbe_school_id');
+  if(!sid){el('tblWrap').innerHTML='<div class="empty-msg"><div class="ei">🔒</div><p>Not authenticated</p></div>';loadLock=false;return;}
+  const catKey=gradeUsesCats(grade)?currentCat:'';
+  const ck=_ck(grade,stream,term,year,catKey,sid);
+  const cached=_cGet(ck);
+  if(cached){students=cached.students;savedMap={...cached.savedMap};savedCount=cached.savedCount;el('pilS').textContent=students.length;el('pilSv').textContent=savedCount;_setTitle(grade,stream,term,year);el('viewToggle').style.display=students.length?'flex':'none';if(!students.length){const lm=`<div class="empty-msg"><div class="ei">👥</div><p>No students in <strong>${stream?grade+' '+stream:grade}</strong></p></div>`;el('tblWrap').innerHTML=lm;el('cardWrap').innerHTML='';loadLock=false;return;}renderTable();if(_currentView==='card')renderCards();loadLock=false;toast('Loaded from cache','info');return;}
+  const lm=`<div class="empty-msg"><div style="display:inline-flex;align-items:center;gap:9px;color:var(--text3)"><div class="spin"></div>Loading ${grade}${stream?' '+stream:''}…</div></div>`;
+  el('tblWrap').innerHTML=lm;el('cardWrap').innerHTML=lm;
+  try{
+    let q=db.collection('students').where('grade','==',grade).where('schoolId','==',sid);if(stream)q=q.where('stream','==',stream);
+    const snap=await q.get();students=[];snap.forEach(d=>students.push({id:d.id,...d.data()}));students.sort((a,b)=>(a.name||'').localeCompare(b.name||''));
+    savedMap={};savedCount=0;
+    let rq=db.collection('results').where('grade','==',grade).where('term','==',term).where('year','==',year).where('schoolId','==',sid);if(stream)rq=rq.where('stream','==',stream);if(gradeUsesCats(grade))rq=rq.where('exam','==',currentCat);
+    const rs=await rq.get();rs.forEach(d=>{savedMap[d.data().studentId]={id:d.id,...d.data()};savedCount++;});
+    _cSet(ck,students,savedMap,savedCount);
+    el('pilS').textContent=students.length;el('pilSv').textContent=savedCount;_setTitle(grade,stream,term,year);
+    el('viewToggle').style.display=students.length?'flex':'none';
+    if(!students.length){const loc=stream?`${grade} ${stream}`:grade;const msg=`<div class="empty-msg"><div class="ei">👥</div><p>No students in <strong>${loc}</strong>.</p></div>`;el('tblWrap').innerHTML=msg;el('cardWrap').innerHTML='';loadLock=false;return;}
+    renderTable();if(_currentView==='card')renderCards();
+  }catch(e){const em=`<div class="empty-msg"><div class="ei">❌</div><p>${e.message}</p></div>`;el('tblWrap').innerHTML=em;el('cardWrap').innerHTML=em;}
+  loadLock=false;
+};
+function _setTitle(g,s,t,y){const ex=gradeUsesCats(g)?` · ${currentCat}`:'';el('sheetTitle').textContent=s?`${g} ${s} — ${t}${ex} ${y}`:`${g} — ${t}${ex} ${y}`;}
+
+/* RENDER TABLE */
+function renderTable(){
+  const{grade:cg}=_getCS();const isSenior=isSeniorGrade(cg);
+  const SUBS=isSenior?getSeniorClassSubs(students):getSubs(cg);
+  window._currentSubs=SUBS;window._isSenior=isSenior;
+  const anyRec=Object.values(savedMap)[0];
+  let h=`<table id="mkT"><colgroup><col style="width:34px"><col style="width:150px"><col style="width:80px">`;
+  SUBS.forEach(s=>{if(s.parts)h+=s.parts.map(()=>`<col style="width:52px">`).join('')+`<col style="width:58px">`;else h+=`<col style="width:58px">`;});
+  h+=`<col style="width:64px"><col style="width:80px"><col style="width:36px"><col style="width:58px"></colgroup>`;
+  h+=`<thead><tr><th class="cn" rowspan="3">#</th><th class="cna" rowspan="3" style="text-align:left;padding:0 8px">Student</th><th class="cad" rowspan="3" style="text-align:left;padding:0 6px">Adm No.</th>`;
+  SUBS.forEach(s=>{const span=s.parts?s.parts.length+1:1;h+=`<th colspan="${span}" class="${s.gc}">${s.icon} ${s.label}</th>`;});
+  h+=`<th colspan="3" class="g-ovr">Overall</th><th class="g-ovr" rowspan="3" style="font-size:9px">Save</th></tr><tr>`;
+  SUBS.forEach(s=>{if(s.parts){s.parts.forEach(p=>h+=`<th class="${s.sc}">${p.label}</th>`);h+=`<th class="${s.sc}">Total</th>`;}else h+=`<th class="${s.sc}">Score</th>`;});
+  h+=`<th class="s-ovr">Avg%</th><th class="s-ovr">Level</th><th class="s-ovr">Pts</th></tr><tr class="out-of-row">`;
+  SUBS.forEach(s=>{if(s.parts){s.parts.forEach(p=>{const key=`${s.id}_${p.id}`,oof=anyRec?.[`oof_${key}`]||DEFAULT_OOF;h+=`<th><input class="oof" type="number" min="1" inputmode="numeric" id="oof_${key}" value="${oof}" oninput="recalcAll()" onkeydown="navOof(event,this)"></th>`;});h+=`<th id="oof_${s.id}_tot_cell" style="font-size:10px;color:var(--warn);font-weight:800;text-align:center">—</th>`;}else{const oof=anyRec?.[`oof_${s.id}`]||DEFAULT_OOF;h+=`<th><input class="oof" type="number" min="1" inputmode="numeric" id="oof_${s.id}" value="${oof}" oninput="recalcAll()" onkeydown="navOof(event,this)"></th>`;}});
+  h+=`<th colspan="3" class="oof-label">Out Of ↑</th></tr></thead><tbody>`;
+  students.forEach((s,i)=>{
+    const rec=savedMap[s.id],yes=!!rec;
+    const stuSubs=isSenior?getStudentSubs(s.subjects):null;const stuSubIds=stuSubs?new Set(stuSubs.map(x=>x.id)):null;
+    h+=`<tr id="tr-${s.id}"${yes?' class="saved"':''}><td class="cn no-c">${i+1}</td><td class="cna tl"><span class="sname">${s.name}</span></td><td class="cad tl"><code style="font-size:10.5px;color:var(--text3)">${s.admissionNumber||''}</code></td>`;
+    SUBS.forEach(sub=>{
+      if(isSenior&&stuSubIds&&!stuSubIds.has(sub.id)){const span=sub.parts?sub.parts.length+1:1;h+=`<td colspan="${span}" style="background:var(--surf2);color:var(--text3);font-size:12px;text-align:center">—</td>`;return;}
+      if(sub.parts){sub.parts.forEach(p=>{const fid=`${sub.id}_${p.id}_${s.id}`,v=rec?(rec[`${sub.id}_${p.id}`]??''):'';h+=`<td><input class="si" type="number" min="0" inputmode="numeric" id="${fid}" value="${v}" placeholder="–" oninput="validateScore(this,'${sub.id}_${p.id}',true);calcRow('${s.id}');draftSave('${s.id}');autoSaveRow('${s.id}')" onkeydown="nav(event,this)"></td>`;});const tot=rec?(rec[`${sub.id}_tot`]??''):'';h+=`<td class="tot-c" id="${sub.id}_tot_${s.id}">${tot}</td>`;}
+      else{const fid=`${sub.id}_s_${s.id}`,v=rec?(rec[`${sub.id}_score`]??''):'';h+=`<td><input class="si" type="number" min="0" inputmode="numeric" id="${fid}" value="${v}" placeholder="–" oninput="validateScore(this,'${sub.id}',false);calcRow('${s.id}');draftSave('${s.id}');autoSaveRow('${s.id}')" onkeydown="nav(event,this)"></td>`;}
+    });
+    const oa=rec?.overallAvg??'',ol=oa!==''?getLevel(Number(oa)):null;
+    h+=`<td class="avg-c" id="oa_${s.id}">${oa!==''?Number(oa).toFixed(1):''}</td><td id="ol_${s.id}">${ol?`<span class="lbadge ${ol.c}">${ol.l}</span>`:''}</td><td class="pts-c" id="op_${s.id}">${ol?ol.p:''}</td>`;
+    h+=`<td id="act_${s.id}">${yes?`<span class="sv-done">✓</span>`:`<span style="color:var(--text3)">—</span>`}</td></tr>`;
+  });
+  h+=`</tbody><tfoot><tr><td colspan="3" class="lbl cn cna" style="left:0;min-width:264px">Class Avg</td>`;
+  SUBS.forEach(sub=>{if(sub.parts){sub.parts.forEach(p=>h+=`<td id="ca_${sub.id}_${p.id}"></td>`);h+=`<td id="ca_${sub.id}_tot"></td>`;}else h+=`<td id="ca_${sub.id}"></td>`;});
+  h+=`<td class="ov-c" id="ca_ovr"></td><td></td><td></td><td></td></tr></tfoot></table>`;
+  el('tblWrap').innerHTML=h;
+  allInputs=Array.from(document.querySelectorAll('#mkT tbody input.si'));
+  updateOofTotals();updateClassAvg();_draftKey=null;setTimeout(loadDraft,50);
+}
+
+/* RENDER CARDS (mobile) */
+function renderCards(){
+  const{grade:cg}=_getCS();const isSenior=isSeniorGrade(cg);
+  const SUBS=isSenior?getSeniorClassSubs(students):getSubs(cg);
+  window._currentSubs=SUBS;window._isSenior=isSenior;
+  const anyRec=Object.values(savedMap)[0];
+  const oofs={};
+  SUBS.forEach(sub=>{if(sub.parts)sub.parts.forEach(p=>{oofs[`${sub.id}_${p.id}`]=anyRec?.[`oof_${sub.id}_${p.id}`]||DEFAULT_OOF;});else oofs[sub.id]=anyRec?.[`oof_${sub.id}`]||DEFAULT_OOF;});
+  window._cardOofsMap=oofs;
+  let h=`<div class="oof-panel">
+    <div class="oof-panel-title">✏️ Max marks (Out of) — tap to change</div>
+    <div class="oof-grid">`;
+  SUBS.forEach(sub=>{
+    if(sub.parts)sub.parts.forEach(p=>{const k=`${sub.id}_${p.id}`;h+=`<div class="oof-item"><label>${sub.icon} ${sub.label} ${p.label}</label><input class="oof-inp" type="number" min="1" inputmode="numeric" id="coof_${k}" value="${oofs[k]}" oninput="updateCardOof('${sub.id}','${p.id}',this.value)"></div>`;});
+    else h+=`<div class="oof-item"><label>${sub.icon} ${sub.label}</label><input class="oof-inp" type="number" min="1" inputmode="numeric" id="coof_${sub.id}" value="${oofs[sub.id]}" oninput="updateCardOof('${sub.id}',null,this.value)"></div>`;
+  });
+  h+=`</div></div>`;
+  students.forEach((s,i)=>{
+    const rec=savedMap[s.id],yes=!!rec;
+    const stuSubs=isSenior?getStudentSubs(s.subjects):SUBS;
+    const oa=rec?.overallAvg??'',ol=oa!==''?getLevel(Number(oa)):null;
+    h+=`<div class="stu-card${yes?' saved':''}" id="card-${s.id}">
+      <div class="sc-header">
+        <div class="sc-num">${i+1}</div>
+        <div class="sc-info">
+          <div class="sc-name">${s.name}</div>
+          <div class="sc-adm">${s.admissionNumber||'—'}</div>
+        </div>
+        <div class="sc-result">
+          <div class="sc-avg" id="c-oa-${s.id}">${oa!==''?Number(oa).toFixed(1)+'%':''}</div>
+          <div id="c-ol-${s.id}" style="margin-top:2px">${ol?`<span class="lbadge ${ol.c}">${ol.l} · ${ol.p}pts</span>`:''}</div>
+        </div>
+      </div>
+      <div class="sc-body">`;
+    stuSubs.forEach(sub=>{
+      if(sub.parts){
+        const parts=sub.parts;
+        h+=`<div class="sub-row"><div class="sub-icon">${sub.icon}</div><div class="sub-label"><div class="sub-name">${sub.label}</div><div class="sub-oof">${parts.map(p=>p.label+' / '+( oofs[`${sub.id}_${p.id}`]||DEFAULT_OOF)).join(' · ')}</div></div><div class="sub-inputs">`;
+        parts.forEach(p=>{const v=rec?(rec[`${sub.id}_${p.id}`]??''):'';h+=`<div class="mi-wrap"><input class="mi" type="number" min="0" inputmode="numeric" id="cmi-${sub.id}_${p.id}-${s.id}" value="${v}" placeholder="–" aria-label="${sub.label} ${p.label}" oninput="calcCardRow('${s.id}');draftSave('${s.id}');autoSaveRow('${s.id}')"><div class="mi-lbl">${p.label}</div></div>`;});
+        const tot=rec?(rec[`${sub.id}_tot`]??''):'';
+        h+=`<div class="mi-wrap"><div class="mi-tot" id="cmi-tot-${sub.id}-${s.id}">${tot||'—'}</div><div class="mi-lbl">Total</div></div></div></div>`;
+      }else{
+        const v=rec?(rec[`${sub.id}_score`]??''):'';const oof=oofs[sub.id];
+        h+=`<div class="sub-row"><div class="sub-icon">${sub.icon}</div><div class="sub-label"><div class="sub-name">${sub.label}</div><div class="sub-oof">Out of ${oof}</div></div><div class="sub-inputs"><div class="mi-wrap"><input class="mi" type="number" min="0" inputmode="numeric" id="cmi-${sub.id}-${s.id}" value="${v}" placeholder="–" aria-label="${sub.label} score" oninput="calcCardRow('${s.id}');draftSave('${s.id}');autoSaveRow('${s.id}')"><div class="mi-lbl">Score</div></div></div></div>`;
+      }
+    });
+    h+=`</div>
+      <div class="sc-footer">
+        <div class="sc-save-status" id="sc-status-${s.id}">${yes?'<span style="color:var(--success)">✅ Saved</span>':'<span style="color:var(--text3)">Not yet saved</span>'}</div>
+        <button class="btn btn-success btn-sm" onclick="saveRow('${s.id}')">💾 Save</button>
+      </div>
+    </div>`;
+  });
+  el('cardWrap').innerHTML=h;
+  students.forEach(s=>calcCardRow(s.id));
+  _draftKey=null;setTimeout(loadDraft,50);
+}
+
+window.updateCardOof=function(subId,partId,val){
+  const key=partId?`${subId}_${partId}`:subId;
+  window._cardOofsMap[key]=Number(val)||DEFAULT_OOF;
+  const toi=el(partId?`oof_${subId}_${partId}`:`oof_${subId}`);if(toi)toi.value=val;
+  students.forEach(s=>calcCardRow(s.id));
+};
+
+window.calcCardRow=function(sid){
+  const{grade:cg}=_getCS();const isSenior=isSeniorGrade(cg);
+  const s=students.find(x=>x.id===sid);
+  const SUBS=isSenior?getStudentSubs(s?.subjects):(window._currentSubs||[]);
+  const oofs=window._cardOofsMap||{};let pcts=[];
+  SUBS.forEach(sub=>{
+    if(sub.parts){
+      const raw=sub.parts.map(p=>{const inp=el(`cmi-${sub.id}_${p.id}-${sid}`);if(!inp)return 0;const oof=oofs[`${sub.id}_${p.id}`]||DEFAULT_OOF,r=Number(inp.value)||0;inp.classList.toggle('over-limit',r>oof&&r>0);return Math.min(r,oof);});
+      const rt=raw.reduce((a,b)=>a+b,0),ot=sub.parts.reduce((a,p)=>a+(oofs[`${sub.id}_${p.id}`]||DEFAULT_OOF),0);
+      const te=el(`cmi-tot-${sub.id}-${sid}`);if(raw.some(v=>v>0)){if(te)te.textContent=rt;pcts.push((rt/ot)*100);}else{if(te)te.textContent='—';}
+    }else{const inp=el(`cmi-${sub.id}-${sid}`);if(!inp)return;const r=Number(inp.value)||0,oof=oofs[sub.id]||DEFAULT_OOF;inp.classList.toggle('over-limit',r>oof&&r>0);if(r>0)pcts.push((Math.min(r,oof)/oof)*100);}
+  });
+  const oe=el(`c-oa-${sid}`),le=el(`c-ol-${sid}`);
+  if(pcts.length){const avg=pcts.reduce((a,b)=>a+b,0)/pcts.length,lv=getLevel(avg);if(oe)oe.textContent=avg.toFixed(1)+'%';if(le)le.innerHTML=`<span class="lbadge ${lv.c}">${lv.l} · ${lv.p}pts</span>`;}
+  else{if(oe)oe.textContent='';if(le)le.innerHTML='';}
+};
+
+/* TABLE CALCULATIONS */
+function updateOofTotals(){(window._currentSubs||[]).forEach(sub=>{if(sub.parts){const tot=sub.parts.reduce((a,p)=>a+(Number(el(`oof_${sub.id}_${p.id}`)?.value)||DEFAULT_OOF),0);const c=el(`oof_${sub.id}_tot_cell`);if(c)c.textContent=tot;}});}
+window.recalcAll=function(){updateOofTotals();students.forEach(s=>calcRow(s.id));};
+window.calcRow=function(sid){
+  const SUBS=window._currentSubs||[];const isSenior=window._isSenior||false;
+  const s=students.find(x=>x.id===sid);const activeSubs=isSenior?getStudentSubs(s?.subjects):SUBS;let pcts=[];
+  activeSubs.forEach(sub=>{
+    if(sub.parts){const raw=sub.parts.map(p=>{const inp=el(`${sub.id}_${p.id}_${sid}`);if(!inp)return 0;const oof=Number(el(`oof_${sub.id}_${p.id}`)?.value)||DEFAULT_OOF,r=Number(inp.value)||0;inp.classList.toggle('over-limit',r>oof&&r>0);return Math.min(r,oof);});const rt=raw.reduce((a,b)=>a+b,0),ot=sub.parts.reduce((a,p)=>a+(Number(el(`oof_${sub.id}_${p.id}`)?.value)||DEFAULT_OOF),0);const te=el(`${sub.id}_tot_${sid}`);if(raw.some(v=>v>0)){if(te)te.textContent=rt;pcts.push((rt/ot)*100);}else{if(te)te.textContent='';}}
+    else{const inp=el(`${sub.id}_s_${sid}`);if(!inp)return;const r=Number(inp.value)||0,oof=Number(el(`oof_${sub.id}`)?.value)||DEFAULT_OOF;inp.classList.toggle('over-limit',r>oof&&r>0);if(r>0)pcts.push((Math.min(r,oof)/oof)*100);}
+  });
+  if(pcts.length){const avg=pcts.reduce((a,b)=>a+b,0)/pcts.length,lv=getLevel(avg);el(`oa_${sid}`).textContent=avg.toFixed(1);el(`ol_${sid}`).innerHTML=`<span class="lbadge ${lv.c}">${lv.l}</span>`;el(`op_${sid}`).textContent=lv.p;}
+  else{el(`oa_${sid}`).textContent='';el(`ol_${sid}`).innerHTML='';el(`op_${sid}`).textContent='';}
+  updateClassAvg();
+};
+function updateClassAvg(){
+  (window._currentSubs||[]).forEach(sub=>{
+    if(sub.parts){sub.parts.forEach(p=>{const vals=students.map(s=>Number(el(`${sub.id}_${p.id}_${s.id}`)?.value)||0).filter(v=>v>0);const c=el(`ca_${sub.id}_${p.id}`);if(c)c.textContent=vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1):'';});const tots=students.map(s=>{const t=el(`${sub.id}_tot_${s.id}`);return t?Number(t.textContent)||0:0;}).filter(v=>v>0);const ct=el(`ca_${sub.id}_tot`);if(ct)ct.textContent=tots.length?(tots.reduce((a,b)=>a+b,0)/tots.length).toFixed(1):'';}
+    else{const vals=students.map(s=>Number(el(`${sub.id}_s_${s.id}`)?.value)||0).filter(v=>v>0);const c=el(`ca_${sub.id}`);if(c)c.textContent=vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1):'';}
+  });
+  const oavgs=students.map(s=>{const t=el(`oa_${s.id}`);return t?Number(t.textContent)||0:0;}).filter(v=>v>0);
+  const co=el('ca_ovr');if(co)co.textContent=oavgs.length?(oavgs.reduce((a,b)=>a+b,0)/oavgs.length).toFixed(1):'';
+}
+
+/* KEYBOARD NAV */
+window.nav=function(e,inp){const idx=allInputs.indexOf(inp);const fr=allInputs[0]?.closest('tr');const pr=fr?allInputs.filter(x=>x.closest('tr')===fr).length:1;const map={Tab:1,Enter:1,ArrowRight:1,ArrowLeft:-1,ArrowDown:pr,ArrowUp:-pr};const d=e.shiftKey&&e.key==='Tab'?-1:map[e.key];if(d!==undefined){const nx=allInputs[idx+d];if(nx){e.preventDefault();nx.focus();nx.select();}}};
+window.navOof=function(e,inp){if(e.key==='Enter'||e.key==='Tab'){e.preventDefault();const oofs=Array.from(document.querySelectorAll('#mkT .oof'));const i=oofs.indexOf(inp),nx=oofs[e.shiftKey?i-1:i+1];if(nx){nx.focus();nx.select();}else if(allInputs[0]){allInputs[0].focus();allInputs[0].select();}}};
+
+/* VALIDATION */
+window.validateScore=function(inp,k){const val=Number(inp.value);if(isNaN(val)||inp.value==='')return;const oof=Number(el(`oof_${k}`)?.value)||DEFAULT_OOF;if(val>oof){inp.classList.add('over-limit');showNetBar(`⚠ Score ${val} exceeds max ${oof}`,'offline');}else{inp.classList.remove('over-limit');const nb=el('netBar');if(nb&&nb.classList.contains('offline')&&nb.textContent.includes('exceeds'))hideNetBar();}};
+function hasValidationErrors(){return document.querySelectorAll('.si.over-limit,.mi.over-limit').length>0;}
+
+/* NET BAR */
+let _nbt=null;
+function showNetBar(msg,type='saving'){const b=el('netBar');b.className=type;b.textContent=msg;clearTimeout(_nbt);if(type==='saved')_nbt=setTimeout(hideNetBar,2500);}
+function hideNetBar(){const b=el('netBar');b.className='';setTimeout(()=>{b.style.display='none';b.className='';},300);}
+window.addEventListener('offline',()=>showNetBar('📡 Offline — marks saved locally','offline'));
+window.addEventListener('online',()=>{showNetBar('✅ Back online','saving');setTimeout(syncPendingRows,1000);});
+
+/* DRAFT */
+let _draftKey=null;
+function getDraftKey(){if(_draftKey)return _draftKey;const sid=currentUser?.schoolId||sessionStorage.getItem('cbe_school_id')||'x';const{grade,stream,term,year}=_getCS();_draftKey=`cbe_draft_${sid}_${grade}_${stream}_${term}_${year}_${currentCat}`.replace(/\s/g,'_');return _draftKey;}
+function draftSave(sid){try{const key=getDraftKey();let d={};try{d=JSON.parse(localStorage.getItem(key)||'{}');}catch(_){}const row=collectRow(sid);row._savedAt=Date.now();d[sid]=row;localStorage.setItem(key,JSON.stringify(d));const u=Object.keys(d).filter(id=>!savedMap[id]?.updatedAt);const b=el('draftBadge');if(b&&u.length){b.style.display='inline-block';b.textContent=`📋 Draft (${u.length})`;}}catch(_){}}
+function loadDraft(){try{_draftKey=null;const key=getDraftKey(),raw=localStorage.getItem(key);if(!raw)return;const draft=JSON.parse(raw);let restored=0;const SUBS=window._currentSubs||[];students.forEach(s=>{if(draft[s.id]&&!savedMap[s.id]){const d=draft[s.id];SUBS.forEach(sub=>{if(sub.parts){sub.parts.forEach(p=>{const oi=el(`oof_${sub.id}_${p.id}`);if(oi&&d[`oof_${sub.id}_${p.id}`])oi.value=d[`oof_${sub.id}_${p.id}`];const ci=el(`coof_${sub.id}_${p.id}`);if(ci&&d[`oof_${sub.id}_${p.id}`])ci.value=d[`oof_${sub.id}_${p.id}`];});}else{const oi=el(`oof_${sub.id}`);if(oi&&d[`oof_${sub.id}`])oi.value=d[`oof_${sub.id}`];const ci=el(`coof_${sub.id}`);if(ci&&d[`oof_${sub.id}`])ci.value=d[`oof_${sub.id}`];}});SUBS.forEach(sub=>{if(sub.parts){sub.parts.forEach(p=>{const ti=el(`${sub.id}_${p.id}_${s.id}`);if(ti&&d[`${sub.id}_${p.id}`])ti.value=d[`${sub.id}_${p.id}`];const ci=el(`cmi-${sub.id}_${p.id}-${s.id}`);if(ci&&d[`${sub.id}_${p.id}`])ci.value=d[`${sub.id}_${p.id}`];});}else{const ti=el(`${sub.id}_s_${s.id}`);if(ti&&d[`${sub.id}_score`])ti.value=d[`${sub.id}_score`];const ci=el(`cmi-${sub.id}-${s.id}`);if(ci&&d[`${sub.id}_score`])ci.value=d[`${sub.id}_score`];}});calcRow(s.id);calcCardRow(s.id);restored++;}});updateOofTotals();if(restored>0){const b=el('draftBadge');if(b){b.style.display='inline-block';b.textContent=`📋 Draft (${restored})`;}toast(`📋 ${restored} draft${restored>1?'s':''} restored`,'info');}}catch(e){}}
+window.restoreDraft=function(){toast('Drafts already loaded — use Save All to sync to cloud','info');};
+function clearDraft(sid){try{const key=getDraftKey(),raw=localStorage.getItem(key);if(!raw)return;const d=JSON.parse(raw);delete d[sid];if(!Object.keys(d).length){localStorage.removeItem(key);const b=el('draftBadge');if(b)b.style.display='none';}else{localStorage.setItem(key,JSON.stringify(d));const b=el('draftBadge');if(b)b.textContent=`📋 Draft (${Object.keys(d).length})`;}}catch(_){}}
+
+/* COLLECT ROW */
+function collectRow(sid){
+  const d={};const isSenior=window._isSenior||false;
+  const s=students.find(x=>x.id===sid);
+  const SUBS=isSenior?getStudentSubs(s?.subjects):(window._currentSubs||[]);
+  const oofs=window._cardOofsMap||{};const isMobile=_currentView==='card';
+  SUBS.forEach(sub=>{
+    if(sub.parts){sub.parts.forEach(p=>{const k=`${sub.id}_${p.id}`;const inp=isMobile?el(`cmi-${k}-${sid}`):el(`${k}_${sid}`);d[k]=Number(inp?.value)||0;d[`oof_${k}`]=isMobile?(oofs[k]||DEFAULT_OOF):(Number(el(`oof_${k}`)?.value)||DEFAULT_OOF);});const te=isMobile?el(`cmi-tot-${sub.id}-${sid}`):el(`${sub.id}_tot_${sid}`);d[`${sub.id}_tot`]=Number(te?.textContent)||0;}
+    else{const inp=isMobile?el(`cmi-${sub.id}-${sid}`):el(`${sub.id}_s_${sid}`);d[`${sub.id}_score`]=Number(inp?.value)||0;d[`oof_${sub.id}`]=isMobile?(oofs[sub.id]||DEFAULT_OOF):(Number(el(`oof_${sub.id}`)?.value)||DEFAULT_OOF);}
+  });
+  const oa=parseFloat((isMobile?el(`c-oa-${sid}`):el(`oa_${sid}`))?.textContent)||0;
+  d.overallAvg=oa;d.overallLevel=(isMobile?el(`c-ol-${sid}`):el(`ol_${sid}`))?.querySelector('.lbadge')?.textContent||'';d.overallPts=Number((isMobile?null:el(`op_${sid}`))?.textContent)||0;return d;
+}
+
+/* AUTOSAVE */
+const _ast={};const _ps=new Set();
+window.autoSaveRow=function(sid){if(hasValidationErrors())return;clearTimeout(_ast[sid]);_ast[sid]=setTimeout(()=>{const d=collectRow(sid);if(!d.overallAvg)return;showNetBar('💾 Autosaving…','saving');_saveRowSilent(sid).then(()=>showNetBar('✅ Saved','saved')).catch(()=>showNetBar('📡 Offline — draft saved','offline'));},900);};
+async function _saveRowSilent(sid){
+  const s=students.find(x=>x.id===sid);if(!s)return;const d=collectRow(sid);if(!d.overallAvg)return;
+  if(!navigator.onLine){_ps.add(sid);draftSave(sid);throw new Error('offline');}
+  const{grade,stream,term,year}=_getCS();const catKey=gradeUsesCats(grade)?currentCat:'';const _sid=currentUser?.schoolId||sessionStorage.getItem('cbe_school_id')||'';
+  const payload={studentId:sid,studentName:s.name,admissionNumber:s.admissionNumber||'',grade,stream:currentUser?.role==='teacher'?(currentUser.stream||''):(streamsEnabled&&gradeHasStreams?(el('selStream')?.value||''):''),term,year,exam:catKey,schoolId:_sid,teacherId:currentUser?.uid||'',teacherName:currentUser?.fullName||'',...d,updatedAt:firebase.firestore.FieldValue.serverTimestamp()};
+  const ex=savedMap[sid];
+  if(ex){await db.collection('results').doc(ex.id).update(payload);savedMap[sid]={...ex,...payload};}
+  else{payload.createdAt=firebase.firestore.FieldValue.serverTimestamp();const ref=await db.collection('results').add(payload);savedMap[sid]={id:ref.id,...payload};el('pilSv').textContent=++savedCount;}
+  const ck=_ck(grade,el('selStream')?.value||currentUser?.stream||'',term,year,catKey,_sid);_cUp(ck,sid,savedMap[sid]);
+  el(`tr-${sid}`)?.classList.add('saved');const card=el(`card-${sid}`);if(card)card.classList.add('saved');
+  const ae=el(`act_${sid}`);if(ae)ae.innerHTML=`<span class="sv-done">✓</span>`;
+  const ss=el(`sc-status-${sid}`);if(ss)ss.innerHTML='<span style="color:var(--success)">✅ Saved</span>';
+  clearDraft(sid);_ps.delete(sid);
+}
+async function syncPendingRows(){if(!_ps.size)return;for(const sid of [..._ps])try{await _saveRowSilent(sid);}catch(_){}}
+
+/* SAVE ROW */
+window.saveRow=async function(sid){
+  const s=students.find(x=>x.id===sid);if(!s)return;
+  if(hasValidationErrors()){toast('Fix over-limit scores first','err');return;}
+  const d=collectRow(sid);if(!d.overallAvg){toast('Enter at least one score first','err');return;}
+  try{await _saveRowSilent(sid);toast('Saved: '+s.name);}catch(e){toast('Error: '+e.message,'err');}
+};
+window.saveAll=async function(){if(!students.length){toast('Load students first','err');return;}let done=0,skip=0;for(const s of students){const d=collectRow(s.id);if(d.overallAvg>0){await saveRow(s.id);done++;}else skip++;}toast(`${done} saved${skip?` · ${skip} skipped`:''}`);};
+
+/* TOAST */
+function toast(msg,type='ok'){const t=document.createElement('div');t.className=`t ${type}`;t.innerHTML=`<span>${type==='ok'?'✅':type==='err'?'❌':'ℹ️'}</span>${msg}`;el('tc').appendChild(t);setTimeout(()=>{t.style.animation='tout .25s ease forwards';setTimeout(()=>t.remove(),280);},2600);}
+
+/* THEME */
+el('themeBtn').addEventListener('click',function(){document.body.classList.toggle('dark');this.textContent=document.body.classList.contains('dark')?'☀️':'🌙';localStorage.setItem('cbe_theme',document.body.classList.contains('dark')?'dark':'light');});
+if(localStorage.getItem('cbe_theme')==='dark'){document.body.classList.add('dark');el('themeBtn').textContent='☀️';}
+
+/* LOGOUT */
+async function doLogout(){try{await auth.signOut();window.location.href='login';}catch(e){toast('Sign out failed','err');}}
+
+/* PAYMENT GATE */
+let _pU=null,_pE=null,_pP=null,_pC=null,_lE=null,_rS=false;const WD=7;
+function _spg(sid){if(_pU){_pU();_pU=null;}_cpt();_pU=db.collection('approvedSchools').doc(sid).onSnapshot(snap=>{if(!snap.exists){_stC();_hwB();_sg({},'Access not configured.');_srP(sid);return;}const d=snap.data(),now=new Date(),ne=d.subscriptionExpiry?.toDate?.()||null;if(d.status==='suspended'){_stC();_hwB();_sg(d,'Account suspended.');_srP(sid);return;}if(!ne){_hg();return;}if(ne<=now){_cpt();_stC();_hwB();_sg(d,d.message?.trim()||'Subscription expired.');_srP(sid);return;}if(_lE&&ne>_lE){_cpt();_lE=ne;_hg();_sc(ne);_sec(sid,ne);return;}_lE=ne;_hg();_sc(ne);_sec(sid,ne);},()=>{_sg({},'Unable to verify subscription.');});}
+function _sg(d,msg){const s=el('_povSchoolName');if(s)s.textContent=d?.schoolName||window.schoolSettings?.name||'—';const m=el('_povMsg');if(m&&msg)m.textContent=msg;const o=el('_payOverlay');if(o&&!o.classList.contains('show'))o.classList.add('show');}
+function _hg(){const o=el('_payOverlay');if(o&&o.classList.contains('show')){o.classList.remove('show');toast('✅ Subscription active');}}
+function _cpt(){if(_pE){clearTimeout(_pE);_pE=null;}if(_pP){clearInterval(_pP);_pP=null;}if(_pC){clearInterval(_pC);_pC=null;}}
+function _sec(sid,ea){if(_pE){clearTimeout(_pE);_pE=null;}const ms=ea-new Date();if(ms<=0)return;_pE=setTimeout(()=>{db.collection('approvedSchools').doc(sid).get().then(snap=>{if(!snap.exists)return;const d=snap.data(),exp=d.subscriptionExpiry?.toDate?.();if(!exp||exp<=new Date()){_sg(d,d.message?.trim()||'Subscription expired.');_srP(sid);}}).catch(()=>{});},ms+500);}
+function _srP(sid){if(_pP)return;_pP=setInterval(async()=>{try{const snap=await db.collection('approvedSchools').doc(sid).get();if(!snap.exists)return;const d=snap.data(),exp=d.subscriptionExpiry?.toDate?.();if(exp&&exp>new Date()&&d.status!=='suspended'){_cpt();_lE=exp;_hg();_sc(exp);_sec(sid,exp);}}catch(_){};},30000);}
+function _sc(ea){_stC();function tick(){const ms=ea-new Date();if(ms<=0){_stC();_hwB();return;}const days=ms/86400000,hours=ms/3600000;if(days>WD){_hwB();return;}let ts;if(hours<24){const h=Math.floor(ms/3600000),m=Math.floor((ms%3600000)/60000),s=Math.floor((ms%60000)/1000);ts=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;}else ts=`${Math.floor(days)}d ${Math.floor((ms%86400000)/3600000)}h`;_swB(ts,hours<24);}tick();_pC=setInterval(tick,1000);}
+function _stC(){if(_pC){clearInterval(_pC);_pC=null;}}
+function _swB(ts,urgent){const b=el('_subBar');if(!b)return;const t=el('_subBarTimer');if(t)t.textContent=ts;b.className=urgent?'_subbar-show _subbar-urgent':'_subbar-show _subbar-warn';}
+function _hwB(){const b=el('_subBar');if(b)b.className='';}
+auth.onAuthStateChanged(u=>{if(u){const sid=sessionStorage.getItem('cbe_school_id');if(sid)_spg(sid);}});
+
+/* SESSION TIMEOUT */
+const ST=30*60*1000,SW=2*60*1000;let _it=null,_wt=null;
+function _ri(){clearTimeout(_it);clearTimeout(_wt);const w=document.getElementById('_sw');if(w)w.style.display='none';_wt=setTimeout(()=>{let d=document.getElementById('_sw');if(!d){d=document.createElement('div');d.id='_sw';d.style.cssText='position:fixed;top:0;left:0;right:0;z-index:9999;background:#7f1d1d;color:#fef2f2;font-family:inherit;padding:10px 20px;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:2px solid #ef4444';d.innerHTML='<span>⚠️ Session expires in <span id="_sc2">2:00</span></span><div style="display:flex;gap:8px"><button onclick="_ka()" style="padding:4px 12px;background:#059669;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:700;font-size:12px">Stay Logged In</button><button onclick="doLogout()" style="padding:4px 12px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:4px;cursor:pointer;font-size:12px">Sign Out</button></div>';document.body.prepend(d);}d.style.display='flex';let secs=SW/1000;const ti=setInterval(()=>{secs--;const e=document.getElementById('_sc2');if(e)e.textContent=Math.floor(secs/60)+':'+(secs%60).toString().padStart(2,'0');if(secs<=0)clearInterval(ti);},1000);},ST-SW);_it=setTimeout(doLogout,ST);}
+window._ka=function(){_ri();};
+['mousemove','keydown','click','touchstart','scroll'].forEach(ev=>document.addEventListener(ev,_ri,{passive:true}));
+_ri();
+</script>
+</body>
+</html>
