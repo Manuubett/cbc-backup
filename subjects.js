@@ -25,6 +25,7 @@ const SUBS_LOWER = [
   { id:'kis',  label:'Kiswahili',                icon:'🗣️', gc:'g-kis',  sc:'s-kis'  },
   { id:'int',  label:'Integrated Activities',    icon:'🌈', gc:'g-sci',  sc:'s-sci'  },
   { id:'crt',  label:'Creative Activities',      icon:'🎨', gc:'g-arts', sc:'s-arts' },
+  { id:'cre',  label:'CRE',                      icon:'✝️', gc:'g-re',   sc:'s-re'   },
 ];
 
 // ─────────────────────────────────────────────────────────────
