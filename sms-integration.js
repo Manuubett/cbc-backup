@@ -13,6 +13,9 @@
  *    from result sends in Firestore smsLogs (paired server-side change).
  *  - All v5 features retained unchanged (wallet top-up, central bulk results
  *    send, legacy test/settings modals).
+ *  - FIX: All modals now scrollable (overflow-y:auto, max-height:90vh,
+ *    align-items:flex-start on overlay) so action buttons always reachable.
+ *  - NEW: Airtel-only notice banner shown in send + announcement modals.
  *
  * BACKEND ENDPOINTS USED:
  *  POST /api/sms/send-bulk-school  — central send (uses server AT_API_KEY).
@@ -45,14 +48,30 @@ window.CBE_SMS = (() => {
 
   // ── Backend endpoints ────────────────────────────────────────
   const BACKEND          = 'https://instasend-backend.onrender.com';
-  const SMS_PROXY_LEGACY = `${BACKEND}/api/sms/send`;            // legacy per-school (test only)
-  const SMS_SEND_SCHOOL  = `${BACKEND}/api/sms/send-bulk-school`; // central wallet send
+  const SMS_PROXY_LEGACY = `${BACKEND}/api/sms/send`;
+  const SMS_SEND_SCHOOL  = `${BACKEND}/api/sms/send-bulk-school`;
   const WALLET_TOPUP     = `${BACKEND}/api/wallet/topup`;
   const WALLET_BALANCE   = (id) => `${BACKEND}/api/wallet/balance/${id}`;
   const WALLET_STATUS    = (ref) => `${BACKEND}/api/wallet/topup-status/${ref}`;
 
   const FETCH_TIMEOUT_MS = 15000;
-const SMS_COST = 1.20; // KES per SMS (matches server)
+  const SMS_COST = 1.20; // KES per SMS (matches server)
+
+  // ── Airtel-only notice banner (shown in send + announcement modals) ──────
+  const NETWORK_NOTICE = `
+    <div style="
+      background:#fffbeb;border-bottom:1px solid #fcd34d;
+      border-left:4px solid #f59e0b;padding:10px 16px;
+      font-size:12px;color:#92400e;line-height:1.6;
+      display:flex;align-items:flex-start;gap:10px;flex-shrink:0;
+    ">
+      <span style="font-size:16px;flex-shrink:0;">⚠️</span>
+      <div>
+        <strong>Airtel numbers only for now.</strong>
+        Safaricom (M-PESA line) delivery is coming soon —
+        SMS to Safaricom numbers may not go through yet.
+      </div>
+    </div>`;
 
   // ════════════════════════════════════════════════════════════
   //  1. WALLET HELPERS
@@ -61,13 +80,9 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
   async function getWalletBalance(schoolId) {
     const r = await fetch(WALLET_BALANCE(schoolId));
     if (!r.ok) throw new Error('Could not load wallet balance');
-    return await r.json(); // { balance, totalTopups, totalSpent, lastTopup }
+    return await r.json();
   }
 
-  /**
-   * Initiate a wallet top-up via M-Pesa STK push.
-   * Returns { txRef } — poll WALLET_STATUS to confirm.
-   */
   async function initiateTopup(schoolId, amount, phone) {
     const r = await fetch(WALLET_TOPUP, {
       method:  'POST',
@@ -76,13 +91,9 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
     });
     const data = await r.json();
     if (!r.ok) throw new Error(data.error || 'Top-up failed');
-    return data; // { success, txRef }
+    return data;
   }
 
-  /**
-   * Poll top-up status until confirmed or timeout (90s).
-   * Calls onStatus(msg) each tick.
-   */
   async function pollTopup(txRef, onStatus) {
     const start   = Date.now();
     const timeout = 90_000;
@@ -96,14 +107,13 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
         if (data.status === 'failed')    throw new Error('Payment failed or cancelled');
       } catch (e) {
         if (e.message.includes('failed')) throw e;
-        // network hiccup — keep polling
       }
     }
     throw new Error('Payment confirmation timed out. Check your M-Pesa messages.');
   }
 
   // ════════════════════════════════════════════════════════════
-  //  2. LEGACY SETTINGS HELPERS (kept for backward compat)
+  //  2. LEGACY SETTINGS HELPERS
   // ════════════════════════════════════════════════════════════
 
   async function saveATCredentials(schoolId, apiKey, username) {
@@ -133,13 +143,9 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
   }
 
   // ════════════════════════════════════════════════════════════
-  //  3. CORE SEND — central wallet (v5)
+  //  3. CORE SEND — central wallet
   // ════════════════════════════════════════════════════════════
 
-  /**
-   * Send one SMS via central AT account (deducts from school wallet).
-   * Low-level — prefer sendBulkResults for batches.
-   */
   async function sendSchoolSMS(schoolId, to, message, from = '') {
     const controller = new AbortController();
     setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
@@ -155,7 +161,6 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
     return data;
   }
 
-  // ── Legacy per-school send (used only by test modal) ────────
   async function sendSMS(apiKey, username, to, message, from = '') {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
@@ -198,13 +203,12 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
   }
 
   // ════════════════════════════════════════════════════════════
-  //  5. BULK SENDER — results — v5: uses central wallet endpoint
+  //  5. BULK SENDER — results
   // ════════════════════════════════════════════════════════════
 
   async function sendBulkResults(schoolId, recipients, opts = {}) {
     const { term, year, schoolName, senderId = '', onProgress } = opts;
 
-    // Build payload for server bulk endpoint
     const payload = recipients
       .filter(r => r.parentPhone)
       .map(r => ({
@@ -220,7 +224,6 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
                 parentPhone: r.parentPhone },
       }));
 
-    // Mark no-phone students as skipped immediately
     const results = [];
     let idx = 0;
     for (const r of recipients) {
@@ -233,9 +236,8 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
 
     if (payload.length === 0) return results;
 
-    // Send the batch
     const controller = new AbortController();
-    setTimeout(() => controller.abort(), 120_000); // 2 min for large batches
+    setTimeout(() => controller.abort(), 120_000);
 
     const r = await fetch(SMS_SEND_SCHOOL, {
       method:  'POST',
@@ -254,7 +256,6 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
     }
     if (!r.ok) throw new Error(data.error || `Server error ${r.status}`);
 
-    // Map server results back to recipient objects
     const serverResults = data.results || [];
     for (let i = 0; i < serverResults.length; i++) {
       const sr    = serverResults[i];
@@ -288,7 +289,7 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
   }
 
   // ════════════════════════════════════════════════════════════
-  //  7. WALLET MODAL (v5)
+  //  7. WALLET MODAL
   // ════════════════════════════════════════════════════════════
 
   function openWalletModal(preloadSchoolId) {
@@ -302,14 +303,15 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
     overlay.style.cssText = `
       position:fixed;inset:0;background:rgba(0,0,0,.55);
       backdrop-filter:blur(8px);z-index:99999;
-      display:flex;align-items:center;justify-content:center;padding:20px;
+      display:flex;align-items:flex-start;justify-content:center;
+      padding:20px;overflow-y:auto;
       font-family:'Plus Jakarta Sans',ui-sans-serif,sans-serif;
     `;
 
     overlay.innerHTML = `
       <div id="_cbeWalletBox" style="
         background:#fff;border-radius:16px;width:100%;max-width:420px;
-        box-shadow:0 32px 80px rgba(0,0,0,.3);overflow:hidden;
+        box-shadow:0 32px 80px rgba(0,0,0,.3);overflow-y:auto;max-height:90vh;
         animation:_wIn .22s cubic-bezier(.22,1,.36,1);
       ">
         <style>
@@ -417,10 +419,8 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
     document.body.appendChild(overlay);
     overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
 
-    // Load balance
     _loadWalletDisplay(schoolId);
 
-    // Pre-fill phone from Firestore
     if (schoolId) {
       db().collection('settings').doc(schoolId).get().then(snap => {
         if (!snap.exists) return;
@@ -485,7 +485,6 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
       btn.textContent = '✓ Done!';
       btn.style.background = '#1a56db';
 
-      // Refresh balance display
       await _loadWalletDisplay(schoolId);
 
     } catch (e) {
@@ -495,7 +494,7 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
   }
 
   // ════════════════════════════════════════════════════════════
-  //  8. SEND MODAL — results — v5: shows balance, warns if low
+  //  8. SEND MODAL — results
   // ════════════════════════════════════════════════════════════
 
   function openSendModal(recipients, schoolId, schoolSettings = {}) {
@@ -516,13 +515,14 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
     modal.style.cssText = `
       position:fixed;inset:0;background:rgba(0,0,0,.45);
       backdrop-filter:blur(6px);z-index:9999;
-      display:flex;align-items:center;justify-content:center;padding:20px;
+      display:flex;align-items:flex-start;justify-content:center;
+      padding:20px;overflow-y:auto;
       font-family:'Plus Jakarta Sans',sans-serif;
     `;
 
     modal.innerHTML = `
       <div style="background:#fff;border-radius:14px;width:100%;max-width:520px;
-        box-shadow:0 24px 60px rgba(0,0,0,.3);overflow:hidden;
+        box-shadow:0 24px 60px rgba(0,0,0,.3);overflow-y:auto;max-height:90vh;
         animation:_smsIn .2s cubic-bezier(.22,1,.36,1)">
         <style>
           @keyframes _smsIn{from{opacity:0;transform:scale(.95) translateY(12px)}to{opacity:1;transform:none}}
@@ -545,6 +545,9 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
           <div style="font-size:16px;font-weight:800;margin-bottom:2px;">📱 Send Results via SMS</div>
           <div style="font-size:11.5px;opacity:.75;">${_esc(schoolName)} · ${_esc(term)} ${_esc(year)}</div>
         </div>
+
+        <!-- Network notice -->
+        ${NETWORK_NOTICE}
 
         <!-- Body -->
         <div style="padding:18px 22px;">
@@ -592,7 +595,7 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
             (${withPhone.length} SMS × KES ${SMS_COST})
           </div>
 
-          <!-- Low balance warning (hidden until balance loads) -->
+          <!-- Low balance warning -->
           <div id="_smsLowBalWarn" style="display:none;
             background:#fef2f2;border:1px solid #fecaca;border-left:3px solid #dc2626;
             border-radius:7px;padding:9px 13px;font-size:12px;color:#991b1b;margin-bottom:14px;">
@@ -676,7 +679,6 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
       }
     }
 
-    // Load + check balance
     _checkSendModalBalance(schoolId, withPhone.length);
   }
 
@@ -770,7 +772,6 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
         },
       });
 
-      // Refresh balance after send
       const w = await getWalletBalance(schoolId).catch(() => null);
       const balAfter = w ? `KES ${w.balance.toFixed(2)} remaining` : '';
 
@@ -781,7 +782,6 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
         (balAfter ? ` · <span style="color:#64748b;font-size:11px;">${balAfter}</span>` : '');
 
     } catch (e) {
-      // Wallet empty mid-send
       if (e.code === 'INSUFFICIENT_BALANCE') {
         if (progLabel) progLabel.textContent = '';
         if (logList) logList.insertAdjacentHTML('afterend', `
@@ -807,15 +807,9 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
   function _removeSendModal() { document.getElementById('cbeSmsModal')?.remove(); }
 
   // ════════════════════════════════════════════════════════════
-  //  9. ANNOUNCEMENTS — custom message to any grade/stream (v6 NEW)
+  //  9. ANNOUNCEMENTS
   // ════════════════════════════════════════════════════════════
 
-  /**
-   * Replace {placeholders} in an announcement template with per-recipient
-   * values. Supported tags: {studentName} {grade} {stream} {schoolName}.
-   * If the template has none of these, every recipient just gets the same
-   * literal text — i.e. a plain broadcast.
-   */
   function buildAnnouncementSMS(template, { studentName, grade, stream, schoolName } = {}) {
     return String(template || '')
       .replace(/\{studentName\}/gi, studentName || '')
@@ -846,11 +840,6 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
     );
   }
 
-  /**
-   * Send a custom announcement to a filtered set of parents.
-   * Reuses the central wallet endpoint, tagged type:'announcement'
-   * so it shows up distinctly from result sends in Firestore smsLogs.
-   */
   async function sendBulkAnnouncement(schoolId, recipients, opts = {}) {
     const { template, schoolName = '', senderId = '', onProgress } = opts;
 
@@ -910,12 +899,6 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
     return results;
   }
 
-  /**
-   * Open the "Send Announcement" modal.
-   * `students` should be the same roster shape used for openSendModal
-   * (studentName, grade, stream, parentPhone, …) — any of those fields
-   * not relevant to an announcement (subjects/scores/etc.) are ignored.
-   */
   function openAnnouncementModal(students, schoolId, schoolSettings = {}) {
     _removeAnnouncementModal();
 
@@ -928,14 +911,15 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
     modal.style.cssText = `
       position:fixed;inset:0;background:rgba(0,0,0,.45);
       backdrop-filter:blur(6px);z-index:9999;
-      display:flex;align-items:center;justify-content:center;padding:20px;
+      display:flex;align-items:flex-start;justify-content:center;
+      padding:12px;overflow-y:auto;
       font-family:'Plus Jakarta Sans',sans-serif;
     `;
 
     modal.innerHTML = `
       <div style="background:#fff;border-radius:14px;width:100%;max-width:560px;
         box-shadow:0 24px 60px rgba(0,0,0,.3);overflow:hidden;
-        max-height:92vh;display:flex;flex-direction:column;
+        display:flex;flex-direction:column;
         animation:_annIn .2s cubic-bezier(.22,1,.36,1)">
         <style>
           @keyframes _annIn{from{opacity:0;transform:scale(.95) translateY(12px)}to{opacity:1;transform:none}}
@@ -961,12 +945,17 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
           ._ann-dot.skipped{background:#d97706}
         </style>
 
+        <!-- Header -->
         <div style="background:linear-gradient(135deg,#1e1b4b,#4c1d95 60%,#7c3aed);
           padding:18px 22px;color:#fff;flex-shrink:0;">
           <div style="font-size:16px;font-weight:800;margin-bottom:2px;">📢 Send Announcement</div>
           <div style="font-size:11.5px;opacity:.75;">${_esc(schoolName)} · Custom message to any grade or stream</div>
         </div>
 
+        <!-- Network notice -->
+        ${NETWORK_NOTICE}
+
+        <!-- Scrollable body -->
         <div style="padding:18px 22px;overflow-y:auto;flex:1;">
 
           <div id="_annWalletBar" style="
@@ -1037,6 +1026,7 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
           </div>
         </div>
 
+        <!-- Footer — always visible (flex-shrink:0) -->
         <div style="padding:12px 22px;border-top:1px solid #f1f5f9;flex-shrink:0;
           display:flex;justify-content:space-between;align-items:center;gap:8px;">
           <button id="_annCancelBtn" onclick="window.CBE_SMS._closeAnnouncementModal()"
@@ -1058,7 +1048,7 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
     modal.dataset.schoolName = schoolName;
     modal._annRoster = roster;
 
-    _annRefresh(); // also triggers the initial balance check
+    _annRefresh();
   }
 
   function _closeAnnouncementModal()  { _removeAnnouncementModal(); }
@@ -1084,8 +1074,6 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
     const streamSel = document.getElementById('_annStream');
     const grade     = gradeSel?.value || '__all__';
 
-    // Repopulate streams whenever the grade changes, keeping the previous
-    // selection if it's still valid for the new grade.
     if (streamSel) {
       const streams     = _uniqueStreams(roster, grade === '__all__' ? null : grade);
       const prevStream  = streamSel.value;
@@ -1247,7 +1235,7 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
   }
 
   // ════════════════════════════════════════════════════════════
-  //  10. STANDALONE TEST MODAL (v4 — unchanged, uses legacy endpoint)
+  //  10. STANDALONE TEST MODAL
   // ════════════════════════════════════════════════════════════
 
   function _openTestModal(preloadSchoolId) {
@@ -1258,14 +1246,15 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
     overlay.id = '_cbeTestSmsModal';
     overlay.style.cssText = `
       position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px);z-index:99999;
-      display:flex;align-items:center;justify-content:center;padding:20px;
+      display:flex;align-items:flex-start;justify-content:center;
+      padding:20px;overflow-y:auto;
       font-family:'Plus Jakarta Sans',ui-sans-serif,sans-serif;
     `;
 
     overlay.innerHTML = `
       <div id="_cbeTestSmsBox" style="
         background:#fff;border-radius:16px;width:100%;max-width:460px;
-        box-shadow:0 32px 80px rgba(0,0,0,.35);overflow:hidden;
+        box-shadow:0 32px 80px rgba(0,0,0,.35);overflow-y:auto;max-height:90vh;
         animation:_testIn .22s cubic-bezier(.22,1,.36,1);">
         <style>
           @keyframes _testIn{from{opacity:0;transform:scale(.94) translateY(14px)}to{opacity:1;transform:none}}
@@ -1415,7 +1404,7 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
   function _testSMS() { _openTestModal(_schoolId()); }
 
   // ════════════════════════════════════════════════════════════
-  //  11. STANDALONE SETTINGS MODAL (v4 — unchanged)
+  //  11. STANDALONE SETTINGS MODAL
   // ════════════════════════════════════════════════════════════
 
   function openSettingsModal(preloadSchoolId) {
@@ -1426,12 +1415,14 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
     overlay.id = '_cbeSmsCfgModal';
     overlay.style.cssText = `
       position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);z-index:99999;
-      display:flex;align-items:center;justify-content:center;padding:20px;
+      display:flex;align-items:flex-start;justify-content:center;
+      padding:20px;overflow-y:auto;
       font-family:'Plus Jakarta Sans',ui-sans-serif,sans-serif;`;
 
     overlay.innerHTML = `
       <div id="_cbeSmsCfgBox" style="background:#fff;border-radius:16px;width:100%;max-width:480px;
-        box-shadow:0 32px 80px rgba(0,0,0,.3);overflow:hidden;animation:_cfgIn .22s cubic-bezier(.22,1,.36,1);">
+        box-shadow:0 32px 80px rgba(0,0,0,.3);overflow-y:auto;max-height:90vh;
+        animation:_cfgIn .22s cubic-bezier(.22,1,.36,1);">
         <style>
           @keyframes _cfgIn{from{opacity:0;transform:scale(.94) translateY(14px)}to{opacity:1;transform:none}}
           #_cbeSmsCfgBox input{width:100%;box-sizing:border-box;height:40px;padding:0 12px;
@@ -1567,7 +1558,7 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
   }
 
   // ════════════════════════════════════════════════════════════
-  //  12. SETTINGS PAGE HTML (v5: shows wallet balance + top-up)
+  //  12. SETTINGS PAGE HTML
   // ════════════════════════════════════════════════════════════
 
   function settingsHTML() {
@@ -1643,7 +1634,6 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
   async function initSettingsUI(schoolId) {
     if (!schoolId) return;
 
-    // Load wallet balance into settings page
     getWalletBalance(schoolId).then(w => {
       const balEl = document.getElementById('smsWalletBalance');
       const cntEl = document.getElementById('smsWalletSmsCount');
@@ -1662,7 +1652,6 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
       if (balEl) balEl.textContent = 'KES 0.00';
     });
 
-    // Load sender ID + test phone
     try {
       const snap = await db().collection('settings').doc(schoolId).get();
       if (snap.exists) {
@@ -1752,12 +1741,10 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
 
   // ── Public API ───────────────────────────────────────────────
   return {
-    // Core send
-    sendSMS,           // legacy per-school (test modal only)
-    sendSchoolSMS,     // central wallet single send
-    sendBulkResults,   // central wallet bulk send — results
+    sendSMS,
+    sendSchoolSMS,
+    sendBulkResults,
     buildResultsSMS,
-    // Announcements
     sendBulkAnnouncement,
     buildAnnouncementSMS,
     openAnnouncementModal,
@@ -1765,32 +1752,25 @@ const SMS_COST = 1.20; // KES per SMS (matches server)
     _annInsertTag,
     _startAnnouncementSend,
     _closeAnnouncementModal,
-    // Wallet
     getWalletBalance,
     openWalletModal,
     _doTopup,
-    // Settings helpers
     saveATCredentials,
     loadATCredentials,
     loadSenderId,
-    // Send modal — results
     openSendModal,
     _startSend,
     _closeModal,
-    // Settings page
     settingsHTML,
     initSettingsUI,
     _saveSettings,
-    // Test modal
     _testSMS,
     _openTestModal,
     _probeProxy,
     _doTestSend,
-    // Settings modal
     openSettingsModal,
     _doSettingsSave,
     _doSettingsTest,
-    // Utils
     normalisePhone,
   };
 
